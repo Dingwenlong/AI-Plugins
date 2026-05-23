@@ -1,0 +1,1021 @@
+{
+  "schemaVersion": "1.0.0",
+  "sourceWorkbook": "D:/Devs/<PROJECT_DOCS>/branches/09專案管理/9-1專案計劃/永豐新大戶-專案時程及計畫 TSD v1.0 20260510.xlsx",
+  "sourceSheet": "API 開發",
+  "featureIdColumn": "Feature ID",
+  "testerColumn": "測試人員",
+  "updatedDate": "2026-05-12",
+  "mapping": {
+    "B.003": "Kelly",
+    "B.004.002": "Kelly",
+    "B.004.003": "Kelly",
+    "B.004.004": "Kelly",
+    "B.004.009": "Kelly",
+    "B.006": "Kelly",
+    "B.008": "Kelly",
+    "B.009": "Kelly",
+    "B.010": "Kelly",
+    "C.002": "Kelly",
+    "C.003": "Kelly",
+    "C.005": "Kelly",
+    "C.005.002": "Kelly",
+    "C.006": "Kelly",
+    "D.001": "Hairy",
+    "D.001.001": "Hairy",
+    "D.002": "Hairy",
+    "D.002.001": "Hairy",
+    "D.003": "Hairy",
+    "D.004": "Hairy",
+    "D.004.001": "Hairy",
+    "D.005": "Hairy",
+    "D.006": "Hairy",
+    "D.007": "Hairy",
+    "D.007.001": "Hairy",
+    "D.007.002": "Hairy",
+    "D.008": "Hairy",
+    "D.009": "Hairy",
+    "D.009.001": "Hairy",
+    "E.001": "Emily",
+    "E.002": "Emily",
+    "E.003": "Emily",
+    "E.004": "Emily",
+    "E.005": "Emily",
+    "E.006": "Emily",
+    "E.007": "Emily",
+    "F.001": "Avril",
+    "F.001.001": "Avril",
+    "F.001.002": "Avril",
+    "F.001.004": "Avril",
+    "F.001.005": "Avril",
+    "F.002": "Avril",
+    "F.003.001": "Avril",
+    "F.003.003": "Avril",
+    "F.003.004": "Avril",
+    "F.005": "Avril",
+    "F.005.001": "Avril",
+    "F.006": "Avril",
+    "F.006.001": "Avril",
+    "F.007": "Avril",
+    "F.008": "Avril",
+    "I.001": "Hairy",
+    "I.002": "Hairy",
+    "I.003": "Hairy",
+    "I.004": "Hairy",
+    "I.006": "Hairy",
+    "I.007": "Hairy",
+    "I.008": "Hairy",
+    "I.008.001": "Hairy",
+    "I.008.003": "Hairy",
+    "I.010": "Hairy",
+    "I.010.001": "Hairy",
+    "I.011": "Hairy",
+    "I.012": "Hairy",
+    "I.012.001": "Hairy",
+    "I.012.002": "Hairy",
+    "I.013": "Hairy",
+    "I.014": "Avril",
+    "I.014.001": "Avril",
+    "I.014.002": "Avril",
+    "I.014.003": "Avril",
+    "I.014.004": "Avril",
+    "I.014.005": "Avril",
+    "I.014.006": "Avril",
+    "I.015": "Avril",
+    "I.015.001": "Avril",
+    "I.015.002": "Avril",
+    "I.016": "Avril",
+    "I.021.002": "Avril",
+    "I.023": "Avril",
+    "I.023.002": "Avril",
+    "I.024": "Avril",
+    "I.026": "Kelly",
+    "I.026.001": "Kelly",
+    "I.026.002": "Kelly",
+    "I.026.003": "Kelly",
+    "I.026.004": "Kelly",
+    "J.001": "Kelly",
+    "J.003": "Kelly",
+    "J.003.001": "Kelly",
+    "K.001": "Kelly",
+    "K.002": "Kelly",
+    "K.006": "Kelly",
+    "K.007": "Kelly",
+    "K.010": "Kelly",
+    "K.013": "Kelly",
+    "K.014": "Kelly",
+    "K.015": "Kelly",
+    "K.015.001": "Kelly",
+    "K.016": "Kelly",
+    "K.017": "Kelly",
+    "L.001": "Emily",
+    "L.001.001": "Emily",
+    "L.002": "Emily",
+    "L.003": "Emily",
+    "L.004": "Emily",
+    "L.005": "Emily",
+    "L.005.001": "Emily",
+    "L.006": "Emily",
+    "L.007": "Emily",
+    "M.001": "Emily",
+    "M.001.003": "Emily",
+    "M.003": "Emily",
+    "M.005": "Emily",
+    "M.006": "Emily",
+    "N.001": "Emily",
+    "N.001.001": "Emily",
+    "N.001.002": "Emily",
+    "N.002": "Emily",
+    "N.005": "Emily",
+    "N.006": "Emily",
+    "N.006.001": "Emily",
+    "N.007": "Emily",
+    "N.008": "Emily",
+    "N.009": "Emily",
+    "N.010": "Emily"
+  },
+  "rows": [
+    {
+      "featureId": "B.003",
+      "tester": "Kelly",
+      "module": "登入前",
+      "featureName": "登入前檢核與公告",
+      "sourceRow": 2
+    },
+    {
+      "featureId": "B.004.002",
+      "tester": "Kelly",
+      "module": "登入前",
+      "featureName": "登入-帳號密碼",
+      "sourceRow": 3
+    },
+    {
+      "featureId": "B.004.003",
+      "tester": "Kelly",
+      "module": "登入前",
+      "featureName": "登入-生物辨識",
+      "sourceRow": 4
+    },
+    {
+      "featureId": "B.004.004",
+      "tester": "Kelly",
+      "module": "登入前",
+      "featureName": "登入-圖形密碼",
+      "sourceRow": 5
+    },
+    {
+      "featureId": "C.002",
+      "tester": "Kelly",
+      "module": "登入後/首頁",
+      "featureName": "登入後彈窗",
+      "sourceRow": 6
+    },
+    {
+      "featureId": "D.001",
+      "tester": "Hairy",
+      "module": "台外幣活定存",
+      "featureName": "臺幣活存查詢",
+      "sourceRow": 7
+    },
+    {
+      "featureId": "D.001.001",
+      "tester": "Hairy",
+      "module": "台外幣活定存",
+      "featureName": "臺幣定存查詢",
+      "sourceRow": 8
+    },
+    {
+      "featureId": "D.002",
+      "tester": "Hairy",
+      "module": "台外幣活定存",
+      "featureName": "外幣活存查詢",
+      "sourceRow": 9
+    },
+    {
+      "featureId": "D.002.001",
+      "tester": "Hairy",
+      "module": "台外幣活定存",
+      "featureName": "外幣定存查詢",
+      "sourceRow": 10
+    },
+    {
+      "featureId": "D.003",
+      "tester": "Hairy",
+      "module": "台外幣活定存",
+      "featureName": "利率查詢表",
+      "sourceRow": 11
+    },
+    {
+      "featureId": "D.004",
+      "tester": "Hairy",
+      "module": "台外幣活定存",
+      "featureName": "新增臺幣定存",
+      "sourceRow": 12
+    },
+    {
+      "featureId": "D.004.001",
+      "tester": "Hairy",
+      "module": "台外幣活定存",
+      "featureName": "新增外幣定存",
+      "sourceRow": 13
+    },
+    {
+      "featureId": "D.006",
+      "tester": "Hairy",
+      "module": "台外幣活定存",
+      "featureName": "換匯優利定存",
+      "sourceRow": 14
+    },
+    {
+      "featureId": "D.007",
+      "tester": "Hairy",
+      "module": "台外幣活定存",
+      "featureName": "定存預約管理",
+      "sourceRow": 15
+    },
+    {
+      "featureId": "D.007.001",
+      "tester": "Hairy",
+      "module": "台外幣活定存",
+      "featureName": "定存變更",
+      "sourceRow": 16
+    },
+    {
+      "featureId": "D.007.002",
+      "tester": "Hairy",
+      "module": "台外幣活定存",
+      "featureName": "定存解約",
+      "sourceRow": 17
+    },
+    {
+      "featureId": "E.001",
+      "tester": "Emily",
+      "module": "匯率",
+      "featureName": "匯率表",
+      "sourceRow": 18
+    },
+    {
+      "featureId": "N.001",
+      "tester": "Emily",
+      "module": "個人化設定",
+      "featureName": "帳戶中心與會員資料查詢",
+      "sourceRow": 19
+    },
+    {
+      "featureId": "N.001.001",
+      "tester": "Emily",
+      "module": "個人化設定",
+      "featureName": "頭像與暱稱設定",
+      "sourceRow": 20
+    },
+    {
+      "featureId": "N.001.002",
+      "tester": "Emily",
+      "module": "個人化設定",
+      "featureName": "變更聯絡資料",
+      "sourceRow": 21
+    },
+    {
+      "featureId": "N.006",
+      "tester": "Emily",
+      "module": "個人化設定",
+      "featureName": "登入紀錄查詢",
+      "sourceRow": 22
+    },
+    {
+      "featureId": "N.006.001",
+      "tester": "Emily",
+      "module": "個人化設定",
+      "featureName": "異常登入管理(登入裝置管理)",
+      "sourceRow": 23
+    },
+    {
+      "featureId": "N.007",
+      "tester": "Emily",
+      "module": "個人化設定",
+      "featureName": "登入方式設定",
+      "sourceRow": 24
+    },
+    {
+      "featureId": "N.008",
+      "tester": "Emily",
+      "module": "個人化設定",
+      "featureName": "軟體憑證管理",
+      "sourceRow": 25
+    },
+    {
+      "featureId": "N.009",
+      "tester": "Emily",
+      "module": "個人化設定",
+      "featureName": "裝置綁定管理",
+      "sourceRow": 26
+    },
+    {
+      "featureId": "B.006",
+      "tester": "Kelly",
+      "module": "登入前",
+      "featureName": "幫助中心與常見問題",
+      "sourceRow": 27
+    },
+    {
+      "featureId": "C.003",
+      "tester": "Kelly",
+      "module": "登入後/首頁",
+      "featureName": "首次登入說明 (Quick start)",
+      "sourceRow": 28
+    },
+    {
+      "featureId": "D.008",
+      "tester": "Hairy",
+      "module": "台外幣活定存",
+      "featureName": "分享帳號",
+      "sourceRow": 29
+    },
+    {
+      "featureId": "D.009",
+      "tester": "Hairy",
+      "module": "台外幣活定存",
+      "featureName": "匯出存摺封面",
+      "sourceRow": 30
+    },
+    {
+      "featureId": "D.009.001",
+      "tester": "Hairy",
+      "module": "台外幣活定存",
+      "featureName": "匯出交易明細",
+      "sourceRow": 31
+    },
+    {
+      "featureId": "F.001",
+      "tester": "Avril",
+      "module": "轉帳提款",
+      "featureName": "一般轉帳",
+      "sourceRow": 32
+    },
+    {
+      "featureId": "F.001.001",
+      "tester": "Avril",
+      "module": "轉帳提款",
+      "featureName": "無碼轉帳與管理",
+      "sourceRow": 33
+    },
+    {
+      "featureId": "F.001.002",
+      "tester": "Avril",
+      "module": "轉帳提款",
+      "featureName": "門號轉帳設定",
+      "sourceRow": 34
+    },
+    {
+      "featureId": "F.001.004",
+      "tester": "Avril",
+      "module": "轉帳提款",
+      "featureName": "預約轉帳",
+      "sourceRow": 35
+    },
+    {
+      "featureId": "F.001.005",
+      "tester": "Avril",
+      "module": "轉帳提款",
+      "featureName": "預約轉帳管理",
+      "sourceRow": 36
+    },
+    {
+      "featureId": "F.002",
+      "tester": "Avril",
+      "module": "轉帳提款",
+      "featureName": "外幣轉帳",
+      "sourceRow": 37
+    },
+    {
+      "featureId": "F.003.001",
+      "tester": "Avril",
+      "module": "轉帳提款",
+      "featureName": "常用帳戶管理",
+      "sourceRow": 38
+    },
+    {
+      "featureId": "F.003.003",
+      "tester": "Avril",
+      "module": "轉帳提款",
+      "featureName": "新增台幣約定帳戶",
+      "sourceRow": 39
+    },
+    {
+      "featureId": "F.003.004",
+      "tester": "Avril",
+      "module": "轉帳提款",
+      "featureName": "新增外幣約定帳戶",
+      "sourceRow": 40
+    },
+    {
+      "featureId": "F.006",
+      "tester": "Avril",
+      "module": "轉帳提款",
+      "featureName": "預約外幣現鈔",
+      "sourceRow": 41
+    },
+    {
+      "featureId": "F.006.001",
+      "tester": "Avril",
+      "module": "轉帳提款",
+      "featureName": "預約外幣現鈔管理",
+      "sourceRow": 42
+    },
+    {
+      "featureId": "F.007",
+      "tester": "Avril",
+      "module": "轉帳提款",
+      "featureName": "紅包轉帳",
+      "sourceRow": 43
+    },
+    {
+      "featureId": "F.008",
+      "tester": "Avril",
+      "module": "轉帳提款",
+      "featureName": "收款",
+      "sourceRow": 44
+    },
+    {
+      "featureId": "B.008",
+      "tester": "Kelly",
+      "module": "登入前",
+      "featureName": "B.008-登入前-智慧小豐\nI.020-投資-海外股票-整股標的查詢\nI.021-投資-海外股票-整股下單\nI.021.001-投資-海外股票-整股交易與帳務\nM.002-客群經營-點數專區",
+      "sourceRow": 45
+    },
+    {
+      "featureId": "B.009",
+      "tester": "Kelly",
+      "module": "登入前",
+      "featureName": "服務據點查詢",
+      "sourceRow": 46
+    },
+    {
+      "featureId": "I.004",
+      "tester": "Hairy",
+      "module": "投資",
+      "featureName": "投資配息查詢",
+      "sourceRow": 47
+    },
+    {
+      "featureId": "I.006",
+      "tester": "Hairy",
+      "module": "投資",
+      "featureName": "投資屬性分析",
+      "sourceRow": 48
+    },
+    {
+      "featureId": "I.007",
+      "tester": "Hairy",
+      "module": "投資",
+      "featureName": "推介服務同意簽署",
+      "sourceRow": 49
+    },
+    {
+      "featureId": "I.008",
+      "tester": "Hairy",
+      "module": "投資",
+      "featureName": "基金-基金專區",
+      "sourceRow": 50
+    },
+    {
+      "featureId": "I.008.001",
+      "tester": "Hairy",
+      "module": "投資",
+      "featureName": "基金-基金搜尋",
+      "sourceRow": 51
+    },
+    {
+      "featureId": "I.008.003",
+      "tester": "Hairy",
+      "module": "投資",
+      "featureName": "基金DA智選",
+      "sourceRow": 52
+    },
+    {
+      "featureId": "I.010",
+      "tester": "Hairy",
+      "module": "投資",
+      "featureName": "基金-單筆申購",
+      "sourceRow": 53
+    },
+    {
+      "featureId": "I.010.001",
+      "tester": "Hairy",
+      "module": "投資",
+      "featureName": "基金-定時定額申購",
+      "sourceRow": 54
+    },
+    {
+      "featureId": "I.011",
+      "tester": "Hairy",
+      "module": "投資",
+      "featureName": "基金-預約管理",
+      "sourceRow": 55
+    },
+    {
+      "featureId": "I.012",
+      "tester": "Hairy",
+      "module": "投資",
+      "featureName": "基金-庫存查詢",
+      "sourceRow": 56
+    },
+    {
+      "featureId": "I.012.001",
+      "tester": "Hairy",
+      "module": "投資",
+      "featureName": "基金-變更設定",
+      "sourceRow": 57
+    },
+    {
+      "featureId": "I.012.002",
+      "tester": "Hairy",
+      "module": "投資",
+      "featureName": "基金-贖回",
+      "sourceRow": 58
+    },
+    {
+      "featureId": "I.021.002",
+      "tester": "Avril",
+      "module": "投資",
+      "featureName": "海外股票-整股庫存查詢",
+      "sourceRow": 59
+    },
+    {
+      "featureId": "I.023",
+      "tester": "Avril",
+      "module": "投資",
+      "featureName": "海外股票-定時定額下單",
+      "sourceRow": 60
+    },
+    {
+      "featureId": "I.023.002",
+      "tester": "Avril",
+      "module": "投資",
+      "featureName": "海外股票-定時定額扣款設定",
+      "sourceRow": 61
+    },
+    {
+      "featureId": "I.024",
+      "tester": "Avril",
+      "module": "投資",
+      "featureName": "海外股票-定時定額庫存查詢",
+      "sourceRow": 62
+    },
+    {
+      "featureId": "I.026",
+      "tester": "Kelly",
+      "module": "投資",
+      "featureName": "債券總覽",
+      "sourceRow": 63
+    },
+    {
+      "featureId": "D.005",
+      "tester": "Hairy",
+      "module": "台外幣活定存",
+      "featureName": "快閃定存",
+      "sourceRow": 64
+    },
+    {
+      "featureId": "E.002",
+      "tester": "Emily",
+      "module": "匯率",
+      "featureName": "匯率到價通知",
+      "sourceRow": 65
+    },
+    {
+      "featureId": "E.003",
+      "tester": "Emily",
+      "module": "匯率",
+      "featureName": "匯利率_匯率走勢查詢",
+      "sourceRow": 66
+    },
+    {
+      "featureId": "E.004",
+      "tester": "Emily",
+      "module": "匯率",
+      "featureName": "匯利率_即時換匯",
+      "sourceRow": 67
+    },
+    {
+      "featureId": "E.005",
+      "tester": "Emily",
+      "module": "匯率",
+      "featureName": "匯利率_預約換匯管理",
+      "sourceRow": 68
+    },
+    {
+      "featureId": "E.006",
+      "tester": "Emily",
+      "module": "匯率",
+      "featureName": "匯利率_預約換匯",
+      "sourceRow": 69
+    },
+    {
+      "featureId": "E.007",
+      "tester": "Emily",
+      "module": "匯率",
+      "featureName": "外匯電子申報",
+      "sourceRow": 70
+    },
+    {
+      "featureId": "F.005",
+      "tester": "Avril",
+      "module": "轉帳提款",
+      "featureName": "無卡提款申請",
+      "sourceRow": 71
+    },
+    {
+      "featureId": "F.005.001",
+      "tester": "Avril",
+      "module": "轉帳提款",
+      "featureName": "無卡提款紀錄查詢",
+      "sourceRow": 72
+    },
+    {
+      "featureId": "I.026.001",
+      "tester": "Kelly",
+      "module": "投資",
+      "featureName": "債券申購",
+      "sourceRow": 73
+    },
+    {
+      "featureId": "I.026.002",
+      "tester": "Kelly",
+      "module": "投資",
+      "featureName": "債券商品資訊查詢",
+      "sourceRow": 74
+    },
+    {
+      "featureId": "I.026.003",
+      "tester": "Kelly",
+      "module": "投資",
+      "featureName": "債券明細查詢",
+      "sourceRow": 75
+    },
+    {
+      "featureId": "I.026.004",
+      "tester": "Kelly",
+      "module": "投資",
+      "featureName": "債券贖回",
+      "sourceRow": 76
+    },
+    {
+      "featureId": "J.001",
+      "tester": "Kelly",
+      "module": "匯率",
+      "featureName": "保險商品查詢",
+      "sourceRow": 77
+    },
+    {
+      "featureId": "J.003",
+      "tester": "Kelly",
+      "module": "匯率",
+      "featureName": "保險庫存查詢",
+      "sourceRow": 78
+    },
+    {
+      "featureId": "J.003.001",
+      "tester": "Kelly",
+      "module": "匯率",
+      "featureName": "保單明細查詢",
+      "sourceRow": 79
+    },
+    {
+      "featureId": "K.001",
+      "tester": "Kelly",
+      "module": "貸款",
+      "featureName": "貸款總覽",
+      "sourceRow": 80
+    },
+    {
+      "featureId": "K.002",
+      "tester": "Kelly",
+      "module": "貸款",
+      "featureName": "貸款方案與試算",
+      "sourceRow": 81
+    },
+    {
+      "featureId": "K.006",
+      "tester": "Kelly",
+      "module": "貸款",
+      "featureName": "信貸明細查詢",
+      "sourceRow": 82
+    },
+    {
+      "featureId": "K.010",
+      "tester": "Kelly",
+      "module": "貸款",
+      "featureName": "房貸循環額度動用管理",
+      "sourceRow": 83
+    },
+    {
+      "featureId": "K.013",
+      "tester": "Kelly",
+      "module": "貸款",
+      "featureName": "私房錢線上申請",
+      "sourceRow": 84
+    },
+    {
+      "featureId": "K.014",
+      "tester": "Kelly",
+      "module": "貸款",
+      "featureName": "私房錢明細查詢",
+      "sourceRow": 85
+    },
+    {
+      "featureId": "K.015",
+      "tester": "Kelly",
+      "module": "貸款",
+      "featureName": "私房錢提款",
+      "sourceRow": 86
+    },
+    {
+      "featureId": "K.015.001",
+      "tester": "Kelly",
+      "module": "貸款",
+      "featureName": "私房錢預約動用",
+      "sourceRow": 87
+    },
+    {
+      "featureId": "K.016",
+      "tester": "Kelly",
+      "module": "貸款",
+      "featureName": "私房錢還款",
+      "sourceRow": 88
+    },
+    {
+      "featureId": "K.017",
+      "tester": "Kelly",
+      "module": "貸款",
+      "featureName": "私房錢結清",
+      "sourceRow": 89
+    },
+    {
+      "featureId": "B.004.009",
+      "tester": "Kelly",
+      "module": "登入前",
+      "featureName": "忘記代碼密碼",
+      "sourceRow": 90
+    },
+    {
+      "featureId": "B.010",
+      "tester": "Kelly",
+      "module": "登入前",
+      "featureName": "Widget",
+      "sourceRow": 91
+    },
+    {
+      "featureId": "I.013",
+      "tester": "Hairy",
+      "module": "投資",
+      "featureName": "ibrAin-申購",
+      "sourceRow": 92
+    },
+    {
+      "featureId": "I.014",
+      "tester": "Avril",
+      "module": "投資",
+      "featureName": "ibrAin-庫存查詢",
+      "sourceRow": 93
+    },
+    {
+      "featureId": "I.014.001",
+      "tester": "Avril",
+      "module": "投資",
+      "featureName": "ibrAin-調整計畫",
+      "sourceRow": 94
+    },
+    {
+      "featureId": "I.014.002",
+      "tester": "Avril",
+      "module": "投資",
+      "featureName": "ibrAin-贖回",
+      "sourceRow": 95
+    },
+    {
+      "featureId": "I.014.003",
+      "tester": "Avril",
+      "module": "投資",
+      "featureName": "ibrAin-變更約定事項",
+      "sourceRow": 96
+    },
+    {
+      "featureId": "I.014.004",
+      "tester": "Avril",
+      "module": "投資",
+      "featureName": "ibrAin-投組風險屬性轉換",
+      "sourceRow": 97
+    },
+    {
+      "featureId": "I.014.005",
+      "tester": "Avril",
+      "module": "投資",
+      "featureName": "ibrAin-資產再平衡",
+      "sourceRow": 98
+    },
+    {
+      "featureId": "I.014.006",
+      "tester": "Avril",
+      "module": "投資",
+      "featureName": "ibrAin-投顧委任契約",
+      "sourceRow": 99
+    },
+    {
+      "featureId": "I.015",
+      "tester": "Avril",
+      "module": "投資",
+      "featureName": "證券_台股庫存與損益查詢",
+      "sourceRow": 100
+    },
+    {
+      "featureId": "I.015.001",
+      "tester": "Avril",
+      "module": "投資",
+      "featureName": "證券_複委託庫存與損益查詢",
+      "sourceRow": 101
+    },
+    {
+      "featureId": "I.015.002",
+      "tester": "Avril",
+      "module": "投資",
+      "featureName": "證券_證券授權流程",
+      "sourceRow": 102
+    },
+    {
+      "featureId": "I.016",
+      "tester": "Avril",
+      "module": "投資",
+      "featureName": "證券_股票抽籤",
+      "sourceRow": 103
+    },
+    {
+      "featureId": "L.001",
+      "tester": "Emily",
+      "module": "繳費",
+      "featureName": "繳費總覽",
+      "sourceRow": 104
+    },
+    {
+      "featureId": "L.001.001",
+      "tester": "Emily",
+      "module": "繳費",
+      "featureName": "繳費紀錄查詢",
+      "sourceRow": 105
+    },
+    {
+      "featureId": "L.002",
+      "tester": "Emily",
+      "module": "繳費",
+      "featureName": "常用帳單設定",
+      "sourceRow": 106
+    },
+    {
+      "featureId": "L.003",
+      "tester": "Emily",
+      "module": "繳費",
+      "featureName": "自動扣繳申請",
+      "sourceRow": 107
+    },
+    {
+      "featureId": "L.004",
+      "tester": "Emily",
+      "module": "繳費",
+      "featureName": "他行信用卡費",
+      "sourceRow": 108
+    },
+    {
+      "featureId": "L.005",
+      "tester": "Emily",
+      "module": "繳費",
+      "featureName": "永豐卡費本人",
+      "sourceRow": 109
+    },
+    {
+      "featureId": "L.005.001",
+      "tester": "Emily",
+      "module": "繳費",
+      "featureName": "永豐卡費他人",
+      "sourceRow": 110
+    },
+    {
+      "featureId": "L.006",
+      "tester": "Emily",
+      "module": "繳費",
+      "featureName": "水費",
+      "sourceRow": 111
+    },
+    {
+      "featureId": "L.007",
+      "tester": "Emily",
+      "module": "繳費",
+      "featureName": "電信費",
+      "sourceRow": 112
+    },
+    {
+      "featureId": "M.001",
+      "tester": "Emily",
+      "module": "客群經營",
+      "featureName": "等級總覽",
+      "sourceRow": 113
+    },
+    {
+      "featureId": "M.001.003",
+      "tester": "Emily",
+      "module": "客群經營",
+      "featureName": "等級-訂閱進階權益",
+      "sourceRow": 114
+    },
+    {
+      "featureId": "C.005",
+      "tester": "Kelly",
+      "module": "登入後/首頁",
+      "featureName": "首頁",
+      "sourceRow": 115
+    },
+    {
+      "featureId": "C.005.002",
+      "tester": "Kelly",
+      "module": "登入後/首頁",
+      "featureName": "所有選單",
+      "sourceRow": 116
+    },
+    {
+      "featureId": "C.006",
+      "tester": "Kelly",
+      "module": "登入後/首頁",
+      "featureName": "通知中心與偏好設定",
+      "sourceRow": 117
+    },
+    {
+      "featureId": "I.001",
+      "tester": "Hairy",
+      "module": "投資",
+      "featureName": "投資總覽",
+      "sourceRow": 118
+    },
+    {
+      "featureId": "I.002",
+      "tester": "Hairy",
+      "module": "投資",
+      "featureName": "理財報告",
+      "sourceRow": 119
+    },
+    {
+      "featureId": "I.003",
+      "tester": "Hairy",
+      "module": "投資",
+      "featureName": "大戶日曆",
+      "sourceRow": 120
+    },
+    {
+      "featureId": "K.007",
+      "tester": "Kelly",
+      "module": "貸款",
+      "featureName": "貸款線上還款",
+      "sourceRow": 121
+    },
+    {
+      "featureId": "M.003",
+      "tester": "Emily",
+      "module": "客群經營",
+      "featureName": "DAWHO 實驗室",
+      "sourceRow": 122
+    },
+    {
+      "featureId": "M.005",
+      "tester": "Emily",
+      "module": "客群經營",
+      "featureName": "用戶偏好調查",
+      "sourceRow": 123
+    },
+    {
+      "featureId": "M.006",
+      "tester": "Emily",
+      "module": "客群經營",
+      "featureName": "年度回顧報告",
+      "sourceRow": 124
+    },
+    {
+      "featureId": "N.002",
+      "tester": "Emily",
+      "module": "個人化設定",
+      "featureName": "數位帳戶升級(提升權限)",
+      "sourceRow": 125
+    },
+    {
+      "featureId": "N.005",
+      "tester": "Emily",
+      "module": "個人化設定",
+      "featureName": "變更使用者代碼",
+      "sourceRow": 126
+    },
+    {
+      "featureId": "N.010",
+      "tester": "Emily",
+      "module": "個人化設定",
+      "featureName": "法務中心(個人資料授權與條款)",
+      "sourceRow": 127
+    }
+  ],
+  "duplicateFeatureIdsWithDifferentTester": {}
+}

@@ -1,0 +1,85 @@
+%%{init: {"flowchart": {"defaultRenderer": "elk", "nodeSpacing": 48, "rankSpacing": 72, "curve": "linear"}}}%%
+flowchart TB
+  %% Clean version: fewer cross-links, no repeated status/rule arrows.
+
+  classDef start fill:#fff7ed,stroke:#f97316,stroke-width:2px,color:#431407
+  classDef gate fill:#fefce8,stroke:#ca8a04,stroke-width:2px,color:#422006
+  classDef skill fill:#eef6ff,stroke:#2563eb,stroke-width:1.5px,color:#0f172a
+  classDef agent fill:#ecfdf5,stroke:#16a34a,stroke-width:1.5px,color:#052e16
+  classDef optional fill:#f8fafc,stroke:#64748b,stroke-width:1.2px,color:#0f172a
+  classDef result fill:#f5f3ff,stroke:#7c3aed,stroke-width:2px,color:#2e1065
+  classDef note fill:#f8fafc,stroke:#64748b,stroke-width:1px,color:#334155
+
+  Start["使用者提出任务<br/>梳理 / Spec / 代码 / 报告 / 交付 / 智能表格同步"]:::start
+  Config["读取工作区配置<br/>.agent/config/chain-workspace.json<br/>workspaceKey / agentRoot / rulesRoot"]:::agent
+  DesignCfg[".agent/config/design-source-registry.json<br/>PRD / TSD / API Detail 目录索引"]:::agent
+  WedocCfg[".agent/config/wedoc-smartsheet-targets.json<br/>target key / WebHook / schema / user_id"]:::agent
+  RuleGate{"后续正式产出<br/>规则包门禁"}:::gate
+  Stop["缺规则：暂停 02/04/交付<br/>先补 project-rules"]:::result
+
+  HasHandoff{"已有梳理产物？"}:::gate
+  Sync["需求接口设计梳理<br/>整理 PRD / TSD / API Detail"]:::skill
+  FunctionBox[".agent/functions/&lt;功能&gt;<br/>analysis + inputs + handoff"]:::agent
+
+  RefOpt["可选：01 参考资料索引<br/>外部 API / DB Schema"]:::optional
+  ReferenceBox[".agent/reference/global<br/>外部共用资料索引"]:::agent
+
+  Spec["02 API 规格写入器<br/>生成 API_Spec.json"]:::skill
+  ContextBox[".agent/context/&lt;功能&gt;<br/>API_Spec + codeHandoff + 执行状态"]:::agent
+
+  SqlQ{"涉及 SQL / DB？"}:::gate
+  Sql["03 SQL 测试资料准备器<br/>准备 fixture 或标记阻塞"]:::optional
+
+  Code["04 API 业务代码写入器<br/>prepare -> 改码 -> apply"]:::skill
+  CodeResult["实际代码分支<br/>Controller / Service / Entity"]:::result
+
+  ReportQ{"需要 UT 报告？"}:::gate
+  Test["05 API 测试与 UT 报告<br/>测试源码 + DOCX 报告"]:::optional
+  ReportResult["开发分支结束<br/>测试结果 / TRX / DOCX"]:::result
+
+  DeliveryAux["设计交付辅助分支<br/>从梳理产物旁路执行"]:::gate
+  Wedoc["智能表格异动记录写入<br/>Common/API/配置异动 -> WeDoc"]:::optional
+  WedocResult["企业微信智能表格<br/>add_records / update_records"]:::result
+  WedocReceipt[".agent/wedoc-smartsheet-receipts<br/>record_id + 请求/响应 JSONL"]:::agent
+  Diagram["原生 VSDX 时序图<br/>VSDX / SVG / PNG / PUML"]:::optional
+  Format["交付格式检查<br/>TSD Word / API Excel"]:::optional
+  Pack["交付包收集<br/>复制已确认交付物"]:::optional
+  Delivery["客户交付目录<br/>TSD 交付 yyyyMMdd"]:::result
+
+  StatusNote["所有阶段统一回写<br/>.agent/status/chain-status.json"]:::note
+  RuleNote["专案规则分析器维护规则<br/>开发规范在 .agent/project-rules/&lt;workspaceKey&gt;"]:::note
+
+  Start --> Config --> DesignCfg --> HasHandoff
+  Config --> WedocCfg
+
+  HasHandoff -- "没有" --> Sync --> FunctionBox
+  HasHandoff -- "有" --> FunctionBox
+
+  FunctionBox --> RuleGate
+  RuleGate -- "blocked" --> Stop
+  RuleGate -- "ready" --> Spec
+
+  RefOpt --> ReferenceBox
+  ReferenceBox -. "外部参考补充" .-> Spec
+  Spec --> ContextBox
+
+  ContextBox --> SqlQ
+  SqlQ -- "是" --> Sql --> Code
+  SqlQ -- "否" --> Code
+
+  Code --> ReportQ
+  ReportQ -- "需要" --> Test --> ReportResult
+  ReportQ -- "不需要" --> CodeResult
+
+  FunctionBox -. "需要设计交付辅助" .-> DeliveryAux
+  FunctionBox -. "异动记录" .-> Wedoc
+  ContextBox -. "开发状态异动" .-> Wedoc
+  WedocCfg --> Wedoc --> WedocResult
+  Wedoc --> WedocReceipt
+  DeliveryAux -- "时序图" --> Diagram
+  DeliveryAux -- "格式闭环" --> Format
+  DeliveryAux -- "交付包" --> Pack --> Delivery
+
+  RuleGate -.-> RuleNote
+  ContextBox -.-> StatusNote
+  FunctionBox -.-> StatusNote

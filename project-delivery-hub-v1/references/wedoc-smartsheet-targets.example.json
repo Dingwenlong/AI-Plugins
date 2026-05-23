@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "1.0.0",
+  "targets": {
+    "common-change-list": {
+      "displayName": "Common異動清單",
+      "description": "记录 CommonUtil、CommonFunc、appsetting、API 等异动内容。",
+      "keywords": [
+        "Common異動清單",
+        "Common",
+        "CommonUtil",
+        "CommonFunc",
+        "異動",
+        "智能表格"
+      ],
+      "webhookUrl": "<REPLACE_WITH_WEDOC_SMARTSHEET_WEBHOOK_URL>",
+      "userId": "<REPLACE_WITH_WECOM_USER_ID>",
+      "userText": "<REPLACE_WITH_MEMBER_NAME_ALIAS_OR_LEAVE_EMPTY_WHEN_USING_USER_ID>",
+      "requestFormat": {
+        "schema": {
+          "fwsRq0": "備註",
+          "fbPZt1": "調整內容",
+          "fm3WC4": "調整日期",
+          "fa80iy": "調整人(人员)",
+          "fPWtj7": "所屬類型",
+          "faSRWW": "調整接口"
+        },
+        "fieldMap": {
+          "note": "fwsRq0",
+          "content": "fbPZt1",
+          "date": "fm3WC4",
+          "user": "fa80iy",
+          "type": "fPWtj7",
+          "api": "faSRWW"
+        }
+      }
+    }
+  }
+}

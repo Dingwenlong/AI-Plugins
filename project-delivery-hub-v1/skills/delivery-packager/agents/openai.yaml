@@ -1,0 +1,4 @@
+interface:
+  display_name: "专案交付包收集器"
+  short_description: "按功能编号收集冻版交付物并整理 TSD 交付目录"
+  default_prompt: "使用 $delivery-packager 按功能编号收集冻版交付物，并整理 TSD 交付目录。"

@@ -1,0 +1,4 @@
+interface:
+  display_name: "专案原生 VSDX 时序图生成器"
+  short_description: "生成或修正原生可编辑 Visio VSDX 时序图。"
+  default_prompt: "请先运行 resolve_sequence_rule_pack.py 解析 project-rules 的 sequenceDiagram 必读规则包，再依冻版 PRD/TSD/API Detail 产出符合专案样式并通过原生 VSDX 验证的时序图。"

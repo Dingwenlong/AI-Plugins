@@ -1,0 +1,135 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/devskills/context/manifest.schema.json",
+  "title": "Shared Context API Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "manifestType",
+    "executionId",
+    "apiId",
+    "apiCategory",
+    "apiName",
+    "status",
+    "phase",
+    "updatedAt",
+    "newAuthor",
+    "specStatus",
+    "specUpdatedAt",
+    "specBlockReason",
+    "specSourceFingerprint",
+    "specSource",
+    "specArtifacts",
+    "fixtureStatus",
+    "fixturePhase",
+    "fixtureUpdatedAt",
+    "fixtureBlockReason",
+    "fixtureSourceFingerprint",
+    "fixtureArtifacts",
+    "codeStatus",
+    "codePhase",
+    "codeUpdatedAt",
+    "codeBlockReason",
+    "codeProjectRoot",
+    "codeSolutionPath",
+    "inputHashes",
+    "modifiedFiles",
+    "validationChecks",
+    "validationResults",
+    "repoDriftFiles",
+    "codeArtifacts",
+    "lastMessage"
+  ],
+  "properties": {
+    "schemaVersion": { "type": "string", "const": "4.1.0" },
+    "manifestType": { "type": "string", "const": "api" },
+    "executionId": { "type": "string", "minLength": 1 },
+    "apiId": { "type": "string", "minLength": 1 },
+    "apiCategory": { "type": "string", "minLength": 1 },
+    "apiName": { "type": "string", "minLength": 1 },
+    "status": { "type": "string", "minLength": 1 },
+    "phase": { "type": "string", "minLength": 1 },
+    "updatedAt": { "type": "string", "minLength": 1 },
+    "newAuthor": { "type": ["string", "null"] },
+    "specStatus": { "type": "string", "minLength": 1 },
+    "specUpdatedAt": { "type": ["string", "null"] },
+    "specBlockReason": { "type": ["string", "null"] },
+    "specSourceFingerprint": { "type": ["string", "null"] },
+    "specSource": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tsdFile", "workbookFile", "sheetNames"],
+      "properties": {
+        "tsdFile": { "type": ["string", "null"] },
+        "workbookFile": { "type": ["string", "null"] },
+        "sheetNames": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "specArtifacts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["apiSpec"],
+      "properties": {
+        "apiSpec": { "type": ["string", "null"] }
+      }
+    },
+    "fixtureStatus": { "type": "string", "minLength": 1 },
+    "fixturePhase": { "type": "string", "minLength": 1 },
+    "fixtureUpdatedAt": { "type": ["string", "null"] },
+    "fixtureBlockReason": { "type": ["string", "null"] },
+    "fixtureSourceFingerprint": { "type": ["string", "null"] },
+    "fixtureArtifacts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["dbFixtureReport", "tableChecks", "seedPlan", "seedExecuted", "seedManifest"],
+      "properties": {
+        "dbFixtureReport": { "type": ["string", "null"] },
+        "tableChecks": { "type": ["string", "null"] },
+        "seedPlan": { "type": ["string", "null"] },
+        "seedExecuted": { "type": ["string", "null"] },
+        "seedManifest": { "type": ["string", "null"] }
+      }
+    },
+    "codeStatus": { "type": "string", "minLength": 1 },
+    "codePhase": { "type": "string", "minLength": 1 },
+    "codeUpdatedAt": { "type": ["string", "null"] },
+    "codeBlockReason": { "type": ["string", "null"] },
+    "codeProjectRoot": { "type": ["string", "null"] },
+    "codeSolutionPath": { "type": ["string", "null"] },
+    "inputHashes": {
+      "type": "object",
+      "additionalProperties": { "type": ["string", "null"] }
+    },
+    "modifiedFiles": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "validationChecks": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "validationResults": {
+      "type": "array",
+      "items": { "type": "object" }
+    },
+    "repoDriftFiles": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "codeArtifacts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["changePlan", "implementationReport", "diagnosisReport"],
+      "properties": {
+        "changePlan": { "type": ["string", "null"] },
+        "implementationReport": { "type": ["string", "null"] },
+        "diagnosisReport": { "type": ["string", "null"] }
+      }
+    },
+    "lastMessage": { "type": ["string", "null"] }
+  }
+}

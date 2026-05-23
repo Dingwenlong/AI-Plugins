@@ -1,0 +1,683 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/api-spec-writer/api-spec.schema.json",
+  "title": "API Spec Writer API Spec",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "apiId",
+    "newAuthor",
+    "functionCode",
+    "version",
+    "apiCategory",
+    "apiName",
+    "source",
+    "request",
+    "response",
+    "mockExamples",
+    "backendApis",
+    "businessLogic",
+    "codeHandoff"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "4.2.0"
+    },
+    "apiId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "newAuthor": {
+      "type": "string",
+      "minLength": 1
+    },
+    "functionCode": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "version": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "apiCategory": {
+      "type": "string",
+      "minLength": 1
+    },
+    "apiName": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tsdFile",
+        "workbookFile",
+        "sheetNames"
+      ],
+      "properties": {
+        "tsdFile": {
+          "type": "string",
+          "minLength": 1
+        },
+        "workbookFile": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sheetNames": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "request": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "response": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "mockExamples": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": [
+          "scenario"
+        ],
+        "properties": {
+          "scenario": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "backendApis": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    },
+    "businessLogic": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "steps",
+        "fieldMappings",
+        "errorCodeRules",
+        "runtimeDependencies",
+        "dataSources",
+        "sqlSpecs",
+        "legacyReferences",
+        "prohibitedShortcuts"
+      ],
+      "properties": {
+        "steps": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "fieldMappings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "target",
+              "source",
+              "rule",
+              "fields"
+            ],
+            "properties": {
+              "target": {
+                "type": "string",
+                "minLength": 1
+              },
+              "source": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "rule": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "fields": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "field",
+                    "source",
+                    "rule"
+                  ],
+                  "properties": {
+                    "field": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "source": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "rule": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "lookupTables": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "sourceField",
+              "description",
+              "entries"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sourceField": {
+                "type": "string",
+                "minLength": 1
+              },
+              "description": {
+                "type": "string",
+                "minLength": 1
+              },
+              "entries": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "key",
+                    "title",
+                    "mappedValues",
+                    "rule"
+                  ],
+                  "properties": {
+                    "key": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "title": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "mappedValues": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "string"
+                      }
+                    },
+                    "rule": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "referenceHints": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "category",
+              "matchSource",
+              "matchKey",
+              "title",
+              "relativePath",
+              "locator",
+              "reason",
+              "authority"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "category": {
+                "type": "string",
+                "enum": [
+                  "db_schema",
+                  "external_api",
+                  "dev_guideline"
+                ]
+              },
+              "matchSource": {
+                "type": "string",
+                "enum": [
+                  "sql_table",
+                  "sql_keyword",
+                  "iris_keyword",
+                  "api_code",
+                  "framework_keyword"
+                ]
+              },
+              "matchKey": {
+                "type": "string",
+                "minLength": 1
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1
+              },
+              "relativePath": {
+                "type": "string",
+                "minLength": 1
+              },
+              "locator": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "sheetName": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "sectionTitle": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "pageHint": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 1
+              },
+              "authority": {
+                "type": "string",
+                "const": "reference_imported"
+              }
+            }
+          }
+        },
+        "errorCodeRules": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "code",
+              "scenario",
+              "message"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "minLength": 1
+              },
+              "scenario": {
+                "type": "string"
+              },
+              "message": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "runtimeDependencies": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "dataSources": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "sqlSpecs": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "legacyReferences": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "prohibitedShortcuts": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "codeHandoff": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schemaVersion",
+        "logicSummary",
+        "logicFlow",
+        "legacyEvidence",
+        "queryContracts",
+        "mappingRules",
+        "dependencyHints",
+        "constraints",
+        "unresolved"
+      ],
+      "properties": {
+        "schemaVersion": {
+          "type": "string",
+          "const": "1.0.0"
+        },
+        "logicSummary": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "stepCount",
+            "queryContractCount",
+            "mappingRuleCount",
+            "legacyEvidenceCount",
+            "dependencyHintCount",
+            "constraintCount",
+            "unresolvedCount",
+            "primarySource"
+          ],
+          "properties": {
+            "stepCount": { "type": "integer", "minimum": 0 },
+            "queryContractCount": { "type": "integer", "minimum": 0 },
+            "mappingRuleCount": { "type": "integer", "minimum": 0 },
+            "legacyEvidenceCount": { "type": "integer", "minimum": 0 },
+            "dependencyHintCount": { "type": "integer", "minimum": 0 },
+            "constraintCount": { "type": "integer", "minimum": 0 },
+            "unresolvedCount": { "type": "integer", "minimum": 0 },
+            "primarySource": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "logicFlow": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "stepId",
+              "title",
+              "actionType",
+              "inputs",
+              "outputs",
+              "evidenceIds"
+            ],
+            "properties": {
+              "stepId": { "type": "string", "minLength": 1 },
+              "title": { "type": "string", "minLength": 1 },
+              "actionType": { "type": "string", "minLength": 1 },
+              "inputs": { "type": "array", "items": { "type": "string" } },
+              "outputs": { "type": "array", "items": { "type": "string" } },
+              "evidenceIds": { "type": "array", "items": { "type": "string", "minLength": 1 } }
+            }
+          }
+        },
+        "legacyEvidence": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "evidenceId",
+              "kind",
+              "origin",
+              "authority",
+              "symbols",
+              "summary",
+              "snippet"
+            ],
+            "properties": {
+              "evidenceId": { "type": "string", "minLength": 1 },
+              "kind": { "type": "string", "minLength": 1 },
+              "origin": { "type": "string", "minLength": 1 },
+              "authority": { "type": "string", "minLength": 1 },
+              "symbols": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+              "summary": { "type": "string", "minLength": 1 },
+              "snippet": { "type": "string", "minLength": 1 }
+            }
+          }
+        },
+        "queryContracts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "contractId",
+              "purpose",
+              "dataSources",
+              "mustContain",
+              "sqlText",
+              "parameterHints",
+              "resultShape",
+              "evidenceIds"
+            ],
+            "properties": {
+              "contractId": { "type": "string", "minLength": 1 },
+              "purpose": { "type": "string", "minLength": 1 },
+              "dataSources": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+              "mustContain": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+              "sqlText": { "type": "string", "minLength": 1 },
+              "parameterHints": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+              "resultShape": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+              "evidenceIds": { "type": "array", "items": { "type": "string", "minLength": 1 } }
+            }
+          }
+        },
+        "mappingRules": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "ruleId",
+              "sourceField",
+              "targetField",
+              "mappingType",
+              "mappingTable",
+              "defaultValue",
+              "evidenceIds"
+            ],
+            "properties": {
+              "ruleId": { "type": "string", "minLength": 1 },
+              "sourceField": { "type": "string", "minLength": 1 },
+              "targetField": { "type": "string", "minLength": 1 },
+              "mappingType": { "type": "string", "minLength": 1 },
+              "mappingTable": {
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "additionalProperties": {
+                  "type": [
+                    "string",
+                    "number",
+                    "boolean",
+                    "null"
+                  ]
+                }
+              },
+              "defaultValue": {
+                "type": [
+                  "string",
+                  "number",
+                  "boolean",
+                  "null"
+                ]
+              },
+              "evidenceIds": { "type": "array", "items": { "type": "string", "minLength": 1 } }
+            }
+          }
+        },
+        "dependencyHints": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "dependencyType",
+              "preferredAbstractions",
+              "purpose",
+              "evidenceIds"
+            ],
+            "properties": {
+              "dependencyType": { "type": "string", "minLength": 1 },
+              "preferredAbstractions": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+              "purpose": { "type": "string", "minLength": 1 },
+              "evidenceIds": { "type": "array", "items": { "type": "string", "minLength": 1 } }
+            }
+          }
+        },
+        "constraints": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "constraintType",
+              "rule",
+              "severity",
+              "evidenceIds"
+            ],
+            "properties": {
+              "constraintType": { "type": "string", "minLength": 1 },
+              "rule": { "type": "string", "minLength": 1 },
+              "severity": { "type": "string", "minLength": 1 },
+              "evidenceIds": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+              "field": { "type": "string", "minLength": 1 },
+              "validationLayer": {
+                "type": "string",
+                "enum": ["dto_attribute", "service_business", "unresolved"]
+              },
+              "validationType": { "type": "string", "minLength": 1 },
+              "expectedCode": { "type": "string", "minLength": 1 },
+              "expectedMessage": { "type": "string", "minLength": 1 },
+              "customValidationAttributeNeeded": { "type": "boolean" },
+              "maxTextElements": { "type": "integer", "minimum": 1 }
+            }
+          }
+        },
+        "unresolved": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "topic",
+              "reason",
+              "blocking"
+            ],
+            "properties": {
+              "topic": { "type": "string", "minLength": 1 },
+              "reason": { "type": "string", "minLength": 1 },
+              "blocking": { "type": "boolean" },
+              "blockedReason": { "type": "string", "minLength": 1 },
+              "missingFacts": {
+                "type": "array",
+                "items": { "type": "string", "minLength": 1 }
+              },
+              "suggestedOwner": { "type": "string", "minLength": 1 },
+              "nextDecisionNeeded": { "type": "string", "minLength": 1 }
+            }
+          }
+        }
+      }
+    },
+    "rawAppendix": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "requestNotes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "responseNotes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "backendApiLines": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "unparsedMockExamples": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "otherNotes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

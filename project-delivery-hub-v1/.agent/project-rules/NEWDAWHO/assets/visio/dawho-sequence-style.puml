@@ -1,0 +1,53 @@
+' Copy this style block into every DAWHO sequence diagram @startuml block.
+' Keep it inline so PlantUML editor can render without external include files.
+
+hide footbox
+skinparam backgroundColor #FFFFFF
+skinparam Shadowing false
+skinparam dpi 150
+skinparam roundcorner 0
+skinparam defaultFontName "Microsoft JhengHei"
+skinparam defaultFontSize 12
+skinparam sequenceMessageAlign center
+skinparam responseMessageBelowArrow true
+skinparam maxMessageSize 100
+
+skinparam ParticipantPadding 26
+skinparam BoxPadding 10
+skinparam ParticipantBorderColor #1E5054
+skinparam ParticipantBorderThickness 2
+skinparam ParticipantBackgroundColor #FFFFFF
+skinparam ParticipantFontColor #000000
+skinparam ParticipantFontStyle bold
+skinparam ParticipantFontName "Times New Roman"
+skinparam ParticipantFontSize 12
+
+skinparam SequenceLifeLineBorderColor #1E5054
+skinparam SequenceLifeLineBorderThickness 1
+skinparam SequenceLifeLineBackgroundColor #FFFFFF
+skinparam SequenceDividerBorderColor #1E5054
+skinparam SequenceDividerBackgroundColor #FFFFFF
+skinparam SequenceDividerFontColor #000000
+
+skinparam ArrowColor #B01513
+skinparam ArrowThickness 1
+skinparam ArrowFontColor #B01513
+skinparam ArrowFontName "Microsoft JhengHei"
+skinparam ArrowFontSize 11
+
+skinparam NoteBackgroundColor #FFF2A1
+skinparam NoteBorderColor #000000
+skinparam NoteFontColor #000000
+skinparam NoteFontName "Microsoft JhengHei"
+
+skinparam SequenceGroupBorderColor #1E5054
+skinparam SequenceGroupBackgroundColor #FFFFFF
+skinparam SequenceGroupHeaderFontColor #000000
+skinparam SequenceGroupFontColor #000000
+skinparam SequenceGroupFontName "Microsoft JhengHei"
+
+skinparam SequenceReferenceBackgroundColor #FFFFFF
+skinparam SequenceReferenceHeaderBackgroundColor #FFFFFF
+skinparam SequenceReferenceBorderColor #1E5054
+skinparam SequenceReferenceFontColor #000000
+skinparam SequenceReferenceFontName "Microsoft JhengHei"

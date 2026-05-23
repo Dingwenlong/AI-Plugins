@@ -1,0 +1,23 @@
+{
+  "name": "uml-fragment-frame",
+  "type": "native-uml-fragment",
+  "stylePolicy": "preserve-native",
+  "description": "Visio UML sequence fragment mapping for native VSDX generation. Every alt must drop the UML sequence stencil's 替代片段 / Alternative fragment master, keep the diagram header text as alt, replace the native [條件] placeholder for the first branch condition, normalize operand regions after layout, and keep first-branch condition heads without an extra visible top separator. opt uses the container-capable native Alternative fragment variant with the displayed operator set to opt when the Optional fragment master does not expose container membership/control behavior.",
+  "masterByKind": {
+    "alt": ["Alternative fragment.52", "Alternative fragment"],
+    "opt": ["Alternative fragment.52", "Alternative fragment", "Optional fragment"],
+    "loop": ["Loop fragment"],
+    "ref": ["Alternative fragment", "Alternative fragment.52"],
+    "group": ["Other fragment"],
+    "other": ["Other fragment"]
+  },
+  "interactionOperandMasterNames": ["Interaction operand.53", "Interaction operand"],
+  "initialConditionOffsetX": 0.1,
+  "initialConditionOffsetY": 0.32,
+  "initialConditionHeight": 0.22,
+  "firstOperandTopOffset": 0.5,
+  "operandFullRegionMinWidthRatio": 0.74,
+  "branchContentBottomPadding": 0.25,
+  "operandHeight": 0.36,
+  "placeholderTexts": ["替代", "選用", "迴圈", "標題", "[參數]", "[條件]"]
+}

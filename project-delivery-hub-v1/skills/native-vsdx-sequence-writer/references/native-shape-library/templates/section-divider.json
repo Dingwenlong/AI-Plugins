@@ -1,0 +1,17 @@
+{
+  "name": "section-divider",
+  "type": "section-divider",
+  "lineOffset": 0.04,
+  "lineColor": "RGB(30,80,84)",
+  "lineWeight": "1.25 pt",
+  "labelBoxHeight": 0.34,
+  "labelBoxMinWidth": 1.00,
+  "labelBoxMaxWidth": 3.20,
+  "labelCharWidth": 0.20,
+  "labelFillColor": "RGB(255,255,255)",
+  "labelTextColor": "RGB(30,80,84)",
+  "labelFont": "Microsoft JhengHei",
+  "labelFontSize": 9,
+  "labelFontBold": true,
+  "minTopGapFromParticipantLabel": 0.35
+}

@@ -1,0 +1,9 @@
+{
+  "schemaVersion": "1.0.0",
+  "ruleId": "newdawho-sql-fixture-defaults",
+  "category": "sql-fixture",
+  "title": "NEWDAWHO SQL fixture defaults",
+  "reviewStatus": "approved",
+  "defaultSqlServerDatabase": "DAWHO",
+  "appSampleSqlLiteral": "'DAWHO APP'"
+}

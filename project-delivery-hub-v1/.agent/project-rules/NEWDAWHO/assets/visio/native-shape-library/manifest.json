@@ -1,0 +1,66 @@
+{
+  "version": 1,
+  "description": "DAWHO native Visio reconstruction shape templates. Each template owns one small visual component so VSDX generation can reuse stable geometry instead of hard-coded ad hoc drawing.",
+  "templates": [
+    {
+      "name": "page-title",
+      "file": "templates/page-title.json",
+      "usedBy": "top page title modeled after project reference sequence diagrams"
+    },
+    {
+      "name": "user-participant-head",
+      "file": "templates/user-participant-head.json",
+      "usedBy": "Composite User participant: preserved template VSDX Actor lifeline plus generated glue"
+    },
+    {
+      "name": "actor-head",
+      "file": "templates/actor-head.json",
+      "usedBy": "User participant icon fallback"
+    },
+    {
+      "name": "participant-head-box",
+      "file": "templates/participant-head-box.json",
+      "usedBy": "User, APP, Enterprise, IRIS, DB, Redis participant heads"
+    },
+    {
+      "name": "object-participant-lifeline",
+      "file": "templates/object-participant-lifeline.json",
+      "usedBy": "APP, Enterprise, and other object participants"
+    },
+    {
+      "name": "clipped-header-tab",
+      "file": "templates/clipped-header-tab.json",
+      "usedBy": "manual fallback group, loop, alt, opt, ref header tabs"
+    },
+    {
+      "name": "uml-fragment-frame",
+      "file": "templates/uml-fragment-frame.json",
+      "usedBy": "native UML alt, opt, loop, ref, and group fragment frames"
+    },
+    {
+      "name": "section-divider",
+      "file": "templates/section-divider.json",
+      "usedBy": "scenario/stage double-line section dividers"
+    },
+    {
+      "name": "orange-pointer-strip",
+      "file": "templates/orange-pointer-strip.json",
+      "usedBy": "Common SVG and supporting-sequence reference strips"
+    },
+    {
+      "name": "alt-condition-label",
+      "file": "templates/alt-condition-label.json",
+      "usedBy": "alt/else branch condition labels"
+    },
+    {
+      "name": "note-card",
+      "file": "templates/note-card.json",
+      "usedBy": "yellow explanatory note cards"
+    },
+    {
+      "name": "ref-common-svg-block",
+      "file": "templates/ref-common-svg-block.json",
+      "usedBy": "CommonFunc/CommonUtil ref content layout"
+    }
+  ]
+}

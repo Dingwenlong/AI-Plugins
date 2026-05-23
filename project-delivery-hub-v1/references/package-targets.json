@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "1.0.0",
+  "pluginId": "project-delivery-hub-v1",
+  "localMaintenanceUri": "plugin://project-delivery-hub-v1@company-jimmy",
+  "defaultPackageUri": "plugin://project-delivery-hub-v1@company-dev",
+  "defaultPackageTarget": "company-dev",
+  "agentBundle": {
+    "enabled": true,
+    "workspaceConfigPath": "references/local-workspaces.json",
+    "workspaceKey": "NEWDAWHO",
+    "targetRelativePath": ".agent",
+    "excludeDirectoryNames": [
+      "__pycache__",
+      ".git"
+    ],
+    "excludeFilePatterns": [
+      "*.bak",
+      "*.tmp",
+      "*.log",
+      "*.pyc"
+    ]
+  },
+  "targets": {
+    "company-jimmy": {
+      "marketplace": "company-jimmy",
+      "uri": "plugin://project-delivery-hub-v1@company-jimmy",
+      "marketplacePath": "C:\\Users\\<username>\\.agents\\plugins\\marketplace.json",
+      "sourceRoot": "C:\\Users\\<username>",
+      "purpose": "local-personal-maintenance",
+      "defaultForLocalUse": true
+    },
+    "company-dev": {
+      "marketplace": "company-dev",
+      "uri": "plugin://project-delivery-hub-v1@company-dev",
+      "marketplacePath": "C:\\Users\\<username>\\plugin-marketplaces\\company-dev\\.agents\\plugins\\marketplace.json",
+      "sourceRoot": "C:\\Users\\<username>\\plugin-marketplaces\\company-dev",
+      "purpose": "development-test-package",
+      "defaultForPackaging": true
+    }
+  },
+  "rules": [
+    "Use company-jimmy for Jimmy's local personal maintenance copy.",
+    "When packaging this plugin without an explicit marketplace or target, use company-dev."
+  ]
+}

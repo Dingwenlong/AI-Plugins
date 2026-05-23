@@ -1,0 +1,4 @@
+interface:
+  display_name: "专案交付中枢插件打包器"
+  short_description: "打包、发布并同步 project-delivery-hub-v1 插件、集中 .agent、缓存与固定架构图。"
+  default_prompt: "请按默认规则打包本插件，并同步 company-dev、Codex 缓存、集中 .agent 与两张固定 SVG 架构图。"

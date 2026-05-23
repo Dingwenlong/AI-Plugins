@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "1.0.0",
+  "defaultWorkspace": "NEWDAWHO",
+  "workspaces": {
+    "NEWDAWHO": {
+      "workspaceRoot": "D:\\Devs\\<PROJECT>",
+      "agentRoot": "D:\\Devs\\<PROJECT>\\.agent",
+      "rulesRoot": "D:\\Devs\\<PROJECT>\\.agent\\project-rules\\NEWDAWHO",
+      "defaultCodeRoot": "D:\\Devs\\<PROJECT>\\feature_common",
+      "notes": "Example project workspace. Design source directories live in .agent/config/design-source-registry.json."
+    },
+    "PROJECT": {
+      "workspaceRoot": "D:\\Repo\\Project",
+      "agentRoot": "D:\\Repo\\Project\\.agent",
+      "rulesRoot": "D:\\Repo\\Project\\.agent\\project-rules\\PROJECT",
+      "defaultCodeRoot": "D:\\Repo\\Project",
+      "notes": "Centralized shared .agent for PROJECT feature branches. Put PRD/TSD/API Detail directories in .agent/config/design-source-registry.json."
+    }
+  }
+}

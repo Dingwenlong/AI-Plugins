@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "1.0.0",
+  "sourceName": "數據庫設計規範",
+  "version": "v3 20220908",
+  "originalFileName": "數據庫設計規範 v3 20220908.docx",
+  "sourceSha256": "696C52FE4F0858FCA2B4C94941D649BFF3BF8CB118C8B3EDBE03D16F3F2DA1A0",
+  "detectedContainer": "ole_compound_file",
+  "detectedProtection": [
+    "DRMEncryptedDataSpace",
+    "EncryptedPackage"
+  ],
+  "status": "source_unreadable",
+  "conversionAttempts": [
+    {
+      "tool": "LibreOffice headless",
+      "mode": "readonly_convert_to_txt",
+      "result": "failed",
+      "message": "source file could not be loaded"
+    },
+    {
+      "tool": "Microsoft Word COM",
+      "mode": "readonly_open_save_as_txt",
+      "result": "failed",
+      "message": "COM open failed"
+    },
+    {
+      "tool": "OLE stream inspection",
+      "mode": "stream_listing",
+      "result": "blocked",
+      "message": "DRM/encrypted package streams were detected; no reliable document body was available"
+    }
+  ],
+  "ruleGeneration": {
+    "generatedDatabaseDesignRules": false,
+    "reason": "Do not generate empty or inferred database design rules without readable source text."
+  }
+}

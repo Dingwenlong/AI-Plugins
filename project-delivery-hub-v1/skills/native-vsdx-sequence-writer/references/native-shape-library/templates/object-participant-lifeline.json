@@ -1,0 +1,31 @@
+{
+  "name": "object-participant-lifeline",
+  "type": "native-object-lifeline",
+  "stylePolicy": "preserve-native",
+  "description": "Composite object participant rule for native VSDX generation. Drop Visio UML Object lifeline masters for APP, Enterprise, and other non-User participants while preserving native stencil style.",
+  "match": {
+    "masterNameRegex": "Object lifeline"
+  },
+  "visual": {
+    "labelBoxTemplate": "participant-head-box",
+    "masterNames": ["Object lifeline", "Object lifeline.47"],
+    "defaultTemplateBoxHeight": 0.42,
+    "preferPageShape": false
+  },
+  "lifelineChild": {
+    "longLineWidthGreaterThan": 2.0,
+    "hideDetachedChildPinYBelow": -1.0
+  },
+  "connectionPoints": {
+    "showFullRows": true,
+    "stepPolicy": "derive-from-dropped-uml-lifeline-master",
+    "fallbackStepInches": 0.25,
+    "fullUniformRows": true,
+    "snapMessageEndpointsToNearest": true
+  },
+  "generatedGlue": {
+    "useGeneratedDashedLifeline": false,
+    "useGeneratedInvisibleAnchor": false,
+    "connectToLifelineShape": true
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "participant-head-box",
+  "type": "box",
+  "defaultWidth": 0.72,
+  "defaultHeight": 0.42,
+  "style": {
+    "fillPattern": 1,
+    "fillColor": "RGB(255,255,255)",
+    "lineColor": "RGB(30,80,84)",
+    "lineWeight": "1.25 pt",
+    "linePattern": 1,
+    "textColor": "RGB(30,80,84)",
+    "font": "Microsoft JhengHei",
+    "fontSize": 8.5,
+    "fontBold": true
+  }
+}

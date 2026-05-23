@@ -1,0 +1,46 @@
+{
+  "name": "project-delivery-hub-v1",
+  "version": "1.1.0",
+  "description": "整合专案设计与 API 交付流程：从 PRD/TSD/API Detail 梳理，到原生 VSDX 时序图、交付格式检查、API 规格、代码写入、SQL 测试资料、UT 报告生成与企业微信智能表格异动记录同步。",
+  "author": {
+    "name": "Jimmy Local"
+  },
+  "license": "UNLICENSED",
+  "keywords": [
+    "project-delivery",
+    "project-rules",
+    "api-design",
+    "api-delivery",
+    "api-spec",
+    "tsd",
+    "vsdx",
+    "delivery-format",
+    "unit-test-report",
+    "wedoc",
+    "smartsheet",
+    "webhook",
+    "change-record"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "专案交付中枢",
+    "shortDescription": "规则驱动的专案设计、API 规格、代码落地与测试报告交付工作台",
+    "longDescription": "本地 Codex 插件，用于整合专案从规则库、设计梳理到交付的完整流程：PRD/TSD/API Detail 同步、专案规则分析、原生 VSDX 时序图生成、交付格式检查、参考资料索引导入、API 规格生成、可选 SQL 测试资料准备、API 代码写入、DOCX 单元测试报告生成，以及按项目 .agent 私有配置同步企业微信智能表格异动记录。",
+    "developerName": "Jimmy Local",
+    "category": "Productivity",
+    "capabilities": [
+      "Interactive",
+      "Read",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "同步 PRD/TSD/API Detail",
+      "生成原生 VSDX 时序图",
+      "分析专案规则文件",
+      "同步异动记录到企业微信智能表格",
+      "执行专案交付中枢"
+    ],
+    "brandColor": "#0F766E",
+    "screenshots": []
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "name": "alt-condition-label",
+  "type": "text",
+  "style": {
+    "textColor": "RGB(30,80,84)",
+    "font": "Microsoft JhengHei",
+    "fontSize": 8,
+    "align": "left",
+    "fillPattern": 0,
+    "linePattern": 0
+  },
+  "defaultHeight": 0.20,
+  "minWidth": 1.20,
+  "leftGapFromHeader": 0.12
+}

@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "api-code-writer review-notes",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "apiId", "sourceDoc", "language", "items"],
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "apiId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sourceDoc": {
+      "type": "string",
+      "minLength": 1
+    },
+    "language": {
+      "type": "string",
+      "minLength": 1
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "reviewId",
+          "scope",
+          "fileRole",
+          "ruleType",
+          "instruction",
+          "severity",
+          "blocking",
+          "appliesTo",
+          "examples"
+        ],
+        "properties": {
+          "reviewId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "scope": {
+            "type": "string",
+            "enum": ["global_skill", "api_behavior", "controller", "service", "entity", "test", "reporting"]
+          },
+          "fileRole": {
+            "type": "string",
+            "enum": ["controller", "service", "entity", "unit_test", "integration_test", "shared"]
+          },
+          "ruleType": {
+            "type": "string",
+            "minLength": 1
+          },
+          "instruction": {
+            "type": "string",
+            "minLength": 1
+          },
+          "severity": {
+            "type": "string",
+            "minLength": 1
+          },
+          "blocking": {
+            "type": "boolean"
+          },
+          "appliesTo": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "examples": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="00000000-0000-0000-0000-000000000001" name="sample@machine" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Results>
+    <UnitTestResult executionId="10000000-0000-0000-0000-000000000001" testId="20000000-0000-0000-0000-000000000001" testName="Tests.Sample.Passes" computerName="DEVBOX" duration="00:00:00.1200000" startTime="2026-04-13T09:00:00.0000000+08:00" endTime="2026-04-13T09:00:00.1200000+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="30000000-0000-0000-0000-000000000001" relativeResultsDirectory="10000000-0000-0000-0000-000000000001">
+      <Output>
+        <StdOut>pass output</StdOut>
+      </Output>
+      <ResultFiles>
+        <ResultFile path="sample-attachments/pass-log.txt" />
+      </ResultFiles>
+    </UnitTestResult>
+    <UnitTestResult executionId="10000000-0000-0000-0000-000000000002" testId="20000000-0000-0000-0000-000000000002" testName="Tests.Sample.Fails" computerName="DEVBOX" duration="00:00:00.3400000" startTime="2026-04-13T09:00:01.0000000+08:00" endTime="2026-04-13T09:00:01.3400000+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="30000000-0000-0000-0000-000000000001" relativeResultsDirectory="10000000-0000-0000-0000-000000000002">
+      <Output>
+        <ErrorInfo>
+          <Message>Expected success but received failure.</Message>
+          <StackTrace>at Tests.Sample.Fails() in Sample.cs:line 42</StackTrace>
+        </ErrorInfo>
+      </Output>
+      <ResultFiles>
+        <ResultFile path="sample-attachments/fail-log.txt" />
+      </ResultFiles>
+    </UnitTestResult>
+    <UnitTestResult executionId="10000000-0000-0000-0000-000000000003" testId="20000000-0000-0000-0000-000000000003" testName="Tests.Sample.Skipped" computerName="DEVBOX" duration="00:00:00" startTime="2026-04-13T09:00:02.0000000+08:00" endTime="2026-04-13T09:00:02.0000000+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="NotExecuted" testListId="30000000-0000-0000-0000-000000000001" relativeResultsDirectory="10000000-0000-0000-0000-000000000003" />
+  </Results>
+</TestRun>

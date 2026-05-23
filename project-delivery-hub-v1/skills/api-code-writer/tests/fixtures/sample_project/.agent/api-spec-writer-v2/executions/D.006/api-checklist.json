@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "4.0.0",
+  "executionId": "D.006",
+  "updatedAt": "2026-04-08T18:51:34+08:00",
+  "items": [
+    {
+      "apiId": "D.006.deposit.addexchangedepositinit",
+      "apiCategory": "Deposit",
+      "apiName": "AddExchangeDepositInit",
+      "status": "done",
+      "blockReason": null
+    },
+    {
+      "apiId": "D.006.commonutil.getcencurr",
+      "apiCategory": "CommonUtil",
+      "apiName": "GetCENCurr",
+      "status": "blocked",
+      "blockReason": "Workbook sheet not found."
+    }
+  ]
+}

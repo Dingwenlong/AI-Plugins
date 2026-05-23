@@ -1,0 +1,14 @@
+{
+  "name": "orange-pointer-strip",
+  "type": "text-strip",
+  "style": {
+    "fillPattern": 1,
+    "fillColor": "RGB(244,161,0)",
+    "linePattern": 0,
+    "textColor": "RGB(0,0,0)",
+    "font": "Microsoft JhengHei",
+    "fontSize": 8,
+    "align": "center"
+  },
+  "minInsetFromFrame": 0.12
+}

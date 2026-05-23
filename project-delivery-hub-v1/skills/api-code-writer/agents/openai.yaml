@@ -1,0 +1,34 @@
+interface:
+  display_name: "04 API 业务代码写入器"
+  short_description: "把已完成 API Spec 落成 .NET Controller/Service/Entity 业务代码。"
+  default_prompt: >-
+    使用 $api-code-writer 执行第 04 步 04 API 业务代码写入器：读取当前项目 `.agent/context`
+    的共享 execution 状态面和 `execution-batch.json`，只更新共享 `execution-state.json`、`api-checklist.json`、
+    `manifest.json` 的 `code*` 字段与聚合字段。不要把任何特定上游 workflow / skill 名称当成硬编码前置步骤；
+    只要共享 `.agent/context` 内已有可消费的 `spec*` 状态、`manifest.json` 与 `*_API_Spec.json`，就可继续推进。
+    进入 code writer 前不强制先执行可选第 03 步 [$api-sql-fixture-preparer](C:/Users/<username>/plugins/project-delivery-hub-v1/skills/api-sql-fixture-preparer/SKILL.md)：
+    默认允许先跑 `prepare` 生成 change-plan，再由 AI 直接修改目标仓库代码。若目标 API 后续验证依赖 SQL fixture，
+    则在 `apply` 前检查 `fixtureStatus`；只有 `apply` 时 `fixtureStatus` 仍非 `done|skipped` 才应回报 `waiting_fixture`。
+    `prepare` 本身内建承担 precheck 职责，不依赖 `workflow-develop-precheck` 或其它外部 precheck skill；
+    它应直接解析目标仓库框架槽位、模块落点、依赖、风险与验证命令，并写出 `change-plan.json`。
+    读取 `*_API_Spec.json` 时，优先消费结构化 `codeHandoff`；若旧 spec 尚未升级，则从 `businessLogic` 临时合成兼容 handoff。
+    若 API 目录下存在 `review-notes.json`，`prepare` 必须一并读取，并将评审意见写入
+    `change-plan.json.analysis.reviewSources`、`reviewConstraintsSelected`、`fileRequirements`、`responseLifecycleRules`、
+    `failureDisposition`、`languagePolicy`、`externalApiName`、`internalAsyncMethod`。在生成 change-plan 前，必须完成
+    `logic resolution`，显式解析 `queryContracts`、`mappingRules`、`dependencyHints`、`legacyEvidence`、`constraints`、
+    `unresolved`。专案开发规范必须按渐进式披露处理：禁止整本加载规则源文件；
+    先按 `API_Spec.json.source`、`codeHandoff`、`backendApis`、`runtimeDependencies`、TSD/API 名称、`apiCategory`、
+    route/controller/module、identity/role/cache/DB 线索判断 `audienceProfile.scope = frontstage | midBackoffice | shared | unknown`，
+    再读取 `<rulesRoot>/catalog.json` 指定的开发规范 catalog，只把当前 API 命中的规则摘要写入
+    `devGuidelineRulesSelected`，并把后续需要按需读取的规则路径写入 `devGuidelineLoadHints`。不得仅凭
+    `EnterpriseAPI` 项目名判定前台或中后台；目标态规范不能替代当前仓库接线事实。若证据不足却命中前台或中后台专属规范，
+    必须写入 `devGuidelineGaps` 并阻塞，不允许继续猜测。先运行 `--execution-mode prepare` 生成 change-plan；
+    然后由 AI 直接修改目标仓库业务代码；最后运行 `--execution-mode apply` 检测真实改动、执行验证并回写状态。
+    脚本不得再生成注释式 stub，也不得生成 UnitTest / IntegrationTest / Service runtime validation 测试源码。
+    对 EnterpriseAPI profile，必须先按专案规则库 catalog 指定的框架说明和示例项目识别固定槽位，再决定复用或新建
+    `Controller -> Interface -> Service -> Entity` 业务槽位，并把 UnitTest / IntegrationTest 仅写入第 05 步 handoff；
+    禁止跨框架模糊落点。若 handoff 缺失关键查询/映射/旧逻辑证据，或 blocking review-notes 引用了 spec / handoff
+    不存在的字段，必须阻塞并写诊断，不允许继续猜测。AI 写入的中文註解、字串、文件说明与角色要求统一使用繁體中文。
+    默认一次只推进一支 `specStatus=done` 的 API；未显式传入 `validation-check` 时，固定执行 EnterpriseAPI build、unit test、
+    integration test 三段验证。若要产出测试报告，代码与 `.trx` 就绪后再进入可选第 05 步
+    [$docx-unittest-report](C:/Users/<username>/plugins/project-delivery-hub-v1/skills/docx-unittest-report/SKILL.md)。

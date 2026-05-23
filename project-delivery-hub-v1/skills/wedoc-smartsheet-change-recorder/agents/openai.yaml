@@ -1,0 +1,4 @@
+interface:
+  display_name: "企业微信异动记录写入"
+  short_description: "按项目 .agent 配置把 Common/API 异动清单写入企业微信智能表格。"
+  default_prompt: "使用 $wedoc-smartsheet-change-recorder 读取异动清单 Excel，选择 target key，校验 WebHook/user_id/json 格式后写入企业微信智能表格。"

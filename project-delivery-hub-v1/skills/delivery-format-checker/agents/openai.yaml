@@ -1,0 +1,4 @@
+interface:
+  display_name: "专案交付文件格式检查器"
+  short_description: "检查并修复 TSD DOCX 与 API XLSX 的交付格式和视觉 QA。"
+  default_prompt: "请先读取当前 workspace 的 project-rules catalog，再检查这份 TSD .docx 或 API .xlsx 的格式与结构合规性，产出优先级问题清单，并在我确认前不要修改文件。"

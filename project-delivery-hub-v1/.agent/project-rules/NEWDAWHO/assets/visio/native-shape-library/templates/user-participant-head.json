@@ -1,0 +1,42 @@
+{
+  "name": "user-participant-head",
+  "type": "native-user-participant",
+  "stylePolicy": "preserve-native",
+  "description": "Composite User participant rule for native VSDX generation. Prefer dropping the Visio UML Actor lifeline master so stroke, text, and child geometry preserve native stencil style.",
+  "sourceReference": "Project-local VSDX sequence diagrams under v1.x Reference, especially E.001_01.vsdx Actor lifeline / User",
+  "match": {
+    "text": "User",
+    "masterNameRegex": "Actor lifeline"
+  },
+  "visual": {
+    "labelBoxTemplate": "participant-head-box",
+    "fallbackIconTemplate": "actor-head",
+    "masterNames": ["Actor lifeline"],
+    "defaultTemplateBoxHeight": 0.36,
+    "preferPageShape": false
+  },
+  "templateCleanup": {
+    "hideChildWhenPinYBelow": -1.0,
+    "hideChildWhenWidthGreaterThan": 2.0,
+    "forceHideLinePattern": 0,
+    "forceHideFillPattern": 0,
+    "forceHideLineColor": "RGB(255,255,255)"
+  },
+  "lifelineChild": {
+    "longLineWidthGreaterThan": 2.0,
+    "hideDetachedChildPinYBelow": -1.0
+  },
+  "connectionPoints": {
+    "showFullRows": true,
+    "stepPolicy": "derive-from-dropped-uml-lifeline-master",
+    "fallbackStepInches": 0.25,
+    "fullUniformRows": true,
+    "snapMessageEndpointsToNearest": true
+  },
+  "generatedGlue": {
+    "useGeneratedDashedLifeline": false,
+    "useGeneratedInvisibleAnchor": false,
+    "connectToLifelineShape": true,
+    "doNotInheritTemplateConnectors": true
+  }
+}

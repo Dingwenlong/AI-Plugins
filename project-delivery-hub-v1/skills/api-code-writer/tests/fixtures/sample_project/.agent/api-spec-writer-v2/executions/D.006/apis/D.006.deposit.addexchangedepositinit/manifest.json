@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "4.0.0",
+  "executionId": "D.006",
+  "apiId": "D.006.deposit.addexchangedepositinit",
+  "apiCategory": "Deposit",
+  "apiName": "AddExchangeDepositInit",
+  "status": "done",
+  "blockReason": null,
+  "sourceFingerprint": "sha256:fixture-d006-addexchangedepositinit",
+  "source": {
+    "tsdFile": "TSD.D.006_換匯優利定存_v1.0_20260408.docx",
+    "workbookFile": "NEWDA_API_DETAIL_Deposit_20260213.xlsx",
+    "sheetNames": [
+      "AddExchangeDepositInit換匯優利"
+    ]
+  },
+  "updatedAt": "2026-04-08T18:24:32+08:00"
+}

@@ -1,0 +1,171 @@
+{
+  "version": 2,
+  "directories": {
+    "prd": "D:\\Devs\\<PROJECT_DOCS>\\branches\\01系統分析\\1-1 系統分析書\\2_PRD5.x",
+    "tsdApiSpec": "D:\\Devs\\<PROJECT_DOCS>\\branches\\02系統設計\\2-1系統設計書\\v1.x",
+    "common": "D:\\Devs\\<PROJECT_DOCS>\\branches\\02系統設計\\2-1系統設計書\\TSD共用相關",
+    "customerItSpec": "D:\\Devs\\<PROJECT_DOCS>\\branches\\01系統分析\\1-8客戶提供資料\\06 IT API Doc",
+    "legacyProject": "D:\\Devs\\<PROJECT_DOCS>\\branches\\01系統分析\\1-8客戶提供資料\\03 舊大戶代碼相關\\既有大戶程式_20260311"
+  },
+  "functions": {
+    "D.001 D.002": {
+      "aliases": [
+        "D.001",
+        "D.002"
+      ],
+      "prdCodes": [
+        "D.001",
+        "D.002"
+      ],
+      "tsdCodes": [
+        "D.001",
+        "D.002"
+      ],
+      "apiSpecDomain": "Deposit",
+      "notes": "臺/外幣活存查詢。"
+    },
+    "D.003": {
+      "aliases": [
+        "D.003"
+      ],
+      "prdCodes": [
+        "D.003"
+      ],
+      "tsdCodes": [
+        "D.003"
+      ],
+      "apiSpecDomain": "Deposit",
+      "notes": "利率查詢表。"
+    },
+    "E.001": {
+      "aliases": [
+        "E.001"
+      ],
+      "prdCodes": [
+        "E.001"
+      ],
+      "tsdCodes": [
+        "E.001"
+      ],
+      "apiSpecDomain": "Exchange",
+      "notes": "匯率表。"
+    },
+    "E.002": {
+      "aliases": [
+        "E.002"
+      ],
+      "prdCodes": [
+        "E.002"
+      ],
+      "tsdCodes": [
+        "E.002"
+      ],
+      "apiSpecDomain": "Exchange",
+      "notes": "匯率到價通知。"
+    },
+    "E.003": {
+      "aliases": [
+        "E.003"
+      ],
+      "prdCodes": [
+        "E.003"
+      ],
+      "tsdCodes": [
+        "E.003"
+      ],
+      "apiSpecDomain": "Exchange",
+      "notes": "匯率走勢查詢。"
+    },
+    "E.005": {
+      "aliases": [
+        "E.005"
+      ],
+      "prdCodes": [
+        "E.005"
+      ],
+      "tsdCodes": [
+        "E.005"
+      ],
+      "apiSpecDomain": "Exchange",
+      "notes": "預約換匯管理。"
+    },
+    "L.003": {
+      "aliases": [
+        "L.003"
+      ],
+      "prdCodes": [
+        "L.003"
+      ],
+      "tsdCodes": [
+        "L.003"
+      ],
+      "apiSpecDomain": "Payment",
+      "notes": "自動扣繳申請。"
+    },
+    "L.004": {
+      "aliases": [
+        "L.004"
+      ],
+      "prdCodes": [
+        "L.004"
+      ],
+      "tsdCodes": [
+        "L.004"
+      ],
+      "apiSpecDomain": "Payment",
+      "notes": "他行信用卡費。"
+    },
+    "L.005": {
+      "aliases": [
+        "L.005"
+      ],
+      "prdCodes": [
+        "L.005"
+      ],
+      "tsdCodes": [
+        "L.005"
+      ],
+      "apiSpecDomain": "Payment",
+      "notes": "永豐卡費本人。"
+    },
+    "L.005.001": {
+      "aliases": [
+        "L.005.001"
+      ],
+      "prdCodes": [
+        "L.005.001"
+      ],
+      "tsdCodes": [
+        "L.005.001"
+      ],
+      "apiSpecDomain": "Payment",
+      "notes": "永豐卡費他人。"
+    },
+    "J.003": {
+      "aliases": [
+        "J.003"
+      ],
+      "prdCodes": [
+        "J.003"
+      ],
+      "tsdCodes": [
+        "J.003"
+      ],
+      "apiSpecDomain": "Insurance",
+      "notes": "保險庫存查詢。"
+    },
+    "J.003.001": {
+      "aliases": [
+        "J.003.001"
+      ],
+      "prdCodes": [
+        "J.003.001"
+      ],
+      "tsdCodes": [
+        "J.003.001"
+      ],
+      "apiSpecDomain": "Insurance",
+      "notes": "保單明細查詢。"
+    }
+  }
+}

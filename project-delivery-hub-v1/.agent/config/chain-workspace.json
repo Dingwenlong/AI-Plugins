@@ -1,0 +1,12 @@
+{
+  "schemaVersion": "1.0.0",
+  "workspaceKey": "NEWDAWHO",
+  "workspaceRoot": "D:/Devs/<PROJECT>",
+  "agentRoot": "D:/Devs/<PROJECT>/.agent",
+  "rulesRoot": "D:/Devs/<PROJECT>/.agent/project-rules/NEWDAWHO",
+  "rulesCatalog": "D:/Devs/<PROJECT>/.agent/project-rules/NEWDAWHO/catalog.json",
+  "lastProjectRoot": "D:/Devs/<PROJECT>/feature_common",
+  "resolutionSource": "config",
+  "configSource": "C:/Users/<username>/plugins/project-delivery-hub-v1/references/local-workspaces.json",
+  "updatedAt": "2026-05-23T09:25:16+08:00"
+}

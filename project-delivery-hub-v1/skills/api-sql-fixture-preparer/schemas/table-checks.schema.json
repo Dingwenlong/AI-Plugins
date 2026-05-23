@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "skillName",
+    "manifestType",
+    "updatedAt",
+    "executionId",
+    "apiId",
+    "tables"
+  ],
+  "properties": {
+    "schemaVersion": { "type": "string" },
+    "skillName": { "type": "string" },
+    "manifestType": { "const": "table-checks" },
+    "updatedAt": { "type": "string" },
+    "executionId": { "type": "string" },
+    "apiId": { "type": "string" },
+    "dbTarget": { "type": ["string", "null"] },
+    "authorityRoot": { "type": ["string", "null"] },
+    "tables": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "tableRef",
+          "resolvedTableName",
+          "exists",
+          "rowCount",
+          "action",
+          "blockReason",
+          "schemaSql",
+          "seedSql"
+        ],
+        "properties": {
+          "tableRef": { "type": "string" },
+          "resolvedTableName": { "type": ["string", "null"] },
+          "exists": { "type": "boolean" },
+          "rowCount": { "type": ["integer", "null"], "minimum": 0 },
+          "action": { "type": "string" },
+          "blockReason": { "type": ["string", "null"] },
+          "schemaSql": { "type": ["string", "null"] },
+          "seedSql": { "type": ["string", "null"] }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true
+}

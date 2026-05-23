@@ -1,0 +1,22 @@
+{
+  "name": "ref-common-svg-block",
+  "type": "composite-ref-block",
+  "methodText": {
+    "topOffset": 0.40,
+    "height": 0.34,
+    "sideInset": 0.18,
+    "style": {
+      "textColor": "RGB(0,0,0)",
+      "font": "Microsoft JhengHei",
+      "fontSize": 8,
+      "align": "center"
+    }
+  },
+  "pointer": {
+    "topOffset": 1.03,
+    "height": 0.25,
+    "sideInset": 0.23,
+    "template": "orange-pointer-strip"
+  },
+  "selfMessageClearance": 0.20
+}

@@ -1,0 +1,611 @@
+{
+  "schemaVersion": "1.0.0",
+  "workspaceKey": "NEWDAWHO",
+  "projectName": "NEWDAWHO",
+  "generatedAt": "2026-05-22T15:19:25.8374151+08:00",
+  "activeReviewStatuses": [
+    "approved",
+    "active"
+  ],
+  "defaultNewRuleStatus": "draft",
+  "defaults": {
+    "sqlServerDatabase": "DAWHO",
+    "appSampleSqlLiteral": "'DAWHO APP'",
+    "reportFontName": "微軟正黑體",
+    "frameworkProfile": "newdawho.enterpriseapi",
+    "primaryFrameworkGuideline": "新大戶框架説明 V2.0 20260203.docx",
+    "codeGuidelineCatalog": "rules/code-guidelines/p240301-v6.2/catalog.json",
+    "tsdCoverLabels": [
+      "新大戶系統",
+      "系統規格設計書"
+    ],
+    "preferredTerminology": {
+      "校驗": [
+        "驗證",
+        "檢核"
+      ]
+    }
+  },
+  "assets": {
+    "sequencePlantUmlStyle": "assets/visio/dawho-sequence-style.puml",
+    "nativeVsdxTemplate": "assets/visio/standard-examples/E001_native_reference.vsdx",
+    "nativeVsdxPreview": "assets/visio/standard-examples/E001_native_reference_preview.png",
+    "nativeShapeLibrary": "assets/visio/native-shape-library/manifest.json",
+    "apiDetailExcelStyle": "assets/excel/api-detail-excel-style.json",
+    "apiDetailRegressionExample": "assets/excel/Regression_Example.xlsx",
+    "utReportTemplate": "assets/docx/API_UT自測報告模板_v3.5_20260512.docx",
+    "utChecklistBaseline": "assets/docx/UT自测标准_API单元测试CheckList v3 20260509.xlsx",
+    "featureTesterMap": "assets/docx/feature-tester-map.json",
+    "utBindingRules": "assets/docx/binding-rules.json"
+  },
+  "rulePacks": {
+    "apiDetailSync": {
+      "strict": true,
+      "requiredRuleIds": [
+        "system-design-v2.5-api-contract",
+        "naming-and-field-kb-rules",
+        "api-detail-workbook-rules",
+        "design-summary-rules",
+        "sequence-diagram-handoff-rules"
+      ],
+      "optionalRuleIds": [
+        "database-design-standard-v3-source-status",
+        "field-kb-common",
+        "field-kb-d",
+        "field-kb-e",
+        "field-kb-i",
+        "field-kb-p"
+      ],
+      "requiredAssets": [],
+      "optionalAssets": [],
+      "purpose": "Design/API summary work must load API contract, naming, workbook, summary, and sequence handoff rules before judging readiness or editing workbooks."
+    },
+    "apiSpecWriter": {
+      "strict": true,
+      "requiredRuleIds": [
+        "system-design-v2.5-api-contract",
+        "naming-and-field-kb-rules",
+        "api-detail-workbook-rules",
+        "database-design-standard-v3-source-status"
+      ],
+      "optionalRuleIds": [
+        "field-kb-common",
+        "field-kb-d",
+        "field-kb-e",
+        "field-kb-i",
+        "field-kb-p"
+      ],
+      "requiredAssets": [],
+      "optionalAssets": [],
+      "purpose": "API spec generation must load contract, naming, workbook, and DB/Redis/Appsetting evidence rules before producing API_Spec and codeHandoff."
+    },
+    "deliveryFormat": {
+      "strict": true,
+      "requiredRuleIds": [
+        "system-design-v2.5-format-rules",
+        "api-detail-regression-standard",
+        "sample-derived-standard",
+        "api-detail-workbook-rules"
+      ],
+      "requiredAssets": [
+        "apiDetailExcelStyle"
+      ],
+      "optionalAssets": [
+        "apiDetailRegressionExample"
+      ],
+      "purpose": "Delivery format checks must use external format rules and Excel style config as hard constraints."
+    },
+    "sequenceDiagram": {
+      "strict": true,
+      "requiredRuleIds": [
+        "system-design-v2.5-sequence-rules",
+        "native-vsdx-deep-rules",
+        "sequence-diagram-handoff-rules",
+        "e001-native-reference-summary"
+      ],
+      "requiredAssets": [
+        "nativeVsdxTemplate",
+        "nativeShapeLibrary",
+        "sequencePlantUmlStyle"
+      ],
+      "optionalAssets": [
+        "nativeVsdxPreview"
+      ],
+      "purpose": "Formal native VSDX sequence diagrams must load this complete rule pack before drafting, building, or validating."
+    },
+    "sqlFixture": {
+      "strict": true,
+      "requiredRuleIds": [
+        "sql-fixture-defaults"
+      ],
+      "requiredAssets": [],
+      "optionalAssets": [],
+      "purpose": "SQL fixture preparation must resolve project database defaults before preparing DDL or seed data."
+    },
+    "apiCodeWriter": {
+      "strict": true,
+      "requiredRuleIds": [
+        "p240301-v6.2-catalog",
+        "p240301-v6.2-backoffice-authz",
+        "p240301-v6.2-cache",
+        "p240301-v6.2-common-style",
+        "p240301-v6.2-config",
+        "p240301-v6.2-data-access",
+        "p240301-v6.2-frontstage-session",
+        "p240301-v6.2-logging-exception",
+        "p240301-v6.2-test-handoff",
+        "p240301-v6.2-validation"
+      ],
+      "requiredAssets": [],
+      "optionalAssets": [],
+      "purpose": "Code writer must resolve the full project code guideline rule pack before selecting per-API guideline load hints."
+    },
+    "unitTestReport": {
+      "strict": true,
+      "requiredRuleIds": [
+        "p240301-v6.2-test-handoff"
+      ],
+      "requiredAssets": [
+        "utReportTemplate",
+        "utChecklistBaseline",
+        "featureTesterMap",
+        "utBindingRules"
+      ],
+      "optionalAssets": [],
+      "purpose": "UT report generation must load the report template, checklist baseline, tester map, binding rules, and test handoff rule before generating tests or DOCX."
+    }
+  },
+  "rules": [
+    {
+      "ruleId": "system-design-v2.5-api-contract",
+      "category": "api-contract",
+      "title": "System Design v2.5 API Contract Rules",
+      "path": "rules/api-contract/system-design-standard-v2.5-api-contract-rules.md",
+      "format": "md",
+      "reviewStatus": "approved",
+      "sourceFile": "system-design-standard-v2.5-api-contract-rules.md",
+      "sourceHash": "sha256:eda5569253e782d8bfb43ccee752f1dfd53f6bd208974debb503e87001a603d5",
+      "sourceLocator": ""
+    },
+    {
+      "ruleId": "naming-and-field-kb-rules",
+      "category": "api-contract",
+      "title": "Naming And Field KB Rules",
+      "path": "rules/api-contract/naming-and-field-kb-rules.md",
+      "format": "md",
+      "reviewStatus": "approved",
+      "sourceFile": "naming-and-field-kb-rules.md",
+      "sourceHash": "sha256:b3bb4711b2b9ff1270a403bc8ffe7a8cdc8ab63cf92c162a0929c0c8ff369d20",
+      "sourceLocator": ""
+    },
+    {
+      "ruleId": "database-design-standard-v3-source-status",
+      "category": "api-contract",
+      "title": "Database Design Standard v3 Source Status",
+      "path": "rules/api-contract/database-design-standard-v3-source-unreadable.md",
+      "format": "md",
+      "reviewStatus": "approved",
+      "sourceFile": "source-unreadable.md",
+      "sourceHash": "sha256:4caa25ecf1e3231e1249919c571439ac02787f6d80c9b41e0f4427cf72405a84",
+      "sourceLocator": ""
+    },
+    {
+      "ruleId": "api-detail-workbook-rules",
+      "category": "api-detail-workbook",
+      "title": "API Detail Workbook Rules",
+      "path": "rules/api-detail-workbook/api-detail-workbook-rules.md",
+      "format": "md",
+      "reviewStatus": "approved",
+      "sourceFile": "api-detail-workbook-rules.md",
+      "sourceHash": "sha256:021989478ac0e46acde8d09f7d319929b1bb35c857795b80cf1421ba2d051ab8",
+      "sourceLocator": ""
+    },
+    {
+      "ruleId": "design-summary-rules",
+      "category": "api-detail-workbook",
+      "title": "Design Summary Rules",
+      "path": "rules/api-detail-workbook/design-summary-rules.md",
+      "format": "md",
+      "reviewStatus": "approved",
+      "sourceFile": "design-summary-rules.md",
+      "sourceHash": "sha256:6f9890c6f3e4f1dc9fd8fe74c535e3f06944bc62bf50d1428ac6afd67d49bb2c",
+      "sourceLocator": ""
+    },
+    {
+      "ruleId": "system-design-v2.5-format-rules",
+      "category": "delivery-format",
+      "title": "System Design v2.5 Format Rules",
+      "path": "rules/delivery-format/system-design-standard-v2.5-format-rules.md",
+      "format": "md",
+      "reviewStatus": "approved",
+      "sourceFile": "system-design-standard-v2.5-format-rules.md",
+      "sourceHash": "sha256:de63864d0e772f30ca0cf8956eb376375f4f838336f866df9aed4f5e543b37bb",
+      "sourceLocator": ""
+    },
+    {
+      "ruleId": "api-detail-regression-standard",
+      "category": "delivery-format",
+      "title": "API Detail Regression Standard",
+      "path": "rules/delivery-format/api-detail-regression-standard.md",
+      "format": "md",
+      "reviewStatus": "approved",
+      "sourceFile": "api-detail-regression-standard.md",
+      "sourceHash": "sha256:453df222292b7f985263fbb4e09cfbc9a04dd3191ecf166c70a0a001b2846826",
+      "sourceLocator": ""
+    },
+    {
+      "ruleId": "sample-derived-standard",
+      "category": "delivery-format",
+      "title": "Sample Derived TSD Standard",
+      "path": "rules/delivery-format/sample-derived-standard.md",
+      "format": "md",
+      "reviewStatus": "approved",
+      "sourceFile": "sample-derived-standard.md",
+      "sourceHash": "sha256:23c787cedd1e0025e3f17aae6421837d57f60643c0430f994d786f5cc09f7dc0",
+      "sourceLocator": ""
+    },
+    {
+      "ruleId": "system-design-v2.5-sequence-rules",
+      "category": "sequence-diagram",
+      "title": "System Design v2.5 Sequence Rules",
+      "path": "rules/sequence-diagram/system-design-standard-v2.5-sequence-rules.md",
+      "format": "md",
+      "reviewStatus": "approved",
+      "sourceFile": "system-design-standard-v2.5-sequence-rules.md",
+      "sourceHash": "sha256:c91b68944f71656a4edad443d5185ec3712d63f58cade7067e481d6dedff3338",
+      "sourceLocator": ""
+    },
+    {
+      "ruleId": "native-vsdx-deep-rules",
+      "category": "sequence-diagram",
+      "title": "Native VSDX Deep Rules",
+      "path": "rules/sequence-diagram/native-vsdx-deep-rules.md",
+      "format": "md",
+      "reviewStatus": "approved",
+      "sourceFile": "native-vsdx-deep-rules.md",
+      "sourceHash": "sha256:7b3a50fb94cc4669ce49e3e9338e46e7147705838d96c58bfd5dbecd96977a24",
+      "sourceLocator": ""
+    },
+    {
+      "ruleId": "sequence-diagram-handoff-rules",
+      "category": "sequence-diagram",
+      "title": "Sequence Diagram Handoff Rules",
+      "path": "rules/sequence-diagram/sequence-diagram-handoff-rules.md",
+      "format": "md",
+      "reviewStatus": "approved",
+      "sourceFile": "sequence-diagram-handoff-rules.md",
+      "sourceHash": "sha256:1b05bc20d22dba3b86b3716e1632fa768376c3bafcc37d337dead1422fd25956",
+      "sourceLocator": ""
+    },
+    {
+      "ruleId": "e001-native-reference-summary",
+      "category": "sequence-diagram",
+      "title": "E.001 Native Reference Summary",
+      "path": "rules/sequence-diagram/E001_native_reference.md",
+      "format": "md",
+      "reviewStatus": "approved",
+      "sourceFile": "E001_native_reference.md",
+      "sourceHash": "sha256:266c1537a98c426b0a8218ee47dcc082d60d8b4131dcd7c23c98a70cf5081994",
+      "sourceLocator": ""
+    },
+    {
+      "ruleId": "p240301-v6.2-catalog",
+      "category": "code-guidelines",
+      "title": "P240301 V6.2 Code Guideline Catalog",
+      "path": "rules/code-guidelines/p240301-v6.2/catalog.json",
+      "format": "json",
+      "reviewStatus": "approved",
+      "sourceFile": "catalog.json",
+      "sourceHash": "sha256:e6974aa51ab0bd1ee94915a86a893990542942a80e5bedfcb395eec97e30929b",
+      "sourceLocator": ""
+    },
+    {
+      "ruleId": "p240301-v6.2-source-readme",
+      "category": "code-guidelines",
+      "title": "P240301 V6.2 Source README",
+      "path": "rules/code-guidelines/p240301-v6.2/source/README.md",
+      "format": "md",
+      "reviewStatus": "approved",
+      "sourceFile": "README.md",
+      "sourceHash": "sha256:5548f50cfdcaef098990e57bffe3269f72accd14fecb69808c26523941049944",
+      "sourceLocator": ""
+    },
+    {
+      "ruleId": "dawho-sequence-style-puml",
+      "category": "sequence-diagram",
+      "title": "PlantUML Sequence Style",
+      "path": "assets/visio/dawho-sequence-style.puml",
+      "format": "puml",
+      "reviewStatus": "approved",
+      "sourceFile": "dawho-sequence-style.puml",
+      "sourceHash": "sha256:a510fe6c6cf6fa5d59bd0229539bfd885287f80c3239f9e7eded51b349072611",
+      "sourceLocator": "",
+      "assetKey": "sequencePlantUmlStyle"
+    },
+    {
+      "ruleId": "e001-native-reference-vsdx",
+      "category": "sequence-diagram",
+      "title": "E.001 Native Reference VSDX",
+      "path": "assets/visio/standard-examples/E001_native_reference.vsdx",
+      "format": "vsdx",
+      "reviewStatus": "approved",
+      "sourceFile": "E001_native_reference.vsdx",
+      "sourceHash": "sha256:a3cc88e3b4c5ced3cd1631df02cd77bcfb8937e5e4cc07e76446a67c4695a9b5",
+      "sourceLocator": "",
+      "assetKey": "nativeVsdxTemplate"
+    },
+    {
+      "ruleId": "e001-native-reference-preview",
+      "category": "sequence-diagram",
+      "title": "E.001 Native Reference Preview",
+      "path": "assets/visio/standard-examples/E001_native_reference_preview.png",
+      "format": "png",
+      "reviewStatus": "approved",
+      "sourceFile": "E001_native_reference_preview.png",
+      "sourceHash": "sha256:ec86de7a826cd604c3f4506dded96a5fc51020760f1bc79ddd320f6cd89d43e2",
+      "sourceLocator": "",
+      "assetKey": "nativeVsdxPreview"
+    },
+    {
+      "ruleId": "native-shape-library-manifest",
+      "category": "sequence-diagram",
+      "title": "Native Shape Library Manifest",
+      "path": "assets/visio/native-shape-library/manifest.json",
+      "format": "json",
+      "reviewStatus": "approved",
+      "sourceFile": "manifest.json",
+      "sourceHash": "sha256:c4be981819b7d9d7acf2ef2bf236acce98c37f89e35126c5bbf8d328206375ae",
+      "sourceLocator": "",
+      "assetKey": "nativeShapeLibrary"
+    },
+    {
+      "ruleId": "native-shape-library-readme",
+      "category": "sequence-diagram",
+      "title": "Native Shape Library README",
+      "path": "assets/visio/native-shape-library/README.md",
+      "format": "md",
+      "reviewStatus": "approved",
+      "sourceFile": "README.md",
+      "sourceHash": "sha256:4380fe703a86eae0190688e3f3db42a3a0f645f96a5a68df10e6f5b40248bf8f",
+      "sourceLocator": "",
+      "assetKey": null
+    },
+    {
+      "ruleId": "api-detail-excel-style",
+      "category": "delivery-format",
+      "title": "API Detail Excel Style Config",
+      "path": "assets/excel/api-detail-excel-style.json",
+      "format": "json",
+      "reviewStatus": "approved",
+      "sourceFile": "api-detail-excel-style.json",
+      "sourceHash": "sha256:096a27279b09aca6226b75ac0d15460dc20f55de69cd670f8d4604cda35ec324",
+      "sourceLocator": "",
+      "assetKey": "apiDetailExcelStyle"
+    },
+    {
+      "ruleId": "regression-example-xlsx",
+      "category": "delivery-format",
+      "title": "API Detail Regression Example Workbook",
+      "path": "assets/excel/Regression_Example.xlsx",
+      "format": "xlsx",
+      "reviewStatus": "approved",
+      "sourceFile": "Regression_Example.xlsx",
+      "sourceHash": "sha256:10e80a64592c22483ce93c7e7d66a5c948694e97b6ee216ef21f67ddfde4aa79",
+      "sourceLocator": "",
+      "assetKey": "apiDetailRegressionExample"
+    },
+    {
+      "ruleId": "api-ut-report-template-v3.5",
+      "category": "ut-report",
+      "title": "API UT Report Template v3.5",
+      "path": "assets/docx/API_UT自測報告模板_v3.5_20260512.docx",
+      "format": "docx",
+      "reviewStatus": "approved",
+      "sourceFile": "API_UT自測報告模板_v3.5_20260512.docx",
+      "sourceHash": "sha256:2ccae81a8eab98279a1f15ba785554a8dd22bc87e4a5db5422d85dffa620a579",
+      "sourceLocator": "",
+      "assetKey": "utReportTemplate"
+    },
+    {
+      "ruleId": "api-ut-checklist-baseline-v3",
+      "category": "ut-report",
+      "title": "API UT Checklist Baseline v3",
+      "path": "assets/docx/UT自测标准_API单元测试CheckList v3 20260509.xlsx",
+      "format": "xlsx",
+      "reviewStatus": "approved",
+      "sourceFile": "UT自测标准_API单元测试CheckList v3 20260509.xlsx",
+      "sourceHash": "sha256:1b18b62db7591f288d4054117a9a4d85f4c6472691c1814c947e4eb4c8e0f103",
+      "sourceLocator": "",
+      "assetKey": "utChecklistBaseline"
+    },
+    {
+      "ruleId": "feature-tester-map",
+      "category": "ut-report",
+      "title": "Feature Tester Map",
+      "path": "assets/docx/feature-tester-map.json",
+      "format": "json",
+      "reviewStatus": "approved",
+      "sourceFile": "feature-tester-map.json",
+      "sourceHash": "sha256:1c2fbb2522d7b2c90f44fae4a4aaf5c22c8d95b71dae410436c968f90e6339a1",
+      "sourceLocator": "",
+      "assetKey": "featureTesterMap"
+    },
+    {
+      "ruleId": "ut-binding-rules",
+      "category": "ut-report",
+      "title": "UT Binding Rules",
+      "path": "assets/docx/binding-rules.json",
+      "format": "json",
+      "reviewStatus": "approved",
+      "sourceFile": "binding-rules.json",
+      "sourceHash": "sha256:fc276e87b923a62a521a0b86a8fd9e09a1b1220bd3933b47b057592bf6c235f4",
+      "sourceLocator": "",
+      "assetKey": "utBindingRules"
+    },
+    {
+      "ruleId": "sql-fixture-defaults",
+      "category": "sql-fixture",
+      "title": "SQL Fixture Defaults",
+      "path": "rules/sql-fixture/defaults.json",
+      "format": "json",
+      "reviewStatus": "approved",
+      "sourceFile": "defaults.json",
+      "sourceHash": "sha256:87378dd491a14fbcb9cc5112408611a7ba66a190709e02f784fb095802b9acc2",
+      "sourceLocator": ""
+    },
+    {
+      "ruleId": "p240301-v6.2-backoffice-authz",
+      "category": "code-guidelines",
+      "title": "backoffice-authz",
+      "path": "rules/code-guidelines/p240301-v6.2/rules/backoffice-authz.md",
+      "format": "md",
+      "reviewStatus": "approved",
+      "sourceFile": "backoffice-authz.md",
+      "sourceHash": "sha256:b5455bdadccc314b5ecd33047d52518f62a6cbea6961632f0e28d5abd605e5e7",
+      "sourceLocator": ""
+    },
+    {
+      "ruleId": "p240301-v6.2-cache",
+      "category": "code-guidelines",
+      "title": "cache",
+      "path": "rules/code-guidelines/p240301-v6.2/rules/cache.md",
+      "format": "md",
+      "reviewStatus": "approved",
+      "sourceFile": "cache.md",
+      "sourceHash": "sha256:109dbfdd95abb8154a64ba6d6fb60819d37b8ee3e30998198aaf6d34146e25f6",
+      "sourceLocator": ""
+    },
+    {
+      "ruleId": "p240301-v6.2-common-style",
+      "category": "code-guidelines",
+      "title": "common-style",
+      "path": "rules/code-guidelines/p240301-v6.2/rules/common-style.md",
+      "format": "md",
+      "reviewStatus": "approved",
+      "sourceFile": "common-style.md",
+      "sourceHash": "sha256:94110b0ea534f30a2a9bd6fd56b26b392da77318e8931c8a58ce2f1830b90bb2",
+      "sourceLocator": ""
+    },
+    {
+      "ruleId": "p240301-v6.2-config",
+      "category": "code-guidelines",
+      "title": "config",
+      "path": "rules/code-guidelines/p240301-v6.2/rules/config.md",
+      "format": "md",
+      "reviewStatus": "approved",
+      "sourceFile": "config.md",
+      "sourceHash": "sha256:8b110d9a4d2fdba4b321ef7b24b0220a4b532f37a4c44a48b598afe25c643b86",
+      "sourceLocator": ""
+    },
+    {
+      "ruleId": "p240301-v6.2-data-access",
+      "category": "code-guidelines",
+      "title": "data-access",
+      "path": "rules/code-guidelines/p240301-v6.2/rules/data-access.md",
+      "format": "md",
+      "reviewStatus": "approved",
+      "sourceFile": "data-access.md",
+      "sourceHash": "sha256:0e62473de54f19d2bc52f55cde7bcfe9d9bb4a5130dde7517f739e7f8e576af0",
+      "sourceLocator": ""
+    },
+    {
+      "ruleId": "p240301-v6.2-frontstage-session",
+      "category": "code-guidelines",
+      "title": "frontstage-session",
+      "path": "rules/code-guidelines/p240301-v6.2/rules/frontstage-session.md",
+      "format": "md",
+      "reviewStatus": "approved",
+      "sourceFile": "frontstage-session.md",
+      "sourceHash": "sha256:222b0a47b426fce9f37048b61faf8ea6cb0ce7bdc2cb66699783222dbccf5a9b",
+      "sourceLocator": ""
+    },
+    {
+      "ruleId": "p240301-v6.2-logging-exception",
+      "category": "code-guidelines",
+      "title": "logging-exception",
+      "path": "rules/code-guidelines/p240301-v6.2/rules/logging-exception.md",
+      "format": "md",
+      "reviewStatus": "approved",
+      "sourceFile": "logging-exception.md",
+      "sourceHash": "sha256:cf581b4a6a4fc689139b8246f7d2b8f7643e15de31717deb0a406722dead994f",
+      "sourceLocator": ""
+    },
+    {
+      "ruleId": "p240301-v6.2-test-handoff",
+      "category": "code-guidelines",
+      "title": "test-handoff",
+      "path": "rules/code-guidelines/p240301-v6.2/rules/test-handoff.md",
+      "format": "md",
+      "reviewStatus": "approved",
+      "sourceFile": "test-handoff.md",
+      "sourceHash": "sha256:e0e73e9459c88aacbec8ad4717f0fd74144ebe8c86c1b2d4028732218e03216f",
+      "sourceLocator": ""
+    },
+    {
+      "ruleId": "p240301-v6.2-validation",
+      "category": "code-guidelines",
+      "title": "validation",
+      "path": "rules/code-guidelines/p240301-v6.2/rules/validation.md",
+      "format": "md",
+      "reviewStatus": "approved",
+      "sourceFile": "validation.md",
+      "sourceHash": "sha256:3f3546157a189d2f69077da09587bb8df882fc423b28444cdb2d43233853de73",
+      "sourceLocator": ""
+    },
+    {
+      "ruleId": "field-kb-common",
+      "category": "field-kb",
+      "title": "Field KB Common",
+      "path": "rules/field-kb/Common.md",
+      "format": "md",
+      "reviewStatus": "approved",
+      "sourceFile": "Common.md",
+      "sourceHash": "sha256:02e234099b80a7fc83225f6fc4840adf5d3950a3f05621946086d99cc89be7a2",
+      "sourceLocator": ""
+    },
+    {
+      "ruleId": "field-kb-d",
+      "category": "field-kb",
+      "title": "Field KB D",
+      "path": "rules/field-kb/D.md",
+      "format": "md",
+      "reviewStatus": "approved",
+      "sourceFile": "D.md",
+      "sourceHash": "sha256:420dc7b4893cdeda19ddc41a924188983dad7a9d6db972ec373543c75823ed8d",
+      "sourceLocator": ""
+    },
+    {
+      "ruleId": "field-kb-e",
+      "category": "field-kb",
+      "title": "Field KB E",
+      "path": "rules/field-kb/E.md",
+      "format": "md",
+      "reviewStatus": "approved",
+      "sourceFile": "E.md",
+      "sourceHash": "sha256:d8cb009eabe66dcbde773d92cf266b96cfd70e1b2fbd73393346c2623688775d",
+      "sourceLocator": ""
+    },
+    {
+      "ruleId": "field-kb-i",
+      "category": "field-kb",
+      "title": "Field KB I",
+      "path": "rules/field-kb/I.md",
+      "format": "md",
+      "reviewStatus": "approved",
+      "sourceFile": "I.md",
+      "sourceHash": "sha256:fdf04b2db071fd3f1cf53bafe0dbdfd0933ae7e98f0a5bf4c02239b8118929ef",
+      "sourceLocator": ""
+    },
+    {
+      "ruleId": "field-kb-p",
+      "category": "field-kb",
+      "title": "Field KB P",
+      "path": "rules/field-kb/P.md",
+      "format": "md",
+      "reviewStatus": "approved",
+      "sourceFile": "P.md",
+      "sourceHash": "sha256:67db3ea00183cfb387cac2fd907b581b84c260d0537643c5465786dc25072cb1",
+      "sourceLocator": ""
+    }
+  ]
+}

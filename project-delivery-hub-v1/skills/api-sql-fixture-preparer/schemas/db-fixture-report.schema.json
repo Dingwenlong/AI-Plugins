@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "skillName",
+    "manifestType",
+    "updatedAt",
+    "executionId",
+    "apiId",
+    "status",
+    "phase",
+    "sqlFixtureRequired",
+    "summary",
+    "message"
+  ],
+  "properties": {
+    "schemaVersion": { "type": "string" },
+    "skillName": { "type": "string" },
+    "manifestType": { "const": "db-fixture-report" },
+    "updatedAt": { "type": "string" },
+    "executionId": { "type": "string" },
+    "apiId": { "type": "string" },
+    "status": { "type": "string" },
+    "phase": { "type": "string" },
+    "executionMode": { "type": ["string", "null"] },
+    "dbTarget": { "type": ["string", "null"] },
+    "authorityRoot": { "type": ["string", "null"] },
+    "sqlFixtureRequired": { "type": "boolean" },
+    "sourcesUsed": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "tableRefs": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "summary": {
+      "type": "object",
+      "required": ["tableCount", "blockingTableCount", "queryTextCount"],
+      "properties": {
+        "tableCount": { "type": "integer", "minimum": 0 },
+        "blockingTableCount": { "type": "integer", "minimum": 0 },
+        "queryTextCount": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": true
+    },
+    "message": { "type": "string" },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["tableRef", "action", "blockReason"],
+        "properties": {
+          "tableRef": { "type": "string" },
+          "action": { "type": "string" },
+          "blockReason": { "type": ["string", "null"] }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true
+}

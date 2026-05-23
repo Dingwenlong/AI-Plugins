@@ -1,0 +1,225 @@
+{
+  "schemaVersion": "4.1.0",
+  "apiId": "D.006.deposit.addexchangedepositinit",
+  "newAuthor": "Jimmy",
+  "functionCode": "D.006",
+  "version": "1.0",
+  "apiCategory": "Deposit",
+  "apiName": "AddExchangeDepositInit",
+  "source": {
+    "tsdFile": "TSD.D.006_換匯優利定存_v1.0_20260408.docx",
+    "workbookFile": "NEWDA_API_DETAIL_Deposit_20260213.xlsx",
+    "sheetNames": [
+      "AddExchangeDepositInit換匯優利"
+    ]
+  },
+  "request": [
+    {
+      "fieldName": "custId",
+      "dataType": "string",
+      "required": true,
+      "description": "客戶編號"
+    },
+    {
+      "fieldName": "payeeCurrency",
+      "dataType": "string",
+      "required": true,
+      "description": "轉入幣別"
+    }
+  ],
+  "response": [
+    {
+      "fieldName": "isSuccess",
+      "dataType": "bool",
+      "required": true,
+      "description": "API成功與否"
+    },
+    {
+      "fieldName": "responseCode",
+      "dataType": "string",
+      "required": true,
+      "description": "回應代碼"
+    },
+    {
+      "fieldName": "responseMessage",
+      "dataType": "string",
+      "required": true,
+      "description": "回應訊息"
+    },
+    {
+      "fieldName": "responseDT",
+      "dataType": "DateTime",
+      "required": true,
+      "description": "系統回應時間"
+    },
+    {
+      "fieldName": "responseData",
+      "dataType": "object",
+      "required": true,
+      "description": "回應資料框",
+      "properties": [
+        {
+          "fieldName": "subCurrency",
+          "dataType": "list",
+          "required": false,
+          "description": "定存幣別列表",
+          "properties": [
+            {
+              "fieldName": "currCName",
+              "dataType": "string",
+              "required": false,
+              "description": "幣別中文"
+            },
+            {
+              "fieldName": "currEName",
+              "dataType": "string",
+              "required": false,
+              "description": "幣別英文"
+            }
+          ]
+        },
+        {
+          "fieldName": "activityPage",
+          "dataType": "string",
+          "required": false,
+          "description": "同意書"
+        }
+      ]
+    }
+  ],
+  "mockExamples": [
+    {
+      "scenario": "正常結果返回",
+      "responsePayload": {
+        "isSuccess": true,
+        "responseCode": "0000",
+        "responseMessage": "",
+        "responseDT": "2026-03-23 15:10:00",
+        "responseData": {
+          "activityPage": "https://bank.example/agreement.html"
+        }
+      }
+    }
+  ],
+  "backendApis": {
+    "CommonUtil": [
+      "IsInTradeDate() 判斷當前時間是否為正常交易時間",
+      "GetCENCurr() 取得幣別選單"
+    ],
+    "Deposit": [
+      "GetFixOther() 取得定存轉入帳號與定存幣別"
+    ]
+  },
+  "businessLogic": {
+    "steps": [
+      {
+        "step": 1,
+        "title": "初始化與參數處理",
+        "details": "移除暫存 redis key，讀取 custId 與 foreignStop。"
+      },
+      {
+        "step": 2,
+        "title": "交易時間與交易資格核驗",
+        "details": "調用 CommonUtil.IsInTradeDate() 與 foreignStop 做前置校驗。"
+      },
+      {
+        "step": 3,
+        "title": "取得選單資料",
+        "details": "調用 Deposit.GetFixOther() 取得 subCurrency 與 activityPage。"
+      }
+    ],
+    "fieldMappings": [
+      {
+        "target": "responseData.subCurrency",
+        "source": "Deposit.GetFixOther().subCurrency",
+        "rule": "定存幣別列表",
+        "fields": [
+          {
+            "field": "currCName",
+            "source": "Deposit.GetFixOther().subCurrency.currCName",
+            "rule": "幣別中文"
+          },
+          {
+            "field": "currEName",
+            "source": "Deposit.GetFixOther().subCurrency.currEName",
+            "rule": "幣別英文"
+          }
+        ]
+      },
+      {
+        "target": "responseData.activityPage",
+        "source": "CommonUtil.LoadForeignSpecode().activityURL",
+        "rule": "同意書",
+        "fields": [
+          {
+            "field": "activityPage",
+            "source": "CommonUtil.LoadForeignSpecode().activityURL",
+            "rule": "同意書網址"
+          }
+        ]
+      }
+    ],
+    "errorCodeRules": [
+      {
+        "code": "9016",
+        "scenario": "颱風天氣",
+        "message": "匯市休市，暫停個人網銀部分交易。"
+      },
+      {
+        "code": "0202",
+        "scenario": "ForeignStop=Y",
+        "message": "近期有多筆小額結匯交易，暫停外匯交易。"
+      }
+    ],
+    "runtimeDependencies": [
+      {
+        "id": "current_customer_context",
+        "type": "service",
+        "required": true,
+        "description": "Resolve custId from current request context."
+      },
+      {
+        "id": "redis_member_hash",
+        "type": "redis",
+        "required": true,
+        "description": "Read foreignStop and alert flags from Redis."
+      }
+    ],
+    "dataSources": [
+      {
+        "name": "Member-HASH",
+        "type": "redis"
+      }
+    ],
+    "sqlSpecs": [
+      {
+        "name": "LoadForeignSpecode",
+        "queryText": "SELECT TermVersion FROM ForeignSpec"
+      }
+    ],
+    "legacyReferences": [
+      {
+        "system": "NEWDA",
+        "module": "Deposit"
+      }
+    ],
+    "prohibitedShortcuts": [
+      "block_comment_header_substitution"
+    ],
+    "referenceHints": [
+      {
+        "id": "guideline.redis.v2",
+        "category": "dev_guideline",
+        "matchSource": "framework_keyword",
+        "matchKey": "REDIS",
+        "title": "新大戶框架説明 V2.0 20260203",
+        "relativePath": ".agent/Reference/raw/dev-guidelines/新大戶框架説明 V2.0 20260203.docx",
+        "locator": {
+          "sectionTitle": "12、操作Redis"
+        },
+        "reason": "命中框架关键词 REDIS，可读取开发规范",
+        "authority": "reference_imported"
+      }
+    ]
+  }
+}

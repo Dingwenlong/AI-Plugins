@@ -1,0 +1,953 @@
+{
+  "global": {
+    "visibleRange": "A:G",
+    "styleScope": {
+      "applyStylesOnlyThroughColumn": "G",
+      "doNotCreateBordersFromColumn": "H",
+      "clearAccidentalStylesOnlyWhenCellsAreBlankFromColumn": "H",
+      "hideWorksheetGridlines": true,
+      "outsideContentAreaBorder": "noneOrWhite",
+      "outsideContentAreaFill": "FFFFFFFF",
+      "removeBlackBordersOutsideContentArea": true,
+      "outsideContentAreaSafeViewportColumns": "H:AZ",
+      "clearBelowLastContentRow": true,
+      "bottomOutsideContentAreaSafeViewportColumns": "A:AZ",
+      "contentEdgeRepairPolicy": {
+        "requestResponseOuterRightEdgeColumn": "G",
+        "exampleAndInternalLogicOuterRightEdgeColumn": "F",
+        "contentRowsMustHaveClosedOuterFrame": true,
+        "clearRowsBelowLastPopulatedApiDetailRowBeforeBorderRepair": true
+      },
+      "fillRepairPolicy": {
+        "source": "configuredRegionFills",
+        "excelComBorderRepairMustPreserveConfiguredFills": true,
+        "doNotHardCodeRgbForThemeFills": true,
+        "forbiddenReplacementRgbs": [
+          "FFCCFFCC"
+        ]
+      }
+    },
+    "columnWidths": {
+      "A": 24,
+      "B": 34,
+      "C": 12,
+      "D": 6,
+      "E": 41,
+      "F": 32,
+      "G": 72
+    },
+    "rowHeights": {
+      "default": 12.75,
+      "sectionTitle": 15.95,
+      "tableHeader": 15,
+      "content": 20.1,
+      "middleOfficeTitle": 17.1,
+      "autoFitVisibleRows": {
+        "scope": "API Detail visible range A:G",
+        "requiredAfterMergeRepair": true,
+        "preferredRepairTool": "Excel COM",
+        "mergedCellMeasurement": "measure merged display width before setting row height",
+        "excludedTemplateRows": [
+          "apiNameDescription.headerRow",
+          "apiNameDescription.contentRow",
+          "sectionTitleRows",
+          "tableHeaderRows"
+        ],
+        "minHeight": 15,
+        "maxHeight": 409.5
+      }
+    },
+    "rowHeightRounding": {
+      "mode": "reporting_only_half_up",
+      "execution": "use_exact_excel_height_from_rowHeights",
+      "examples": {
+        "15.95": 16,
+        "17.1": 17,
+        "20.1": 20
+      }
+    },
+    "longContentRows": {
+      "wrapText": true,
+      "autoFitWithExcelCom": true,
+      "finalRounding": "ceiling",
+      "minHeight": 20.1
+    },
+    "fontSlots": {
+      "latin": "Times New Roman",
+      "latinSize": 10,
+      "cjk": "微軟正黑體",
+      "excelCom": {
+        "NameFarEast": "微軟正黑體",
+        "Name": "Times New Roman",
+        "NameAscii": "Times New Roman",
+        "NameOther": "Times New Roman"
+      }
+    },
+    "fontValidation": {
+      "postRepairRequired": true,
+      "method": "Excel COM character-level visible font check",
+      "cjkExpectedFont": "微軟正黑體",
+      "latinExpectedFont": "Times New Roman",
+      "doNotFailOnOpenXmlFallbackOnly": true
+    }
+  },
+  "fonts": {
+    "regular": {
+      "name": "Times New Roman",
+      "size": 10,
+      "bold": false,
+      "italic": false
+    },
+    "bold": {
+      "name": "Times New Roman",
+      "size": 10,
+      "bold": true,
+      "italic": false
+    },
+    "hyperlink": {
+      "name": "Times New Roman",
+      "size": 10,
+      "bold": false,
+      "italic": false,
+      "underline": "single",
+      "color": {
+        "type": "rgb",
+        "rgb": "FF0563C1"
+      }
+    }
+  },
+  "apiDetailSheet": {
+    "rebuildPolicy": {
+      "mode": "extractTextThenRecreateSheet",
+      "preferredForFullSheetFormatClosure": true,
+      "script": "scripts/rebuild_api_xlsx_detail_sheets_from_text.ps1",
+      "reason": "In-place API Detail sheet repair can leave stale merges, invisible borders, old row heights, polluted H:AZ styles, or mixed section fills. Full-sheet format closure should extract semantic text first, rebuild the worksheet from configured regions, then recheck and render.",
+      "sourceExtraction": {
+        "visibleTextRange": "A:G",
+        "preserveSheetName": true,
+        "preserveSheetPosition": true,
+        "preserveApiNameDescription": "A2:B2",
+        "preserveReturnLink": "recreate C1 -> #'Api_List'!A1",
+        "sectionDetection": [
+          "optional Header",
+          "Request",
+          "Response",
+          "範例",
+          "For中台開發人員",
+          "API 內部業務邏輯"
+        ],
+        "preserveRequestResponseRows": "extract A:G values between section header and next section",
+        "preserveExampleRows": "extract A, B:C and D:F text; merge back as B:C / D:F",
+        "preserveInternalLogicRows": "extract A and B:F text until first blank logic row; merge back as B:F",
+        "preserveTailRows": "extract non-standard visible A:G rows after the standard sections as tail rows, but do not invent business content",
+        "preserveWorkbookMediaAndEmbeddings": "Excel COM save only"
+      },
+      "rebuildSteps": [
+        "read each target API worksheet A:G visible text and section boundaries",
+        "validate the sheet is safe to rebuild before deleting it",
+        "delete the old API worksheet",
+        "create a new worksheet with the same name at the same position",
+        "write API Name / API Description and recreate C1 返回API_List",
+        "write configured sections in order and refill extracted text rows",
+        "merge configured ranges such as A:G, A:F, B:C, D:F and B:F",
+        "apply region styles from regions and global column widths",
+        "clear H:AZ and rows below the rebuilt semantic content",
+        "AutoFit non-template content rows with merged-cell measurement",
+        "run the final font-slot pass and format recheck"
+      ],
+      "safeToRebuildWhen": [
+        "target API worksheet has no formulas in A:G",
+        "target API worksheet has no comments, shapes, pictures, controls, OLE icons or embedded objects that must remain on the sheet",
+        "all business text to preserve is visible in A:G",
+        "unknown tail rows can be preserved as plain visible A:G text without losing required layout semantics"
+      ],
+      "doNotRebuildWhen": [
+        "sheet contains formulas that must be preserved",
+        "sheet contains comments, shapes, pictures, controls, OLE icons or embedded objects",
+        "sheet has external hyperlinks or non-text content in the semantic area",
+        "important content exists outside A:G and the user has not explicitly approved a custom extraction range",
+        "the section order cannot be identified safely"
+      ],
+      "fallback": "If doNotRebuildWhen is triggered, report Visual risk and use the narrow Excel COM repair scripts only after user confirmation."
+    }
+  },
+  "apiList": {
+    "sheetName": "Api_List",
+    "capturedBaseline": {
+      "sourceWorkbook": "NEWDA_API_DETAIL_Payment_20260203.xlsx",
+      "sourceSheet": "Api_List",
+      "capturedDate": "2026-05-16",
+      "semanticRange": "A:J",
+      "sampleRange": "A1:J24",
+      "purpose": "Use as the authoritative Api_List visual/style baseline for future DAWHO/New DAWHO API Detail workbook optimization."
+    },
+    "rebuildPolicy": {
+      "mode": "extractTextThenRecreateSheet",
+      "preferredForFormatClosure": true,
+      "reason": "In-place Excel format repair can leave hidden merges, stale borders, row heights, fills or hyperlink style drift. Api_List format optimization should rebuild the sheet from extracted content and this config instead of patching the old sheet in place.",
+      "script": "scripts/rebuild_api_xlsx_api_list_from_text.ps1",
+      "sourceExtraction": {
+        "textRange": "A:J",
+        "headerRow": 1,
+        "dataStartRow": 2,
+        "readCompleteVisibleTextBeforeDelete": true,
+        "preserveValues": true,
+        "preserveApiNameHyperlinks": true,
+        "preserveHyperlinkSubAddress": true,
+        "preserveSheetPosition": true,
+        "preserveWorkbookMediaAndEmbeddings": "Excel COM save only"
+      },
+      "rebuildSteps": [
+        "read Api_List A:J visible text and E column internal hyperlink targets",
+        "sync I 後端來源 from matching API sheets when available",
+        "validate extracted rows before deleting the old sheet",
+        "delete old Api_List sheet",
+        "create a new Api_List sheet at the original position",
+        "fill configured A:J headers and extracted data rows",
+        "sort rows by PRD編號 numeric segments",
+        "restore E column internal hyperlinks",
+        "apply apiList column widths, fonts, fills, borders, alignment and wrapping",
+        "AutoFit all data rows and keep minimum row height",
+        "reapply AutoFilter A1:J{lastDataRow}",
+        "save with Excel COM and run format recheck"
+      ],
+      "safeToRebuildWhen": [
+        "Api_List has no merged cells",
+        "Api_List has no formulas in A:J",
+        "Api_List API name hyperlinks are internal sheet jumps or can be reconstructed from matching API sheets",
+        "no comments, shapes or embedded objects on Api_List need to be preserved"
+      ],
+      "doNotRebuildWhen": [
+        "A:J contains formulas that must be preserved",
+        "Api_List contains comments, shapes, pictures, controls or external hyperlinks that cannot be safely reattached",
+        "extracted API rows cannot be matched back to API sheet targets and the user has not approved reconstruction"
+      ],
+      "fallback": "If doNotRebuildWhen is triggered, report Visual risk and use the narrow in-place repair script only after user confirmation."
+    },
+    "structure": {
+      "headerRow": 1,
+      "dataStartRow": 2,
+      "lastColumn": "J",
+      "noMergedCells": true,
+      "autoFilter": {
+        "enabled": true,
+        "rangeFormula": "A1:J{lastDataRow}",
+        "sampleRange": "A1:J24"
+      },
+      "sort": {
+        "primaryColumn": "A",
+        "primaryLabel": "PRD編號",
+        "order": "ascendingByNumericSegments",
+        "examples": [
+          "L.001",
+          "L.001.001",
+          "L.002",
+          "L.003",
+          "L.004",
+          "L.005",
+          "L.006"
+        ],
+        "stableWithinSamePrd": true,
+        "preserveHyperlinksWhenSorting": true
+      },
+      "backendSourceSync": {
+        "column": "I",
+        "label": "後端來源",
+        "source": "matching API sheet -> API 內部業務邏輯 -> row where column A is 涉及BackendAPI -> column B merged text",
+        "copyMode": "exactVisibleText",
+        "doNotInventBackendSource": true
+      }
+    },
+    "columns": {
+      "A": {
+        "label": "PRD編號",
+        "excelComWidth": 11.71,
+        "openXmlWidth": 12.42578125,
+        "dataStyle": "centerData"
+      },
+      "B": {
+        "label": "PRD名稱",
+        "excelComWidth": 13.29,
+        "openXmlWidth": 14.0,
+        "dataStyle": "generalData"
+      },
+      "C": {
+        "label": "API Method",
+        "excelComWidth": 14.29,
+        "openXmlWidth": 15.0,
+        "dataStyle": "generalData"
+      },
+      "D": {
+        "label": "API 類別",
+        "excelComWidth": 9.29,
+        "openXmlWidth": 10.0,
+        "dataStyle": "generalData"
+      },
+      "E": {
+        "label": "API 名稱",
+        "excelComWidth": 24.29,
+        "openXmlWidth": 25.0,
+        "dataStyle": "apiNameHyperlink"
+      },
+      "F": {
+        "label": "功能用途說明",
+        "excelComWidth": 23.29,
+        "openXmlWidth": 24.0,
+        "dataStyle": "generalData"
+      },
+      "G": {
+        "label": "歸屬容器",
+        "excelComWidth": 16.14,
+        "openXmlWidth": 16.85546875,
+        "dataStyle": "generalData"
+      },
+      "H": {
+        "label": "DAWHO驗證模式",
+        "excelComWidth": 21.29,
+        "openXmlWidth": 22.0,
+        "dataStyle": "generalData"
+      },
+      "I": {
+        "label": "後端來源",
+        "excelComWidth": 61.29,
+        "openXmlWidth": 62.0,
+        "dataStyle": "backendSource"
+      },
+      "J": {
+        "label": "備註",
+        "excelComWidth": 43.29,
+        "openXmlWidth": 44.0,
+        "dataStyle": "remarks"
+      }
+    },
+    "rowHeights": {
+      "headerRow": 15.0,
+      "dataRows": {
+        "mode": "Excel COM AutoFit after wrapping",
+        "minHeight": 20.1,
+        "verticalAlignment": "center",
+        "sampleCapturedRows": {
+          "2": 38.25,
+          "3": 38.25,
+          "4": 38.25,
+          "5": 38.25,
+          "6": 38.25,
+          "7": 25.5,
+          "8": 27.0,
+          "9": 38.25,
+          "10": 38.25,
+          "11": 25.5,
+          "12": 51.0,
+          "13": 67.5,
+          "14": 27.0,
+          "15": 81.0,
+          "16": 27.0,
+          "17": 94.5,
+          "18": 81.0,
+          "19": 94.5,
+          "20": 27.0,
+          "21": 38.25,
+          "22": 65.25,
+          "23": 51.75,
+          "24": 90.0
+        }
+      }
+    },
+    "styles": {
+      "header": {
+        "font": {
+          "latin": "Times New Roman",
+          "cjk": "微軟正黑體",
+          "size": 10,
+          "bold": true,
+          "italic": false,
+          "underline": null,
+          "strike": false,
+          "colorRgb": "FF000000"
+        },
+        "fill": {
+          "type": "solid",
+          "rgb": "FFFFF2CC",
+          "excelComColor": 13431551,
+          "visualRgb": "FFFFF2CC",
+          "note": "Excel COM color 13431551 renders as FFFFF2CC."
+        },
+        "alignment": {
+          "horizontal": "center",
+          "vertical": "center",
+          "wrapText": true
+        },
+        "border": {
+          "left": "thin",
+          "right": "thin",
+          "top": "thin",
+          "bottom": "thin",
+          "color": "auto/black"
+        }
+      },
+      "generalData": {
+        "font": {
+          "latin": "Times New Roman",
+          "cjk": "微軟正黑體",
+          "size": 10,
+          "bold": false,
+          "italic": false,
+          "underline": null,
+          "strike": false,
+          "colorRgb": "FF000000"
+        },
+        "fill": "none",
+        "alignment": {
+          "horizontal": "general",
+          "vertical": "center",
+          "wrapText": true
+        },
+        "border": {
+          "top": "thin",
+          "bottom": "thin",
+          "leftOrRightAsAdjacentTableGrid": "thin",
+          "color": "auto/black"
+        }
+      },
+      "centerData": {
+        "basedOn": "generalData",
+        "alignment": {
+          "horizontal": "center",
+          "vertical": "center",
+          "wrapText": true
+        }
+      },
+      "apiNameHyperlink": {
+        "font": {
+          "name": "Times New Roman",
+          "size": 10,
+          "bold": false,
+          "italic": false,
+          "underline": "single",
+          "strike": false,
+          "colorRgb": "FF0563C1",
+          "excelComColor": 12673797
+        },
+        "fill": "none",
+        "alignment": {
+          "horizontal": "left",
+          "vertical": "center",
+          "wrapText": true
+        },
+        "border": {
+          "left": "thin",
+          "right": "thin",
+          "top": "thin",
+          "bottom": "thin",
+          "color": "black"
+        },
+        "hyperlink": {
+          "type": "internal",
+          "targetFormula": "#'<apiSheet>'!A1",
+          "preserveDisplayText": true
+        }
+      },
+      "backendSource": {
+        "font": {
+          "latin": "Times New Roman",
+          "cjk": "微軟正黑體",
+          "size": 10,
+          "bold": false,
+          "italic": false,
+          "underline": null,
+          "strike": false,
+          "colorRgb": "FF000000"
+        },
+        "fill": "none",
+        "alignment": {
+          "horizontal": "left",
+          "vertical": "center",
+          "wrapText": true
+        },
+        "border": {
+          "left": "thin",
+          "right": "thin",
+          "top": "thin",
+          "bottom": "thin",
+          "color": "black"
+        }
+      },
+      "remarks": {
+        "basedOn": "generalData",
+        "alignment": {
+          "horizontal": "general",
+          "vertical": "center",
+          "wrapText": true
+        }
+      }
+    },
+    "repairPolicy": {
+      "preferredTool": "Excel COM rebuild from extracted text and apiList config",
+      "doNotUseOpenpyxlSaveForDeliveryWorkbookWithMediaOrEmbeddings": true,
+      "applyScope": "Api_List A:J only unless user explicitly requests wider scope",
+      "preferRebuildOverInPlaceFormatPatch": true,
+      "preserveExistingApiRows": true,
+      "doNotCreateDuplicateApiRows": true,
+      "afterBackendSourceSync": [
+        "set I column backendSource style",
+        "AutoFit target rows",
+        "keep AutoFilter A1:J{lastDataRow}"
+      ],
+      "afterSorting": [
+        "preserve E column internal hyperlinks",
+        "restore apiNameHyperlink style",
+        "AutoFit all data rows"
+      ]
+    },
+    "validation": {
+      "requiredChecks": [
+        "A:J labels match configured columns",
+        "data rows sorted by PRD numeric segments ascending",
+        "E column internal hyperlinks still target API sheets",
+        "E column uses apiNameHyperlink style",
+        "I column equals matching API sheet 涉及BackendAPI text when syncing backend source",
+        "A:J data rows are vertically centered and wrapped",
+        "E and I columns have visible bottom borders",
+        "AutoFilter range is A1:J{lastDataRow}"
+      ]
+    }
+  },
+  "fills": {
+    "none": null,
+    "blueSection": {
+      "fillType": "solid",
+      "fgColor": {
+        "type": "rgb",
+        "rgb": "FFBDD7EE"
+      }
+    },
+    "tableHeaderLight": {
+      "fillType": "solid",
+      "fgColor": {
+        "type": "theme",
+        "theme": 9,
+        "tint": 0.5999938962981048
+      },
+      "sampleRgb": "FFC6E0B4",
+      "excelCom": {
+        "themeColor": 10,
+        "tintAndShade": 0.5999938962981048
+      }
+    },
+    "apiDescriptionGray": {
+      "fillType": "solid",
+      "fgColor": {
+        "type": "rgb",
+        "rgb": "FFF2F2F2"
+      }
+    },
+    "middleOfficeYellow": {
+      "fillType": "solid",
+      "fgColor": {
+        "type": "rgb",
+        "rgb": "FFFFFF00"
+      }
+    },
+    "scenarioContentWhite": {
+      "fillType": "solid",
+      "fgColor": {
+        "type": "rgb",
+        "rgb": "FFFFFFFF"
+      }
+    }
+  },
+  "alignments": {
+    "centerCenterWrap": {
+      "horizontal": "center",
+      "vertical": "center",
+      "wrapText": true
+    },
+    "leftCenterWrap": {
+      "horizontal": "left",
+      "vertical": "center",
+      "wrapText": true
+    },
+    "leftTopWrap": {
+      "horizontal": "left",
+      "vertical": "top",
+      "wrapText": true
+    },
+    "linkDefault": {
+      "horizontal": null,
+      "vertical": null,
+      "wrapText": null
+    }
+  },
+  "borders": {
+    "colors": {
+      "autoIndexed64": {
+        "type": "indexed",
+        "indexed": 64
+      },
+      "black": {
+        "type": "rgb",
+        "rgb": "FF000000"
+      },
+      "auto": {
+        "type": "auto"
+      }
+    },
+    "sides": {
+      "none": null,
+      "thinAuto": {
+        "style": "thin",
+        "color": "autoIndexed64"
+      },
+      "thinBlack": {
+        "style": "thin",
+        "color": "black"
+      },
+      "thinAutoColor": {
+        "style": "thin",
+        "color": "auto"
+      }
+    },
+    "presets": {
+      "none": {
+        "left": "none",
+        "right": "none",
+        "top": "none",
+        "bottom": "none"
+      },
+      "thinAll": {
+        "left": "thinAuto",
+        "right": "thinAuto",
+        "top": "thinAuto",
+        "bottom": "thinAuto"
+      },
+      "thinAllBlack": {
+        "left": "thinBlack",
+        "right": "thinBlack",
+        "top": "thinBlack",
+        "bottom": "thinBlack"
+      },
+      "headerThin": {
+        "left": "thinBlack",
+        "right": "thinBlack",
+        "top": "thinBlack",
+        "bottom": "thinBlack"
+      },
+      "mergedSectionOuter": {
+        "applyAfterMerge": true,
+        "preferredRepairTool": "Excel COM",
+        "rangeBorderRule": {
+          "left": "thinBlack",
+          "right": "thinBlack",
+          "top": "thinBlack",
+          "bottom": "thinBlack",
+          "insideVertical": "none",
+          "insideHorizontal": "none"
+        },
+        "firstCell": {
+          "left": "thinBlack",
+          "right": "none",
+          "top": "thinBlack",
+          "bottom": "thinBlack"
+        },
+        "interiorCells": {
+          "left": "none",
+          "right": "none",
+          "top": "thinBlack",
+          "bottom": "thinBlack"
+        },
+        "lastCell": {
+          "left": "none",
+          "right": "thinBlack",
+          "top": "thinBlack",
+          "bottom": "thinBlack"
+        }
+      },
+      "mergedScenarioOuter": {
+        "firstCell": {
+          "left": "thinBlack",
+          "right": "thinBlack",
+          "top": "thinBlack",
+          "bottom": "thinBlack"
+        },
+        "interiorCells": {
+          "left": "none",
+          "right": "none",
+          "top": "thinBlack",
+          "bottom": "thinBlack"
+        },
+        "lastCell": {
+          "left": "none",
+          "right": "thinBlack",
+          "top": "thinBlack",
+          "bottom": "thinBlack"
+        }
+      },
+      "logicMergedOuter": {
+        "labelCell": {
+          "left": "thinAuto",
+          "right": "thinAuto",
+          "top": "thinAuto",
+          "bottom": "thinAuto"
+        },
+        "mergedDescriptionFirstCell": {
+          "left": "thinAuto",
+          "right": "thinAuto",
+          "top": "thinAuto",
+          "bottom": "thinAuto"
+        },
+        "mergedDescriptionInteriorCells": {
+          "left": "none",
+          "right": "none",
+          "top": "thinAuto",
+          "bottom": "thinAuto"
+        },
+        "mergedDescriptionLastCell": {
+          "left": "none",
+          "right": "thinAuto",
+          "top": "thinAuto",
+          "bottom": "thinAuto"
+        }
+      }
+    }
+  },
+  "regions": {
+    "apiNameDescription": {
+      "headerRow": {
+        "labels": [
+          "API  Name",
+          "API Description"
+        ],
+        "rowHeight": 15.95,
+        "fixedHeight": true,
+        "apiDescriptionRightBorderRequired": true,
+        "cells": {
+          "A:B": {
+            "font": "bold",
+            "fill": "blueSection",
+            "alignment": "centerCenterWrap",
+            "border": "thinAll"
+          }
+        }
+      },
+      "contentRow": {
+        "rowHeight": 20.1,
+        "fixedHeight": true,
+        "apiDescriptionRightBorderRequired": true,
+        "cells": {
+          "apiName": {
+            "column": "A",
+            "font": "regular",
+            "fill": "none",
+            "alignment": "leftCenterWrap",
+            "border": "thinAll"
+          },
+          "apiDescription": {
+            "column": "B",
+            "font": "regular",
+            "fill": "apiDescriptionGray",
+            "alignment": "leftCenterWrap",
+            "border": "thinAll"
+          }
+        }
+      },
+      "returnLink": {
+        "preferredCell": "C1",
+        "text": "返回API_List",
+        "target": "#'Api_List'!A1",
+        "font": "hyperlink",
+        "fill": "none",
+        "alignment": "linkDefault",
+        "border": "none"
+      }
+    },
+    "header": {
+      "required": false,
+      "doNotAutoInsertWhenMissing": true,
+      "titleRow": {
+        "label": "Header",
+        "merge": "A:G",
+        "rowHeight": 15.95,
+        "font": "bold",
+        "fill": "blueSection",
+        "alignment": "leftCenterWrap",
+        "border": "mergedSectionOuter"
+      },
+      "tableHeaderRow": {
+        "rowHeight": 15,
+        "columns": "A:G",
+        "font": "bold",
+        "fill": "tableHeaderLight",
+        "alignment": "centerCenterWrap",
+        "border": "headerThin"
+      },
+      "contentRows": {
+        "rowHeight": 20.1,
+        "columns": "A:G",
+        "font": "regular",
+        "fill": "none",
+        "alignment": "leftCenterWrap",
+        "sequenceColumnAlignment": "centerCenterWrap",
+        "border": "thinAll"
+      }
+    },
+    "request": {
+      "titleRow": {
+        "label": "Request",
+        "merge": "A:G",
+        "rowHeight": 15.95,
+        "font": "bold",
+        "fill": "blueSection",
+        "alignment": "leftCenterWrap",
+        "border": "mergedSectionOuter"
+      },
+      "tableHeaderRow": {
+        "rowHeight": 15,
+        "columns": "A:G",
+        "font": "bold",
+        "fill": "tableHeaderLight",
+        "alignment": "centerCenterWrap",
+        "border": "headerThin"
+      },
+      "contentRows": {
+        "rowHeight": 20.1,
+        "columns": "A:G",
+        "font": "regular",
+        "fill": "none",
+        "alignment": "leftCenterWrap",
+        "sequenceColumnAlignment": "centerCenterWrap",
+        "border": "thinAll"
+      }
+    },
+    "response": {
+      "titleRow": {
+        "label": "Response",
+        "merge": "A:G",
+        "rowHeight": 15.95,
+        "font": "bold",
+        "fill": "blueSection",
+        "alignment": "leftCenterWrap",
+        "border": "mergedSectionOuter"
+      },
+      "tableHeaderRow": {
+        "rowHeight": 15,
+        "columns": "A:G",
+        "font": "bold",
+        "fill": "tableHeaderLight",
+        "alignment": "centerCenterWrap",
+        "border": "headerThin"
+      },
+      "contentRows": {
+        "rowHeight": 20.1,
+        "columns": "A:G",
+        "font": "regular",
+        "fill": "none",
+        "alignment": "leftCenterWrap",
+        "sequenceColumnAlignment": "centerCenterWrap",
+        "border": "thinAll",
+        "longContent": "global.longContentRows"
+      }
+    },
+    "example": {
+      "titleRow": {
+        "label": "範例",
+        "merge": "A:F",
+        "rowHeight": 15.95,
+        "font": "bold",
+        "fill": "blueSection",
+        "alignment": "leftCenterWrap",
+        "border": "mergedSectionOuter"
+      },
+      "scenarioHeaderRow": {
+        "rowHeight": 15,
+        "columns": "A:F",
+        "labels": [
+          "情境說明",
+          "Request",
+          "Response"
+        ],
+        "merges": [
+          "B:C",
+          "D:F"
+        ],
+        "font": "regular",
+        "fill": "tableHeaderLight",
+        "alignment": "centerCenterWrap",
+        "requestAlignment": "leftCenterWrap",
+        "border": "mergedScenarioOuter"
+      },
+      "scenarioRows": {
+        "rowHeight": 20.1,
+        "columns": "A:F",
+        "merges": [
+          "B:C",
+          "D:F"
+        ],
+        "font": "regular",
+        "fill": "scenarioContentWhite",
+        "alignment": "leftCenterWrap",
+        "labelColumn": {
+          "column": "A",
+          "fill": "scenarioContentWhite",
+          "alignment": "leftCenterWrap"
+        },
+        "border": "mergedScenarioOuter",
+        "longContent": "global.longContentRows"
+      }
+    },
+    "middleOffice": {
+      "titleRow": {
+        "label": "For中台開發人員",
+        "merge": "A:F",
+        "rowHeight": 17.1,
+        "font": "bold",
+        "fill": "middleOfficeYellow",
+        "alignment": "leftCenterWrap",
+        "border": "mergedSectionOuter"
+      }
+    },
+    "internalLogic": {
+      "titleRow": {
+        "label": "API 內部業務邏輯",
+        "merge": "A:F",
+        "rowHeight": 15.95,
+        "font": "bold",
+        "fill": "blueSection",
+        "alignment": "leftCenterWrap",
+        "border": "mergedSectionOuter"
+      },
+      "tableHeaderRow": {
+        "rowHeight": 15,
+        "columns": "A:F",
+        "merges": [
+          "B:F"
+        ],
+        "font": "bold",
+        "fill": "tableHeaderLight",
+        "alignment": "centerCenterWrap",
+        "border": "headerThin"
+      },
+      "logicRows": {
+        "rowHeight": 20.1,
+        "columns": "A:F",
+        "merges": [
+          "B:F"
+        ],
+        "labelColumn": {
+          "column": "A",
+          "font": "regular",
+          "fill": "tableHeaderLight",
+          "fillMustMatch": "internalLogic.tableHeaderRow.labelColumn",
+          "alignment": "leftCenterWrap"
+        },
+        "descriptionColumns": {
+          "columns": "B:F",
+          "font": "regular",
+          "fill": "none",
+          "alignment": "leftCenterWrap"
+        },
+        "border": "logicMergedOuter",
+        "longContent": "global.longContentRows"
+      }
+    }
+  }
+}

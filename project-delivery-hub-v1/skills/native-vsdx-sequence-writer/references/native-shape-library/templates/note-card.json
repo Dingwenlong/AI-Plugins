@@ -1,0 +1,17 @@
+{
+  "name": "note-card",
+  "type": "box-text",
+  "style": {
+    "fillPattern": 1,
+    "fillColor": "RGB(255,242,161)",
+    "linePattern": 1,
+    "lineColor": "RGB(176,21,19)",
+    "lineWeight": "1.25 pt",
+    "textColor": "RGB(0,0,0)",
+    "font": "Microsoft JhengHei",
+    "fontSize": 8,
+    "align": "left"
+  },
+  "paddingX": 0.08,
+  "paddingY": 0.04
+}

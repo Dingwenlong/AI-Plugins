@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "4.0.0",
+  "executionId": "D.006",
+  "apiId": "D.006.commonutil.getcencurr",
+  "apiCategory": "CommonUtil",
+  "apiName": "GetCENCurr",
+  "status": "blocked",
+  "blockReason": "Workbook sheet not found.",
+  "sourceFingerprint": null,
+  "source": {
+    "tsdFile": "TSD.D.006_換匯優利定存_v1.0_20260408.docx",
+    "workbookFile": "NEWDA_API_DETAIL_CommonUtil_20260213.xlsx",
+    "sheetNames": []
+  },
+  "updatedAt": "2026-04-08T18:31:34+08:00"
+}

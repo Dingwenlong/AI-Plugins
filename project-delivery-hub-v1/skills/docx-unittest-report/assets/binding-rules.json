@@ -1,0 +1,116 @@
+{
+  "strongRules": [
+    {
+      "id": "required-validation",
+      "whenCheckItemContainsAny": ["必填", "required", "驗證失敗"],
+      "recommendedModes": ["integration_test", "unit_test"],
+      "matchTestNameContainsAny": ["missing", "validation", "required", "specvalidation", "invalid"]
+    },
+    {
+      "id": "not-found",
+      "whenCheckItemContainsAny": ["查無資料", "無資料", "not found"],
+      "recommendedModes": ["unit_test"],
+      "matchTestNameContainsAny": ["nodata", "empty", "notfound"]
+    },
+    {
+      "id": "cache",
+      "whenCheckItemContainsAny": ["快取", "cache"],
+      "recommendedModes": ["unit_test"],
+      "matchTestNameContainsAny": ["cache"]
+    },
+    {
+      "id": "custid-missing",
+      "whenCheckItemContainsAny": ["custid", "客戶資訊"],
+      "recommendedModes": ["unit_test"],
+      "matchTestNameContainsAny": ["custidmissing"]
+    },
+    {
+      "id": "duplicate-alias",
+      "whenCheckItemContainsAny": ["重複", "原有暱稱相同", "same"],
+      "recommendedModes": ["unit_test"],
+      "matchTestNameContainsAny": ["matchesexisting", "duplicate", "same"]
+    },
+    {
+      "id": "db-update",
+      "whenCheckItemContainsAny": ["db", "資料已正確更新", "更新成功後", "維護欄位"],
+      "recommendedModes": ["unit_test"],
+      "matchTestNameContainsAny": ["insert", "update", "refreshcache"]
+    },
+    {
+      "id": "data-correctness",
+      "whenCheckItemContainsAny": ["回傳資料內容正確", "資料內容正確"],
+      "recommendedModes": ["unit_test"],
+      "matchTestNameContainsAny": ["cachehit", "cachemiss", "insertandrefreshcache"]
+    },
+    {
+      "id": "schema-or-status",
+      "whenCheckItemContainsAny": ["規格", "schema", "status"],
+      "recommendedModes": ["integration_test"],
+      "matchTestNameContainsAny": ["returnsuccesspayload", "specvalidation"]
+    }
+  ],
+  "codeInspectionRules": [
+    {
+      "id": "openapi-docs",
+      "whenCheckItemContainsAny": ["Swagger", "OpenAPI", "命名與描述", "版本控管"],
+      "pathBuckets": ["controller", "common", "service"],
+      "mustContainAny": ["Swagger", "OpenApi", "ApiExplorer", "Route(", "[Http", "ApiVersion"],
+      "passActualResult": "通過，已由代碼定位檢查確認介面文件或版本宣告。",
+      "pendingActualResult": "待補，尚未定位到對應的 Swagger/OpenAPI 或版本宣告。"
+    },
+    {
+      "id": "http-contract",
+      "whenCheckItemContainsAny": ["Endpoint", "HTTP Method", "Response Header", "Content-Type", "HTTP 狀態碼", "回應結構", "Header 規範", "schema", "欄位命名", "型別符合規格"],
+      "pathBuckets": ["controller", "entity", "common"],
+      "mustContainAny": ["[Http", "Route(", "Produces", "Consumes", "StatusCode", "Ok(", "BadRequest(", "JsonProperty", "JsonPropertyName"],
+      "passActualResult": "通過，已由代碼定位檢查確認 HTTP 介面契約。",
+      "pendingActualResult": "待補，尚未定位到充分的 HTTP 介面契約證據。"
+    },
+    {
+      "id": "validation-surface",
+      "whenCheckItemContainsAny": ["必填", "參數驗證", "模型驗證", "驗證失敗", "欄位長度", "格式限制"],
+      "pathBuckets": ["controller", "entity", "common", "service"],
+      "mustContainAny": ["Required", "ModelState", "Validate", "Validation", "StringLength", "RegularExpression", "Range", "IsNullOrWhiteSpace"],
+      "passActualResult": "通過，已由代碼定位檢查確認驗證規則存在。",
+      "pendingActualResult": "待補，尚未定位到充分的欄位或模型驗證規則。"
+    },
+    {
+      "id": "query-flow",
+      "whenCheckItemContainsAny": ["查詢", "列表", "分頁", "排序", "查無資料"],
+      "pathBuckets": ["service", "entity", "common"],
+      "mustContainAny": ["Where(", "OrderBy", "OrderByDescending", "Skip(", "Take(", "Select(", "FirstOrDefault", "SingleOrDefault", "Any("],
+      "passActualResult": "通過，已由代碼定位檢查確認查詢流程存在。",
+      "pendingActualResult": "待補，尚未定位到充分的查詢流程證據。"
+    },
+    {
+      "id": "download-contract",
+      "whenCheckItemContainsAny": ["下載", "匯出", "檔案"],
+      "pathBuckets": ["controller", "service", "common"],
+      "mustContainAny": ["File(", "FileStreamResult", "ContentDisposition", "application/", "MemoryStream"],
+      "passActualResult": "通過，已由代碼定位檢查確認下載或檔案回應流程。",
+      "pendingActualResult": "待補，尚未定位到充分的下載或檔案回應證據。"
+    },
+    {
+      "id": "notify-flow",
+      "whenCheckItemContainsAny": ["通知", "訊息", "發送", "mail", "sms", "push"],
+      "pathBuckets": ["service", "common"],
+      "mustContainAny": ["Send", "Notify", "Publish", "Message", "Mail", "Sms", "Push"],
+      "passActualResult": "通過，已由代碼定位檢查確認通知流程存在。",
+      "pendingActualResult": "待補，尚未定位到充分的通知流程證據。"
+    }
+  ],
+  "weakRules": [
+    {
+      "id": "response-contract",
+      "whenCheckItemContainsAny": ["content-type", "charset", "回應結構", "response header", "header 規範"],
+      "recommendedModes": ["integration_test"],
+      "matchTestNameContainsAny": ["returnsuccesspayload"]
+    },
+    {
+      "id": "query-behavior",
+      "whenCheckItemContainsAny": ["查詢", "列表", "分頁", "排序", "查無資料"],
+      "recommendedModes": ["unit_test"],
+      "matchTestNameContainsAny": ["query", "cachehit", "cachemiss", "empty", "notfound"]
+    }
+  ]
+}

@@ -1,0 +1,97 @@
+%%{init: {"flowchart": {"defaultRenderer": "elk", "nodeSpacing": 42, "rankSpacing": 64, "curve": "linear"}}}%%
+flowchart TB
+  %% Clean version: grouped by responsibility to avoid line overlap.
+
+  classDef skill fill:#eef6ff,stroke:#2563eb,stroke-width:1.5px,color:#0f172a
+  classDef agent fill:#ecfdf5,stroke:#16a34a,stroke-width:1.5px,color:#052e16
+  classDef rule fill:#fff7ed,stroke:#f97316,stroke-width:1.5px,color:#431407
+  classDef result fill:#f5f3ff,stroke:#7c3aed,stroke-width:1.5px,color:#2e1065
+  classDef status fill:#fefce8,stroke:#ca8a04,stroke-width:1.5px,color:#422006
+  classDef note fill:#f8fafc,stroke:#64748b,stroke-width:1px,color:#334155
+
+  Title["一句话理解：chain-workspace 管当前工作区；design-source-registry 管来源目录；wedoc-smartsheet-targets 管企业微信智能表格目标；wedoc-smartsheet-receipts 记录新增回执；先把需求梳理成 functions/handoff；project-rules 管规则，reference 管外部共用资料，context 管开发执行状态，status 管总控进度。"]:::note
+
+  subgraph R["2. 规则支撑区"]
+    RA["专案规则分析器<br/>开发规范 / 格式 / 时序图规则"]:::skill
+    PR[".agent/project-rules/&lt;workspaceKey&gt;<br/>catalog + rulePacks + rules + assets"]:::rule
+    RGATE["所有正式技能启动前<br/>先过规则包门禁"]:::status
+    RA --> PR --> RGATE
+  end
+
+  subgraph D["1. 需求梳理区"]
+    DOC["PRD / TSD / API Detail / Common / Response Code"]:::result
+    WCFG[".agent/config/chain-workspace.json<br/>当前 workspaceKey / agentRoot / rulesRoot"]:::agent
+    CFG[".agent/config/design-source-registry.json<br/>PRD / TSD / API Detail 目录索引"]:::agent
+    S["需求接口设计梳理"]:::skill
+    FN[".agent/functions/&lt;functionCode&gt;<br/>analysis + inputs + handoff"]:::agent
+    I01["01 参考资料索引导入器"]:::skill
+    REF[".agent/reference/global<br/>外部 API / DB Schema 索引"]:::agent
+    WCFG --> S
+    CFG --> S
+    DOC --> S --> FN
+    I01 --> REF
+  end
+
+  subgraph E["3. 开发执行区"]
+    I02["02 API 规格写入器"]:::skill
+    I03["03 SQL 测试资料准备器"]:::skill
+    I04["04 API 业务代码写入器<br/>读取 apiCodeWriter + code-guidelines"]:::skill
+    I05["05 API 测试与 UT 报告"]:::skill
+    CTX[".agent/context/&lt;functionCode&gt;<br/>API_Spec / manifest / change-plan / test results"]:::agent
+    CODE["实际代码分支 project-root"]:::result
+    REPORT["UT 报告 DOCX / TRX / results"]:::result
+    I02 --> CTX
+    I03 --> CTX
+    I04 --> CTX
+    I04 --> CODE
+    I05 --> CTX
+    I05 --> REPORT
+  end
+
+  subgraph O["4. 交付输出区"]
+    V["VSDX 时序图生成器"]:::skill
+    F["交付格式检查器"]:::skill
+    P["交付包收集器"]:::skill
+    DG["functions/&lt;功能&gt;/analysis/sequence-diagrams"]:::agent
+    FILES["TSD Word / API Excel"]:::result
+    DEL["客户交付包<br/>TSD 交付 yyyyMMdd"]:::result
+    V --> DG
+    F --> FILES
+    P --> DEL
+  end
+
+  subgraph X["5. 外部同步区"]
+    WDCFG[".agent/config/wedoc-smartsheet-targets.json<br/>target key / WebHook / schema / user_id"]:::agent
+    WD["智能表格异动记录写入器"]:::skill
+    WDSHEET["企业微信智能表格<br/>add_records / update_records"]:::result
+    WDLOG[".agent/wedoc-smartsheet-receipts<br/>record_id + 请求/响应 JSONL"]:::agent
+    WDCFG --> WD --> WDSHEET
+    WD --> WDLOG
+  end
+
+  ST[".agent/status/chain-status.json<br/>总控状态：每个功能走到哪一步"]:::status
+
+  Title --> D
+  D --> E
+  D --> O
+  D --> X
+  FN --> I02
+  REF --> I02
+  CTX --> I03
+  CTX --> I04
+  CTX --> I05
+  FN --> V
+  FN --> P
+  FN --> WD
+  CTX --> WD
+
+  RGATE -. "规则约束" .-> S
+  RGATE -. "规则约束" .-> I02
+  RGATE -. "规则约束" .-> I04
+  RGATE -. "规则约束" .-> V
+  RGATE -. "规则约束" .-> F
+
+  D -. "阶段进度" .-> ST
+  E -. "阶段进度" .-> ST
+  O -. "阶段进度" .-> ST
+  X -. "外部同步状态" .-> ST

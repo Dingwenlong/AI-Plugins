@@ -1,0 +1,386 @@
+{
+  "schemaVersion": "1.0.0",
+  "standardId": "project-delivery-hub-artifact-naming",
+  "updatedAt": "2026-05-23",
+  "mode": "standard-only",
+  "summary": "Artifact naming standard for project-delivery-hub-v1. This file records proposed names only; it does not authorize automatic migration by itself.",
+  "rules": {
+    "machineArtifacts": "Use lowercase kebab-case for machine-consumed artifacts.",
+    "stageArtifacts": "Use 01-, 02-, 03-, 04-, and 05- prefixes for artifacts owned by a delivery-chain stage.",
+    "designHandoff": "Use 00- for design analysis and design-to-development handoff artifacts produced before stage 01.",
+    "sharedChainArtifacts": "Use chain- for files maintained by multiple skills or by orchestration.",
+    "functionCode": "Preserve dotted function codes such as D.003 and N.001.001.",
+    "copiedInputs": "Keep original source filenames under .agent/functions/<functionCode>/inputs/.",
+    "customerDeliverables": "Keep external customer delivery names when a project delivery rule already defines them.",
+    "currentRound": "Do not rename existing .agent files in this round. Report old names only."
+  },
+  "actions": {
+    "rename_later": "Use the proposed name in the next migration round after script and reader compatibility is implemented.",
+    "keep": "Keep the current name because it already matches the shared standard or is intentionally stable.",
+    "external_keep": "Keep the current name because the customer or project delivery standard owns it."
+  },
+  "mappings": [
+    {
+      "id": "00-design-handoff",
+      "stage": "00",
+      "ownerSkill": "api-detail-tsd-sync",
+      "currentPattern": ".agent/functions/<functionCode>/handoff/development-handoff.json",
+      "currentRegex": "^functions/[^/]+/handoff/development-handoff\\.json$",
+      "proposedPattern": ".agent/functions/<functionCode>/handoff/00-design-handoff.json",
+      "action": "rename_later",
+      "reason": "Design-to-development handoff is created before stage 01 and should carry a 00 design prefix."
+    },
+    {
+      "id": "00-design-analysis",
+      "stage": "00",
+      "ownerSkill": "api-detail-tsd-sync",
+      "currentPattern": ".agent/functions/<functionCode>/analysis/<functionCode>_功能设计梳理_yyyyMMdd.md",
+      "currentRegex": "^functions/[^/]+/analysis/[^/]+_功能设计梳理_[0-9]{8}\\.md$",
+      "proposedPattern": ".agent/functions/<functionCode>/analysis/00-功能设计梳理_<functionCode>_<yyyyMMdd>.md",
+      "action": "rename_later",
+      "reason": "Human-readable design analysis belongs to the pre-development design handoff stage."
+    },
+    {
+      "id": "01-reference-catalog",
+      "stage": "01",
+      "ownerSkill": "reference-index-importer",
+      "currentPattern": ".agent/reference/global/catalog.json",
+      "currentRegex": "^reference/global/catalog\\.json$",
+      "proposedPattern": ".agent/reference/global/01-reference-catalog.json",
+      "action": "rename_later",
+      "reason": "The stage 01 skill owns the global external reference index catalog."
+    },
+    {
+      "id": "01-reference-indexes",
+      "stage": "01",
+      "ownerSkill": "reference-index-importer",
+      "currentPattern": ".agent/reference/global/indexes/*.json",
+      "currentRegex": "^reference/global/indexes/[^/]+\\.json$",
+      "proposedPattern": ".agent/reference/global/indexes/01-<category>-index.json",
+      "action": "rename_later",
+      "reason": "Category indexes are stage 01 machine artifacts and should be visibly stage-scoped."
+    },
+    {
+      "id": "chain-execution-batch",
+      "stage": "chain",
+      "ownerSkill": "shared",
+      "currentPattern": ".agent/context/execution-batch.json",
+      "currentRegex": "^context/execution-batch\\.json$",
+      "proposedPattern": ".agent/context/chain-execution-batch.json",
+      "action": "rename_later",
+      "reason": "Execution batch state is orchestration-level rather than owned by one delivery step."
+    },
+    {
+      "id": "chain-execution-state",
+      "stage": "chain",
+      "ownerSkill": "shared",
+      "currentPattern": ".agent/context/<functionCode>/execution-state.json",
+      "currentRegex": "^context/[^/]+/execution-state\\.json$",
+      "proposedPattern": ".agent/context/<functionCode>/chain-execution-state.json",
+      "action": "rename_later",
+      "reason": "Function execution state is shared across multiple skills."
+    },
+    {
+      "id": "chain-api-checklist",
+      "stage": "chain",
+      "ownerSkill": "shared",
+      "currentPattern": ".agent/context/<functionCode>/api-checklist.json",
+      "currentRegex": "^context/[^/]+/api-checklist\\.json$",
+      "proposedPattern": ".agent/context/<functionCode>/chain-api-checklist.json",
+      "action": "rename_later",
+      "reason": "The API checklist is cross-stage tracking rather than a single stage output."
+    },
+    {
+      "id": "chain-api-manifest",
+      "stage": "chain",
+      "ownerSkill": "shared",
+      "currentPattern": ".agent/context/<functionCode>/apis/<apiId>/manifest.json",
+      "currentRegex": "^context/[^/]+/apis/[^/]+/manifest\\.json$",
+      "proposedPattern": ".agent/context/<functionCode>/apis/<apiId>/chain-api-manifest.json",
+      "action": "rename_later",
+      "reason": "Per-API manifest is shared by spec, code, fixture, and report stages."
+    },
+    {
+      "id": "02-api-spec",
+      "stage": "02",
+      "ownerSkill": "api-spec-writer",
+      "currentPattern": ".agent/context/<functionCode>/apis/<apiId>/<functionCode>_API_Spec.json",
+      "currentRegex": "^context/[^/]+/apis/[^/]+/[^/]+_v[0-9]+(?:\\.[0-9]+)*_API_Spec\\.json$",
+      "proposedPattern": ".agent/context/<functionCode>/apis/<apiId>/02-api-spec_<functionCode>.json",
+      "action": "rename_later",
+      "reason": "API Spec is the main stage 02 machine output."
+    },
+    {
+      "id": "02-spec-progress",
+      "stage": "02",
+      "ownerSkill": "api-spec-writer",
+      "currentPattern": ".agent/context/<functionCode>/spec-progress.md",
+      "currentRegex": "^context/[^/]+/spec-progress\\.md$",
+      "proposedPattern": ".agent/context/<functionCode>/02-spec-progress.md",
+      "action": "rename_later",
+      "reason": "Spec progress is stage 02 human-readable progress."
+    },
+    {
+      "id": "03-fixture-progress",
+      "stage": "03",
+      "ownerSkill": "api-sql-fixture-preparer",
+      "currentPattern": ".agent/context/<functionCode>/fixture-progress.md",
+      "currentRegex": "^context/[^/]+/fixture-progress\\.md$",
+      "proposedPattern": ".agent/context/<functionCode>/03-fixture-progress.md",
+      "action": "rename_later",
+      "reason": "SQL fixture progress belongs to stage 03."
+    },
+    {
+      "id": "03-db-fixture-report",
+      "stage": "03",
+      "ownerSkill": "api-sql-fixture-preparer",
+      "currentPattern": ".agent/context/<functionCode>/db-fixture-report.json",
+      "currentRegex": "^context/[^/]+/db-fixture-report\\.json$",
+      "proposedPattern": ".agent/context/<functionCode>/03-db-fixture-report.json",
+      "action": "rename_later",
+      "reason": "Database fixture report belongs to stage 03."
+    },
+    {
+      "id": "03-table-checks",
+      "stage": "03",
+      "ownerSkill": "api-sql-fixture-preparer",
+      "currentPattern": ".agent/context/<functionCode>/table-checks.json",
+      "currentRegex": "^context/[^/]+/table-checks\\.json$",
+      "proposedPattern": ".agent/context/<functionCode>/03-table-checks.json",
+      "action": "rename_later",
+      "reason": "Table validation output belongs to stage 03."
+    },
+    {
+      "id": "03-seed-plan",
+      "stage": "03",
+      "ownerSkill": "api-sql-fixture-preparer",
+      "currentPattern": ".agent/context/<functionCode>/seed-plan.sql",
+      "currentRegex": "^context/[^/]+/seed-plan\\.sql$",
+      "proposedPattern": ".agent/context/<functionCode>/03-seed-plan.sql",
+      "action": "rename_later",
+      "reason": "Seed planning SQL belongs to stage 03."
+    },
+    {
+      "id": "03-seed-executed",
+      "stage": "03",
+      "ownerSkill": "api-sql-fixture-preparer",
+      "currentPattern": ".agent/context/<functionCode>/seed-executed.sql",
+      "currentRegex": "^context/[^/]+/seed-executed\\.sql$",
+      "proposedPattern": ".agent/context/<functionCode>/03-seed-executed.sql",
+      "action": "rename_later",
+      "reason": "Executed seed SQL belongs to stage 03."
+    },
+    {
+      "id": "03-seed-manifest",
+      "stage": "03",
+      "ownerSkill": "api-sql-fixture-preparer",
+      "currentPattern": ".agent/context/<functionCode>/seed-manifest.json",
+      "currentRegex": "^context/[^/]+/seed-manifest\\.json$",
+      "proposedPattern": ".agent/context/<functionCode>/03-seed-manifest.json",
+      "action": "rename_later",
+      "reason": "Seed manifest belongs to stage 03."
+    },
+    {
+      "id": "04-repo-snapshot",
+      "stage": "04",
+      "ownerSkill": "api-code-writer",
+      "currentPattern": ".agent/context/<functionCode>/repo-snapshot.json",
+      "currentRegex": "^context/[^/]+/repo-snapshot\\.json$",
+      "proposedPattern": ".agent/context/<functionCode>/04-repo-snapshot.json",
+      "action": "rename_later",
+      "reason": "Repository snapshot is produced for stage 04 code writing."
+    },
+    {
+      "id": "04-code-progress",
+      "stage": "04",
+      "ownerSkill": "api-code-writer",
+      "currentPattern": ".agent/context/<functionCode>/code-progress.md",
+      "currentRegex": "^context/[^/]+/code-progress\\.md$",
+      "proposedPattern": ".agent/context/<functionCode>/04-code-progress.md",
+      "action": "rename_later",
+      "reason": "Code progress belongs to stage 04."
+    },
+    {
+      "id": "04-change-plan",
+      "stage": "04",
+      "ownerSkill": "api-code-writer",
+      "currentPattern": ".agent/context/<functionCode>/change-plan.json",
+      "currentRegex": "^context/[^/]+/change-plan\\.json$",
+      "proposedPattern": ".agent/context/<functionCode>/04-change-plan.json",
+      "action": "rename_later",
+      "reason": "Code change plan belongs to stage 04."
+    },
+    {
+      "id": "04-implementation-report",
+      "stage": "04",
+      "ownerSkill": "api-code-writer",
+      "currentPattern": ".agent/context/<functionCode>/implementation-report.md",
+      "currentRegex": "^context/[^/]+/implementation-report\\.md$",
+      "proposedPattern": ".agent/context/<functionCode>/04-implementation-report.md",
+      "action": "rename_later",
+      "reason": "Implementation report belongs to stage 04."
+    },
+    {
+      "id": "04-diagnosis-report",
+      "stage": "04",
+      "ownerSkill": "api-code-writer",
+      "currentPattern": ".agent/context/<functionCode>/diagnosis-report.json",
+      "currentRegex": "^context/[^/]+/diagnosis-report\\.json$",
+      "proposedPattern": ".agent/context/<functionCode>/04-diagnosis-report.json",
+      "action": "rename_later",
+      "reason": "Diagnosis report belongs to stage 04."
+    },
+    {
+      "id": "04-validation-evidence",
+      "stage": "04",
+      "ownerSkill": "api-code-writer",
+      "currentPattern": ".agent/context/<functionCode>/test-evidence.json",
+      "currentRegex": "^context/[^/]+/test-evidence\\.json$",
+      "proposedPattern": ".agent/context/<functionCode>/04-validation-evidence.json",
+      "action": "rename_later",
+      "reason": "Runtime validation evidence belongs to stage 04 and should not look like stage 05 UT output."
+    },
+    {
+      "id": "04-code-contract-review",
+      "stage": "04",
+      "ownerSkill": "api-code-writer",
+      "currentPattern": ".agent/context/<functionCode>/code-contract-review.json",
+      "currentRegex": "^context/[^/]+/code-contract-review\\.json$",
+      "proposedPattern": ".agent/context/<functionCode>/04-code-contract-review.json",
+      "action": "rename_later",
+      "reason": "Code contract review belongs to stage 04."
+    },
+    {
+      "id": "04-review-notes",
+      "stage": "04",
+      "ownerSkill": "api-code-writer",
+      "currentPattern": ".agent/context/<functionCode>/review-notes.json",
+      "currentRegex": "^context/[^/]+/review-notes\\.json$",
+      "proposedPattern": ".agent/context/<functionCode>/04-review-notes.json",
+      "action": "rename_later",
+      "reason": "Code review notes belong to stage 04."
+    },
+    {
+      "id": "05-module-scope",
+      "stage": "05",
+      "ownerSkill": "docx-unittest-report",
+      "currentPattern": ".agent/context/<functionCode>/module-scope.json",
+      "currentRegex": "^context/[^/]+/module-scope\\.json$",
+      "proposedPattern": ".agent/context/<functionCode>/05-module-scope.json",
+      "action": "rename_later",
+      "reason": "Module scope is used for stage 05 UT report generation."
+    },
+    {
+      "id": "05-coverage-gap",
+      "stage": "05",
+      "ownerSkill": "docx-unittest-report",
+      "currentPattern": ".agent/context/<functionCode>/coverage-gap.json",
+      "currentRegex": "^context/[^/]+/coverage-gap\\.json$",
+      "proposedPattern": ".agent/context/<functionCode>/05-coverage-gap.json",
+      "action": "rename_later",
+      "reason": "Coverage gap analysis belongs to stage 05."
+    },
+    {
+      "id": "vsdx-native-spec",
+      "stage": "delivery-assist",
+      "ownerSkill": "native-vsdx-sequence-writer",
+      "currentPattern": ".agent/context/<functionCode>/sequence/<functionCode>_native_visio_spec.json",
+      "currentRegex": "^context/[^/]+/sequence/[^/]+_native_visio_spec\\.json$",
+      "proposedPattern": ".agent/context/<functionCode>/sequence/sequence-native-vsdx-spec_<functionCode>.json",
+      "action": "rename_later",
+      "reason": "Internal VSDX generation specs should use stable lowercase machine naming."
+    },
+    {
+      "id": "vsdx-plantuml-draft",
+      "stage": "delivery-assist",
+      "ownerSkill": "native-vsdx-sequence-writer",
+      "currentPattern": ".agent/context/<functionCode>/sequence/<functionCode>_sequence.puml",
+      "currentRegex": "^context/[^/]+/sequence/[^/]+_sequence\\.puml$",
+      "proposedPattern": ".agent/context/<functionCode>/sequence/sequence-diagram_<functionCode>.puml",
+      "action": "rename_later",
+      "reason": "Internal PlantUML drafts should use clear sequence-diagram naming."
+    },
+    {
+      "id": "vsdx-layout-notes",
+      "stage": "delivery-assist",
+      "ownerSkill": "native-vsdx-sequence-writer",
+      "currentPattern": ".agent/context/<functionCode>/sequence/<functionCode>_plantuml_落版說明.md",
+      "currentRegex": "^context/[^/]+/sequence/[^/]+_plantuml_落版說明\\.md$",
+      "proposedPattern": ".agent/context/<functionCode>/sequence/sequence-layout-notes_<functionCode>.md",
+      "action": "rename_later",
+      "reason": "Internal layout notes should not depend on tool-specific draft names."
+    },
+    {
+      "id": "customer-vsdx-deliverable",
+      "stage": "delivery-assist",
+      "ownerSkill": "native-vsdx-sequence-writer",
+      "currentPattern": "vsdx/<functionCode>_01.vsdx",
+      "proposedPattern": "vsdx/<functionCode>_01.vsdx",
+      "action": "external_keep",
+      "reason": "Formal customer VSDX delivery names follow project delivery rules."
+    },
+    {
+      "id": "plugin-main-flow-svg",
+      "stage": "plugin-packaging",
+      "ownerSkill": "plugin-packager",
+      "currentPattern": "assets/diagrams/专案交付中枢_主流程图.svg",
+      "proposedPattern": "assets/diagrams/专案交付中枢_主流程图.svg",
+      "action": "keep",
+      "reason": "Plugin architecture SVG names are human-facing packaging assets."
+    },
+    {
+      "id": "plugin-agent-architecture-svg",
+      "stage": "plugin-packaging",
+      "ownerSkill": "plugin-packager",
+      "currentPattern": "assets/diagrams/专案交付中枢_技能与agent架构图.svg",
+      "proposedPattern": "assets/diagrams/专案交付中枢_技能与agent架构图.svg",
+      "action": "keep",
+      "reason": "Plugin architecture SVG names are human-facing packaging assets."
+    },
+    {
+      "id": "plugin-workspace-agent-tree-svg",
+      "stage": "plugin-packaging",
+      "ownerSkill": "plugin-packager",
+      "currentPattern": "assets/diagrams/专案交付中枢_工作区与agent结构树.svg",
+      "proposedPattern": "assets/diagrams/专案交付中枢_工作区与agent结构树.svg",
+      "action": "keep",
+      "reason": "Workspace and .agent structure tree is a human-facing packaging asset."
+    },
+    {
+      "id": "agent-workspace-snapshot",
+      "stage": "chain",
+      "ownerSkill": "shared",
+      "currentPattern": ".agent/config/chain-workspace.json",
+      "proposedPattern": ".agent/config/chain-workspace.json",
+      "action": "keep",
+      "reason": "Workspace snapshot already uses shared chain naming."
+    },
+    {
+      "id": "agent-design-source-registry",
+      "stage": "chain",
+      "ownerSkill": "api-detail-tsd-sync",
+      "currentPattern": ".agent/config/design-source-registry.json",
+      "proposedPattern": ".agent/config/design-source-registry.json",
+      "action": "keep",
+      "reason": "Design source registry is a stable cross-run configuration artifact."
+    },
+    {
+      "id": "agent-chain-status",
+      "stage": "chain",
+      "ownerSkill": "shared",
+      "currentPattern": ".agent/status/chain-status.json",
+      "proposedPattern": ".agent/status/chain-status.json",
+      "action": "keep",
+      "reason": "Chain status already uses shared chain naming."
+    },
+    {
+      "id": "project-rules-catalog",
+      "stage": "project-rules",
+      "ownerSkill": "project-rule-analyzer",
+      "currentPattern": ".agent/project-rules/<workspaceKey>/catalog.json",
+      "proposedPattern": ".agent/project-rules/<workspaceKey>/catalog.json",
+      "action": "keep",
+      "reason": "Project rules catalog is a public rule-pack entry point used by all skills."
+    }
+  ]
+}

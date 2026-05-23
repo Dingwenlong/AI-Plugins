@@ -1,0 +1,21 @@
+{
+  "name": "clipped-header-tab",
+  "type": "clipped-tab",
+  "defaultHeight": 0.28,
+  "cutMin": 0.10,
+  "cutMax": 0.18,
+  "cutWidthRatio": 0.08,
+  "style": {
+    "fillPattern": 1,
+    "fillColor": "RGB(255,255,255)",
+    "lineColor": "RGB(30,80,84)",
+    "lineWeight": "1.25 pt",
+    "linePattern": 1,
+    "textColor": "RGB(30,80,84)",
+    "font": "Microsoft JhengHei",
+    "fontSize": 8
+  },
+  "textInsetX": 0.04,
+  "textInsetY": 0.055,
+  "textHeight": 0.17
+}

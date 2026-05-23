@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "1.0.0",
+  "sourceName": "數據庫設計規範",
+  "version": "v3 20220908",
+  "sourceStatus": "source_unreadable",
+  "sourceStatusPath": "references/database-design-standard-v3/source/source-status.json",
+  "conversionPolicy": {
+    "strategy": "libreoffice_headless_then_word_com_readonly",
+    "emptyRulePolicy": "do_not_generate_database_design_rules_without_readable_source",
+    "fallbackBehavior": "block_database_table_design_until_readable_markdown_json_or_unprotected_word_is_supplied"
+  },
+  "selectionPolicy": {
+    "defaultLoad": false,
+    "loadOnlyWhen": [
+      "new_or_changed_database_table_design",
+      "database_column_design_or_renaming",
+      "primary_key_foreign_key_unique_key_decision",
+      "index_or_query_performance_design",
+      "stored_procedure_or_view_design",
+      "audit_field_retention_or_sensitive_data_design"
+    ],
+    "notFor": [
+      "ordinary_api_naming",
+      "request_response_field_naming_without_database_design",
+      "api_detail_workbook_formatting",
+      "db_sp_source_trace_only_without_new_design"
+    ]
+  },
+  "pendingRuleSlots": [
+    "table-naming",
+    "column-naming",
+    "primary-foreign-key",
+    "index-design",
+    "stored-procedure-view",
+    "audit-fields",
+    "data-type-nullability",
+    "retention-security"
+  ],
+  "rules": [
+    {
+      "ruleId": "database-design-source-unreadable",
+      "title": "數據庫設計規範正文不可讀阻塞規則",
+      "category": "source-status",
+      "direction": "database-design",
+      "ruleType": "blocking_gap",
+      "audience": "design-analysis",
+      "featureTriggers": [
+        "newTableDesign",
+        "changedTableDesign",
+        "columnDesign",
+        "keyIndexDesign",
+        "storedProcedureOrViewDesign",
+        "retentionSecurityDesign"
+      ],
+      "loadPath": "references/database-design-standard-v3/rules/source-unreadable.md",
+      "loadReason": "Only load when a task needs database table design rules; current source is DRM-encrypted and no authoritative rule text was extracted.",
+      "action": "block_until_readable_source"
+    }
+  ]
+}

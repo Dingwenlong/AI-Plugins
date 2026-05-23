@@ -1,0 +1,17 @@
+*.bak
+*.pyc
+*.pyo
+*.tmp
+*.log
+*.zip
+*.7z
+*.rar
+__pycache__/
+.venv/
+venv/
+node_modules/
+**/.agent/functions/
+**/.agent/status/
+**/.agent/wedoc-smartsheet-receipts/
+wedoc-smartsheet-targets.json
+wedoc-smartsheet-targets.local.json

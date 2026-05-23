@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "registryType": "template",
+  "notes": [
+    "Runtime design source registry lives in <agentRoot>/config/design-source-registry.json.",
+    "Do not store personal workspace paths in the plugin copy.",
+    "This file is kept only as a schema/template for migration and onboarding."
+  ],
+  "directories": {},
+  "functions": {}
+}

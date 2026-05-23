@@ -1,0 +1,136 @@
+API 测试代码与单元测试报告生成器 - 使用说明
+
+一、用途
+本技能用于处理“以 Word 测试报告为准、以 .NET UnitTest / IntegrationTest .trx、代码检查或 Postman MCP 真实接口调用证据为事实来源”的场景。
+它会先从 .docx 报告中抽出测试项，生成 manifest，再读取或先执行测试，
+最后把测试结果、Postman MCP 实测状态与文本证据回填到 Word 报告。
+
+二、工作方式
+标准流程如下：
+
+1. 输入一份已有的 .docx 测试报告
+2. 用 bootstrap 脚本解析文档结构，生成一个 .job.json
+3. 若是需求模块级报告，先用 analyze_module_scope.py 回溯模块中的 API / 代码 / 测试
+4. 再用 classify_template_items.py 判定哪些模板项适用、哪些可标记为不适用
+5. 再用 build_coverage_gap.py 产出缺口清单，决定该补 UnitTest、IntegrationTest、代码定位还是人工证据
+6. 若要先吃一轮安全自动修正，可用 apply_manifest_gap_fixes.py 修正 manual 模式错配、补齐 codeInspection，或补强规则 testBindings；弱规则只会写进建议报告
+7. 在 job/manifest 中补齐信息
+   - metadata：API 名称、测试人员、测试日期
+   - unitTest / integrationTest：trxPath / resultsDir / command / workingDirectory
+   - apiRuntimeCall：Postman MCP 实测 request.json / response.json / status.png / expectedStatusCodes
+   - codeInspection：每个代码定位项明确配置证据路径与关键 token 规则
+   - testBindings：每个测试项明确绑定哪些测试名称
+8. 运行 run_report_job.py
+9. 生成 results.json
+10. 把状态、实际结果与精简统计摘要写回 Word 报告
+11. 正式交付前，可再执行 compact_report_outputs.py，仅保留最终报告、最终 manifest、最终 results、必要 trx 与 Postman MCP 证据目录
+
+三、输入与输出
+输入：
+- 原始测试报告：.docx
+- 运行配置：.job.json
+- UnitTest / IntegrationTest 结果：.trx 或可产出 .trx 的执行命令
+- Postman MCP 真实接口调用证据：request.json、response.json、status.png
+
+输出：
+- 回填后的测试报告：.docx
+- 结构化执行结果：results.json
+
+四、目录中的关键文件
+1. SKILL.md
+2. assets/ 内置 API UT 报告模板
+3. assets/ 内置 API 单元测试检查清单
+4. assets/binding-rules.json
+5. scripts/bootstrap_manifest.py
+6. scripts/trx_result_utils.py
+7. scripts/analyze_module_scope.py
+8. scripts/classify_template_items.py
+9. scripts/build_coverage_gap.py
+10. scripts/apply_manifest_gap_fixes.py
+11. scripts/collect_unittest_results.py
+12. scripts/postman_mcp_evidence.py
+13. scripts/apply_report_results.py
+14. scripts/run_report_job.py
+15. UnitTest/
+
+五、运行前提
+1. Python 可用
+2. python-docx 可用
+3. 若配置了 unitTest.command 或 integrationTest.command，对应测试运行环境可用
+4. .trx 路径或 resultsDir 能解析到真实测试结果
+5. 若启用 api_runtime_call，Postman MCP 已由 agent 调用完成，并已保存遮蔽敏感信息后的 request.json、response.json 与 status.png
+
+六、常用运行方法
+1. 从 Word 报告生成 manifest
+
+python "C:\Users\<username>\plugins\project-delivery-hub-v1\skills\docx-unittest-report\scripts\bootstrap_manifest.py" "D:\Path\To\Report.docx"
+
+2. 跑完整流程
+
+python "C:\Users\<username>\plugins\project-delivery-hub-v1\skills\docx-unittest-report\scripts\run_report_job.py" "D:\Path\To\Report.job.json"
+
+2.1 模块级需求先回溯范围
+
+python "C:\Users\<username>\plugins\project-delivery-hub-v1\skills\docx-unittest-report\scripts\analyze_module_scope.py" "D:\Path\To\.agent\context\N.001.001"
+
+2.2 按模块范围判定模板适用性
+
+python "C:\Users\<username>\plugins\project-delivery-hub-v1\skills\docx-unittest-report\scripts\classify_template_items.py" "D:\Path\To\module-scope.json" "D:\Path\To\template-outline.json"
+
+2.3 产出模块测试缺口清单
+
+python "C:\Users\<username>\plugins\project-delivery-hub-v1\skills\docx-unittest-report\scripts\build_coverage_gap.py" "D:\Path\To\template-classification.json" --manifest "D:\Path\To\Report.job.json" --results "D:\Path\To\Report.results.json"
+
+2.4 应用安全自动修正
+
+python "C:\Users\<username>\plugins\project-delivery-hub-v1\skills\docx-unittest-report\scripts\apply_manifest_gap_fixes.py" "D:\Path\To\coverage-gap.json" "D:\Path\To\Report.job.json" "D:\Path\To\Report.results.json"
+
+2.5 正式交付收口，清理中间件
+
+python "C:\Users\<username>\plugins\project-delivery-hub-v1\skills\docx-unittest-report\scripts\compact_report_outputs.py" "D:\Path\To\Report.autofixed.job.json" "D:\Path\To\Report.autofixed.results.json"
+
+2.6 为无界面 Postman MCP 调用补状态截图
+
+python "C:\Users\<username>\plugins\project-delivery-hub-v1\skills\docx-unittest-report\scripts\postman_mcp_evidence.py" render-status --request ".agent\context\<functionCode>\ut-report\postman-mcp\<apiId>\<scenarioId>\request.json" --response ".agent\context\<functionCode>\ut-report\postman-mcp\<apiId>\<scenarioId>\response.json" --output ".agent\context\<functionCode>\ut-report\postman-mcp\<apiId>\<scenarioId>\status.png" --expected-status 200
+
+3. 已经有 results.json，只做 Word 回填
+
+python "C:\Users\<username>\plugins\project-delivery-hub-v1\skills\docx-unittest-report\scripts\apply_report_results.py" "D:\Path\To\Report.job.json" "D:\Path\To\Report.results.json"
+
+4. 跑技能自测
+
+python -m unittest discover UnitTest -v
+
+七、manifest 使用要点
+1. UnitTest 自动化项使用 mode: "unit_test"
+2. IntegrationTest 自动化项使用 mode: "integration_test"
+3. Postman MCP 真实接口调用项使用 mode: "api_runtime_call"，必须配置 apiRuntimeCall.requestPath、responsePath、screenshotPath、expectedStatusCodes
+4. 代码定位项使用 mode: "code_inspection"
+5. 人工项使用 mode: "manual"
+6. 不适用项使用 mode: "skip"
+7. enabled=true 的测试项必须写 testBindings.testNames；enabled=true 的代码定位项必须写 codeInspection.evidencePaths；enabled=true 的真实接口调用项必须写 apiRuntimeCall 证据路径
+8. 不做“从 DOCX 自动猜测试名”
+9. Postman MCP 分支是“真实接口调用 / Postman MCP 实测”，不是 UnitTest；缺少 MCP 工具或证据时必须阻塞或待补
+10. Postman MCP 证据中的 Authorization、Cookie、API key、token、password、secret 必须先遮蔽
+
+八、Word 回填规则
+1. 首表会更新 API 名称、测试人员、测试日期、汇总结果
+2. 每个处理过的区块底部会插入或复用一条摘要行，但不显示“自動化證據摘要”字样
+3. 摘要区块仅保留一行统计文字，例如：共 a 項檢查，已執行 b 項，其中通過 c 項、失敗 d 項
+4. 不再输出结论、失败细项、待补清单、绑定测试或附件路径
+
+九、常见问题
+1. 问：还需要 Playwright/Node 吗？
+   答：不需要。当前流程完全基于 UnitTest / IntegrationTest .trx。
+
+2. 问：没有 trx 可以跑吗？
+   答：可以。若是测试项，可在 manifest 中配置 unitTest.command 或 integrationTest.command，由 run_report_job.py 先执行命令再解析 trx；若是结构/契约类项，也可以直接走 code_inspection。
+
+3. 问：一个报告项可以绑定多个测试吗？
+   答：可以。默认规则是 all_pass，绑定的测试都通过才算通过。
+
+4. 问：IntegrationTest 老是被工作区锁文件干扰怎么办？
+   答：可在 integrationTest.cleanWorkspace 中配置 sourceRoot / targetRoot，先复制干净副本再执行测试命令。
+
+5. 问：Postman MCP 调用可以当作单元测试吗？
+   答：不可以。它属于真实接口调用证据层，只证明实际 HTTP 调用状态、入参、回包与接口可达性；报告文字应写“Postman MCP / 真实接口调用”，不要写成 UnitTest。

@@ -1,0 +1,17 @@
+{
+  "name": "page-title",
+  "type": "native-text",
+  "stylePolicy": "reference-e001-title",
+  "description": "Top page title style modeled after the project reference E.001_01 VSDX/SVG title.",
+  "left": 0.25,
+  "top": 0.78,
+  "width": 10.3,
+  "height": 0.43,
+  "style": {
+    "textColor": "RGB(30,81,85)",
+    "font": "Times New Roman",
+    "fontSize": 16,
+    "bold": false,
+    "align": "center"
+  }
+}
