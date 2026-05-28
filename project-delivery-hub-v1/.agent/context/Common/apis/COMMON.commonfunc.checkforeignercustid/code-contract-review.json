@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "4.1.0",
+  "skillName": "api-code-writer",
+  "manifestType": "code-contract-review",
+  "updatedAt": "2026-05-23T22:17:33+08:00",
+  "executionId": "Common",
+  "apiId": "COMMON.commonfunc.checkforeignercustid",
+  "status": "warnings",
+  "summary": {
+    "findingCount": 1,
+    "blockingCount": 0,
+    "warningCount": 1
+  },
+  "contractSnapshot": {
+    "requestFields": [
+      {
+        "path": "custId",
+        "dataType": "string",
+        "required": true,
+        "description": "客戶ID",
+        "notes": ""
+      }
+    ],
+    "responseFields": [
+      {
+        "path": "result",
+        "dataType": "boolean",
+        "required": true,
+        "description": "是否外國人",
+        "notes": "true ; false"
+      }
+    ],
+    "responseDataIsCollection": false,
+    "responseItemFields": []
+  },
+  "findings": [
+    {
+      "severity": "warning",
+      "category": "method_signature_missing",
+      "file": "Sinopac.EnterpriseAPI/Controllers/CommonFuncController.cs",
+      "line": null,
+      "message": "找不到 CheckForeignerCustIdAsync 方法簽名，無法驗證 controller 與 spec 契約是否一致。",
+      "expected": "CheckForeignerCustIdAsync",
+      "actual": "not found"
+    }
+  ]
+}

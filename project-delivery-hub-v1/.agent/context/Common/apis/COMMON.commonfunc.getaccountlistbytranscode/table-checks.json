@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "4.1.0",
+  "skillName": "api-sql-fixture-preparer",
+  "manifestType": "table-checks",
+  "updatedAt": "2026-05-23T18:03:30+08:00",
+  "executionId": "Common",
+  "apiId": "COMMON.commonfunc.getaccountlistbytranscode",
+  "dbTarget": "ConnectionStrings.Report",
+  "authorityRoot": null,
+  "tables": []
+}

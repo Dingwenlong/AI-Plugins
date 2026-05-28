@@ -24,7 +24,8 @@
       "type": "string",
       "enum": [
         "4.1.0",
-        "4.2.0"
+        "4.2.0",
+        "4.3.0"
       ]
     },
     "apiId": {
@@ -78,6 +79,30 @@
           "items": {
             "type": "string",
             "minLength": 1
+          }
+        },
+        "sequenceDiagrams": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "path",
+              "kind",
+              "sha256",
+              "matchedBy",
+              "authority"
+            ],
+            "properties": {
+              "path": { "type": "string", "minLength": 1 },
+              "kind": {
+                "type": "string",
+                "enum": ["native_visio_spec", "plantuml", "vsdx", "svg"]
+              },
+              "sha256": { "type": "string", "minLength": 1 },
+              "matchedBy": { "type": "string", "minLength": 1 },
+              "authority": { "type": "string", "minLength": 1 }
+            }
           }
         }
       }
@@ -632,7 +657,14 @@
             "properties": {
               "topic": { "type": "string", "minLength": 1 },
               "reason": { "type": "string", "minLength": 1 },
-              "blocking": { "type": "boolean" }
+              "blocking": { "type": "boolean" },
+              "blockedReason": { "type": "string", "minLength": 1 },
+              "missingFacts": {
+                "type": "array",
+                "items": { "type": "string", "minLength": 1 }
+              },
+              "suggestedOwner": { "type": "string", "minLength": 1 },
+              "nextDecisionNeeded": { "type": "string", "minLength": 1 }
             }
           }
         }
@@ -670,6 +702,25 @@
           "type": "array",
           "items": {
             "type": "string"
+          }
+        },
+        "sequenceDiagramExtracts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true,
+            "required": [
+              "evidenceId",
+              "path",
+              "kind",
+              "appliedToApi"
+            ],
+            "properties": {
+              "evidenceId": { "type": "string", "minLength": 1 },
+              "path": { "type": "string", "minLength": 1 },
+              "kind": { "type": "string", "minLength": 1 },
+              "appliedToApi": { "type": "boolean" }
+            }
           }
         }
       }

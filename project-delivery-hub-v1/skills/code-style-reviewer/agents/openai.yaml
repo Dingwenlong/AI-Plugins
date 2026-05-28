@@ -1,0 +1,10 @@
+interface:
+  display_name: "【开发落地】代码规范审查器"
+  short_description: "按当前 04 技能约束与 apiCodeWriter 外置规则定位旧 C# 代码规范问题。"
+  default_prompt: >-
+    使用 $code-style-reviewer 执行第 04 步代码规范审查：只读读取当前项目 `.agent/context/<functionCode>`
+    的 change-plan 与目标文件清单，解析 `apiCodeWriter` 规则包，并按当前
+    `api-code-writer/SKILL.md` 技能本体约束和外置 code-guidelines 规则定位旧 C# 业务源码
+    不符合规范的位置。默认只扫 change-plan 指向的业务源码；只有用户显式传入 `--scope files --file`
+    时才审查额外文件。默认只输出 `code-style-review.json` 与 `code-style-review.md`，
+    不修改代码、不生成测试源码、不回写 codeStatus；若需要修复，后续再交由人工或 04 代码写入流程处理。

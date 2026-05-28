@@ -1,0 +1,31 @@
+{
+  "reviewStatus": "blocked",
+  "checkedAt": "2026-05-23T19:40:43+08:00",
+  "apiId": "COMMON.commonfunc.getec0001",
+  "source": {
+    "tsdFile": "TSD.Common_封存TSD共用开发链路_v1.0_20260523.docx",
+    "workbookFile": "NEWDA_Method_DETAIL_ExchangeCommonFunc_20260522.xlsx",
+    "sheetNames": [
+      "GetEC0001取帳戶信息"
+    ]
+  },
+  "summary": {
+    "checks": 238,
+    "matched": 237,
+    "matchPct": 99.6,
+    "blockingCount": 1,
+    "warningCount": 0
+  },
+  "findings": [
+    {
+      "severity": "blocking",
+      "kind": "code_handoff_unresolved",
+      "path": "codeHandoff.unresolved.0",
+      "expected": "no blocking unresolved items",
+      "actual": {
+        "topic": "identity.current_customer_context",
+        "reason": "Workbook references authenticated/session identity details, but the business-logic sheet does not fully define the request-side identity contract."
+      }
+    }
+  ]
+}

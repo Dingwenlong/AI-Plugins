@@ -1,0 +1,530 @@
+{
+  "schemaVersion": "4.2.0",
+  "apiId": "COMMON.exchangecommonfunc.getdawhorate",
+  "newAuthor": "Jimmy",
+  "functionCode": "Common",
+  "version": "1.0",
+  "apiCategory": "ExchangeCommonFunc",
+  "apiName": "GetDawhoRate",
+  "source": {
+    "tsdFile": "TSD.Common_封存TSD共用开发链路_v1.0_20260523.docx",
+    "workbookFile": "NEWDA_Method_DETAIL_ExchangeCommonFunc_20260522.xlsx",
+    "sheetNames": [
+      "GetDawhoRateFunc 取大戶匯率",
+      "GetDawhoRate取大戶匯率"
+    ]
+  },
+  "request": [],
+  "response": [
+    {
+      "rowKey": "1",
+      "fieldName": "isSuccess",
+      "dataType": "boolean",
+      "required": true,
+      "description": "API成功與否",
+      "example": "true",
+      "notes": "true ; false"
+    },
+    {
+      "rowKey": "2",
+      "fieldName": "responseCode",
+      "dataType": "string",
+      "required": true,
+      "description": "回應代碼",
+      "example": "0000",
+      "notes": "成功:0000其餘狀況為失敗"
+    },
+    {
+      "rowKey": "3",
+      "fieldName": "responseMessage",
+      "dataType": "string",
+      "required": true,
+      "description": "回應訊息",
+      "notes": "失敗狀況下回傳錯誤訊息"
+    },
+    {
+      "rowKey": "4",
+      "fieldName": "responseDT",
+      "dataType": "string",
+      "required": true,
+      "description": "系統回應時間",
+      "notes": "yyyy/MM/dd HH:mm:ss"
+    },
+    {
+      "rowKey": "5",
+      "fieldName": "responseData",
+      "dataType": "json",
+      "required": true,
+      "description": "回應資料框",
+      "example": "\"responseData\": {}",
+      "properties": [
+        {
+          "rowKey": "5.01",
+          "fieldName": "queryDate",
+          "dataType": "string",
+          "required": true,
+          "description": "查詢日期",
+          "example": "\"queryDate\": \"2025/06/30 09:50:08\"",
+          "notes": "[dbo].[vSPDiscRate].RateTime"
+        },
+        {
+          "rowKey": "5.02",
+          "fieldName": "titleInfo",
+          "dataType": "string",
+          "required": true,
+          "description": "標題訊息",
+          "example": "\"titleInfo\": \"<font color=#b9160f>資料時間：2025年06月30日09時49分<br><br>本資訊僅供參考，實際成交匯率以本行牌告交易當下所議定的匯率為準(牌告更新自營業時間9:00至15:30止)。</font>\""
+        },
+        {
+          "rowKey": "5.03",
+          "fieldName": "billboardRateList",
+          "dataType": "list",
+          "required": true,
+          "description": "牌告匯率",
+          "properties": [
+            {
+              "rowKey": "5.03.01",
+              "fieldName": "dispName",
+              "dataType": "string",
+              "required": true,
+              "description": "幣別",
+              "example": "\"dispName\":\"美元(USD)\"",
+              "notes": "[dbo].[vSPDiscRate] .DispName"
+            },
+            {
+              "rowKey": "5.03.02",
+              "fieldName": "listBuy",
+              "dataType": "string",
+              "required": true,
+              "description": "買進牌告",
+              "example": "\"listBuy\":\"29.06000\"",
+              "notes": "[dbo].[vSPDiscRate].ListBuy"
+            },
+            {
+              "rowKey": "5.03.03",
+              "fieldName": "listSell",
+              "dataType": "string",
+              "required": true,
+              "description": "賣出牌告",
+              "example": "\"listSell\":\"29.15500\"",
+              "notes": "[dbo].[vSPDiscRate].ListSell"
+            },
+            {
+              "rowKey": "5.03.04",
+              "fieldName": "noteBuy",
+              "dataType": "string",
+              "required": true,
+              "description": "買進現鈔",
+              "example": "\"noteBuy \":\"29.12500\"",
+              "notes": "[dbo].[vSPDiscRate].NoteBuy"
+            },
+            {
+              "rowKey": "5.03.05",
+              "fieldName": "noteSell",
+              "dataType": "string",
+              "required": true,
+              "description": "賣出現鈔",
+              "example": "\"noteSell\":\"29.12500\"",
+              "notes": "[dbo].[vSPDiscRate].NoteSell"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "mockExamples": [
+    {
+      "scenario": "結果回傳示例",
+      "responsePayload": {
+        "isSuccess": true,
+        "responseCode": "0000",
+        "responseMessage": "查詢成功",
+        "responseDT": "2025/06/30 09:50:08",
+        "responseData": {
+          "keyId": "6B29FC40-CA47-1067-B31D-00DD010662DA",
+          "queryDate": "2025/06/30 09:50:08",
+          "titleInfo": "<font color=#b9160f>資料時間：2025年06月30日09時49分<br><br>本資訊僅供參考，實際成交匯率以本行牌告交易當下所議定的匯率為準(牌告更新自營業時間9:00至15:30止)。</font>",
+          "billboardRateList": [
+            {
+              "dispName": "美元(USD)",
+              "listBuy": "29.06000",
+              "listSell": "29.15500",
+              "noteBuy": "29.12500",
+              "noteSell": "29.22500"
+            },
+            {
+              "dispName": "日圓(JPY)",
+              "listBuy": "0.2015",
+              "listSell": "0.2055",
+              "noteBuy": "0.2005",
+              "noteSell": "0.2065"
+            },
+            {
+              "dispName": "人民幣(CNY)",
+              "listBuy": "4.0200",
+              "listSell": "4.0850",
+              "noteBuy": "4.0100",
+              "noteSell": "4.0950"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "scenario": "billboardRateList為空",
+      "responsePayload": {
+        "isSuccess": false,
+        "responseCode": "9002",
+        "responseMessage": "查無資料！",
+        "responseDT": "2026/02/24 10:30:25",
+        "responseData": {}
+      }
+    },
+    {
+      "scenario": "請求數據庫失敗",
+      "responsePayload": {
+        "isSuccess": false,
+        "responseCode": "9001",
+        "responseMessage": "系統繁忙,請稍後再試！",
+        "responseDT": "2026/02/24 10:30:25",
+        "responseData": {}
+      }
+    }
+  ],
+  "backendApis": {
+    "DB": [
+      "vSPDiscRate"
+    ]
+  },
+  "businessLogic": {
+    "steps": [
+      {
+        "step": 1,
+        "title": "查詢資料",
+        "details": "1.執行SQL語句撈取大戶牌告匯率，按照時間降序排序\nSelect CONVERT(char(19), RateTime, 120) RateTime, DispCode, (DispName +DispCode)  DispName, str(ListBuy,10,5) ListBuy, str(ListSell,10,5) ListSell, str(NoteBuy,10,5) NoteBuy, str(NoteSell,10,5) NoteSell From ETS.TWETSDB.dbo.vSPDiscRate where BaseFlag = '00' and CateFlag = 'A' order by RateTime desc"
+      },
+      {
+        "step": 2,
+        "title": "組裝回傳 json",
+        "details": "組合Response進行回傳"
+      }
+    ],
+    "fieldMappings": [
+      {
+        "target": "queryDate",
+        "source": "[dbo].[vSPDiscRate].RateTime",
+        "rule": "查詢日期",
+        "fields": [
+          {
+            "field": "queryDate",
+            "source": "[dbo].[vSPDiscRate].RateTime",
+            "rule": "查詢日期"
+          }
+        ]
+      },
+      {
+        "target": "titleInfo",
+        "source": "",
+        "rule": "標題訊息",
+        "fields": [
+          {
+            "field": "titleInfo",
+            "source": "",
+            "rule": "標題訊息"
+          }
+        ]
+      },
+      {
+        "target": "billboardRateList",
+        "source": "[dbo].[vSPDiscRate].DispName",
+        "rule": "牌告匯率",
+        "fields": [
+          {
+            "field": "dispName",
+            "source": "[dbo].[vSPDiscRate].DispName",
+            "rule": "幣別"
+          },
+          {
+            "field": "listBuy",
+            "source": "[dbo].[vSPDiscRate].ListBuy",
+            "rule": "買進牌告"
+          },
+          {
+            "field": "listSell",
+            "source": "[dbo].[vSPDiscRate].ListSell",
+            "rule": "賣出牌告"
+          },
+          {
+            "field": "noteBuy",
+            "source": "[dbo].[vSPDiscRate].NoteBuy",
+            "rule": "買進現鈔"
+          },
+          {
+            "field": "noteSell",
+            "source": "[dbo].[vSPDiscRate].NoteSell",
+            "rule": "賣出現鈔"
+          }
+        ]
+      }
+    ],
+    "errorCodeRules": [
+      {
+        "code": "9002",
+        "scenario": "billboardRateList為空",
+        "message": "查無資料！"
+      },
+      {
+        "code": "9001",
+        "scenario": "請求數據庫失敗",
+        "message": "系統繁忙,請稍後再試！"
+      }
+    ],
+    "runtimeDependencies": [
+      {
+        "id": "mma_sql_connection",
+        "type": "service",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "Execute authoritative SQL declared in the workbook for ETS.TWETSDB.DBO."
+      },
+      {
+        "id": "sql_table_db_ets_etsdb_dbo_vspdiscrate",
+        "type": "sql_table",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "业务逻辑正文提到 DB->[ETS].ETSDB].[dbo].[vSPDiscRate] 大戶牌告匯率 依赖。"
+      },
+      {
+        "id": "sql_table_db_ets_twetsdb_dbo",
+        "type": "sql_table",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "Excel 依赖声明提到 DB->ETS.TWETSDB.DBO。"
+      }
+    ],
+    "dataSources": [
+      {
+        "name": "ETS.TWETSDB.DBO",
+        "type": "sql_table",
+        "authority": "backend_contract",
+        "required": true
+      }
+    ],
+    "sqlSpecs": [
+      {
+        "id": "1",
+        "title": "1.查詢資料",
+        "authority": "backend_contract",
+        "required": true,
+        "dataSources": [
+          "vSPDiscRate"
+        ],
+        "mustContain": [
+          "vSPDiscRate"
+        ],
+        "queryText": "1.執行SQL語句撈取大戶牌告匯率，按照時間降序排序\nSelect CONVERT(char(19), RateTime, 120) RateTime, DispCode, (DispName +DispCode)  DispName, str(ListBuy,10,5) ListBuy, str(ListSell,10,5) ListSell, str(NoteBuy,10,5) NoteBuy, str(NoteSell,10,5) NoteSell From vSPDiscRate where BaseFlag = '00' and CateFlag = 'A' order by RateTime desc"
+      }
+    ],
+    "legacyReferences": [],
+    "prohibitedShortcuts": [
+      "mock_response_payload",
+      "hardcoded_custid",
+      "block_comment_header_substitution"
+    ]
+  },
+  "codeHandoff": {
+    "schemaVersion": "1.0.0",
+    "logicSummary": {
+      "stepCount": 2,
+      "queryContractCount": 1,
+      "mappingRuleCount": 6,
+      "legacyEvidenceCount": 0,
+      "dependencyHintCount": 4,
+      "constraintCount": 5,
+      "unresolvedCount": 0,
+      "primarySource": "businessLogic"
+    },
+    "logicFlow": [
+      {
+        "stepId": "step_1",
+        "title": "查詢資料",
+        "actionType": "query",
+        "inputs": [],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_2",
+        "title": "組裝回傳 json",
+        "actionType": "return",
+        "inputs": [],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      }
+    ],
+    "legacyEvidence": [],
+    "queryContracts": [
+      {
+        "contractId": "1",
+        "purpose": "1.查詢資料",
+        "dataSources": [
+          "vSPDiscRate"
+        ],
+        "mustContain": [
+          "vSPDiscRate"
+        ],
+        "sqlText": "1.執行SQL語句撈取大戶牌告匯率，按照時間降序排序\nSelect CONVERT(char(19), RateTime, 120) RateTime, DispCode, (DispName +DispCode)  DispName, str(ListBuy,10,5) ListBuy, str(ListSell,10,5) ListSell, str(NoteBuy,10,5) NoteBuy, str(NoteSell,10,5) NoteSell From vSPDiscRate where BaseFlag = '00' and CateFlag = 'A' order by RateTime desc",
+        "parameterHints": [],
+        "resultShape": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT",
+          "responseData",
+          "queryDate",
+          "titleInfo",
+          "billboardRateList",
+          "dispName",
+          "listBuy",
+          "listSell",
+          "noteBuy",
+          "noteSell"
+        ],
+        "evidenceIds": []
+      }
+    ],
+    "mappingRules": [
+      {
+        "ruleId": "map_dbo_vspdiscrate_ratetime_querydate",
+        "sourceField": "[dbo].[vSPDiscRate].RateTime",
+        "targetField": "queryDate",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "查詢日期",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_dbo_vspdiscrate_dispname_dispname",
+        "sourceField": "[dbo].[vSPDiscRate].DispName",
+        "targetField": "dispName",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "幣別",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_dbo_vspdiscrate_listbuy_listbuy",
+        "sourceField": "[dbo].[vSPDiscRate].ListBuy",
+        "targetField": "listBuy",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "買進牌告",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_dbo_vspdiscrate_listsell_listsell",
+        "sourceField": "[dbo].[vSPDiscRate].ListSell",
+        "targetField": "listSell",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "賣出牌告",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_dbo_vspdiscrate_notebuy_notebuy",
+        "sourceField": "[dbo].[vSPDiscRate].NoteBuy",
+        "targetField": "noteBuy",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "買進現鈔",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_dbo_vspdiscrate_notesell_notesell",
+        "sourceField": "[dbo].[vSPDiscRate].NoteSell",
+        "targetField": "noteSell",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "賣出現鈔",
+        "evidenceIds": []
+      }
+    ],
+    "dependencyHints": [
+      {
+        "dependencyType": "service",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor"
+        ],
+        "purpose": "Execute authoritative SQL declared in the workbook for ETS.TWETSDB.DBO.",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "sql_table",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor"
+        ],
+        "purpose": "业务逻辑正文提到 DB->[ETS].ETSDB].[dbo].[vSPDiscRate] 大戶牌告匯率 依赖。",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "sql_table",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor"
+        ],
+        "purpose": "Excel 依赖声明提到 DB->ETS.TWETSDB.DBO。",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "sql_table",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor"
+        ],
+        "purpose": "Read from ETS.TWETSDB.DBO",
+        "evidenceIds": []
+      }
+    ],
+    "constraints": [
+      {
+        "constraintType": "prohibited_shortcut",
+        "rule": "mock_response_payload",
+        "severity": "error",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "prohibited_shortcut",
+        "rule": "hardcoded_custid",
+        "severity": "error",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "prohibited_shortcut",
+        "rule": "block_comment_header_substitution",
+        "severity": "error",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "error_code_rule",
+        "rule": "9002 | billboardRateList為空 | 查無資料！",
+        "severity": "warning",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "error_code_rule",
+        "rule": "9001 | 請求數據庫失敗 | 系統繁忙,請稍後再試！",
+        "severity": "warning",
+        "evidenceIds": []
+      }
+    ],
+    "unresolved": []
+  }
+}

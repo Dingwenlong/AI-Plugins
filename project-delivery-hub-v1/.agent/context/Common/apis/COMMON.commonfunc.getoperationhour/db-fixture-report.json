@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "4.1.0",
+  "skillName": "api-sql-fixture-preparer",
+  "manifestType": "db-fixture-report",
+  "updatedAt": "2026-05-23T19:47:00+08:00",
+  "executionId": "Common",
+  "apiId": "COMMON.commonfunc.getoperationhour",
+  "status": "done",
+  "phase": "ready",
+  "executionMode": "prepare",
+  "dbTarget": "connection-name:Report",
+  "authorityRoot": "../../.agent/reference/global",
+  "sqlFixtureRequired": true,
+  "sourcesUsed": [
+    "codeHandoff.queryContracts",
+    "businessLogic.sqlSpecs"
+  ],
+  "tableRefs": [
+    "TBDAY"
+  ],
+  "summary": {
+    "tableCount": 1,
+    "blockingTableCount": 0,
+    "queryTextCount": 1
+  },
+  "message": "COMMON.commonfunc.getoperationhour fixture ready: existing local/test data can be reused.",
+  "findings": [
+    {
+      "tableRef": "TBDAY",
+      "action": "reuse",
+      "blockReason": null
+    }
+  ]
+}

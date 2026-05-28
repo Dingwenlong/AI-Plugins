@@ -12,7 +12,17 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Iterable
 
-from jsonschema import Draft202012Validator
+try:
+    from jsonschema import Draft202012Validator
+except ModuleNotFoundError as exc:
+    if exc.name == "jsonschema":
+        print(
+            "Missing Python dependency: jsonschema. Install it in the Python runtime used for api-code-writer, "
+            "for example `python -m pip install jsonschema`, then rerun.",
+            file=sys.stderr,
+        )
+        raise SystemExit(2) from exc
+    raise
 
 from dev_guidelines import blocking_dev_guideline_gaps, select_dev_guidelines
 from framework_plan import (
@@ -1882,25 +1892,60 @@ def infer_repo_root(project_root: Path, solution_path: Path) -> Path:
 
 def detect_framework_profile(context: ExecutionContext) -> FrameworkProfile:
     repo_root = infer_repo_root(context.project_root, context.solution_path)
-    api_project_path = repo_root / "API" / "EnterpriseAPI" / "EnterpriseAPI" / "EnterpriseAPI.csproj"
-    business_interface_project_path = (
-        repo_root / "BusinessLogicLayout" / "EnterpriseApi" / "EnterpriseApiBusiness.Interface" / "EnterpriseApiBusiness.Interface.csproj"
-    )
-    business_project_path = repo_root / "BusinessLogicLayout" / "EnterpriseApi" / "EnterpriseApiBusiness" / "EnterpriseApiBusiness.csproj"
-    entity_project_path = repo_root / "BusinessLogicLayout" / "EnterpriseApi" / "EnterpriseApiEntity" / "EnterpriseApiEntity.csproj"
-    unit_test_project_path = repo_root / "Test" / "UnitTesting" / "EnterpriseAPI" / "EnterpriseApiUnit" / "EnterpriseAPIUnit.csproj"
-    integration_test_project_path = (
-        repo_root / "Test" / "IntegrationTesting" / "EnterpriseAPI" / "EnterpriseApiIntegration" / "EnterpriseAPIIntegration.csproj"
-    )
-
-    required_paths = {
-        "API/EnterpriseAPI/EnterpriseAPI/EnterpriseAPI.csproj": api_project_path,
-        "BusinessLogicLayout/EnterpriseApi/EnterpriseApiBusiness.Interface/EnterpriseApiBusiness.Interface.csproj": business_interface_project_path,
-        "BusinessLogicLayout/EnterpriseApi/EnterpriseApiBusiness/EnterpriseApiBusiness.csproj": business_project_path,
-        "BusinessLogicLayout/EnterpriseApi/EnterpriseApiEntity/EnterpriseApiEntity.csproj": entity_project_path,
-        "Test/UnitTesting/EnterpriseAPI/EnterpriseApiUnit/EnterpriseAPIUnit.csproj": unit_test_project_path,
-        "Test/IntegrationTesting/EnterpriseAPI/EnterpriseApiIntegration/EnterpriseAPIIntegration.csproj": integration_test_project_path,
+    current_layout_paths = {
+        "Sinopac.EnterpriseAPI/Sinopac.EnterpriseAPI.csproj": repo_root
+        / "Sinopac.EnterpriseAPI"
+        / "Sinopac.EnterpriseAPI.csproj",
+        "EnterpriseApiBusiness.Interface/EnterpriseApiBusiness.Interface.csproj": repo_root
+        / "EnterpriseApiBusiness.Interface"
+        / "EnterpriseApiBusiness.Interface.csproj",
+        "EnterpriseApiBusiness/EnterpriseApiBusiness.csproj": repo_root / "EnterpriseApiBusiness" / "EnterpriseApiBusiness.csproj",
+        "EnterpriseApiEntity/EnterpriseApiEntity.csproj": repo_root / "EnterpriseApiEntity" / "EnterpriseApiEntity.csproj",
+        "Test/EnterpriseApi.Unit/EnterpriseApi.Unit.csproj": repo_root / "Test" / "EnterpriseApi.Unit" / "EnterpriseApi.Unit.csproj",
+        "Test/EnterpriseApi.Integration/EnterpriseApi.Integration.csproj": repo_root
+        / "Test"
+        / "EnterpriseApi.Integration"
+        / "EnterpriseApi.Integration.csproj",
     }
+    legacy_layout_paths = {
+        "API/EnterpriseAPI/EnterpriseAPI/EnterpriseAPI.csproj": repo_root
+        / "API"
+        / "EnterpriseAPI"
+        / "EnterpriseAPI"
+        / "EnterpriseAPI.csproj",
+        "BusinessLogicLayout/EnterpriseApi/EnterpriseApiBusiness.Interface/EnterpriseApiBusiness.Interface.csproj": repo_root
+        / "BusinessLogicLayout"
+        / "EnterpriseApi"
+        / "EnterpriseApiBusiness.Interface"
+        / "EnterpriseApiBusiness.Interface.csproj",
+        "BusinessLogicLayout/EnterpriseApi/EnterpriseApiBusiness/EnterpriseApiBusiness.csproj": repo_root
+        / "BusinessLogicLayout"
+        / "EnterpriseApi"
+        / "EnterpriseApiBusiness"
+        / "EnterpriseApiBusiness.csproj",
+        "BusinessLogicLayout/EnterpriseApi/EnterpriseApiEntity/EnterpriseApiEntity.csproj": repo_root
+        / "BusinessLogicLayout"
+        / "EnterpriseApi"
+        / "EnterpriseApiEntity"
+        / "EnterpriseApiEntity.csproj",
+        "Test/UnitTesting/EnterpriseAPI/EnterpriseApiUnit/EnterpriseAPIUnit.csproj": repo_root
+        / "Test"
+        / "UnitTesting"
+        / "EnterpriseAPI"
+        / "EnterpriseApiUnit"
+        / "EnterpriseAPIUnit.csproj",
+        "Test/IntegrationTesting/EnterpriseAPI/EnterpriseApiIntegration/EnterpriseAPIIntegration.csproj": repo_root
+        / "Test"
+        / "IntegrationTesting"
+        / "EnterpriseAPI"
+        / "EnterpriseApiIntegration"
+        / "EnterpriseAPIIntegration.csproj",
+    }
+
+    if all(path.exists() for path in current_layout_paths.values()):
+        required_paths = current_layout_paths
+    else:
+        required_paths = legacy_layout_paths
     missing_slots = [slot for slot, path in required_paths.items() if not path.exists()]
     if missing_slots:
         raise SkillError(
@@ -1909,6 +1954,23 @@ def detect_framework_profile(context: ExecutionContext) -> FrameworkProfile:
             diagnosis_type="framework_gap",
         )
 
+    api_project_path = required_paths[next(slot for slot in required_paths if slot.endswith("EnterpriseAPI.csproj"))]
+    business_interface_project_path = required_paths[
+        next(slot for slot in required_paths if slot.endswith("EnterpriseApiBusiness.Interface.csproj"))
+    ]
+    business_project_path = required_paths[next(slot for slot in required_paths if slot.endswith("EnterpriseApiBusiness.csproj"))]
+    entity_project_path = required_paths[next(slot for slot in required_paths if slot.endswith("EnterpriseApiEntity.csproj"))]
+    unit_test_project_path = required_paths[
+        next(slot for slot in required_paths if slot.endswith("EnterpriseAPIUnit.csproj") or slot.endswith("EnterpriseApi.Unit.csproj"))
+    ]
+    integration_test_project_path = required_paths[
+        next(
+            slot
+            for slot in required_paths
+            if slot.endswith("EnterpriseAPIIntegration.csproj") or slot.endswith("EnterpriseApi.Integration.csproj")
+        )
+    ]
+
     root_namespace = read_xml_property(api_project_path, "RootNamespace") or f"{context.solution_path.stem}.API.EnterpriseAPI.EnterpriseAPI"
     api_namespace_suffix = ".API.EnterpriseAPI.EnterpriseAPI"
     if root_namespace.endswith(api_namespace_suffix):
@@ -1916,9 +1978,15 @@ def detect_framework_profile(context: ExecutionContext) -> FrameworkProfile:
     else:
         namespace_root = read_xml_property(api_project_path, "AssemblyName") or context.solution_path.stem
 
-    program_extensions_path = repo_root / "Libray" / "Common" / "CommonStatic" / "ProgramExtensions.cs"
+    program_extensions_candidates = (
+        api_project_path.parent / "ProgramExtensions.cs",
+        repo_root / "Libray" / "Common" / "CommonStatic" / "ProgramExtensions.cs",
+    )
     registration_strategy = "manual_registration_review"
-    if program_extensions_path.exists() and "AddBusinessScoped" in program_extensions_path.read_text(encoding="utf-8", errors="replace"):
+    if any(
+        path.exists() and "AddBusinessScoped" in path.read_text(encoding="utf-8", errors="replace")
+        for path in program_extensions_candidates
+    ):
         registration_strategy = "existing_add_business_scoped"
 
     return FrameworkProfile(
@@ -1988,6 +2056,7 @@ def requires_authenticated_identity_context(normalized_model: dict[str, Any]) ->
 def enterprise_repo_has_identity_wiring(profile: FrameworkProfile) -> bool:
     candidate_files = [
         profile.api_project_path.parent / "Program.cs",
+        profile.api_project_path.parent / "ProgramExtensions.cs",
         profile.repo_root / "Libray" / "Common" / "CommonStatic" / "ProgramExtensions.cs",
     ]
     combined = "\n".join(
@@ -2042,6 +2111,72 @@ def build_framework_plan(
     target_method = method_stem if method_stem.endswith("Async") else f"{method_stem}Async"
     request_type = f"{method_stem}Request" if normalized_model.get("requestFields") else None
     response_type = f"{method_stem}Response"
+
+    common_func_candidates = (
+        context.project_root / "Libray" / "Sinopac.CommonFunc",
+        profile.repo_root.parent / "Libray" / "Sinopac.CommonFunc",
+    )
+    common_func_root = next(
+        (path for path in common_func_candidates if (path / "Sinopac.CommonFunc.csproj").exists()),
+        common_func_candidates[0],
+    )
+    if normalize_token(clean_text(item.get("apiCategory"))) == "commonfunc" and (common_func_root / "Sinopac.CommonFunc.csproj").exists():
+        module_name = "CommonFunc"
+        interface_path = common_func_root / "IFuncService" / "ICommonFuncService.cs"
+        service_module_dir = common_func_root / "FuncService"
+        service_root_path = service_module_dir / "CommonFuncService.cs"
+        service_method_path = service_module_dir / f"CommonFuncService.{method_stem}.cs"
+        entity_path = common_func_root / "Dto" / f"{method_stem}Info.cs"
+        response_code_files = (
+            relative_path_from_project(common_func_root / "ResponseCodes" / "O_Common.resx", context.project_root),
+            relative_path_from_project(common_func_root / "ResponseCodes" / "O_Common.Designer.cs", context.project_root),
+        )
+
+        if service_root_path.exists():
+            service_text = service_root_path.read_text(encoding="utf-8", errors="replace")
+            uses_partial_service = bool(re.search(r"\bpartial\s+class\s+CommonFuncService\b", service_text))
+            creation_mode = "extend_partial" if uses_partial_service else "reuse"
+            service_files = (
+                relative_path_from_project(service_root_path, context.project_root),
+                relative_path_from_project(service_method_path, context.project_root),
+            ) if uses_partial_service else (relative_path_from_project(service_root_path, context.project_root),)
+            target_file = service_files[-1]
+        else:
+            creation_mode = "create_module"
+            service_files = (
+                relative_path_from_project(service_root_path, context.project_root),
+                relative_path_from_project(service_method_path, context.project_root),
+            )
+            target_file = service_files[-1]
+
+        interface_file = relative_path_from_project(interface_path, context.project_root)
+        entity_files = (relative_path_from_project(entity_path, context.project_root),)
+        unit_test_files = (relative_path_from_project(profile.unit_test_dir / "CommonFuncServiceTests.cs", context.project_root),)
+        integration_test_files: tuple[str, ...] = ()
+        source_candidates = (
+            interface_file,
+            *service_files,
+            *entity_files,
+            *response_code_files,
+            *unit_test_files,
+        )
+        return profile, FrameworkPlan(
+            framework_profile=profile.profile_name,
+            module_name=module_name,
+            controller_file=None,
+            interface_file=interface_file,
+            service_files=service_files,
+            entity_files=entity_files,
+            unit_test_files=unit_test_files,
+            integration_test_files=integration_test_files,
+            creation_mode=creation_mode,
+            target_file=target_file,
+            target_method=target_method,
+            request_type=request_type,
+            response_type=response_type,
+            source_candidates=source_candidates,
+            registration_strategy="manual_registration_review",
+        )
 
     controller_path = profile.controller_dir / f"{controller_module_name}Controller.cs"
     if controller_path.exists():
@@ -3882,10 +4017,14 @@ def main() -> int:
         resumed_from_phase = clean_text(previous_manifest.get("codePhase")) if previous_manifest else ""
         previous_change_plan = load_existing_change_plan(context, selected_item["apiId"])
         planned_files = [
-            framework_plan.controller_file,
-            framework_plan.interface_file,
-            *framework_plan.service_files,
-            *framework_plan.entity_files,
+            path
+            for path in [
+                framework_plan.controller_file,
+                framework_plan.interface_file,
+                *framework_plan.service_files,
+                *framework_plan.entity_files,
+            ]
+            if path
         ]
         before_hashes = build_planned_file_before_hashes(
             planned_files,

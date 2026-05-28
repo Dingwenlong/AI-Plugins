@@ -1,0 +1,58 @@
+{
+  "schemaVersion": "4.1.0",
+  "manifestType": "api",
+  "executionId": "Common",
+  "apiId": "COMMON.commonutil.deldevicebinding",
+  "apiCategory": "CommonUtil",
+  "apiName": "DelDeviceBinding",
+  "status": "blocked",
+  "phase": "blocked",
+  "updatedAt": "2026-05-23T22:18:09+08:00",
+  "newAuthor": "Jimmy",
+  "specStatus": "done",
+  "specUpdatedAt": "2026-05-23T17:43:53+08:00",
+  "specBlockReason": null,
+  "specSourceFingerprint": "sha256:f11ca241a7e3c5840ddd99d435ed1ea4ba873d85be6b72f15587d449607eab1e",
+  "specSource": {
+    "tsdFile": "TSD.Common_封存TSD共用开发链路_v1.0_20260523.docx",
+    "workbookFile": "NEWDA_API_DETAIL_CommonUtil_20260522.xlsx",
+    "sheetNames": [
+      "DelDeviceBinding 解除裝置綁定"
+    ]
+  },
+  "specArtifacts": {
+    "apiSpec": "../../../.agent/context/Common/apis/COMMON.commonutil.deldevicebinding/Common_API_Spec.json"
+  },
+  "fixtureStatus": "skipped",
+  "fixturePhase": "no_sql",
+  "fixtureUpdatedAt": "2026-05-23T17:55:54+08:00",
+  "fixtureBlockReason": null,
+  "fixtureSourceFingerprint": "sha256:f11ca241a7e3c5840ddd99d435ed1ea4ba873d85be6b72f15587d449607eab1e",
+  "fixtureArtifacts": {
+    "dbFixtureReport": "../../.agent/context/Common/apis/COMMON.commonutil.deldevicebinding/db-fixture-report.json",
+    "tableChecks": "../../.agent/context/Common/apis/COMMON.commonutil.deldevicebinding/table-checks.json",
+    "seedPlan": null,
+    "seedExecuted": null,
+    "seedManifest": null
+  },
+  "codeStatus": "blocked",
+  "codePhase": "blocked",
+  "codeUpdatedAt": "2026-05-23T22:18:09+08:00",
+  "codeBlockReason": "Business logic handoff is missing structured query, mapping, or legacy evidence.",
+  "codeProjectRoot": ".",
+  "codeSolutionPath": "Sinopac.EnterpriseAPI.slnx",
+  "inputHashes": {
+    "upstreamManifest": "sha256:fc67cdb3a30c22ffc970aecb1dfd3247bc29ce271570d29fb855048e01ba5d04",
+    "apiSpec": "sha256:8764b994b3f32b8284870ae195e3093e1806341febb94022983a2f6da9630891"
+  },
+  "modifiedFiles": [],
+  "validationChecks": [],
+  "validationResults": [],
+  "repoDriftFiles": [],
+  "codeArtifacts": {
+    "changePlan": null,
+    "implementationReport": "../../../.agent/context/Common/apis/COMMON.commonutil.deldevicebinding/implementation-report.md",
+    "diagnosisReport": "../../../.agent/context/Common/apis/COMMON.commonutil.deldevicebinding/diagnosis-report.json"
+  },
+  "lastMessage": "COMMON.commonutil.deldevicebinding blocked: Business logic handoff is missing structured query, mapping, or legacy evidence."
+}

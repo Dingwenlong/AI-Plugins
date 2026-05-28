@@ -1,0 +1,909 @@
+{
+  "schemaVersion": "4.1.0",
+  "skillName": "api-code-writer",
+  "manifestType": "change-plan",
+  "status": "planned",
+  "updatedAt": "2026-05-23T22:08:55+08:00",
+  "executionId": "Common",
+  "apiId": "COMMON.commonfunc.checkaccount",
+  "projectRoot": ".",
+  "solutionPath": "Sinopac.EnterpriseAPI.slnx",
+  "upstream": {
+    "manifest": "../../../.agent/context/Common/apis/COMMON.commonfunc.checkaccount/manifest.json",
+    "apiSpec": "../../../.agent/context/Common/apis/COMMON.commonfunc.checkaccount/Common_API_Spec.json",
+    "sourceFingerprint": "sha256:6a9a51ea69d44a52ac99e37be1abfc1a5dd6e7c3696c14045a177b136a49200d",
+    "source": {
+      "tsdFile": "TSD.Common_封�?TSD?�用开?�链路_v1.0_20260523.docx",
+      "workbookFile": "NEWDA_Method_DETAIL_ExchangeCommonFunc_20260522.xlsx",
+      "sheetNames": [
+        "CheckAccount檢測?�否?�本身帳??"
+      ]
+    }
+  },
+  "sourceCandidates": [
+    "Libray/Sinopac.CommonFunc/IFuncService/ICommonFuncService.cs",
+    "Libray/Sinopac.CommonFunc/FuncService/CommonFuncService.cs",
+    "Libray/Sinopac.CommonFunc/FuncService/CommonFuncService.CheckAccount.cs",
+    "Libray/Sinopac.CommonFunc/Dto/CheckAccountInfo.cs",
+    "Test/EnterpriseApi.Unit/CommonFuncServiceTests.cs"
+  ],
+  "repoDriftDetected": false,
+  "repoDriftFiles": [],
+  "beforeHashes": {
+    "Libray/Sinopac.CommonFunc/IFuncService/ICommonFuncService.cs": "sha256:61964be4c7c7903906ee966932436e6a926ec9741b6b89856cc6ed04cf35d8b5",
+    "Libray/Sinopac.CommonFunc/FuncService/CommonFuncService.cs": "sha256:f7daae54af90a4370b14980a4b46beed5468f50c4f12710333a9b021dd647f93",
+    "Libray/Sinopac.CommonFunc/FuncService/CommonFuncService.CheckAccount.cs": null,
+    "Libray/Sinopac.CommonFunc/Dto/CheckAccountInfo.cs": null
+  },
+  "analysis": {
+    "frameworkProfile": "enterpriseapi",
+    "guidelineAuthority": "?�大?��??�説??V2.0 20260203.docx",
+    "repoRoot": ".",
+    "moduleName": "CommonFunc",
+    "interfaceFile": "Libray/Sinopac.CommonFunc/IFuncService/ICommonFuncService.cs",
+    "serviceFiles": [
+      "Libray/Sinopac.CommonFunc/FuncService/CommonFuncService.cs",
+      "Libray/Sinopac.CommonFunc/FuncService/CommonFuncService.CheckAccount.cs"
+    ],
+    "entityFiles": [
+      "Libray/Sinopac.CommonFunc/Dto/CheckAccountInfo.cs"
+    ],
+    "codeTargetFiles": [
+      "Libray/Sinopac.CommonFunc/IFuncService/ICommonFuncService.cs",
+      "Libray/Sinopac.CommonFunc/FuncService/CommonFuncService.CheckAccount.cs",
+      "Libray/Sinopac.CommonFunc/FuncService/CommonFuncService.cs",
+      "Libray/Sinopac.CommonFunc/Dto/CheckAccountInfo.cs"
+    ],
+    "unitTestTargetFiles": [
+      "Test/EnterpriseApi.Unit/CommonFuncServiceTests.cs"
+    ],
+    "integrationTestTargetFiles": [
+    ],
+    "testTargetFiles": [
+      "Test/EnterpriseApi.Unit/CommonFuncServiceTests.cs"
+    ],
+    "testCodeHandoff": {
+      "ownerStep": "05 docx-unittest-report",
+      "writerPolicy": "handoff_only",
+      "unitTestTargetFiles": [
+        "Test/EnterpriseApi.Unit/CommonFuncServiceTests.cs"
+      ],
+      "integrationTestTargetFiles": [
+      ],
+      "note": "Step 04 records test targets and scenarios only; UnitTest, IntegrationTest, and service runtime validation source code belong to step 05."
+    },
+    "creationMode": "extend_partial",
+    "registrationStrategy": "manual_registration_review",
+    "targetFile": "Libray/Sinopac.CommonFunc/FuncService/CommonFuncService.CheckAccount.cs",
+    "targetClass": "CommonFuncService",
+    "targetMethod": "CheckAccountAsync",
+    "action": "ai_orchestrated_implementation",
+    "requestFields": [
+      {
+        "path": "acct",
+        "dataType": "string",
+        "required": true,
+        "description": "檢測帳�?",
+        "notes": ""
+      }
+    ],
+    "responseFields": [
+      {
+        "path": "isSuccess",
+        "dataType": "boolean",
+        "required": true,
+        "description": "API?��??�否",
+        "notes": "true ; false"
+      },
+      {
+        "path": "responseCode",
+        "dataType": "string",
+        "required": true,
+        "description": "?��?�?��",
+        "notes": "?��?:0000?��??�況為失�?"
+      },
+      {
+        "path": "responseMessage",
+        "dataType": "string",
+        "required": true,
+        "description": "?��?訊息",
+        "notes": "失�??�況�??�傳?�誤訊息"
+      },
+      {
+        "path": "responseDT",
+        "dataType": "string",
+        "required": true,
+        "description": "系統?��??��?",
+        "notes": "yyyy/MM/dd HH:mm:ss"
+      },
+      {
+        "path": "responseData",
+        "dataType": "json",
+        "required": true,
+        "description": "?��?資�?�?,
+        "notes": ""
+      },
+      {
+        "path": "responseData.checkAcct",
+        "dataType": "boolean",
+        "required": true,
+        "description": "?�否?�本人帳??,
+        "notes": ""
+      }
+    ],
+    "businessSteps": [
+      {
+        "step": 1,
+        "title": "驗�??�輯",
+        "details": "1.調用CommonFunc.GetEC0001()?��??�客?�帳?��??�\n2.?�斷acct?�否?�客?�帳?��??�中，�??�在?�傳true，�??��??��??�false"
+      }
+    ],
+    "fieldMappings": [
+      {
+        "target": "checkAcct",
+        "source": "",
+        "rule": "?�否?�本人帳??,
+        "fields": [
+          {
+            "field": "checkAcct",
+            "source": "",
+            "rule": "?�否?�本人帳??
+          }
+        ]
+      }
+    ],
+    "errorCodes": [
+      {
+        "code": "9002",
+        "scenario": "?�查詢到?��?",
+        "message": "?�無資�?�?
+      },
+      {
+        "code": "9999",
+        "scenario": "?�輸?��?填�?求�???,
+        "message": "請輸?�{Request?�數}�?
+      }
+    ],
+    "runtimeDependencies": [
+      {
+        "id": "external_api_commonfunc_getec0001",
+        "type": "external_api",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "业务?��?�???�到 CommonFunc->GetEC0001()?�帳?��???依�???
+      }
+    ],
+    "referenceHints": [],
+    "backendApis": [
+      "CommonFunc -> GetEC0001()?�帳?��???
+    ],
+    "mockExamples": [
+      {
+        "scenario": "�???��?",
+        "requestPayload": {
+          "acct": "608937729471"
+        },
+        "responsePayload": {
+          "isSuccess": true,
+          "responseCode": "0000",
+          "responseMessage": "?�詢?��?",
+          "responseDT": "2026/03/11 10:25:30",
+          "responseData": {
+            "checkAcct": false
+          }
+        }
+      },
+      {
+        "scenario": "?�查詢到?��?",
+        "responsePayload": {
+          "isSuccess": false,
+          "responseCode": "9002",
+          "responseMessage": "?�無資�?�?,
+          "responseDT": "2026/02/24 10:30:25",
+          "responseData": {}
+        }
+      }
+    ],
+    "handoffSource": "codeHandoff",
+    "logicSummary": {
+      "stepCount": 1,
+      "queryContractCount": 0,
+      "mappingRuleCount": 0,
+      "legacyEvidenceCount": 1,
+      "dependencyHintCount": 1,
+      "constraintCount": 3,
+      "unresolvedCount": 0,
+      "primarySource": "businessLogic"
+    },
+    "logicFlow": [
+      {
+        "stepId": "step_1",
+        "title": "驗�??�輯",
+        "actionType": "validation",
+        "inputs": [
+          "acct"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      }
+    ],
+    "audienceProfile": {
+      "scope": "shared",
+      "confidence": "high",
+      "scores": {
+        "frontstage": 2,
+        "midBackoffice": 0,
+        "shared": 8
+      },
+      "evidence": [
+        {
+          "scope": "frontstage",
+          "keyword": "cust",
+          "weight": 1
+        },
+        {
+          "scope": "frontstage",
+          "keyword": "客戶",
+          "weight": 1
+        },
+        {
+          "scope": "shared",
+          "keyword": "common",
+          "weight": 2
+        },
+        {
+          "scope": "shared",
+          "keyword": "commonfunc",
+          "weight": 3
+        },
+        {
+          "scope": "shared",
+          "keyword": "?�用",
+          "weight": 3
+        }
+      ],
+      "unresolved": []
+    },
+    "devGuidelineProfile": {
+      "sourceName": "P240301 永�??��??�大?��?式�??��?�?,
+      "version": "6.2",
+      "catalogPath": "rules/code-guidelines/p240301-v6.2/catalog.json",
+      "rulesRoot": "D:/Devs/NEWDAWHO/.agent/project-rules/NEWDAWHO",
+      "sourceStatus": "converted_reference_required"
+    },
+    "devGuidelineRulesSelected": [
+      {
+        "ruleId": "common-style",
+        "title": "?��??�碼風格?�可維護??,
+        "category": "common-style",
+        "direction": "production-code",
+        "ruleType": "style_only",
+        "audienceScopes": [
+          "frontstage",
+          "midBackoffice",
+          "shared",
+          "unknown"
+        ],
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/common-style.md",
+        "action": "load_on_demand"
+      },
+      {
+        "ruleId": "data-access",
+        "title": "DB / SQL / 資�?檢索規�?",
+        "category": "data-access",
+        "direction": "production-code",
+        "ruleType": "blocking_gap",
+        "audienceScopes": [
+          "frontstage",
+          "midBackoffice",
+          "shared",
+          "unknown"
+        ],
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/data-access.md",
+        "action": "select_and_check_gaps"
+      },
+      {
+        "ruleId": "validation",
+        "title": "Request DTO 驗�??�錯誤�?射�?�?,
+        "category": "validation",
+        "direction": "production-code",
+        "ruleType": "blocking_gap",
+        "audienceScopes": [
+          "frontstage",
+          "midBackoffice",
+          "shared",
+          "unknown"
+        ],
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/validation.md",
+        "action": "select_and_check_gaps"
+      },
+      {
+        "ruleId": "config",
+        "title": "AppSettings / 外部?��?設�?規�?",
+        "category": "config",
+        "direction": "production-code",
+        "ruleType": "blocking_gap",
+        "audienceScopes": [
+          "frontstage",
+          "midBackoffice",
+          "shared",
+          "unknown"
+        ],
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/config.md",
+        "action": "select_and_check_gaps"
+      },
+      {
+        "ruleId": "logging-exception",
+        "title": "Log / Exception / 失�??��?規�?",
+        "category": "logging-exception",
+        "direction": "production-code",
+        "ruleType": "style_only",
+        "audienceScopes": [
+          "frontstage",
+          "midBackoffice",
+          "shared",
+          "unknown"
+        ],
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/logging-exception.md",
+        "action": "load_on_demand"
+      },
+      {
+        "ruleId": "test-handoff",
+        "title": "�?05 步測試交?��?�?,
+        "category": "test-handoff",
+        "direction": "handoff-only",
+        "ruleType": "handoff_only",
+        "audienceScopes": [
+          "frontstage",
+          "midBackoffice",
+          "shared",
+          "unknown"
+        ],
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/test-handoff.md",
+        "action": "handoff_only"
+      }
+    ],
+    "devGuidelineLoadHints": [
+      {
+        "ruleId": "common-style",
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/common-style.md",
+        "reason": "Every API implementation needs only the lightweight shared coding conventions."
+      },
+      {
+        "ruleId": "data-access",
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/data-access.md",
+        "reason": "Load only when the API has queryContracts, SQL dependencies, DB backend APIs, or table evidence."
+      },
+      {
+        "ruleId": "validation",
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/validation.md",
+        "reason": "Load only when request fields, required fields, custom validation, or validation response mapping is relevant."
+      },
+      {
+        "ruleId": "config",
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/config.md",
+        "reason": "Load only for appsettings, external endpoint, third-party service, or environment config changes."
+      },
+      {
+        "ruleId": "logging-exception",
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/logging-exception.md",
+        "reason": "Load only when the API touches exception handling, logging, or failure disposition."
+      },
+      {
+        "ruleId": "test-handoff",
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/test-handoff.md",
+        "reason": "Load only to describe step-05 UnitTest / IntegrationTest / runtime validation handoff; step 04 must not write test source."
+      }
+    ],
+    "devGuidelineGaps": [],
+    "logicSourcesUsed": [
+      "codeHandoff",
+      "dependencyHints",
+      "legacyEvidence",
+      "constraints",
+      "mockExamples"
+    ],
+    "queryContractsSelected": [],
+    "mappingRulesSelected": [],
+    "dependencyHintsSelected": [
+      {
+        "dependencyType": "external_api",
+        "preferredAbstractions": [
+          "IApiRequestService"
+        ],
+        "purpose": "业务?��?�???�到 CommonFunc->GetEC0001()?�帳?��???依�???,
+        "evidenceIds": []
+      }
+    ],
+    "legacyEvidenceUsed": [
+      {
+        "evidenceId": "response_code.o_common.9999",
+        "kind": "responseCodeCatalog",
+        "origin": "feature_common/P240301Git/Libray/Sinopac.CommonFunc/ResponseCodes/O_Common.resx",
+        "authority": "existing_code",
+        "symbols": [
+          "O_Common.Code_9999"
+        ],
+        "summary": "?�共必填?�数?�误??9999 = 請輸?�{Request?�數}�?,
+        "snippet": "Code_9999: 請輸?�{Request?�數}�?
+      }
+    ],
+    "constraintsApplied": [
+      {
+        "constraintType": "prohibited_shortcut",
+        "rule": "block_comment_header_substitution",
+        "severity": "error",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "error_code_rule",
+        "rule": "9002 | ?�查詢到?��? | ?�無資�?�?,
+        "severity": "warning",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "request_field_validation",
+        "field": "acct",
+        "validationLayer": "dto_attribute",
+        "validationType": "required",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸?�{Request?�數}�?,
+        "customValidationAttributeNeeded": false,
+        "rule": "acct | dto_attribute | required | 9999 | 請輸?�{Request?�數}�?,
+        "severity": "warning",
+        "evidenceIds": [
+          "response_code.o_common.9999"
+        ]
+      }
+    ],
+    "unresolvedLogic": [],
+    "testScenarioPlan": [
+      {
+        "source": "mockExamples",
+        "sourceIndex": 1,
+        "scenario": "�???��?",
+        "requestPayload": {
+          "acct": "608937729471"
+        },
+        "expectedResponsePayload": {
+          "isSuccess": true,
+          "responseCode": "0000",
+          "responseMessage": "?�詢?��?",
+          "responseDT": "2026/03/11 10:25:30",
+          "responseData": {
+            "checkAcct": false
+          }
+        },
+        "expectedResponseCode": "0000",
+        "expectedResponseMessage": "?�詢?��?",
+        "expectedIsSuccess": true,
+        "coverageTargets": [
+          "unit_test",
+          "integration_test"
+        ],
+        "preserveScenarioName": true
+      },
+      {
+        "source": "mockExamples",
+        "sourceIndex": 2,
+        "scenario": "?�查詢到?��?",
+        "requestPayload": {},
+        "expectedResponsePayload": {
+          "isSuccess": false,
+          "responseCode": "9002",
+          "responseMessage": "?�無資�?�?,
+          "responseDT": "2026/02/24 10:30:25",
+          "responseData": {}
+        },
+        "expectedResponseCode": "9002",
+        "expectedResponseMessage": "?�無資�?�?,
+        "expectedIsSuccess": false,
+        "coverageTargets": [
+          "unit_test",
+          "integration_test"
+        ],
+        "preserveScenarioName": true
+      }
+    ],
+    "testScenarioSource": "mockExamples",
+    "testScenarioCoverageRequired": true,
+    "requestValidationPlan": [
+      {
+        "field": "acct",
+        "validationType": "required",
+        "validationLayer": "dto_attribute",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸?�{Request?�數}�?,
+        "customValidationAttributeNeeded": false
+      }
+    ],
+    "dtoAttributeRules": [
+      {
+        "field": "acct",
+        "validationType": "required",
+        "validationLayer": "dto_attribute",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸?�{Request?�數}�?,
+        "customValidationAttributeNeeded": false
+      }
+    ],
+    "customValidationAttributesNeeded": [],
+    "validationResponseMappingMode": "spec_code_message",
+    "serviceValidationsRetained": [],
+    "validationInfrastructureGap": [
+      {
+        "topic": "validation_response_mapping",
+        "requiredCapability": "attribute_validation_to_spec_transaction_result",
+        "mode": "shared_commonstatic"
+      }
+    ],
+    "reviewSources": [],
+    "reviewConstraintsSelected": [
+      {
+        "reviewId": "default_external_api_name",
+        "scope": "global_skill",
+        "fileRole": "shared",
+        "ruleType": "naming",
+        "instruction": "對�? API ?�稱?�route ?��?求說?��??�沿??CheckAccount，�?得�?外追??Async??,
+        "severity": "warning",
+        "blocking": true,
+        "appliesTo": [
+          "apiName"
+        ],
+        "examples": [
+          "CheckAccount"
+        ],
+        "source": "default_policy"
+      },
+      {
+        "reviewId": "default_traditional_chinese_code",
+        "scope": "global_skill",
+        "fileRole": "shared",
+        "ruleType": "language",
+        "instruction": "AI 寫入?�中?�註�?���?串、�?案說?��?角色要�?統�?使用繁�?中�???,
+        "severity": "warning",
+        "blocking": false,
+        "appliesTo": [
+          "code_comments",
+          "code_strings",
+          "file_headers"
+        ],
+        "examples": [
+          "繁�?中�?"
+        ],
+        "source": "default_policy"
+      },
+      {
+        "reviewId": "default_dependency_field_naming",
+        "scope": "global_skill",
+        "fileRole": "shared",
+        "ruleType": "naming_style",
+        "instruction": "?�是依賴注入後賦?�到欄�??��??��??��?一律使??_camelCase，�?字固定�?線�?例�? _service?�_ctxAccessor?�_sqlExecutor?�_logger；�?得使??CtxAccessor?�Logger ?��? PascalCase 欄�??��?,
+        "severity": "warning",
+        "blocking": false,
+        "appliesTo": [
+          "constructor_injected_fields",
+          "controller_fields",
+          "service_fields",
+          "fixture_fields"
+        ],
+        "examples": [
+          "_service",
+          "_ctxAccessor",
+          "_sqlExecutor",
+          "_logger"
+        ],
+        "source": "default_policy"
+      }
+    ],
+    "fileRequirements": {
+      "controller": [
+        {
+          "reviewId": "default_external_api_name",
+          "ruleType": "naming",
+          "instruction": "對�? API ?�稱?�route ?��?求說?��??�沿??CheckAccount，�?得�?外追??Async??,
+          "severity": "warning",
+          "blocking": true,
+          "appliesTo": [
+            "apiName"
+          ],
+          "examples": [
+            "CheckAccount"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_traditional_chinese_code",
+          "ruleType": "language",
+          "instruction": "AI 寫入?�中?�註�?���?串、�?案說?��?角色要�?統�?使用繁�?中�???,
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "code_comments",
+            "code_strings",
+            "file_headers"
+          ],
+          "examples": [
+            "繁�?中�?"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_dependency_field_naming",
+          "ruleType": "naming_style",
+          "instruction": "?�是依賴注入後賦?�到欄�??��??��??��?一律使??_camelCase，�?字固定�?線�?例�? _service?�_ctxAccessor?�_sqlExecutor?�_logger；�?得使??CtxAccessor?�Logger ?��? PascalCase 欄�??��?,
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "constructor_injected_fields",
+            "controller_fields",
+            "service_fields",
+            "fixture_fields"
+          ],
+          "examples": [
+            "_service",
+            "_ctxAccessor",
+            "_sqlExecutor",
+            "_logger"
+          ],
+          "source": "default_policy"
+        }
+      ],
+      "service": [
+        {
+          "reviewId": "default_external_api_name",
+          "ruleType": "naming",
+          "instruction": "對�? API ?�稱?�route ?��?求說?��??�沿??CheckAccount，�?得�?外追??Async??,
+          "severity": "warning",
+          "blocking": true,
+          "appliesTo": [
+            "apiName"
+          ],
+          "examples": [
+            "CheckAccount"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_traditional_chinese_code",
+          "ruleType": "language",
+          "instruction": "AI 寫入?�中?�註�?���?串、�?案說?��?角色要�?統�?使用繁�?中�???,
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "code_comments",
+            "code_strings",
+            "file_headers"
+          ],
+          "examples": [
+            "繁�?中�?"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_dependency_field_naming",
+          "ruleType": "naming_style",
+          "instruction": "?�是依賴注入後賦?�到欄�??��??��??��?一律使??_camelCase，�?字固定�?線�?例�? _service?�_ctxAccessor?�_sqlExecutor?�_logger；�?得使??CtxAccessor?�Logger ?��? PascalCase 欄�??��?,
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "constructor_injected_fields",
+            "controller_fields",
+            "service_fields",
+            "fixture_fields"
+          ],
+          "examples": [
+            "_service",
+            "_ctxAccessor",
+            "_sqlExecutor",
+            "_logger"
+          ],
+          "source": "default_policy"
+        }
+      ],
+      "entity": [
+        {
+          "reviewId": "default_external_api_name",
+          "ruleType": "naming",
+          "instruction": "對�? API ?�稱?�route ?��?求說?��??�沿??CheckAccount，�?得�?外追??Async??,
+          "severity": "warning",
+          "blocking": true,
+          "appliesTo": [
+            "apiName"
+          ],
+          "examples": [
+            "CheckAccount"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_traditional_chinese_code",
+          "ruleType": "language",
+          "instruction": "AI 寫入?�中?�註�?���?串、�?案說?��?角色要�?統�?使用繁�?中�???,
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "code_comments",
+            "code_strings",
+            "file_headers"
+          ],
+          "examples": [
+            "繁�?中�?"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_dependency_field_naming",
+          "ruleType": "naming_style",
+          "instruction": "?�是依賴注入後賦?�到欄�??��??��??��?一律使??_camelCase，�?字固定�?線�?例�? _service?�_ctxAccessor?�_sqlExecutor?�_logger；�?得使??CtxAccessor?�Logger ?��? PascalCase 欄�??��?,
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "constructor_injected_fields",
+            "controller_fields",
+            "service_fields",
+            "fixture_fields"
+          ],
+          "examples": [
+            "_service",
+            "_ctxAccessor",
+            "_sqlExecutor",
+            "_logger"
+          ],
+          "source": "default_policy"
+        }
+      ],
+      "unitTest": [
+        {
+          "reviewId": "default_external_api_name",
+          "ruleType": "naming",
+          "instruction": "對�? API ?�稱?�route ?��?求說?��??�沿??CheckAccount，�?得�?外追??Async??,
+          "severity": "warning",
+          "blocking": true,
+          "appliesTo": [
+            "apiName"
+          ],
+          "examples": [
+            "CheckAccount"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_traditional_chinese_code",
+          "ruleType": "language",
+          "instruction": "AI 寫入?�中?�註�?���?串、�?案說?��?角色要�?統�?使用繁�?中�???,
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "code_comments",
+            "code_strings",
+            "file_headers"
+          ],
+          "examples": [
+            "繁�?中�?"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_dependency_field_naming",
+          "ruleType": "naming_style",
+          "instruction": "?�是依賴注入後賦?�到欄�??��??��??��?一律使??_camelCase，�?字固定�?線�?例�? _service?�_ctxAccessor?�_sqlExecutor?�_logger；�?得使??CtxAccessor?�Logger ?��? PascalCase 欄�??��?,
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "constructor_injected_fields",
+            "controller_fields",
+            "service_fields",
+            "fixture_fields"
+          ],
+          "examples": [
+            "_service",
+            "_ctxAccessor",
+            "_sqlExecutor",
+            "_logger"
+          ],
+          "source": "default_policy"
+        }
+      ],
+      "integrationTest": [
+        {
+          "reviewId": "default_external_api_name",
+          "ruleType": "naming",
+          "instruction": "對�? API ?�稱?�route ?��?求說?��??�沿??CheckAccount，�?得�?外追??Async??,
+          "severity": "warning",
+          "blocking": true,
+          "appliesTo": [
+            "apiName"
+          ],
+          "examples": [
+            "CheckAccount"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_traditional_chinese_code",
+          "ruleType": "language",
+          "instruction": "AI 寫入?�中?�註�?���?串、�?案說?��?角色要�?統�?使用繁�?中�???,
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "code_comments",
+            "code_strings",
+            "file_headers"
+          ],
+          "examples": [
+            "繁�?中�?"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_dependency_field_naming",
+          "ruleType": "naming_style",
+          "instruction": "?�是依賴注入後賦?�到欄�??��??��??��?一律使??_camelCase，�?字固定�?線�?例�? _service?�_ctxAccessor?�_sqlExecutor?�_logger；�?得使??CtxAccessor?�Logger ?��? PascalCase 欄�??��?,
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "constructor_injected_fields",
+            "controller_fields",
+            "service_fields",
+            "fixture_fields"
+          ],
+          "examples": [
+            "_service",
+            "_ctxAccessor",
+            "_sqlExecutor",
+            "_logger"
+          ],
+          "source": "default_policy"
+        }
+      ]
+    },
+    "responseLifecycleRules": [],
+    "failureDisposition": {
+      "mode": "rollback_after_validation_failure",
+      "preserveFailedCode": false,
+      "resumeStrategy": "retry_from_prepare",
+      "source": "default_policy"
+    },
+    "languagePolicy": {
+      "mode": "traditional_chinese_for_ai_code",
+      "appliesTo": [
+        "code_comments",
+        "code_strings",
+        "file_headers",
+        "file_requirements"
+      ],
+      "source": "default_policy"
+    },
+    "externalApiName": "CheckAccount",
+    "internalAsyncMethod": "CheckAccountAsync",
+    "resumedFromPhase": "pending"
+  },
+  "validationChecks": [
+    "dotnet build \"Sinopac.EnterpriseAPI/Sinopac.EnterpriseAPI.csproj\" -m:1",
+    "dotnet test \"Test/EnterpriseApi.Unit/EnterpriseApi.Unit.csproj\" -m:1",
+    "dotnet test \"Test/EnterpriseApi.Integration/EnterpriseApi.Integration.csproj\" -m:1"
+  ],
+  "steps": [
+    {
+      "id": "precheck",
+      "status": "done",
+      "note": "Resolved EnterpriseAPI framework profile and module slots."
+    },
+    {
+      "id": "write_code",
+      "status": "pending",
+      "note": "AI must directly modify controller/interface/service/entity business files for CommonFunc; test targets are handoff-only for step 05 and the script must not generate stubs."
+    },
+    {
+      "id": "validate",
+      "status": "pending",
+      "note": "After real code is written, run EnterpriseAPI build, unit test, and integration test validation."
+    }
+  ]
+}

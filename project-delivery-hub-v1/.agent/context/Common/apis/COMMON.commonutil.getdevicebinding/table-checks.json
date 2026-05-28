@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "4.1.0",
+  "skillName": "api-sql-fixture-preparer",
+  "manifestType": "table-checks",
+  "updatedAt": "2026-05-23T17:56:08+08:00",
+  "executionId": "Common",
+  "apiId": "COMMON.commonutil.getdevicebinding",
+  "dbTarget": "ConnectionStrings.Report",
+  "authorityRoot": null,
+  "tables": []
+}

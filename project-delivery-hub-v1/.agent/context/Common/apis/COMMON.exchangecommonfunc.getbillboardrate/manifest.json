@@ -1,0 +1,58 @@
+{
+  "schemaVersion": "4.1.0",
+  "manifestType": "api",
+  "executionId": "Common",
+  "apiId": "COMMON.exchangecommonfunc.getbillboardrate",
+  "apiCategory": "ExchangeCommonFunc",
+  "apiName": "GetBillboardRate",
+  "status": "pending",
+  "phase": "pending",
+  "updatedAt": "2026-05-23T22:18:09+08:00",
+  "newAuthor": "Jimmy",
+  "specStatus": "done",
+  "specUpdatedAt": "2026-05-23T19:16:35+08:00",
+  "specBlockReason": null,
+  "specSourceFingerprint": "sha256:1e8b5b489cd03827c606192216b28d80a62f106e134036179cba63eace2a9414",
+  "specSource": {
+    "tsdFile": "TSD.Common_封存TSD共用开发链路_v1.0_20260523.docx",
+    "workbookFile": "NEWDA_Method_DETAIL_ExchangeCommonFunc_20260522.xlsx",
+    "sheetNames": [
+      "GetBillboardRateFunc 取牌告匯率"
+    ]
+  },
+  "specArtifacts": {
+    "apiSpec": "../../../.agent/context/Common/apis/COMMON.exchangecommonfunc.getbillboardrate/Common_API_Spec.json"
+  },
+  "fixtureStatus": "blocked",
+  "fixturePhase": "inspection_blocked",
+  "fixtureUpdatedAt": "2026-05-23T19:45:18+08:00",
+  "fixtureBlockReason": "missing_schema_authority",
+  "fixtureSourceFingerprint": "sha256:1e8b5b489cd03827c606192216b28d80a62f106e134036179cba63eace2a9414",
+  "fixtureArtifacts": {
+    "dbFixtureReport": "../../.agent/context/Common/apis/COMMON.exchangecommonfunc.getbillboardrate/db-fixture-report.json",
+    "tableChecks": "../../.agent/context/Common/apis/COMMON.exchangecommonfunc.getbillboardrate/table-checks.json",
+    "seedPlan": null,
+    "seedExecuted": null,
+    "seedManifest": null
+  },
+  "codeStatus": "pending",
+  "codePhase": "pending",
+  "codeUpdatedAt": "2026-05-23T22:18:09+08:00",
+  "codeBlockReason": null,
+  "codeProjectRoot": ".",
+  "codeSolutionPath": "Sinopac.EnterpriseAPI.slnx",
+  "inputHashes": {
+    "upstreamManifest": "sha256:2bf86a2837936e957627a7a611ced1d746e12448ce5751a946a60730816696bb",
+    "apiSpec": "sha256:d8e6047fb94176a2688f9010705e2d604dca0bab58975536d7a23523b9225a9c"
+  },
+  "modifiedFiles": [],
+  "validationChecks": [],
+  "validationResults": [],
+  "repoDriftFiles": [],
+  "codeArtifacts": {
+    "changePlan": null,
+    "implementationReport": null,
+    "diagnosisReport": null
+  },
+  "lastMessage": null
+}

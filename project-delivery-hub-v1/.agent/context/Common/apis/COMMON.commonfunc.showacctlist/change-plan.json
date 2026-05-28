@@ -1,0 +1,1634 @@
+{
+  "schemaVersion": "4.1.0",
+  "skillName": "api-code-writer",
+  "manifestType": "change-plan",
+  "status": "planned",
+  "updatedAt": "2026-05-23T22:09:01+08:00",
+  "executionId": "Common",
+  "apiId": "COMMON.commonfunc.showacctlist",
+  "projectRoot": ".",
+  "solutionPath": "Sinopac.EnterpriseAPI.slnx",
+  "upstream": {
+    "manifest": "../../../.agent/context/Common/apis/COMMON.commonfunc.showacctlist/manifest.json",
+    "apiSpec": "../../../.agent/context/Common/apis/COMMON.commonfunc.showacctlist/Common_API_Spec.json",
+    "sourceFingerprint": "sha256:78e368aa71c66bdbf23648c884664bfe864421f8a8d6547e11a5ed7bd0f1d3d7",
+    "source": {
+      "tsdFile": "TSD.Common_封�?TSD?�用开?�链路_v1.0_20260523.docx",
+      "workbookFile": "NEWDA_Method_DETAIL_ExchangeCommonFunc_20260522.xlsx",
+      "sheetNames": [
+        "ShowAcctList?�交?��?帳�??�通用?�輯"
+      ]
+    }
+  },
+  "sourceCandidates": [
+    "Libray/Sinopac.CommonFunc/IFuncService/ICommonFuncService.cs",
+    "Libray/Sinopac.CommonFunc/FuncService/CommonFuncService.cs",
+    "Libray/Sinopac.CommonFunc/FuncService/CommonFuncService.ShowAcctList.cs",
+    "Libray/Sinopac.CommonFunc/Dto/ShowAcctListInfo.cs",
+    "Test/EnterpriseApi.Unit/CommonFuncServiceTests.cs"
+  ],
+  "repoDriftDetected": false,
+  "repoDriftFiles": [],
+  "beforeHashes": {
+    "Libray/Sinopac.CommonFunc/IFuncService/ICommonFuncService.cs": "sha256:61964be4c7c7903906ee966932436e6a926ec9741b6b89856cc6ed04cf35d8b5",
+    "Libray/Sinopac.CommonFunc/FuncService/CommonFuncService.cs": "sha256:f7daae54af90a4370b14980a4b46beed5468f50c4f12710333a9b021dd647f93",
+    "Libray/Sinopac.CommonFunc/FuncService/CommonFuncService.ShowAcctList.cs": null,
+    "Libray/Sinopac.CommonFunc/Dto/ShowAcctListInfo.cs": null
+  },
+  "analysis": {
+    "frameworkProfile": "enterpriseapi",
+    "guidelineAuthority": "?�大?��??�説??V2.0 20260203.docx",
+    "repoRoot": ".",
+    "moduleName": "CommonFunc",
+    "interfaceFile": "Libray/Sinopac.CommonFunc/IFuncService/ICommonFuncService.cs",
+    "serviceFiles": [
+      "Libray/Sinopac.CommonFunc/FuncService/CommonFuncService.cs",
+      "Libray/Sinopac.CommonFunc/FuncService/CommonFuncService.ShowAcctList.cs"
+    ],
+    "entityFiles": [
+      "Libray/Sinopac.CommonFunc/Dto/ShowAcctListInfo.cs"
+    ],
+    "codeTargetFiles": [
+      "Libray/Sinopac.CommonFunc/IFuncService/ICommonFuncService.cs",
+      "Libray/Sinopac.CommonFunc/FuncService/CommonFuncService.ShowAcctList.cs",
+      "Libray/Sinopac.CommonFunc/FuncService/CommonFuncService.cs",
+      "Libray/Sinopac.CommonFunc/Dto/ShowAcctListInfo.cs"
+    ],
+    "unitTestTargetFiles": [
+      "Test/EnterpriseApi.Unit/CommonFuncServiceTests.cs"
+    ],
+    "integrationTestTargetFiles": [
+    ],
+    "testTargetFiles": [
+      "Test/EnterpriseApi.Unit/CommonFuncServiceTests.cs"
+    ],
+    "testCodeHandoff": {
+      "ownerStep": "05 docx-unittest-report",
+      "writerPolicy": "handoff_only",
+      "unitTestTargetFiles": [
+        "Test/EnterpriseApi.Unit/CommonFuncServiceTests.cs"
+      ],
+      "integrationTestTargetFiles": [
+      ],
+      "note": "Step 04 records test targets and scenarios only; UnitTest, IntegrationTest, and service runtime validation source code belong to step 05."
+    },
+    "creationMode": "extend_partial",
+    "registrationStrategy": "manual_registration_review",
+    "targetFile": "Libray/Sinopac.CommonFunc/FuncService/CommonFuncService.ShowAcctList.cs",
+    "targetClass": "CommonFuncService",
+    "targetMethod": "ShowAcctListAsync",
+    "action": "ai_orchestrated_implementation",
+    "requestFields": [
+      {
+        "path": "transCode",
+        "dataType": "string",
+        "required": true,
+        "description": "交�?�?��",
+        "notes": ""
+      },
+      {
+        "path": "webSource",
+        "dataType": "string",
+        "required": true,
+        "description": "網�?�?��",
+        "notes": ""
+      }
+    ],
+    "responseFields": [
+      {
+        "path": "isSuccess",
+        "dataType": "boolean",
+        "required": true,
+        "description": "API?��??�否",
+        "notes": "true ; false"
+      },
+      {
+        "path": "responseCode",
+        "dataType": "string",
+        "required": true,
+        "description": "?��?�?��",
+        "notes": "?��?:0000?��??�況為失�?"
+      },
+      {
+        "path": "responseMessage",
+        "dataType": "string",
+        "required": true,
+        "description": "?��?訊息",
+        "notes": "失�??�況�??�傳?�誤訊息"
+      },
+      {
+        "path": "responseDT",
+        "dataType": "string",
+        "required": true,
+        "description": "系統?��??��?",
+        "notes": "yyyy/MM/dd HH:mm:ss"
+      },
+      {
+        "path": "responseData",
+        "dataType": "json",
+        "required": true,
+        "description": "?��?資�?�?,
+        "notes": ""
+      },
+      {
+        "path": "responseData.acctList",
+        "dataType": "list",
+        "required": false,
+        "description": "",
+        "notes": ""
+      },
+      {
+        "path": "responseData.acctList[].acctValue",
+        "dataType": "string",
+        "required": true,
+        "description": "帳�?",
+        "notes": "GetEC0001().acctValue"
+      },
+      {
+        "path": "responseData.acctList[].acctCName",
+        "dataType": "string",
+        "required": true,
+        "description": "中�??�稱組�?",
+        "notes": "GetEC0001().acctCName"
+      },
+      {
+        "path": "responseData.acctList[].accType",
+        "dataType": "string",
+        "required": true,
+        "description": "帳�?類�?",
+        "notes": "帳�?類�?�?1：臺�?�?2：支存�?3?�值支付帳?��?4行儲??1：�?組�?2�?02??1：信?�卡??2：GIFTCARD??3�?98??0：�??�帳?��?0：�??�單定�???5?��?帳�?(????3?��?帳�?(�???4外匯?�信?��?帳戶(不�???"
+      },
+      {
+        "path": "responseData.acctList[].digitalFg",
+        "dataType": "string",
+        "required": true,
+        "description": "?��?帳�?幾�?",
+        "notes": "GetEC0001().digitalFg"
+      },
+      {
+        "path": "responseData.acctList[].genQuotaMark",
+        "dataType": "int",
+        "required": true,
+        "description": "cancel，�??��?綜�?額度",
+        "notes": "GetEC0001().genQuotaMark"
+      },
+      {
+        "path": "responseData.acctList[].genAcctMark",
+        "dataType": "string",
+        "required": true,
+        "description": "綜�??��???,
+        "notes": "GetEC0001().genAcctMark"
+      },
+      {
+        "path": "responseData.acctList[].acctStat",
+        "dataType": "string",
+        "required": true,
+        "description": "久未往來戶記�?",
+        "notes": "GetEC0001().acctStat"
+      },
+      {
+        "path": "responseData.acctList[].subAcct",
+        "dataType": "string",
+        "required": true,
+        "description": "子帳??,
+        "notes": "GetEC0001().subAcct"
+      },
+      {
+        "path": "responseData.acctList[].curr",
+        "dataType": "string",
+        "required": true,
+        "description": "�?��",
+        "notes": "GetEC0001().curr"
+      },
+      {
+        "path": "responseData.acctList[].curText",
+        "dataType": "string",
+        "required": true,
+        "description": "�?��中�?",
+        "notes": "GetEC0001().curText"
+      },
+      {
+        "path": "responseData.acctList[].availBalance",
+        "dataType": "decimal",
+        "required": true,
+        "description": "(帳戶)餘�?",
+        "notes": "GetEC0001().availBalance"
+      },
+      {
+        "path": "responseData.acctList[].availableAmount",
+        "dataType": "decimal",
+        "required": true,
+        "description": "?�高可使用�?,
+        "notes": "GetEC0001().availableAmount"
+      }
+    ],
+    "businessSteps": [
+      {
+        "step": 1,
+        "title": "?��?客戶帳戶資�?",
+        "details": "1.調用CommonFunc.GetEC0001得到帳戶總覽"
+      },
+      {
+        "step": 2,
+        "title": "?��?網�?使用?�輯",
+        "details": "1.?��?帳�?使用?�輯：object[] acctList = CommonUtil.GetAcctKind(transCode, webSource);"
+      },
+      {
+        "step": 3,
+        "title": "?��?篩選，帳?��???,
+        "details": "// ?��?篩選\nvar accountList = GetEC0001()\n.Where(a =>\n(string.IsNullOrEmpty(acctList[0]) || a.NonTrxferFlg != acctList[0]) &&\n(string.IsNullOrEmpty(acctList[1]) || a.GenQuotaMark == acctList[1]) &&\n(string.IsNullOrEmpty(acctList[2]) || a.GenAcctMark == acctList[2]) &&\n(string.IsNullOrEmpty(acctList[3]) || a.SinopayFlag == acctList[3]) &&\n(acctList.Skip(4).All(x => string.IsNullOrEmpty(x)) || acctList.Skip(4).Contains(a.AccType))\n)\n.ToList();"
+      },
+      {
+        "step": 4,
+        "title": "?�傳結�?",
+        "details": "將篩?��??�帳?�進�??�傳"
+      },
+      {
+        "step": 5,
+        "title": "流水??,
+        "details": "流水??
+      },
+      {
+        "step": 6,
+        "title": "?�叫?�IRIS編�?",
+        "details": "?�叫?�IRIS編�?\n?�读?��??��?TW T24 IRIS_OpenAPI_Summary_20231212 -> reference/global/raw/external-api/IRIS/TW T24 IRIS_OpenAPI_Summary_20231212.xlsx#sheetName=IRIS；ED0019_OpenAPI_spec_Enquiry_20260213 -> reference/global/raw/external-api/IRIS/ED0019_OpenAPI_spec_Enquiry_20260213.xlsx#sheetName=JSON Request-Response；EC0002_OpenAPI_spec_Enquiry_20260213 -> reference/global/raw/external-api/IRIS/EC0002_OpenAPI_spec_Enquiry_20260213.xlsx#sheetName=JSON Request-Response",
+        "referenceHints": [
+          {
+            "id": "external.iris.twt24iris-openapi-summary-20231212",
+            "category": "external_api",
+            "matchSource": "iris_keyword",
+            "matchKey": "IRIS",
+            "title": "TW T24 IRIS_OpenAPI_Summary_20231212",
+            "relativePath": "reference/global/raw/external-api/IRIS/TW T24 IRIS_OpenAPI_Summary_20231212.xlsx",
+            "locator": {
+              "sheetName": "IRIS"
+            },
+            "reason": "?�中外部?�口?�键�?IRIS，可读�? IRIS/OpenAPI 设计",
+            "authority": "reference_imported"
+          },
+          {
+            "id": "external.iris.ed0019-openapi-spec-enquiry-20260213",
+            "category": "external_api",
+            "matchSource": "iris_keyword",
+            "matchKey": "IRIS",
+            "title": "ED0019_OpenAPI_spec_Enquiry_20260213",
+            "relativePath": "reference/global/raw/external-api/IRIS/ED0019_OpenAPI_spec_Enquiry_20260213.xlsx",
+            "locator": {
+              "sheetName": "JSON Request-Response"
+            },
+            "reason": "?�中外部?�口?�键�?IRIS，可读�? IRIS/OpenAPI 设计",
+            "authority": "reference_imported"
+          },
+          {
+            "id": "external.iris.ec0002-openapi-spec-enquiry-20260213",
+            "category": "external_api",
+            "matchSource": "iris_keyword",
+            "matchKey": "IRIS",
+            "title": "EC0002_OpenAPI_spec_Enquiry_20260213",
+            "relativePath": "reference/global/raw/external-api/IRIS/EC0002_OpenAPI_spec_Enquiry_20260213.xlsx",
+            "locator": {
+              "sheetName": "JSON Request-Response"
+            },
+            "reason": "?�中外部?�口?�键�?IRIS，可读�? IRIS/OpenAPI 设计",
+            "authority": "reference_imported"
+          }
+        ]
+      },
+      {
+        "step": 7,
+        "title": "帳�?",
+        "details": "帳�?"
+      },
+      {
+        "step": 8,
+        "title": "上送Json?��?資�?",
+        "details": "上送Json?��?資�?"
+      },
+      {
+        "step": 9,
+        "title": "IRIS?��??��??�失??,
+        "details": "IRIS?��??��??�失?�\n?�读?��??��?TW T24 IRIS_OpenAPI_Summary_20231212 -> reference/global/raw/external-api/IRIS/TW T24 IRIS_OpenAPI_Summary_20231212.xlsx#sheetName=IRIS；ED0019_OpenAPI_spec_Enquiry_20260213 -> reference/global/raw/external-api/IRIS/ED0019_OpenAPI_spec_Enquiry_20260213.xlsx#sheetName=JSON Request-Response；EC0002_OpenAPI_spec_Enquiry_20260213 -> reference/global/raw/external-api/IRIS/EC0002_OpenAPI_spec_Enquiry_20260213.xlsx#sheetName=JSON Request-Response",
+        "referenceHints": [
+          {
+            "id": "external.iris.twt24iris-openapi-summary-20231212",
+            "category": "external_api",
+            "matchSource": "iris_keyword",
+            "matchKey": "IRIS",
+            "title": "TW T24 IRIS_OpenAPI_Summary_20231212",
+            "relativePath": "reference/global/raw/external-api/IRIS/TW T24 IRIS_OpenAPI_Summary_20231212.xlsx",
+            "locator": {
+              "sheetName": "IRIS"
+            },
+            "reason": "?�中外部?�口?�键�?IRIS，可读�? IRIS/OpenAPI 设计",
+            "authority": "reference_imported"
+          },
+          {
+            "id": "external.iris.ed0019-openapi-spec-enquiry-20260213",
+            "category": "external_api",
+            "matchSource": "iris_keyword",
+            "matchKey": "IRIS",
+            "title": "ED0019_OpenAPI_spec_Enquiry_20260213",
+            "relativePath": "reference/global/raw/external-api/IRIS/ED0019_OpenAPI_spec_Enquiry_20260213.xlsx",
+            "locator": {
+              "sheetName": "JSON Request-Response"
+            },
+            "reason": "?�中外部?�口?�键�?IRIS，可读�? IRIS/OpenAPI 设计",
+            "authority": "reference_imported"
+          },
+          {
+            "id": "external.iris.ec0002-openapi-spec-enquiry-20260213",
+            "category": "external_api",
+            "matchSource": "iris_keyword",
+            "matchKey": "IRIS",
+            "title": "EC0002_OpenAPI_spec_Enquiry_20260213",
+            "relativePath": "reference/global/raw/external-api/IRIS/EC0002_OpenAPI_spec_Enquiry_20260213.xlsx",
+            "locator": {
+              "sheetName": "JSON Request-Response"
+            },
+            "reason": "?�中外部?�口?�键�?IRIS，可读�? IRIS/OpenAPI 设计",
+            "authority": "reference_imported"
+          }
+        ]
+      },
+      {
+        "step": 10,
+        "title": "?�誤�?��",
+        "details": "?�誤�?��"
+      },
+      {
+        "step": 11,
+        "title": "?�誤訊息",
+        "details": "?�誤訊息"
+      },
+      {
+        "step": 12,
+        "title": "交�?序�?",
+        "details": "交�?序�?"
+      }
+    ],
+    "fieldMappings": [
+      {
+        "target": "acctList",
+        "source": "GetEC0001()",
+        "rule": "帳�?；中?��?稱�??��?帳�?類�?；數位帳?�幾?��?cancel，�??��?綜�?額度；�?存戶記�?；�??��?來戶記�?；�?帳戶；幣?��?�?��中�?�?帳戶)餘�?；�?高可使用�?,
+        "fields": [
+          {
+            "field": "acctValue",
+            "source": "GetEC0001().acctValue",
+            "rule": "帳�?"
+          },
+          {
+            "field": "acctCName",
+            "source": "GetEC0001().acctCName",
+            "rule": "中�??�稱組�?"
+          },
+          {
+            "field": "accType",
+            "source": "帳�?類�?�?1：臺�?�?2：支存�?3?�值支付帳?��?4行儲??1：�?組�?2�?02??1：信?�卡??2：GIFTCARD??3�?98??0：�??�帳?��?0：�??�單定�???5?��?帳�?(????3?��?帳�?(�???4外匯?�信?��?帳戶(不�???",
+            "rule": "帳�?類�?"
+          },
+          {
+            "field": "digitalFg",
+            "source": "GetEC0001().digitalFg",
+            "rule": "?��?帳�?幾�?"
+          },
+          {
+            "field": "genQuotaMark",
+            "source": "GetEC0001().genQuotaMark",
+            "rule": "cancel，�??��?綜�?額度"
+          },
+          {
+            "field": "genAcctMark",
+            "source": "GetEC0001().genAcctMark",
+            "rule": "綜�??��???
+          },
+          {
+            "field": "acctStat",
+            "source": "GetEC0001().acctStat",
+            "rule": "久未往來戶記�?"
+          },
+          {
+            "field": "subAcct",
+            "source": "GetEC0001().subAcct",
+            "rule": "子帳??
+          },
+          {
+            "field": "curr",
+            "source": "GetEC0001().curr",
+            "rule": "�?��"
+          },
+          {
+            "field": "curText",
+            "source": "GetEC0001().curText",
+            "rule": "�?��中�?"
+          },
+          {
+            "field": "availBalance",
+            "source": "GetEC0001().availBalance",
+            "rule": "(帳戶)餘�?"
+          },
+          {
+            "field": "availableAmount",
+            "source": "GetEC0001().availableAmount",
+            "rule": "?�高可使用�?
+          }
+        ]
+      }
+    ],
+    "errorCodes": [
+      {
+        "code": "9001",
+        "scenario": "??��?��?庫失??,
+        "message": "系統繁�?,請�?後�?試�?"
+      },
+      {
+        "code": "9999",
+        "scenario": "?�輸?��?填�?求�???,
+        "message": "請輸?�{Request?�數}�?
+      }
+    ],
+    "runtimeDependencies": [
+      {
+        "id": "external_api_commonfunc_getacctkind",
+        "type": "external_api",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "Excel 依�?声�??�到 CommonFunc->GetAcctKind()?��?帳�?&?��?網�?使用?�輯??
+      },
+      {
+        "id": "external_api_commonfunc_getec0001",
+        "type": "external_api",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "业务?��?�???�到 CommonFunc->GetEC0001() ?�帳?�總�?依�???
+      },
+      {
+        "id": "external_api_commonutil_getacctkind",
+        "type": "external_api",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "业务?��?�???�到 CommonUtil->GetAcctKind() 依�???
+      }
+    ],
+    "referenceHints": [
+      {
+        "id": "external.iris.twt24iris-openapi-summary-20231212",
+        "category": "external_api",
+        "matchSource": "iris_keyword",
+        "matchKey": "IRIS",
+        "title": "TW T24 IRIS_OpenAPI_Summary_20231212",
+        "relativePath": "reference/global/raw/external-api/IRIS/TW T24 IRIS_OpenAPI_Summary_20231212.xlsx",
+        "locator": {
+          "sheetName": "IRIS"
+        },
+        "reason": "?�中外部?�口?�键�?IRIS，可读�? IRIS/OpenAPI 设计",
+        "authority": "reference_imported"
+      },
+      {
+        "id": "external.iris.ed0019-openapi-spec-enquiry-20260213",
+        "category": "external_api",
+        "matchSource": "iris_keyword",
+        "matchKey": "IRIS",
+        "title": "ED0019_OpenAPI_spec_Enquiry_20260213",
+        "relativePath": "reference/global/raw/external-api/IRIS/ED0019_OpenAPI_spec_Enquiry_20260213.xlsx",
+        "locator": {
+          "sheetName": "JSON Request-Response"
+        },
+        "reason": "?�中外部?�口?�键�?IRIS，可读�? IRIS/OpenAPI 设计",
+        "authority": "reference_imported"
+      },
+      {
+        "id": "external.iris.ec0002-openapi-spec-enquiry-20260213",
+        "category": "external_api",
+        "matchSource": "iris_keyword",
+        "matchKey": "IRIS",
+        "title": "EC0002_OpenAPI_spec_Enquiry_20260213",
+        "relativePath": "reference/global/raw/external-api/IRIS/EC0002_OpenAPI_spec_Enquiry_20260213.xlsx",
+        "locator": {
+          "sheetName": "JSON Request-Response"
+        },
+        "reason": "?�中外部?�口?�键�?IRIS，可读�? IRIS/OpenAPI 设计",
+        "authority": "reference_imported"
+      }
+    ],
+    "backendApis": [
+      "CommonFunc -> GetEC0001() ?�帳?�總�?,
+      "CommonFunc -> GetAcctKind()?��?帳�?&?��?網�?使用?�輯",
+      "CommonUtil -> GetAcctKind()"
+    ],
+    "mockExamples": [
+      {
+        "scenario": "?��??��?結�?示�?",
+        "requestPayload": {
+          "transCode": "B10700",
+          "webSource": "MAPP"
+        },
+        "responsePayload": {
+          "responseData": {
+            "acctList": [
+              {
+                "acctValue": "8838234284",
+                "acctCName": "DaWho組�?存款帳戶",
+                "accType": "01",
+                "digitalFg": "",
+                "genQuotaMark": 1,
+                "genAcctMark": "1",
+                "acctStat": "Y",
+                "subAcct": "",
+                "curr": "TWD",
+                "curText": "?�臺�?,
+                "availBalance": 531
+              },
+              {
+                "acctValue": "9922334455",
+                "acctCName": "外幣綜�?存款帳戶",
+                "accType": "11",
+                "digitalFg": "1",
+                "genQuotaMark": 0,
+                "genAcctMark": "0",
+                "acctStat": "N",
+                "subAcct": "01",
+                "curr": "USD",
+                "curText": "美�?",
+                "availBalance": 1200.5
+              }
+            ]
+          }
+        }
+      },
+      {
+        "scenario": "??��?��?庫失??,
+        "responsePayload": {
+          "isSuccess": false,
+          "responseCode": "9001",
+          "responseMessage": "系統繁�?,請�?後�?試�?",
+          "responseDT": "2026/02/24 10:30:25",
+          "responseData": {}
+        }
+      }
+    ],
+    "handoffSource": "codeHandoff",
+    "logicSummary": {
+      "stepCount": 12,
+      "queryContractCount": 0,
+      "mappingRuleCount": 12,
+      "legacyEvidenceCount": 1,
+      "dependencyHintCount": 3,
+      "constraintCount": 4,
+      "unresolvedCount": 0,
+      "primarySource": "businessLogic"
+    },
+    "logicFlow": [
+      {
+        "stepId": "step_1",
+        "title": "?��?客戶帳戶資�?",
+        "actionType": "process",
+        "inputs": [
+          "transCode",
+          "webSource"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_2",
+        "title": "?��?網�?使用?�輯",
+        "actionType": "process",
+        "inputs": [
+          "transCode",
+          "webSource"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_3",
+        "title": "?��?篩選，帳?��???,
+        "actionType": "process",
+        "inputs": [
+          "transCode",
+          "webSource"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_4",
+        "title": "?�傳結�?",
+        "actionType": "return",
+        "inputs": [
+          "transCode",
+          "webSource"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_5",
+        "title": "流水??,
+        "actionType": "process",
+        "inputs": [
+          "transCode",
+          "webSource"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_6",
+        "title": "?�叫?�IRIS編�?",
+        "actionType": "return",
+        "inputs": [
+          "transCode",
+          "webSource"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_7",
+        "title": "帳�?",
+        "actionType": "process",
+        "inputs": [
+          "transCode",
+          "webSource"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_8",
+        "title": "上送Json?��?資�?",
+        "actionType": "process",
+        "inputs": [
+          "transCode",
+          "webSource"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_9",
+        "title": "IRIS?��??��??�失??,
+        "actionType": "return",
+        "inputs": [
+          "transCode",
+          "webSource"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_10",
+        "title": "?�誤�?��",
+        "actionType": "process",
+        "inputs": [
+          "transCode",
+          "webSource"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_11",
+        "title": "?�誤訊息",
+        "actionType": "process",
+        "inputs": [
+          "transCode",
+          "webSource"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_12",
+        "title": "交�?序�?",
+        "actionType": "process",
+        "inputs": [
+          "transCode",
+          "webSource"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      }
+    ],
+    "audienceProfile": {
+      "scope": "shared",
+      "confidence": "high",
+      "scores": {
+        "frontstage": 2,
+        "midBackoffice": 0,
+        "shared": 11
+      },
+      "evidence": [
+        {
+          "scope": "frontstage",
+          "keyword": "cust",
+          "weight": 1
+        },
+        {
+          "scope": "frontstage",
+          "keyword": "客戶",
+          "weight": 1
+        },
+        {
+          "scope": "shared",
+          "keyword": "common",
+          "weight": 2
+        },
+        {
+          "scope": "shared",
+          "keyword": "commonfunc",
+          "weight": 3
+        },
+        {
+          "scope": "shared",
+          "keyword": "commonutil",
+          "weight": 3
+        },
+        {
+          "scope": "shared",
+          "keyword": "?�用",
+          "weight": 3
+        }
+      ],
+      "unresolved": []
+    },
+    "devGuidelineProfile": {
+      "sourceName": "P240301 永�??��??�大?��?式�??��?�?,
+      "version": "6.2",
+      "catalogPath": "rules/code-guidelines/p240301-v6.2/catalog.json",
+      "rulesRoot": "D:/Devs/NEWDAWHO/.agent/project-rules/NEWDAWHO",
+      "sourceStatus": "converted_reference_required"
+    },
+    "devGuidelineRulesSelected": [
+      {
+        "ruleId": "common-style",
+        "title": "?��??�碼風格?�可維護??,
+        "category": "common-style",
+        "direction": "production-code",
+        "ruleType": "style_only",
+        "audienceScopes": [
+          "frontstage",
+          "midBackoffice",
+          "shared",
+          "unknown"
+        ],
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/common-style.md",
+        "action": "load_on_demand"
+      },
+      {
+        "ruleId": "data-access",
+        "title": "DB / SQL / 資�?檢索規�?",
+        "category": "data-access",
+        "direction": "production-code",
+        "ruleType": "blocking_gap",
+        "audienceScopes": [
+          "frontstage",
+          "midBackoffice",
+          "shared",
+          "unknown"
+        ],
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/data-access.md",
+        "action": "select_and_check_gaps"
+      },
+      {
+        "ruleId": "validation",
+        "title": "Request DTO 驗�??�錯誤�?射�?�?,
+        "category": "validation",
+        "direction": "production-code",
+        "ruleType": "blocking_gap",
+        "audienceScopes": [
+          "frontstage",
+          "midBackoffice",
+          "shared",
+          "unknown"
+        ],
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/validation.md",
+        "action": "select_and_check_gaps"
+      },
+      {
+        "ruleId": "config",
+        "title": "AppSettings / 外部?��?設�?規�?",
+        "category": "config",
+        "direction": "production-code",
+        "ruleType": "blocking_gap",
+        "audienceScopes": [
+          "frontstage",
+          "midBackoffice",
+          "shared",
+          "unknown"
+        ],
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/config.md",
+        "action": "select_and_check_gaps"
+      },
+      {
+        "ruleId": "logging-exception",
+        "title": "Log / Exception / 失�??��?規�?",
+        "category": "logging-exception",
+        "direction": "production-code",
+        "ruleType": "style_only",
+        "audienceScopes": [
+          "frontstage",
+          "midBackoffice",
+          "shared",
+          "unknown"
+        ],
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/logging-exception.md",
+        "action": "load_on_demand"
+      },
+      {
+        "ruleId": "test-handoff",
+        "title": "�?05 步測試交?��?�?,
+        "category": "test-handoff",
+        "direction": "handoff-only",
+        "ruleType": "handoff_only",
+        "audienceScopes": [
+          "frontstage",
+          "midBackoffice",
+          "shared",
+          "unknown"
+        ],
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/test-handoff.md",
+        "action": "handoff_only"
+      }
+    ],
+    "devGuidelineLoadHints": [
+      {
+        "ruleId": "common-style",
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/common-style.md",
+        "reason": "Every API implementation needs only the lightweight shared coding conventions."
+      },
+      {
+        "ruleId": "data-access",
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/data-access.md",
+        "reason": "Load only when the API has queryContracts, SQL dependencies, DB backend APIs, or table evidence."
+      },
+      {
+        "ruleId": "validation",
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/validation.md",
+        "reason": "Load only when request fields, required fields, custom validation, or validation response mapping is relevant."
+      },
+      {
+        "ruleId": "config",
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/config.md",
+        "reason": "Load only for appsettings, external endpoint, third-party service, or environment config changes."
+      },
+      {
+        "ruleId": "logging-exception",
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/logging-exception.md",
+        "reason": "Load only when the API touches exception handling, logging, or failure disposition."
+      },
+      {
+        "ruleId": "test-handoff",
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/test-handoff.md",
+        "reason": "Load only to describe step-05 UnitTest / IntegrationTest / runtime validation handoff; step 04 must not write test source."
+      }
+    ],
+    "devGuidelineGaps": [],
+    "logicSourcesUsed": [
+      "codeHandoff",
+      "mappingRules",
+      "dependencyHints",
+      "legacyEvidence",
+      "constraints",
+      "mockExamples"
+    ],
+    "queryContractsSelected": [],
+    "mappingRulesSelected": [
+      {
+        "ruleId": "map_getec0001_acctvalue_acctvalue",
+        "sourceField": "GetEC0001().acctValue",
+        "targetField": "acctValue",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "帳�?",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_getec0001_acctcname_acctcname",
+        "sourceField": "GetEC0001().acctCName",
+        "targetField": "acctCName",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "中�??�稱組�?",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_01_02_03_04_11_12_002_21_22_giftcard_23_598_30_80_05_13_14_acctype",
+        "sourceField": "帳�?類�?�?1：臺�?�?2：支存�?3?�值支付帳?��?4行儲??1：�?組�?2�?02??1：信?�卡??2：GIFTCARD??3�?98??0：�??�帳?��?0：�??�單定�???5?��?帳�?(????3?��?帳�?(�???4外匯?�信?��?帳戶(不�???",
+        "targetField": "accType",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "帳�?類�?",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_getec0001_digitalfg_digitalfg",
+        "sourceField": "GetEC0001().digitalFg",
+        "targetField": "digitalFg",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "?��?帳�?幾�?",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_getec0001_genquotamark_genquotamark",
+        "sourceField": "GetEC0001().genQuotaMark",
+        "targetField": "genQuotaMark",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "cancel，�??��?綜�?額度",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_getec0001_genacctmark_genacctmark",
+        "sourceField": "GetEC0001().genAcctMark",
+        "targetField": "genAcctMark",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "綜�??��???,
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_getec0001_acctstat_acctstat",
+        "sourceField": "GetEC0001().acctStat",
+        "targetField": "acctStat",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "久未往來戶記�?",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_getec0001_subacct_subacct",
+        "sourceField": "GetEC0001().subAcct",
+        "targetField": "subAcct",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "子帳??,
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_getec0001_curr_curr",
+        "sourceField": "GetEC0001().curr",
+        "targetField": "curr",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "�?��",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_getec0001_curtext_curtext",
+        "sourceField": "GetEC0001().curText",
+        "targetField": "curText",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "�?��中�?",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_getec0001_availbalance_availbalance",
+        "sourceField": "GetEC0001().availBalance",
+        "targetField": "availBalance",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "(帳戶)餘�?",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_getec0001_availableamount_availableamount",
+        "sourceField": "GetEC0001().availableAmount",
+        "targetField": "availableAmount",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "?�高可使用�?,
+        "evidenceIds": []
+      }
+    ],
+    "dependencyHintsSelected": [
+      {
+        "dependencyType": "external_api",
+        "preferredAbstractions": [
+          "IApiRequestService"
+        ],
+        "purpose": "Excel 依�?声�??�到 CommonFunc->GetAcctKind()?��?帳�?&?��?網�?使用?�輯??,
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "external_api",
+        "preferredAbstractions": [
+          "IApiRequestService"
+        ],
+        "purpose": "业务?��?�???�到 CommonFunc->GetEC0001() ?�帳?�總�?依�???,
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "external_api",
+        "preferredAbstractions": [
+          "IApiRequestService"
+        ],
+        "purpose": "业务?��?�???�到 CommonUtil->GetAcctKind() 依�???,
+        "evidenceIds": []
+      }
+    ],
+    "legacyEvidenceUsed": [
+      {
+        "evidenceId": "response_code.o_common.9999",
+        "kind": "responseCodeCatalog",
+        "origin": "feature_common/P240301Git/Libray/Sinopac.CommonFunc/ResponseCodes/O_Common.resx",
+        "authority": "existing_code",
+        "symbols": [
+          "O_Common.Code_9999"
+        ],
+        "summary": "?�共必填?�数?�误??9999 = 請輸?�{Request?�數}�?,
+        "snippet": "Code_9999: 請輸?�{Request?�數}�?
+      }
+    ],
+    "constraintsApplied": [
+      {
+        "constraintType": "prohibited_shortcut",
+        "rule": "block_comment_header_substitution",
+        "severity": "error",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "error_code_rule",
+        "rule": "9001 | ??��?��?庫失??| 系統繁�?,請�?後�?試�?",
+        "severity": "warning",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "request_field_validation",
+        "field": "transCode",
+        "validationLayer": "dto_attribute",
+        "validationType": "required",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸?�{Request?�數}�?,
+        "customValidationAttributeNeeded": false,
+        "rule": "transCode | dto_attribute | required | 9999 | 請輸?�{Request?�數}�?,
+        "severity": "warning",
+        "evidenceIds": [
+          "response_code.o_common.9999"
+        ]
+      },
+      {
+        "constraintType": "request_field_validation",
+        "field": "webSource",
+        "validationLayer": "dto_attribute",
+        "validationType": "required",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸?�{Request?�數}�?,
+        "customValidationAttributeNeeded": false,
+        "rule": "webSource | dto_attribute | required | 9999 | 請輸?�{Request?�數}�?,
+        "severity": "warning",
+        "evidenceIds": [
+          "response_code.o_common.9999"
+        ]
+      }
+    ],
+    "unresolvedLogic": [],
+    "testScenarioPlan": [
+      {
+        "source": "mockExamples",
+        "sourceIndex": 1,
+        "scenario": "?��??��?結�?示�?",
+        "requestPayload": {
+          "transCode": "B10700",
+          "webSource": "MAPP"
+        },
+        "expectedResponsePayload": {
+          "responseData": {
+            "acctList": [
+              {
+                "acctValue": "8838234284",
+                "acctCName": "DaWho組�?存款帳戶",
+                "accType": "01",
+                "digitalFg": "",
+                "genQuotaMark": 1,
+                "genAcctMark": "1",
+                "acctStat": "Y",
+                "subAcct": "",
+                "curr": "TWD",
+                "curText": "?�臺�?,
+                "availBalance": 531
+              },
+              {
+                "acctValue": "9922334455",
+                "acctCName": "外幣綜�?存款帳戶",
+                "accType": "11",
+                "digitalFg": "1",
+                "genQuotaMark": 0,
+                "genAcctMark": "0",
+                "acctStat": "N",
+                "subAcct": "01",
+                "curr": "USD",
+                "curText": "美�?",
+                "availBalance": 1200.5
+              }
+            ]
+          }
+        },
+        "expectedResponseCode": "",
+        "expectedResponseMessage": "",
+        "expectedIsSuccess": null,
+        "coverageTargets": [
+          "unit_test",
+          "integration_test"
+        ],
+        "preserveScenarioName": true
+      },
+      {
+        "source": "mockExamples",
+        "sourceIndex": 2,
+        "scenario": "??��?��?庫失??,
+        "requestPayload": {},
+        "expectedResponsePayload": {
+          "isSuccess": false,
+          "responseCode": "9001",
+          "responseMessage": "系統繁�?,請�?後�?試�?",
+          "responseDT": "2026/02/24 10:30:25",
+          "responseData": {}
+        },
+        "expectedResponseCode": "9001",
+        "expectedResponseMessage": "系統繁�?,請�?後�?試�?",
+        "expectedIsSuccess": false,
+        "coverageTargets": [
+          "unit_test",
+          "integration_test"
+        ],
+        "preserveScenarioName": true
+      }
+    ],
+    "testScenarioSource": "mockExamples",
+    "testScenarioCoverageRequired": true,
+    "requestValidationPlan": [
+      {
+        "field": "transCode",
+        "validationType": "required",
+        "validationLayer": "dto_attribute",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸?�{Request?�數}�?,
+        "customValidationAttributeNeeded": false
+      },
+      {
+        "field": "webSource",
+        "validationType": "required",
+        "validationLayer": "dto_attribute",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸?�{Request?�數}�?,
+        "customValidationAttributeNeeded": false
+      }
+    ],
+    "dtoAttributeRules": [
+      {
+        "field": "transCode",
+        "validationType": "required",
+        "validationLayer": "dto_attribute",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸?�{Request?�數}�?,
+        "customValidationAttributeNeeded": false
+      },
+      {
+        "field": "webSource",
+        "validationType": "required",
+        "validationLayer": "dto_attribute",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸?�{Request?�數}�?,
+        "customValidationAttributeNeeded": false
+      }
+    ],
+    "customValidationAttributesNeeded": [],
+    "validationResponseMappingMode": "spec_code_message",
+    "serviceValidationsRetained": [],
+    "validationInfrastructureGap": [
+      {
+        "topic": "validation_response_mapping",
+        "requiredCapability": "attribute_validation_to_spec_transaction_result",
+        "mode": "shared_commonstatic"
+      }
+    ],
+    "reviewSources": [],
+    "reviewConstraintsSelected": [
+      {
+        "reviewId": "default_external_api_name",
+        "scope": "global_skill",
+        "fileRole": "shared",
+        "ruleType": "naming",
+        "instruction": "對�? API ?�稱?�route ?��?求說?��??�沿??ShowAcctList，�?得�?外追??Async??,
+        "severity": "warning",
+        "blocking": true,
+        "appliesTo": [
+          "apiName"
+        ],
+        "examples": [
+          "ShowAcctList"
+        ],
+        "source": "default_policy"
+      },
+      {
+        "reviewId": "default_traditional_chinese_code",
+        "scope": "global_skill",
+        "fileRole": "shared",
+        "ruleType": "language",
+        "instruction": "AI 寫入?�中?�註�?���?串、�?案說?��?角色要�?統�?使用繁�?中�???,
+        "severity": "warning",
+        "blocking": false,
+        "appliesTo": [
+          "code_comments",
+          "code_strings",
+          "file_headers"
+        ],
+        "examples": [
+          "繁�?中�?"
+        ],
+        "source": "default_policy"
+      },
+      {
+        "reviewId": "default_dependency_field_naming",
+        "scope": "global_skill",
+        "fileRole": "shared",
+        "ruleType": "naming_style",
+        "instruction": "?�是依賴注入後賦?�到欄�??��??��??��?一律使??_camelCase，�?字固定�?線�?例�? _service?�_ctxAccessor?�_sqlExecutor?�_logger；�?得使??CtxAccessor?�Logger ?��? PascalCase 欄�??��?,
+        "severity": "warning",
+        "blocking": false,
+        "appliesTo": [
+          "constructor_injected_fields",
+          "controller_fields",
+          "service_fields",
+          "fixture_fields"
+        ],
+        "examples": [
+          "_service",
+          "_ctxAccessor",
+          "_sqlExecutor",
+          "_logger"
+        ],
+        "source": "default_policy"
+      }
+    ],
+    "fileRequirements": {
+      "controller": [
+        {
+          "reviewId": "default_external_api_name",
+          "ruleType": "naming",
+          "instruction": "對�? API ?�稱?�route ?��?求說?��??�沿??ShowAcctList，�?得�?外追??Async??,
+          "severity": "warning",
+          "blocking": true,
+          "appliesTo": [
+            "apiName"
+          ],
+          "examples": [
+            "ShowAcctList"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_traditional_chinese_code",
+          "ruleType": "language",
+          "instruction": "AI 寫入?�中?�註�?���?串、�?案說?��?角色要�?統�?使用繁�?中�???,
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "code_comments",
+            "code_strings",
+            "file_headers"
+          ],
+          "examples": [
+            "繁�?中�?"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_dependency_field_naming",
+          "ruleType": "naming_style",
+          "instruction": "?�是依賴注入後賦?�到欄�??��??��??��?一律使??_camelCase，�?字固定�?線�?例�? _service?�_ctxAccessor?�_sqlExecutor?�_logger；�?得使??CtxAccessor?�Logger ?��? PascalCase 欄�??��?,
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "constructor_injected_fields",
+            "controller_fields",
+            "service_fields",
+            "fixture_fields"
+          ],
+          "examples": [
+            "_service",
+            "_ctxAccessor",
+            "_sqlExecutor",
+            "_logger"
+          ],
+          "source": "default_policy"
+        }
+      ],
+      "service": [
+        {
+          "reviewId": "default_external_api_name",
+          "ruleType": "naming",
+          "instruction": "對�? API ?�稱?�route ?��?求說?��??�沿??ShowAcctList，�?得�?外追??Async??,
+          "severity": "warning",
+          "blocking": true,
+          "appliesTo": [
+            "apiName"
+          ],
+          "examples": [
+            "ShowAcctList"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_traditional_chinese_code",
+          "ruleType": "language",
+          "instruction": "AI 寫入?�中?�註�?���?串、�?案說?��?角色要�?統�?使用繁�?中�???,
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "code_comments",
+            "code_strings",
+            "file_headers"
+          ],
+          "examples": [
+            "繁�?中�?"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_dependency_field_naming",
+          "ruleType": "naming_style",
+          "instruction": "?�是依賴注入後賦?�到欄�??��??��??��?一律使??_camelCase，�?字固定�?線�?例�? _service?�_ctxAccessor?�_sqlExecutor?�_logger；�?得使??CtxAccessor?�Logger ?��? PascalCase 欄�??��?,
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "constructor_injected_fields",
+            "controller_fields",
+            "service_fields",
+            "fixture_fields"
+          ],
+          "examples": [
+            "_service",
+            "_ctxAccessor",
+            "_sqlExecutor",
+            "_logger"
+          ],
+          "source": "default_policy"
+        }
+      ],
+      "entity": [
+        {
+          "reviewId": "default_external_api_name",
+          "ruleType": "naming",
+          "instruction": "對�? API ?�稱?�route ?��?求說?��??�沿??ShowAcctList，�?得�?外追??Async??,
+          "severity": "warning",
+          "blocking": true,
+          "appliesTo": [
+            "apiName"
+          ],
+          "examples": [
+            "ShowAcctList"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_traditional_chinese_code",
+          "ruleType": "language",
+          "instruction": "AI 寫入?�中?�註�?���?串、�?案說?��?角色要�?統�?使用繁�?中�???,
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "code_comments",
+            "code_strings",
+            "file_headers"
+          ],
+          "examples": [
+            "繁�?中�?"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_dependency_field_naming",
+          "ruleType": "naming_style",
+          "instruction": "?�是依賴注入後賦?�到欄�??��??��??��?一律使??_camelCase，�?字固定�?線�?例�? _service?�_ctxAccessor?�_sqlExecutor?�_logger；�?得使??CtxAccessor?�Logger ?��? PascalCase 欄�??��?,
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "constructor_injected_fields",
+            "controller_fields",
+            "service_fields",
+            "fixture_fields"
+          ],
+          "examples": [
+            "_service",
+            "_ctxAccessor",
+            "_sqlExecutor",
+            "_logger"
+          ],
+          "source": "default_policy"
+        }
+      ],
+      "unitTest": [
+        {
+          "reviewId": "default_external_api_name",
+          "ruleType": "naming",
+          "instruction": "對�? API ?�稱?�route ?��?求說?��??�沿??ShowAcctList，�?得�?外追??Async??,
+          "severity": "warning",
+          "blocking": true,
+          "appliesTo": [
+            "apiName"
+          ],
+          "examples": [
+            "ShowAcctList"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_traditional_chinese_code",
+          "ruleType": "language",
+          "instruction": "AI 寫入?�中?�註�?���?串、�?案說?��?角色要�?統�?使用繁�?中�???,
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "code_comments",
+            "code_strings",
+            "file_headers"
+          ],
+          "examples": [
+            "繁�?中�?"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_dependency_field_naming",
+          "ruleType": "naming_style",
+          "instruction": "?�是依賴注入後賦?�到欄�??��??��??��?一律使??_camelCase，�?字固定�?線�?例�? _service?�_ctxAccessor?�_sqlExecutor?�_logger；�?得使??CtxAccessor?�Logger ?��? PascalCase 欄�??��?,
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "constructor_injected_fields",
+            "controller_fields",
+            "service_fields",
+            "fixture_fields"
+          ],
+          "examples": [
+            "_service",
+            "_ctxAccessor",
+            "_sqlExecutor",
+            "_logger"
+          ],
+          "source": "default_policy"
+        }
+      ],
+      "integrationTest": [
+        {
+          "reviewId": "default_external_api_name",
+          "ruleType": "naming",
+          "instruction": "對�? API ?�稱?�route ?��?求說?��??�沿??ShowAcctList，�?得�?外追??Async??,
+          "severity": "warning",
+          "blocking": true,
+          "appliesTo": [
+            "apiName"
+          ],
+          "examples": [
+            "ShowAcctList"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_traditional_chinese_code",
+          "ruleType": "language",
+          "instruction": "AI 寫入?�中?�註�?���?串、�?案說?��?角色要�?統�?使用繁�?中�???,
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "code_comments",
+            "code_strings",
+            "file_headers"
+          ],
+          "examples": [
+            "繁�?中�?"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_dependency_field_naming",
+          "ruleType": "naming_style",
+          "instruction": "?�是依賴注入後賦?�到欄�??��??��??��?一律使??_camelCase，�?字固定�?線�?例�? _service?�_ctxAccessor?�_sqlExecutor?�_logger；�?得使??CtxAccessor?�Logger ?��? PascalCase 欄�??��?,
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "constructor_injected_fields",
+            "controller_fields",
+            "service_fields",
+            "fixture_fields"
+          ],
+          "examples": [
+            "_service",
+            "_ctxAccessor",
+            "_sqlExecutor",
+            "_logger"
+          ],
+          "source": "default_policy"
+        }
+      ]
+    },
+    "responseLifecycleRules": [],
+    "failureDisposition": {
+      "mode": "rollback_after_validation_failure",
+      "preserveFailedCode": false,
+      "resumeStrategy": "retry_from_prepare",
+      "source": "default_policy"
+    },
+    "languagePolicy": {
+      "mode": "traditional_chinese_for_ai_code",
+      "appliesTo": [
+        "code_comments",
+        "code_strings",
+        "file_headers",
+        "file_requirements"
+      ],
+      "source": "default_policy"
+    },
+    "externalApiName": "ShowAcctList",
+    "internalAsyncMethod": "ShowAcctListAsync",
+    "resumedFromPhase": "pending"
+  },
+  "validationChecks": [
+    "dotnet build \"Sinopac.EnterpriseAPI/Sinopac.EnterpriseAPI.csproj\" -m:1",
+    "dotnet test \"Test/EnterpriseApi.Unit/EnterpriseApi.Unit.csproj\" -m:1",
+    "dotnet test \"Test/EnterpriseApi.Integration/EnterpriseApi.Integration.csproj\" -m:1"
+  ],
+  "steps": [
+    {
+      "id": "precheck",
+      "status": "done",
+      "note": "Resolved EnterpriseAPI framework profile and module slots."
+    },
+    {
+      "id": "write_code",
+      "status": "pending",
+      "note": "AI must directly modify controller/interface/service/entity business files for CommonFunc; test targets are handoff-only for step 05 and the script must not generate stubs."
+    },
+    {
+      "id": "validate",
+      "status": "pending",
+      "note": "After real code is written, run EnterpriseAPI build, unit test, and integration test validation."
+    }
+  ]
+}

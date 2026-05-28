@@ -1,13 +1,17 @@
 ---
-name: 专案交付文件格式检查器
-description: 检查并修复 TSD Word 与 API Excel 的交付格式。用于文件命名、章节/工作表结构、必要表格、可见栏位、字体、对齐、繁体中文、版面与视觉 QA；只处理格式与结构，不判断业务逻辑、接口语义或字段业务含义。关键词：TSD DOCX、API XLSX、格式检查、视觉 QA。
+name: 【交付文件】专案交付文件格式检查器
+description: 检查 TSD Word 与 API Excel 的交付格式，产出格式问题清单、office-edit-plan 与验收结论。用于文件命名、章节/工作表结构、必要表格、可见栏位、字体、对齐、繁体中文、版面与视觉 QA；实际 .docx/.xlsx 写入交给专案 Office 交付文件编辑器；不判断业务逻辑、接口语义或字段业务含义。关键词：TSD DOCX、API XLSX、格式检查、office-edit-plan、视觉 QA。
 ---
 
-# 专案交付文件格式检查器
+# 【交付文件】专案交付文件格式检查器
+
+## Office Edit Plan Contract
+
+When creating or handing off `office-edit-plan.json`, include `schemaVersion: "1.0.0"`, `claimId`, `targetFiles[]`, `allowedOperations[]`, `forbiddenOperations[]`, and `validation[]`. The Office editor result must echo the `claimId` and report `modifiedFiles` plus `validationCommands`.
 
 ## 上下文策略
 
-入口只保留格式检查流程、边界与可执行命令。先解析当前 workspace，读取 `<rulesRoot>/catalog.json`，再按 `delivery-format`、`api-detail-workbook` 或 docx/xlsx asset 载入专案规则与样式配置。找不到专案规则库时，技能仍可执行通用结构检查，但专案专属格式判断必须标记为「缺少专案规则」，不得从插件内旧个案 reference 偷读预设规则。
+入口只保留格式检查流程、格式规则裁决、修复计划与验收。先解析当前 workspace，读取 `<rulesRoot>/catalog.json`，再按 `delivery-format`、`api-detail-workbook` 或 docx/xlsx asset 载入专案规则与样式配置。找不到专案规则库时，技能仍可执行通用结构检查，但专案专属格式判断必须标记为「缺少专案规则」，不得从插件内旧个案 reference 偷读预设规则。实际保存 `.docx` / `.xlsx` 时交给 `专案 Office 交付文件编辑器`，不要在本技能中直接写入交付文件。
 
 遇到「系统设计规范 v2.5 / 设计规范 / TSD 格式 / API Detail 格式标准 / 字型规则 / API清单 格式」相关任务时，优先读取专案规则库中的对应 category；技能内 `references/`、`configs/` 仅作历史兼容、fixture 或迁移说明。
 
@@ -16,7 +20,7 @@ description: 检查并修复 TSD Word 与 API Excel 的交付格式。用于文�
 正式 TSD/API Detail 格式检查或修复前，必须先解析 `deliveryFormat` 规则包：
 
 ```powershell
-python "C:\Users\<username>\plugins\project-delivery-hub-v1\references\resolve_project_rule_pack.py" `
+python "<pluginRoot>\references\resolve_project_rule_pack.py" `
   --pack deliveryFormat `
   --workspace-key "<workspaceKey>"
 ```
@@ -25,7 +29,7 @@ python "C:\Users\<username>\plugins\project-delivery-hub-v1\references\resolve_p
 
 ## 工作流程
 
-预设流程是先检查、再列问题；只有在使用者确认后才修改，修改后再验证。
+预设流程是先检查、再列问题；只有在使用者确认后才生成修复计划并交给 Office 编辑器，修改后再由本技能验证。
 
 1. 确认输入是 TSD `.docx`、API 规格 `.xlsx`，或包含这两类文件的资料夹。
 2. 若输入是 TSD `.docx`，优先执行内建结构检查器：
@@ -59,17 +63,17 @@ python scripts/check_api_xlsx_format.py "path/to/API_DETAIL.xlsx"
    - `Covered`: 已通过或已覆盖的检查。
 7. 每个问题都要包含位置、现况、建议修改、原因与影响。
 8. 使用者确认要修哪些问题前，不要修改文件。确认后：
-   - 使用 `python-docx` 精准修改 DOCX 文字与表格。
-   - XLSX 修复固定采用「检查范围 -> 备份/复制 -> 修格式 -> 最后执行字型槽位 -> 结构复验 -> artifact-tool inspect/render -> 使用者报告」闭环。
+   - 生成 `office-edit-plan`，列出文件、sheet/章节/row/cell/range、允许操作、禁止操作、验证命令与视觉 QA 要求。
+   - 将计划交给 `专案 Office 交付文件编辑器` 执行保存；本技能只接收其 `modifiedFiles`、验证命令、风险与 blocker。
+   - XLSX 修复闭环固定为「检查范围 -> office-edit-plan -> Office 编辑器保存 -> 字型槽位收尾（如需要）-> 结构复验 -> artifact-tool inspect/render -> 使用者报告」。
    - XLSX 格式修复不得依 Excel `UsedRange` 全表套用；API Detail 预设只处理 API worksheet 的语义可视范围 `A:G` 到最后内容列。
-   - 可用 `openpyxl` 做只读检查，不得在含 OLE/media 的交付 workbook 上用 `openpyxl` 保存；需要保存时优先使用 Excel COM 或经验证不破坏内容的工具。
    - 保留无关内容与既有格式。
-9. 修改后重新执行 `scripts/check_api_xlsx_format.py` 或 DOCX 结构/格式检查；XLSX 需再用 artifact-tool import/inspect/render 抽查代表性 API sheet。
+9. Office 编辑器修改后，本技能重新执行 `scripts/check_api_xlsx_format.py` 或 DOCX 结构/格式检查；XLSX 需再用 artifact-tool import/inspect/render 抽查代表性 API sheet。
 10. 修改后预设执行视觉 QA。只有在已渲染并检视页面/工作表后，才能宣称视觉检查通过；若渲染工具不可用，必须明确列为未完成风险。
 
 ## 上游 API 工作簿交接
 
-当本技能在 `专案需求接口设计梳理` 或其他上游 API 设计流程编辑 `NEWDA_API_DETAIL_*.xlsx` 后被调用时，应将工作簿视为语义内容已完成，本技能只负责交付格式收尾。
+当本技能在 `专案需求接口设计梳理` 或其他上游 API 设计流程编辑 `NEWDA_API_DETAIL_*.xlsx` 后被调用时，应将工作簿视为语义内容已完成，本技能只负责交付格式判断、修复计划与验收；实际写入仍交给 Office 编辑器。
 
 交接契约：
 
@@ -79,9 +83,9 @@ python scripts/check_api_xlsx_format.py "path/to/API_DETAIL.xlsx"
 - 局部内容编辑后的格式收尾有三条强制约束：一是只对实际新增或替换后的字符/词组使用 `apiDetailExcelStyle` 字型槽位（中文 `微軟正黑體`、英文数字 `Times New Roman`、字号 10）并标红，不得整格、整行或整段标红；二是字体修复只准作用于这些变更字符/词组，其他文字与单元格字体保持既有样式；三是目标 workbook 的所有工作表已用行必须重新自适应高度，含换行文字或合并格的行需按可见内容补足行高。
 - 信息补充不得重复堆叠：`涉及BackendAPI`、`後端來源`、`Api_List` 仅写调用关系与来源摘要；Redis、DB fallback、排序、异常等细节优先放在 `API 內部業務邏輯` 的对应步骤，避免同一说明在清单和逻辑区重复出现。
 - 若上游未提供明确变更范围，先执行只读检查并回报需要确认的范围；不得为了收尾而扩大到全 workbook 或所有 sheets。
-- 当 API Detail worksheet 本身需要整页格式收尾时，优先使用 `scripts/rebuild_api_xlsx_detail_sheets_from_text.ps1` 的“抽取文字并重建”流程：先抽取语义 `A:G` 文字与分区，再创建干净 worksheet，并按配置重新填入。不要在旧 worksheet 上反复修补过期合并格、边框、底色与行高。
-- `Api_List` 不参与 API Detail 批量套样式。只有当用户或上游交接指出它属于本次工作簿修复范围时，才修复 `Api_List` hyperlink 或索引一致性。当 `Api_List` 本身需要整页格式收尾时，优先使用 `scripts/rebuild_api_xlsx_api_list_from_text.ps1` 的“抽取文字并重建”流程，不要在旧 sheet 上原地打补丁。
-- 严格执行 XLSX 闭环：确认范围 -> 刷新/复制备份 -> 只修范围内格式 -> 只对范围内执行字体槽位 -> 结构复验 -> artifact-tool inspect/render -> 用户报告。
+- 当 API Detail worksheet 本身需要整页格式收尾时，`office-edit-plan` 可建议 Office 编辑器使用 `scripts/rebuild_api_xlsx_detail_sheets_from_text.ps1` 的“抽取文字并重建”流程：先抽取语义 `A:G` 文字与分区，再创建干净 worksheet，并按配置重新填入。不要在旧 worksheet 上反复修补过期合并格、边框、底色与行高。
+- `Api_List` 不参与 API Detail 批量套样式。只有当用户或上游交接指出它属于本次工作簿修复范围时，才规划修复 `Api_List` hyperlink 或索引一致性。当 `Api_List` 本身需要整页格式收尾时，`office-edit-plan` 可建议 Office 编辑器使用 `scripts/rebuild_api_xlsx_api_list_from_text.ps1` 的“抽取文字并重建”流程，不要在旧 sheet 上原地打补丁。
+- 严格执行 XLSX 闭环：确认范围 -> office-edit-plan -> Office 编辑器只修范围内格式 -> 只对范围内执行字体槽位 -> 结构复验 -> artifact-tool inspect/render -> 用户报告。
 - 最终报告必须包含 `Must fix`、`Should fix`、`Naming`、`Visual risk` 与 `Covered`。刚修复过的工作簿，只要 `Must fix` 或 `Visual risk` 仍非 0，就不得宣称格式闭环完成。
 
 ## 检查范围
@@ -157,35 +161,35 @@ API 规格 Excel 只做文件格式与表格结构检查：
 - 不使用 field KB 判断命名或业务含义。
 - 需要业务语义、API workbook 深度检查或跨文件接口设计时，改用专门的 API/接口设计技能。
 
-## 修复原则
+## 修复计划原则
 
 - 预设只产出报告，不自动修复所有问题。
 - 可提出安全的文件错字、标题、标签、格式、繁体中文或固定术语修正，但仍需等待使用者确认。
 - 固定术语修正包含 `校验` 改为 `验证` 或 `检核`：描述验证流程、验证结果、验证规则时优先用 `验证`；描述检查项目、检查清单、人工核对动作时优先用 `检核`。
-- 修改时采用能解决问题的最小变更。
+- 修复计划采用能解决问题的最小变更。
 - 格式检查/修复不得随意新增交付内容：不要为了说明判断依据、命名理由、冻版口径或修复原因，在 Excel/Word 底部追加 `备注`、`注记`、说明列或自由文字段落，除非使用者明确要求把该内容写入交付文件。这类说明应留在检查报告、回复讯息或专门 handoff note 中。
-- XLSX 字型修复预设使用 Excel COM 双字型槽位模式，不做逐字/rich-text 拆分。局部业务编辑交接时，必须优先传入明确 `-Sheets` / 范围参数，只处理本次变更的 API Detail worksheets 或 `Api_List` 行。脚本在未传范围时会自动识别 API Detail worksheets、排除 `Api_List`，并只处理 `A:G` 到最后内容列；这种默认模式只适合用户要求检查/修复整本 API workbook 的格式，不适合上游局部内容编辑后的收尾。如需全 workbook，必须显式加 `-AllSheets`。命令范例：
+- XLSX 字型修复计划预设要求 Office 编辑器使用 Excel COM 双字型槽位模式，不做逐字/rich-text 拆分。局部业务编辑交接时，必须优先传入明确 `-Sheets` / 范围参数，只处理本次变更的 API Detail worksheets 或 `Api_List` 行。脚本在未传范围时会自动识别 API Detail worksheets、排除 `Api_List`，并只处理 `A:G` 到最后内容列；这种默认模式只适合用户要求检查/修复整本 API workbook 的格式，不适合上游局部内容编辑后的收尾。如需全 workbook，必须显式加 `-AllSheets`。可写入 `office-edit-plan` 的命令范例：
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File scripts/apply_excel_font_scheme.ps1 -Path "path\to\workbook.xlsx"
 ```
 
-- 如只修指定 API sheets，可加 `-Sheets "Sheet1","Sheet2"`；只有人工确认要改整本 workbook 时才加 `-AllSheets`。执行前依专案规则先备份交付 workbook；若 workbook 内含 OLE/media，此模式可透过 Excel COM 保存，避免 `openpyxl` 移除嵌入物。
-- XLSX 若同时修复对齐与字型，建议顺序为：先修对齐/列高/页面设定，再执行 COM 双字型槽位模式，最后重新开启 workbook 或渲染检查可见字型。
-- XLSX 若只需修复 `API 内部业务逻辑` 的 `B:F` 合并格与 `A` 栏步骤栏对齐/底色，可先执行 `scripts/repair_api_xlsx_internal_logic_merges.ps1`；此脚本预设只处理 API Detail worksheets、排除 `Api_List`，并只动 `API 内部业务逻辑` 的 `A:F` 边框/合并/对齐/底色，不处理 `H:AZ` 或新增 `Api_List` 内容。修复后仍需执行字型槽位脚本与结构/渲染复验。
-- XLSX 若需修复 `范例` 区 `B:C` / `D:F` 合并、`A` 栏情境说明对齐与全列自适应高度，执行 `scripts/repair_api_xlsx_example_merges_and_row_heights.ps1`；此脚本预设只处理 API Detail worksheets、排除 `Api_List`，只动 `范例` 区合并/对齐与 `A:G` 有内容列行高，不处理 `H:AZ` 或新增业务情境。修复后仍需执行字型槽位脚本与结构/渲染复验。
-- XLSX 若需修复顶部 `API  Name` / `API Description` 高度、`B1:B2` 右边框、非模板内容列自适应高度与 `H:AZ` 空白区可见边框污染，执行 `scripts/repair_api_xlsx_header_scope_and_row_heights.ps1`；此脚本预设只处理 API Detail worksheets、排除 `Api_List`，不改业务内容。
-- XLSX 若需对 API Detail worksheet 做整页格式闭环，优先执行 `scripts/rebuild_api_xlsx_detail_sheets_from_text.ps1 -Sheets ...`；此脚本先抽取目标 sheet 的 `A:G` 语义文字与分区内容，再建立干净新 sheet、按配置重填 `API Name` / `Request` / `Response` / `范例` / `For中台开发人员` / `API 内部业务逻辑`、重建合并格、行高与边框。若检测到公式、外部超连结、批注、形状/图片/控制项/OLE 内嵌物件，预设停止并报告风险，不强行删除。
-- XLSX 若需对 `Api_List` 做整页格式闭环、排序、API 名称栏 hyperlink 样式、后端来源同步、行高与底边框统一，优先执行 `scripts/rebuild_api_xlsx_api_list_from_text.ps1`；此脚本先抽取旧 `Api_List` 的 `A:J` 文字与 `E` 栏内部跳转，再删除旧 sheet、按专案规则库 `apiDetailExcelStyle` 的 `apiList` 配置重建，避免旧 sheet 残留合并、边框、底色或列高污染。
-- XLSX 若只需修复目前功能范围内的 `Api_List` API 名称栏 hyperlink 样式、水平靠左/垂直置中、底部黑色边框、目标行 AutoFit，以及 API Detail `Request` / `Response` / `范例` / `API 内部业务逻辑` 区块末行底框，且不需要重建整张 `Api_List`，才执行 `scripts/repair_api_xlsx_api_list_and_section_borders.ps1 -Sheets ...`；此脚本只处理指定 API sheets 对应的 `Api_List` 行与区块底框，不新增业务行。
-- XLSX 修复的最终保存顺序必须以字型槽位收尾：若修复过程中任何一步曾用 `openpyxl` 保存、OpenXML/ZIP 直接替换内容、临时 workbook 覆盖正式档，或其他非 Excel COM 路径写回 `.xlsx`，不得直接宣称字型合规；必须在全部写回完成后重新执行 COM 双字型槽位脚本，然后再做可见字型/字符级抽查与必要的视觉 QA。
+- 如只修指定 API sheets，可加 `-Sheets "Sheet1","Sheet2"`；只有人工确认要改整本 workbook 时才加 `-AllSheets`。若 workbook 内含 OLE/media，计划必须要求 Office 编辑器用 Excel COM 保存，避免 `openpyxl` 移除嵌入物。
+- XLSX 若同时修复对齐与字型，计划顺序为：先修对齐/列高/页面设定，再执行 COM 双字型槽位模式，最后重新开启 workbook 或渲染检查可见字型。
+- XLSX 若只需修复 `API 内部业务逻辑` 的 `B:F` 合并格与 `A` 栏步骤栏对齐/底色，可在计划中要求 Office 编辑器执行 `scripts/repair_api_xlsx_internal_logic_merges.ps1`；此脚本预设只处理 API Detail worksheets、排除 `Api_List`，并只动 `API 内部业务逻辑` 的 `A:F` 边框/合并/对齐/底色，不处理 `H:AZ` 或新增 `Api_List` 内容。修复后仍需执行字型槽位脚本与结构/渲染复验。
+- XLSX 若需修复 `范例` 区 `B:C` / `D:F` 合并、`A` 栏情境说明对齐与全列自适应高度，可在计划中要求 Office 编辑器执行 `scripts/repair_api_xlsx_example_merges_and_row_heights.ps1`；此脚本预设只处理 API Detail worksheets、排除 `Api_List`，只动 `范例` 区合并/对齐与 `A:G` 有内容列行高，不处理 `H:AZ` 或新增业务情境。修复后仍需执行字型槽位脚本与结构/渲染复验。
+- XLSX 若需修复顶部 `API  Name` / `API Description` 高度、`B1:B2` 右边框、非模板内容列自适应高度与 `H:AZ` 空白区可见边框污染，可在计划中要求 Office 编辑器执行 `scripts/repair_api_xlsx_header_scope_and_row_heights.ps1`；此脚本预设只处理 API Detail worksheets、排除 `Api_List`，不改业务内容。
+- XLSX 若需对 API Detail worksheet 做整页格式闭环，计划中优先要求 Office 编辑器执行 `scripts/rebuild_api_xlsx_detail_sheets_from_text.ps1 -Sheets ...`；此脚本先抽取目标 sheet 的 `A:G` 语义文字与分区内容，再建立干净新 sheet、按配置重填 `API Name` / `Request` / `Response` / `范例` / `For中台开发人员` / `API 内部业务逻辑`、重建合并格、行高与边框。若检测到公式、外部超连结、批注、形状/图片/控制项/OLE 内嵌物件，预设停止并报告风险，不强行删除。
+- XLSX 若需对 `Api_List` 做整页格式闭环、排序、API 名称栏 hyperlink 样式、后端来源同步、行高与底边框统一，计划中优先要求 Office 编辑器执行 `scripts/rebuild_api_xlsx_api_list_from_text.ps1`；此脚本先抽取旧 `Api_List` 的 `A:J` 文字与 `E` 栏内部跳转，再删除旧 sheet、按专案规则库 `apiDetailExcelStyle` 的 `apiList` 配置重建，避免旧 sheet 残留合并、边框、底色或列高污染。
+- XLSX 若只需修复目前功能范围内的 `Api_List` API 名称栏 hyperlink 样式、水平靠左/垂直置中、底部黑色边框、目标行 AutoFit，以及 API Detail `Request` / `Response` / `范例` / `API 内部业务逻辑` 区块末行底框，且不需要重建整张 `Api_List`，计划中才要求 Office 编辑器执行 `scripts/repair_api_xlsx_api_list_and_section_borders.ps1 -Sheets ...`；此脚本只处理指定 API sheets 对应的 `Api_List` 行与区块底框，不新增业务行。
+- XLSX 修复的最终保存顺序必须以字型槽位收尾：若修复过程中任何一步曾用 `openpyxl` 保存、OpenXML/ZIP 直接替换内容、临时 workbook 覆盖正式档，或其他非 Excel COM 路径写回 `.xlsx`，不得直接宣称字型合规；必须要求 Office 编辑器在全部写回完成后重新执行 COM 双字型槽位脚本，然后再做可见字型/字符级抽查与必要的视觉 QA。
 - XLSX 字型检查需分两层回报：可见字型是否合规，以及 XML/fallback/run 是否仍有残留；合并储存格非左上角幽灵格或不可见 fallback 残留只能列为非渲染残留或忽略，不可当成可见字型错误。
 - Excel COM 对一个 mixed-font cell 查 `Range.Font.Name` 可能回空值，这代表同格混合字型，不等于失败。需要抽查时用 `Range("A1").Characters(start, length).Font.Name` 分别确认中文与英文字符。
 - 逐字/rich-text run 激进修复只作为兜底：当 COM 双字型槽位模式后，实际画面仍有明确字型错误，且使用者同意进行深度富文本修复时才使用。
 - XLSX 对齐检查需使用同一套序号识别规则：A 栏 `^\d+(\.\d+)*$` 为序号并置中，其余有内容储存格靠左垂直置中。
-- 修复既有交付版 API workbook 时，若 workbook 内含 `xl/embeddings/` 或 `xl/media/`，优先使用 Excel COM 储存，避免 `openpyxl` 移除 OLE 物件或 EMF 图片。可用 `openpyxl` 读取检查，但不要用它保存此类 workbook。
-- 重新开启每个已修改的 DOCX/XLSX，确认变更后的段落、表格列、储存格或样式。
-- 修复完成后预设执行结构复验与视觉 QA；XLSX 至少要用 artifact-tool import/inspect/render 代表性 API sheet，必要时再转 PDF。未完成渲染与检视前，不得宣称交付版面完全通过。
+- 修复既有交付版 API workbook 时，若 workbook 内含 `xl/embeddings/` 或 `xl/media/`，计划必须要求 Office 编辑器优先使用 Excel COM 储存，避免 `openpyxl` 移除 OLE 物件或 EMF 图片。可用 `openpyxl` 读取检查，但不要用它保存此类 workbook。
+- Office 编辑器需重新开启每个已修改的 DOCX/XLSX，确认变更后的段落、表格列、储存格或样式。
+- Office 编辑器修复完成后，本技能预设执行结构复验与视觉 QA；XLSX 至少要用 artifact-tool import/inspect/render 代表性 API sheet，必要时再转 PDF。未完成渲染与检视前，不得宣称交付版面完全通过。
 
 ## 视觉 QA
 
@@ -226,16 +230,17 @@ XLSX 视觉检查先使用 artifact-tool 汇入 workbook，对代表性 API shee
 
 - `scripts/check_tsd_docx.py`：独立 Python 3 DOCX 结构检查器，只使用标准库。
 - `scripts/check_api_xlsx_format.py`：只读 API XLSX 结构/格式复验器，读取样式配置并检查 API sheet 范围、分区、合并、`H:AZ` 污染、底部残留样式与 `Api_List` 跳转。
-- `scripts/apply_excel_font_scheme.ps1`：使用 Excel COM 套用 API XLSX 双字型槽位；预设只处理 API Detail worksheets 的 `A:G` 语义范围，并输出字符级可见字型抽查结果。
-- `scripts/repair_api_xlsx_example_merges_and_row_heights.ps1`：使用 Excel COM 修复 `范例` 区 `B:C` / `D:F` 合并格与 `A` 栏情境说明对齐，并依合并后显示宽度重算 `A:G` 有内容列自适应高度。
-- `scripts/repair_api_xlsx_header_scope_and_row_heights.ps1`：使用 Excel COM 修复顶部 API 标题/描述区、固定模板列高、内容列自适应高度与 `H:AZ` 空白区可见边框污染。
-- `scripts/repair_api_xlsx_api_list_and_section_borders.ps1`：使用 Excel COM 修复指定 API sheets 对应的 `Api_List` API 名称栏 hyperlink 视觉、对齐、底边框与行高，并补齐 API Detail 各内容区块末行底部黑色边框。
-- `scripts/rebuild_api_xlsx_api_list_from_text.ps1`：使用 Excel COM 先抽取旧 `Api_List` 的 `A:J` 文字、API 名称内部跳转与原 sheet 位置，再删除并重建 `Api_List`，按配置填回表头/资料、排序、还原 hyperlink、同步 `后端来源`、套用栏宽/底色/字型/边框/行高与 AutoFilter。
-- `scripts/rebuild_api_xlsx_detail_sheets_from_text.ps1`：使用 Excel COM 先抽取 API Detail worksheet 的 `A:G` 可见文字与标准分区，再用干净新 worksheet 按配置重建 `API Name`、`Request`、`Response`、`范例`、`For中台开发人员`、`API 内部业务逻辑`、合并格、边框、底色、行高与返回连结。
+- `scripts/apply_excel_font_scheme.ps1`：Office 编辑器可按本技能计划调用，使用 Excel COM 套用 API XLSX 双字型槽位；预设只处理 API Detail worksheets 的 `A:G` 语义范围，并输出字符级可见字型抽查结果。
+- `scripts/repair_api_xlsx_example_merges_and_row_heights.ps1`：Office 编辑器可按本技能计划调用，使用 Excel COM 修复 `范例` 区 `B:C` / `D:F` 合并格与 `A` 栏情境说明对齐，并依合并后显示宽度重算 `A:G` 有内容列自适应高度。
+- `scripts/repair_api_xlsx_header_scope_and_row_heights.ps1`：Office 编辑器可按本技能计划调用，使用 Excel COM 修复顶部 API 标题/描述区、固定模板列高、内容列自适应高度与 `H:AZ` 空白区可见边框污染。
+- `scripts/repair_api_xlsx_api_list_and_section_borders.ps1`：Office 编辑器可按本技能计划调用，使用 Excel COM 修复指定 API sheets 对应的 `Api_List` API 名称栏 hyperlink 视觉、对齐、底边框与行高，并补齐 API Detail 各内容区块末行底部黑色边框。
+- `scripts/rebuild_api_xlsx_api_list_from_text.ps1`：Office 编辑器可按本技能计划调用，使用 Excel COM 先抽取旧 `Api_List` 的 `A:J` 文字、API 名称内部跳转与原 sheet 位置，再删除并重建 `Api_List`，按配置填回表头/资料、排序、还原 hyperlink、同步 `后端来源`、套用栏宽/底色/字型/边框/行高与 AutoFilter。
+- `scripts/rebuild_api_xlsx_detail_sheets_from_text.ps1`：Office 编辑器可按本技能计划调用，使用 Excel COM 先抽取 API Detail worksheet 的 `A:G` 可见文字与标准分区，再用干净新 worksheet 按配置重建 `API Name`、`Request`、`Response`、`范例`、`For中台开发人员`、`API 内部业务逻辑`、合并格、边框、底色、行高与返回连结。
 - 专案规则库 catalog asset `apiDetailExcelStyle`：API Detail Excel 分区样式配置。API XLSX 检查与修复时，栏宽、列高、底色、字型、粗体、对齐、边框等可见样式值以此档为最高优先级；若缺少此 asset，脚本会要求传入 `--config` / `-ConfigPath`，不再自动使用插件内旧配置。
 - `references/sample-derived-standard.md`：由参考文件推导出的 TSD DOCX 基准规则。
 - `references/system-design-standard-v2.5-format-rules.md`：系统设计规范 v2.5 中可稳定执行的 TSD DOCX / API Detail Excel 格式规则。
 - `references/raw/Regression_Example.xlsx`：API Detail Excel 历史回归样例，保留作为结构与版型参考，不再作为每次修复时的样式取值来源。
 - `references/api-detail-regression-standard.md`：API Detail 结构、区块顺序与配置使用规则。
-- API XLSX 目前以 `openpyxl` 进行格式/结构检查；既有交付 workbook 若含 OLE/media，修复保存时优先使用 Excel COM。
+- API XLSX 目前以 `openpyxl` 进行格式/结构检查；既有交付 workbook 若含 OLE/media，修复保存计划必须要求 Office 编辑器优先使用 Excel COM。
 - 相关技能：`专案需求接口设计梳理` 负责专案 API Detail、field KB、业务语义与接口设计决策；当任务超出格式/结构检查时改用该技能。
+- 相关技能：`专案 Office 交付文件编辑器` 负责 `.docx` / `.xlsx` 物理写入、保存与复验回报；本技能负责格式判断与验收。

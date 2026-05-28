@@ -11,9 +11,21 @@ from pathlib import Path
 from typing import Any
 from zipfile import BadZipFile
 
-from docx import Document
-from docx.opc.exceptions import PackageNotFoundError
-from openpyxl import load_workbook
+try:
+    from docx import Document
+    from docx.opc.exceptions import PackageNotFoundError
+    from openpyxl import load_workbook
+except ImportError as exc:
+    missing_module = (getattr(exc, "name", "") or "").split(".", 1)[0]
+    package_name = {
+        "docx": "python-docx",
+        "openpyxl": "openpyxl",
+    }.get(missing_module, missing_module or "required package")
+    raise SystemExit(
+        "reference-index-importer 缺少 Python 依赖："
+        f"{package_name}。请在当前解释器安装后重试，例如："
+        f"python -m pip install {package_name}"
+    ) from exc
 
 from reference_support import (
     REFERENCE_SCHEMA_VERSION,

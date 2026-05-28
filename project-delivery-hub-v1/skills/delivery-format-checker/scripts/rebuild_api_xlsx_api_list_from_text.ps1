@@ -497,9 +497,8 @@ $config = Get-Content -LiteralPath $resolvedConfig.Path -Encoding UTF8 -Raw | Co
 $apiListConfig = $config.apiList
 $lastColumn = 10
 
-if ($CreateBackup) {
-  Copy-Item -LiteralPath $resolvedPath.Path -Destination ($resolvedPath.Path + ".bak") -Force
-}
+# -CreateBackup is retained for backward-compatible invocations; same-directory
+# .bak output is intentionally disabled by the Office deliverable edit contract.
 
 $excel = New-Object -ComObject Excel.Application
 $excel.Visible = [bool]$Visible

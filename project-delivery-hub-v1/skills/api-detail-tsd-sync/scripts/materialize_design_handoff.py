@@ -124,6 +124,9 @@ def iter_markdown_file_refs(markdown_text: str) -> list[str]:
 
 def classify_input(path: Path) -> str:
     name = path.name.casefold()
+    normalized_name = name.replace("_", " ").replace("-", " ")
+    if "it spec" in normalized_name:
+        return "it-spec"
     if path.suffix.lower() == ".docx" and "tsd" in name:
         return "tsd"
     if "newda_api_detail" in name or "api_detail" in name:
@@ -139,8 +142,104 @@ def unique_target_path(root: Path, source: Path) -> Path:
     target = root / source.name
     if not target.exists():
         return target
+    if target.is_file() and sha256_file(target) == sha256_file(source):
+        return target
     digest = sha256_file(source).split(":", 1)[1][:10]
     return root / f"{source.stem}_{digest}{source.suffix}"
+
+
+def copy_if_needed(source: Path, target: Path) -> None:
+    if target.exists():
+        same_resolved_path = source.resolve() == target.resolve()
+        same_content = target.is_file() and sha256_file(target) == sha256_file(source)
+        if same_resolved_path or same_content:
+            return
+    target.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(source, target)
+
+
+def load_json_file(path: Path) -> dict[str, Any] | None:
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8-sig"))
+    except (OSError, json.JSONDecodeError):
+        return None
+    return payload if isinstance(payload, dict) else None
+
+
+def matrix_item_blocks_readiness(item: dict[str, Any]) -> bool:
+    readiness_impact = clean_text(item.get("readinessImpact")).casefold()
+    decision = clean_text(item.get("decision")).casefold()
+    if readiness_impact == "blocking":
+        return True
+    return decision in {"needs-customer-confirmation", "unresolved", "todo", "pending"}
+
+
+def find_diff_matrix_sources(summary_path: Path, analysis_root: Path) -> dict[str, Path]:
+    sources: dict[str, Path] = {}
+    for base in (summary_path.parent, analysis_root):
+        for fmt, name in (("markdown", "it-spec-diff-matrix.md"), ("json", "it-spec-diff-matrix.json")):
+            if fmt in sources:
+                continue
+            candidate = base / name
+            if candidate.exists() and candidate.is_file():
+                sources[fmt] = candidate.resolve()
+    return sources
+
+
+def build_analysis_artifact_records(
+    *,
+    summary_path: Path,
+    analysis_root: Path,
+    agent_root: Path,
+    dry_run: bool,
+) -> list[dict[str, Any]]:
+    artifacts: list[dict[str, Any]] = []
+    for fmt, source in sorted(find_diff_matrix_sources(summary_path, analysis_root).items()):
+        target = analysis_root / source.name
+        if not dry_run:
+            copy_if_needed(source, target)
+            hash_path = target
+        else:
+            hash_path = source
+        artifacts.append(
+            {
+                "kind": "it-spec-diff-matrix",
+                "format": fmt,
+                "sourcePath": source.as_posix(),
+                "copiedRelativePath": normalize_rel(target, agent_root),
+                "hash": sha256_file(hash_path),
+            }
+        )
+    return artifacts
+
+
+def evaluate_diff_matrix_gate(has_it_spec: bool, analysis_artifacts: list[dict[str, Any]], agent_root: Path) -> str | None:
+    if not has_it_spec:
+        return None
+    json_artifact = next(
+        (artifact for artifact in analysis_artifacts if artifact.get("kind") == "it-spec-diff-matrix" and artifact.get("format") == "json"),
+        None,
+    )
+    if json_artifact is None:
+        return "Customer IT SPEC 已纳入来源，但缺少 it-spec-diff-matrix.json 差异矩阵"
+
+    matrix_path = Path(clean_text(json_artifact.get("sourcePath")))
+    if not matrix_path.is_absolute():
+        matrix_path = agent_root / matrix_path
+    if not matrix_path.exists():
+        copied_path = Path(clean_text(json_artifact.get("copiedRelativePath")))
+        matrix_path = copied_path if copied_path.is_absolute() else agent_root / copied_path
+    payload = load_json_file(matrix_path)
+    if payload is None:
+        return f"Customer IT SPEC 差异矩阵 JSON 无法读取：{matrix_path.as_posix()}"
+    blocking = [
+        clean_text(item.get("id")) or f"item-{index}"
+        for index, item in enumerate(list(payload.get("items") or []), start=1)
+        if isinstance(item, dict) and matrix_item_blocks_readiness(item)
+    ]
+    if blocking:
+        return "Customer IT SPEC 差异矩阵存在未裁决/阻塞项：" + ", ".join(blocking)
+    return None
 
 
 def assess_readiness(markdown_text: str) -> tuple[bool, str, str]:
@@ -194,6 +293,8 @@ def materialize_handoff(args: argparse.Namespace) -> dict[str, Any]:
         )
         if resolved is None or resolved == summary_path:
             continue
+        if resolved.name in {"it-spec-diff-matrix.md", "it-spec-diff-matrix.json"}:
+            continue
         if resolved in seen_files:
             continue
         resolved_files.append(resolved)
@@ -206,13 +307,25 @@ def materialize_handoff(args: argparse.Namespace) -> dict[str, Any]:
         target = unique_target_path(target_dir, source)
         copy_plan.append((source, target, kind))
 
+    has_it_spec = any(kind == "it-spec" for _, _, kind in copy_plan)
+    analysis_artifacts = build_analysis_artifact_records(
+        summary_path=summary_path,
+        analysis_root=analysis_root,
+        agent_root=workspace.agent_root,
+        dry_run=args.dry_run,
+    )
+    matrix_block_reason = evaluate_diff_matrix_gate(has_it_spec, analysis_artifacts, workspace.agent_root)
+    if matrix_block_reason:
+        ready = False
+        readiness_status = "blocked"
+        block_reason = matrix_block_reason
+
     if not args.dry_run:
         write_workspace_snapshot(workspace)
         analysis_root.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(summary_path, analysis_target)
+        copy_if_needed(summary_path, analysis_target)
         for source, target, kind in copy_plan:
-            target.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copy2(source, target)
+            copy_if_needed(source, target)
             source_records.append(
                 {
                     "kind": kind,
@@ -247,6 +360,7 @@ def materialize_handoff(args: argparse.Namespace) -> dict[str, Any]:
             "hash": sha256_file(summary_path),
         },
         "inputsRoot": normalize_rel(inputs_root, workspace.agent_root),
+        "analysisArtifacts": sorted(analysis_artifacts, key=lambda item: (item["kind"], item["format"])),
         "sourceFiles": sorted(source_records, key=lambda item: (item["kind"], item["copiedRelativePath"].casefold())),
     }
 
@@ -265,6 +379,14 @@ def materialize_handoff(args: argparse.Namespace) -> dict[str, Any]:
                 "analysis": normalize_rel(analysis_target, workspace.agent_root),
                 "developmentHandoff": normalize_rel(handoff_path, workspace.agent_root),
                 "inputsRoot": normalize_rel(inputs_root, workspace.agent_root),
+                "itSpecDiffMatrix": next(
+                    (
+                        artifact["copiedRelativePath"]
+                        for artifact in analysis_artifacts
+                        if artifact.get("kind") == "it-spec-diff-matrix" and artifact.get("format") == "json"
+                    ),
+                    None,
+                ),
             },
             blockers=[block_reason] if block_reason else [],
         )

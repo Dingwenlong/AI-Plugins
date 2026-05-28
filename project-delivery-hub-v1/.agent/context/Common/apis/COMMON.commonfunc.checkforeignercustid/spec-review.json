@@ -1,0 +1,20 @@
+{
+  "reviewStatus": "passed",
+  "checkedAt": "2026-05-23T19:40:37+08:00",
+  "apiId": "COMMON.commonfunc.checkforeignercustid",
+  "source": {
+    "tsdFile": "TSD.Common_封存TSD共用开发链路_v1.0_20260523.docx",
+    "workbookFile": "NEWDA_Method_DETAIL_ExchangeCommonFunc_20260522.xlsx",
+    "sheetNames": [
+      "CheckForeignerCustId是否為外國人"
+    ]
+  },
+  "summary": {
+    "checks": 10,
+    "matched": 10,
+    "matchPct": 100.0,
+    "blockingCount": 0,
+    "warningCount": 0
+  },
+  "findings": []
+}

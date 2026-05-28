@@ -18,10 +18,20 @@ This standard defines the next naming shape for artifacts created under the shar
 | --- | --- | --- | --- |
 | `development-handoff.json` | `00-design-handoff.json` | Design sync | Rename later |
 | `<functionCode>_功能设计梳理_yyyyMMdd.md` | `00-功能设计梳理_<functionCode>_<yyyyMMdd>.md` | Design sync | Rename later |
+| `orchestration/design-change-plan.json` | `orchestration/design-change-plan.json` | Design Leader | Keep |
+| `orchestration/file-claims.json` | `orchestration/file-claims.json` | Design Leader / Multi API leader | Keep |
+| `orchestration/office-edit-plan.json` | `orchestration/office-edit-plan.json` | Design Leader / Format checker / Office editor | Keep |
+| `orchestration/office-edit-results.json` | `orchestration/office-edit-results.json` | Design Leader / Office editor | Keep |
+| `orchestration/worker-results.json` | `orchestration/worker-results.json` | Design Leader | Keep |
+| `orchestration/final-design-fix-report.json` | `orchestration/final-design-fix-report.json` | Design Leader | Keep |
 | `reference/global/catalog.json` | `01-reference-catalog.json` | 01 Reference index | Rename later |
 | `execution-batch.json` | `chain-execution-batch.json` | Shared chain | Rename later |
 | `execution-state.json` | `chain-execution-state.json` | Shared chain | Rename later |
 | `api-checklist.json` | `chain-api-checklist.json` | Shared chain | Rename later |
+| `orchestration/leader-run.json` | `orchestration/leader-run.json` | Multi API leader | Keep |
+| `orchestration/api-workgroups.json` | `orchestration/api-workgroups.json` | Multi API leader | Keep |
+| `orchestration/file-claims.json` | `orchestration/file-claims.json` | Multi API leader | Keep |
+| `orchestration/final-assessment.json` | `orchestration/final-assessment.json` | Multi API leader | Keep |
 | `apis/<apiId>/manifest.json` | `chain-api-manifest.json` | Shared chain | Rename later |
 | `<functionCode>_API_Spec.json` | `02-api-spec_<functionCode>.json` | 02 API spec | Rename later |
 | `spec-progress.md` | `02-spec-progress.md` | 02 API spec | Rename later |
@@ -38,6 +48,7 @@ This standard defines the next naming shape for artifacts created under the shar
 | `diagnosis-report.json` | `04-diagnosis-report.json` | 04 Code writer | Rename later |
 | `test-evidence.json` | `04-validation-evidence.json` | 04 Code writer | Rename later |
 | `code-contract-review.json` | `04-code-contract-review.json` | 04 Code writer | Rename later |
+| `code-style-review.json` | `04-code-style-review.json` | 04 Code style reviewer | Rename later |
 | `review-notes.json` | `04-review-notes.json` | 04 Code writer | Rename later |
 | `module-scope.json` | `05-module-scope.json` | 05 UT report | Rename later |
 | `coverage-gap.json` | `05-coverage-gap.json` | 05 UT report | Rename later |
@@ -55,7 +66,8 @@ This standard defines the next naming shape for artifacts created under the shar
 Run the read-only checker before a naming migration:
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File C:\Users\<username>\plugins\project-delivery-hub-v1\skills\plugin-packager\scripts\check_artifact_names.ps1 -AgentRoot D:\Devs\<PROJECT>\.agent
+$pluginRoot = "<installed project-delivery-hub-v1 plugin root>"
+powershell -NoProfile -ExecutionPolicy Bypass -File "$pluginRoot\skills\plugin-packager\scripts\check_artifact_names.ps1" -AgentRoot D:\Devs\<PROJECT>\.agent
 ```
 
 The script reports old names that still match `rename_later` mappings. It does not rename, delete, or move any file.

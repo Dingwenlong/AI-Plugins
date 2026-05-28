@@ -1,4 +1,4 @@
 interface:
-  display_name: "专案交付包收集器"
+  display_name: "【交付文件】专案交付包收集器"
   short_description: "按功能编号收集冻版交付物并整理 TSD 交付目录"
-  default_prompt: "使用 $delivery-packager 按功能编号收集冻版交付物，并整理 TSD 交付目录。"
+  default_prompt: "使用 $delivery-packager 按功能编号读取冻版/近冻版功能设计梳理稿，先执行 dry-run 验证已确认交付物清单；确认无阻塞后再复制到 TSD 交付目录。"

@@ -1,0 +1,343 @@
+{
+  "schemaVersion": "4.2.0",
+  "apiId": "COMMON.commonutil.deldevicebinding",
+  "newAuthor": "Jimmy",
+  "functionCode": "Common",
+  "version": "1.0",
+  "apiCategory": "CommonUtil",
+  "apiName": "DelDeviceBinding",
+  "source": {
+    "tsdFile": "TSD.Common_封存TSD共用开发链路_v1.0_20260523.docx",
+    "workbookFile": "NEWDA_API_DETAIL_CommonUtil_20260522.xlsx",
+    "sheetNames": [
+      "DelDeviceBinding 解除裝置綁定"
+    ]
+  },
+  "request": [
+    {
+      "rowKey": "1",
+      "fieldName": "custId",
+      "dataType": "string",
+      "required": true,
+      "description": "用戶ID",
+      "example": "\"custId\":\"A123456789\"",
+      "notes": "來源Redis"
+    },
+    {
+      "rowKey": "2",
+      "fieldName": "udid",
+      "dataType": "string",
+      "required": true,
+      "description": "裝置唯一ID",
+      "example": "\"udid\":\"d9453a28-0e9d-386f-9e80-b2053fc03c7b\"",
+      "notes": "前端傳入"
+    }
+  ],
+  "response": [
+    {
+      "rowKey": "1",
+      "fieldName": "isSuccess",
+      "dataType": "boolean",
+      "required": true,
+      "description": "API成功與否",
+      "example": "true",
+      "notes": "true ; false"
+    },
+    {
+      "rowKey": "2",
+      "fieldName": "responseCode",
+      "dataType": "string",
+      "required": true,
+      "description": "回應代碼",
+      "example": "0000",
+      "notes": "成功:0000其餘狀況為失敗"
+    },
+    {
+      "rowKey": "3",
+      "fieldName": "responseMessage",
+      "dataType": "string",
+      "required": true,
+      "description": "回應訊息",
+      "notes": "失敗狀況下回傳錯誤訊息"
+    },
+    {
+      "rowKey": "4",
+      "fieldName": "responseDT",
+      "dataType": "string",
+      "required": true,
+      "description": "系統回應時間",
+      "notes": "yyyy/MM/dd HH:mm:ss"
+    },
+    {
+      "rowKey": "5",
+      "fieldName": "responseData",
+      "dataType": "json",
+      "required": true,
+      "description": "回應資料框",
+      "example": "\"responseData\":{}"
+    }
+  ],
+  "mockExamples": [
+    {
+      "scenario": "解綁成功",
+      "responsePayload": {
+        "isSuccess": true,
+        "responseCode": "0000",
+        "responseMessage": "",
+        "responseDT": "2026/03/10 14:30:00",
+        "responseData": {}
+      }
+    },
+    {
+      "scenario": "SEQ驗證失敗",
+      "responsePayload": {
+        "isSuccess": false,
+        "responseCode": "9996",
+        "responseMessage": "資料驗證錯誤，請重新輸入!",
+        "responseDT": "2026/02/24 15:59:24",
+        "responseData": {}
+      }
+    },
+    {
+      "scenario": "裝置解綁失敗",
+      "responsePayload": {
+        "isSuccess": false,
+        "responseCode": "9997",
+        "responseMessage": "刪除失敗!",
+        "responseDT": "2026/02/24 15:59:24",
+        "responseData": {}
+      }
+    },
+    {
+      "scenario": "其它錯誤",
+      "responsePayload": {
+        "isSuccess": false,
+        "responseCode": "9998",
+        "responseMessage": "發生意外的錯誤，請洽客服人員。",
+        "responseDT": "2026/02/24 15:59:24",
+        "responseData": {}
+      }
+    },
+    {
+      "scenario": "未輸入必填請求參數",
+      "responsePayload": {
+        "isSuccess": false,
+        "responseCode": "9999",
+        "responseMessage": "請輸入{Request參數}！",
+        "responseDT": "2026/02/24 15:59:24",
+        "responseData": {}
+      }
+    }
+  ],
+  "backendApis": {
+    "CommonFunc": [
+      "DelDeviceBindingFunc() 解除裝置綁定"
+    ]
+  },
+  "businessLogic": {
+    "steps": [
+      {
+        "step": 1,
+        "title": ":參數",
+        "details": "DefaultViewPresenter presenter = new DefaultViewPresenter(new BindingController(), this);\n從Redis取得 member ;\ncustId:member.CustId\nudid：前端傳遞裝置唯一ID"
+      },
+      {
+        "step": 2,
+        "title": "執行「刪除裝置綁定」",
+        "details": "1.請求CommonFunc.DelDeviceBindingFunc() 解除裝置綁定"
+      },
+      {
+        "step": 4,
+        "title": "例外處理與最終輸出",
+        "details": "發生例外時記錄錯誤 _Logger.Error，並回傳 EXCEPTION,資料封裝成 JSON,返回前端"
+      }
+    ],
+    "fieldMappings": [],
+    "errorCodeRules": [
+      {
+        "code": "9996",
+        "scenario": "SEQ驗證失敗",
+        "message": "資料驗證錯誤，請重新輸入!"
+      },
+      {
+        "code": "9997",
+        "scenario": "裝置解綁失敗",
+        "message": "刪除失敗!"
+      },
+      {
+        "code": "9998",
+        "scenario": "其它錯誤",
+        "message": "發生意外的錯誤，請洽客服人員。"
+      },
+      {
+        "code": "9999",
+        "scenario": "未輸入必填請求參數",
+        "message": "請輸入{Request參數}！"
+      }
+    ],
+    "runtimeDependencies": [
+      {
+        "id": "current_customer_context",
+        "type": "service",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "Resolve keyId/custId from the current request context and Redis."
+      },
+      {
+        "id": "external_api_commonfunc_deldevicebindingfunc",
+        "type": "external_api",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "业务逻辑正文提到 CommonFunc->DelDeviceBindingFunc() 解除裝置綁定 依赖。"
+      }
+    ],
+    "dataSources": [],
+    "sqlSpecs": [],
+    "legacyReferences": [],
+    "prohibitedShortcuts": [
+      "block_comment_header_substitution"
+    ]
+  },
+  "codeHandoff": {
+    "schemaVersion": "1.0.0",
+    "logicSummary": {
+      "stepCount": 3,
+      "queryContractCount": 0,
+      "mappingRuleCount": 0,
+      "legacyEvidenceCount": 0,
+      "dependencyHintCount": 2,
+      "constraintCount": 7,
+      "unresolvedCount": 0,
+      "primarySource": "businessLogic"
+    },
+    "logicFlow": [
+      {
+        "stepId": "step_1",
+        "title": ":參數",
+        "actionType": "process",
+        "inputs": [
+          "custId",
+          "udid"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_2",
+        "title": "執行「刪除裝置綁定」",
+        "actionType": "process",
+        "inputs": [
+          "custId",
+          "udid"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_4",
+        "title": "例外處理與最終輸出",
+        "actionType": "return",
+        "inputs": [
+          "custId",
+          "udid"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      }
+    ],
+    "legacyEvidence": [],
+    "queryContracts": [],
+    "mappingRules": [],
+    "dependencyHints": [
+      {
+        "dependencyType": "service",
+        "preferredAbstractions": [
+          "ICurrentRuntimeContextAccessor",
+          "IRedisService"
+        ],
+        "purpose": "Resolve keyId/custId from the current request context and Redis.",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "external_api",
+        "preferredAbstractions": [
+          "IApiRequestService"
+        ],
+        "purpose": "业务逻辑正文提到 CommonFunc->DelDeviceBindingFunc() 解除裝置綁定 依赖。",
+        "evidenceIds": []
+      }
+    ],
+    "constraints": [
+      {
+        "constraintType": "prohibited_shortcut",
+        "rule": "block_comment_header_substitution",
+        "severity": "error",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "error_code_rule",
+        "rule": "9996 | SEQ驗證失敗 | 資料驗證錯誤，請重新輸入!",
+        "severity": "warning",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "error_code_rule",
+        "rule": "9997 | 裝置解綁失敗 | 刪除失敗!",
+        "severity": "warning",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "error_code_rule",
+        "rule": "9998 | 其它錯誤 | 發生意外的錯誤，請洽客服人員。",
+        "severity": "warning",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "error_code_rule",
+        "rule": "9999 | 未輸入必填請求參數 | 請輸入{Request參數}！",
+        "severity": "warning",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "request_field_validation",
+        "field": "custId",
+        "validationLayer": "dto_attribute",
+        "validationType": "required",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸入{Request參數}！",
+        "customValidationAttributeNeeded": false,
+        "rule": "custId | dto_attribute | required | 9999 | 請輸入{Request參數}！",
+        "severity": "warning",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "request_field_validation",
+        "field": "udid",
+        "validationLayer": "dto_attribute",
+        "validationType": "required",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸入{Request參數}！",
+        "customValidationAttributeNeeded": false,
+        "rule": "udid | dto_attribute | required | 9999 | 請輸入{Request參數}！",
+        "severity": "warning",
+        "evidenceIds": []
+      }
+    ],
+    "unresolved": []
+  }
+}

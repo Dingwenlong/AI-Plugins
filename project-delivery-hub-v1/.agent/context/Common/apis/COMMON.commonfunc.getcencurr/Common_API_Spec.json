@@ -1,0 +1,458 @@
+{
+  "schemaVersion": "4.2.0",
+  "apiId": "COMMON.commonfunc.getcencurr",
+  "newAuthor": "Jimmy",
+  "functionCode": "Common",
+  "version": "1.0",
+  "apiCategory": "CommonFunc",
+  "apiName": "GetCENCurr",
+  "source": {
+    "tsdFile": "TSD.Common_封存TSD共用开发链路_v1.0_20260523.docx",
+    "workbookFile": "NEWDA_Method_DETAIL_ExchangeCommonFunc_20260522.xlsx",
+    "sheetNames": [
+      "GetCENCurr 取幣別資料"
+    ]
+  },
+  "request": [],
+  "response": [
+    {
+      "rowKey": "5.01",
+      "fieldName": "cenCurrList",
+      "dataType": "list",
+      "required": true,
+      "description": "幣別集合",
+      "properties": [
+        {
+          "rowKey": "5.01.01",
+          "fieldName": "decimalCount",
+          "dataType": "int",
+          "required": true,
+          "description": "小數點位數",
+          "example": "\"decimalCount\":0",
+          "notes": "J_CURR.DECIMAL"
+        },
+        {
+          "rowKey": "5.01.02",
+          "fieldName": "currId",
+          "dataType": "int",
+          "required": true,
+          "description": "幣別Id",
+          "example": "\"currId\":1",
+          "notes": "J_CURR.CURRID"
+        },
+        {
+          "rowKey": "5.01.03",
+          "fieldName": "currEName",
+          "dataType": "string",
+          "required": true,
+          "description": "幣別",
+          "example": "\"currEName\":\"USD\"",
+          "notes": "J_CURR.CURRENAME"
+        },
+        {
+          "rowKey": "5.01.04",
+          "fieldName": "currCName",
+          "dataType": "string",
+          "required": true,
+          "description": "幣別中文描述",
+          "example": "\"currCName\":\"美元\"",
+          "notes": "J_CURR.CURRCNAME"
+        },
+        {
+          "rowKey": "5.01.05",
+          "fieldName": "flag008",
+          "dataType": "string",
+          "required": true,
+          "description": "account008 註記",
+          "example": "\"flag008\":\"1\"",
+          "notes": "J_CURR.FLAG008"
+        }
+      ]
+    }
+  ],
+  "mockExamples": [
+    {
+      "scenario": "查詢成功",
+      "requestPayload": {
+        "currEName": "TWD"
+      },
+      "responsePayload": {
+        "isSuccess": true,
+        "responseCode": "0000",
+        "responseMessage": "",
+        "responseDT": "2025/06/30 11:20:35",
+        "responseData": {
+          "cenCurrList": [
+            {
+              "decimalCount": 2,
+              "currId": 1,
+              "currEName": "USD",
+              "currCName": "美元",
+              "flag008": "1"
+            },
+            {
+              "decimalCount": 0,
+              "currId": 2,
+              "currEName": "JPY",
+              "currCName": "日圓",
+              "flag008": "2"
+            },
+            {
+              "decimalCount": 2,
+              "currId": 3,
+              "currEName": "CNY",
+              "currCName": "人民幣",
+              "flag008": "1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "scenario": "連接數據庫查詢失敗",
+      "responsePayload": {
+        "isSuccess": false,
+        "responseCode": "9001",
+        "responseMessage": "系統繁忙,請稍後再試！",
+        "responseDT": "2026/02/24 10:30:25",
+        "responseData": {}
+      }
+    },
+    {
+      "scenario": "輸入的幣別為數字或特殊符號",
+      "responsePayload": {
+        "isSuccess": false,
+        "responseCode": "9026",
+        "responseMessage": "你的輸入有誤,不可輸入數字與特殊符號",
+        "responseDT": "2026/02/24 10:30:25",
+        "responseData": {}
+      }
+    }
+  ],
+  "backendApis": {
+    "DB": [
+      "J_CURR"
+    ]
+  },
+  "businessLogic": {
+    "steps": [
+      {
+        "step": 1,
+        "title": "AB表查詢",
+        "details": "1. 依 AB 表設計優先讀取本地 SQLite B 表幣別資料。\n2. A/B 表結構一致；幣別資料基本不更新但取用頻繁，讀 B 表可降低主庫壓力。\n3. 若 B 表未初始化、查無資料或同步異常，回源 A 表主庫 J_CURR：SELECT DECIMAL, CURRID, CURRENAME, CURRCNAME, FLAG008 FROM J_CURR ORDER BY CURRID。\n4. 回傳 cenCurrList。"
+      },
+      {
+        "step": 2,
+        "title": "回傳查詢結果",
+        "details": "1.如果查詢結果count大於0，組合響應數據進行回傳\n2.如果查詢結果count小於等於0，回傳錯誤提醒"
+      }
+    ],
+    "fieldMappings": [
+      {
+        "target": "cenCurrList",
+        "source": "J_CURR.DECIMAL",
+        "rule": "幣別集合",
+        "fields": [
+          {
+            "field": "decimalCount",
+            "source": "J_CURR.DECIMAL",
+            "rule": "小數點位數"
+          },
+          {
+            "field": "currId",
+            "source": "J_CURR.CURRID",
+            "rule": "幣別Id"
+          },
+          {
+            "field": "currEName",
+            "source": "J_CURR.CURRENAME",
+            "rule": "幣別"
+          },
+          {
+            "field": "currCName",
+            "source": "J_CURR.CURRCNAME",
+            "rule": "幣別中文描述"
+          },
+          {
+            "field": "flag008",
+            "source": "J_CURR.FLAG008",
+            "rule": "account008 註記"
+          }
+        ]
+      }
+    ],
+    "errorCodeRules": [
+      {
+        "code": "9001",
+        "scenario": "連接數據庫查詢失敗",
+        "message": "系統繁忙,請稍後再試！"
+      },
+      {
+        "code": "9026",
+        "scenario": "輸入的幣別為數字或特殊符號",
+        "message": "你的輸入有誤,不可輸入數字與特殊符號"
+      }
+    ],
+    "runtimeDependencies": [
+      {
+        "id": "mma_sql_connection",
+        "type": "service",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "Execute authoritative SQL declared in the workbook for J_CURR."
+      },
+      {
+        "id": "sql_table_db_j_curr",
+        "type": "sql_table",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "Excel 依赖声明提到 DB->J_CURR。"
+      }
+    ],
+    "dataSources": [
+      {
+        "name": "J_CURR",
+        "type": "sql_table",
+        "authority": "backend_contract",
+        "required": true
+      }
+    ],
+    "sqlSpecs": [
+      {
+        "id": "1_ab",
+        "title": "1. AB表查詢",
+        "authority": "backend_contract",
+        "required": true,
+        "dataSources": [
+          "J_CURR"
+        ],
+        "mustContain": [
+          "J_CURR",
+          "SELECT",
+          "FROM",
+          "ORDER BY"
+        ],
+        "queryText": "1. 依 AB 表設計優先讀取本地 SQLite B 表幣別資料。\n2. A/B 表結構一致；幣別資料基本不更新但取用頻繁，讀 B 表可降低主庫壓力。\n3. 若 B 表未初始化、查無資料或同步異常，回源 A 表主庫 J_CURR：SELECT DECIMAL, CURRID, CURRENAME, CURRCNAME, FLAG008 FROM J_CURR ORDER BY CURRID。\n4. 回傳 cenCurrList。\n可读取外援：MMA -> reference/global/raw/db-schema/MMA.xlsx#sheetName=267",
+        "referenceHints": [
+          {
+            "id": "db.j-curr.mma",
+            "category": "db_schema",
+            "matchSource": "sql_keyword",
+            "matchKey": "J_CURR",
+            "title": "MMA",
+            "relativePath": "reference/global/raw/db-schema/MMA.xlsx",
+            "locator": {
+              "sheetName": "267"
+            },
+            "reason": "命中 SQL 表 J_CURR，可读取数据库参考资料",
+            "authority": "reference_imported"
+          }
+        ]
+      }
+    ],
+    "legacyReferences": [],
+    "prohibitedShortcuts": [
+      "mock_response_payload",
+      "hardcoded_custid",
+      "block_comment_header_substitution"
+    ],
+    "referenceHints": [
+      {
+        "id": "db.j-curr.mma",
+        "category": "db_schema",
+        "matchSource": "sql_keyword",
+        "matchKey": "J_CURR",
+        "title": "MMA",
+        "relativePath": "reference/global/raw/db-schema/MMA.xlsx",
+        "locator": {
+          "sheetName": "267"
+        },
+        "reason": "命中 SQL 表 J_CURR，可读取数据库参考资料",
+        "authority": "reference_imported"
+      }
+    ]
+  },
+  "codeHandoff": {
+    "schemaVersion": "1.0.0",
+    "logicSummary": {
+      "stepCount": 2,
+      "queryContractCount": 1,
+      "mappingRuleCount": 5,
+      "legacyEvidenceCount": 0,
+      "dependencyHintCount": 3,
+      "constraintCount": 5,
+      "unresolvedCount": 0,
+      "primarySource": "businessLogic"
+    },
+    "logicFlow": [
+      {
+        "stepId": "step_1",
+        "title": "AB表查詢",
+        "actionType": "query",
+        "inputs": [],
+        "outputs": [
+          "cenCurrList",
+          "decimalCount",
+          "currId",
+          "currEName"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_2",
+        "title": "回傳查詢結果",
+        "actionType": "query",
+        "inputs": [],
+        "outputs": [
+          "cenCurrList",
+          "decimalCount",
+          "currId",
+          "currEName"
+        ],
+        "evidenceIds": []
+      }
+    ],
+    "legacyEvidence": [],
+    "queryContracts": [
+      {
+        "contractId": "1_ab",
+        "purpose": "1. AB表查詢",
+        "dataSources": [
+          "J_CURR"
+        ],
+        "mustContain": [
+          "J_CURR",
+          "SELECT",
+          "FROM",
+          "ORDER BY"
+        ],
+        "sqlText": "1. 依 AB 表設計優先讀取本地 SQLite B 表幣別資料。\n2. A/B 表結構一致；幣別資料基本不更新但取用頻繁，讀 B 表可降低主庫壓力。\n3. 若 B 表未初始化、查無資料或同步異常，回源 A 表主庫 J_CURR：SELECT DECIMAL, CURRID, CURRENAME, CURRCNAME, FLAG008 FROM J_CURR ORDER BY CURRID。\n4. 回傳 cenCurrList。\n可读取外援：MMA -> reference/global/raw/db-schema/MMA.xlsx#sheetName=267",
+        "parameterHints": [],
+        "resultShape": [
+          "cenCurrList",
+          "decimalCount",
+          "currId",
+          "currEName",
+          "currCName",
+          "flag008"
+        ],
+        "evidenceIds": []
+      }
+    ],
+    "mappingRules": [
+      {
+        "ruleId": "map_j_curr_decimal_decimalcount",
+        "sourceField": "J_CURR.DECIMAL",
+        "targetField": "decimalCount",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "小數點位數",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_j_curr_currid_currid",
+        "sourceField": "J_CURR.CURRID",
+        "targetField": "currId",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "幣別Id",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_j_curr_currename_currename",
+        "sourceField": "J_CURR.CURRENAME",
+        "targetField": "currEName",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "幣別",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_j_curr_currcname_currcname",
+        "sourceField": "J_CURR.CURRCNAME",
+        "targetField": "currCName",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "幣別中文描述",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_j_curr_flag008_flag008",
+        "sourceField": "J_CURR.FLAG008",
+        "targetField": "flag008",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "account008 註記",
+        "evidenceIds": []
+      }
+    ],
+    "dependencyHints": [
+      {
+        "dependencyType": "service",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor"
+        ],
+        "purpose": "Execute authoritative SQL declared in the workbook for J_CURR.",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "sql_table",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor"
+        ],
+        "purpose": "Excel 依赖声明提到 DB->J_CURR。",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "sql_table",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor"
+        ],
+        "purpose": "Read from J_CURR",
+        "evidenceIds": []
+      }
+    ],
+    "constraints": [
+      {
+        "constraintType": "prohibited_shortcut",
+        "rule": "mock_response_payload",
+        "severity": "error",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "prohibited_shortcut",
+        "rule": "hardcoded_custid",
+        "severity": "error",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "prohibited_shortcut",
+        "rule": "block_comment_header_substitution",
+        "severity": "error",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "error_code_rule",
+        "rule": "9001 | 連接數據庫查詢失敗 | 系統繁忙,請稍後再試！",
+        "severity": "warning",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "error_code_rule",
+        "rule": "9026 | 輸入的幣別為數字或特殊符號 | 你的輸入有誤,不可輸入數字與特殊符號",
+        "severity": "warning",
+        "evidenceIds": []
+      }
+    ],
+    "unresolved": []
+  },
+  "rawAppendix": {
+    "backendApiLines": [
+      "1. AB 表設計",
+      "1.1 A 表 = 主庫 J_CURR",
+      "1.2 B 表 = 本地 SQLite 同結構幣別資料表",
+      "2. 幣別資料基本不更新但取用頻繁，優先讀 B 表以降低主庫壓力",
+      "3. B 表未初始化、查無資料或同步異常時，回源 A 表主庫 J_CURR"
+    ]
+  }
+}

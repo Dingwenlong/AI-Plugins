@@ -1,0 +1,71 @@
+{
+  "reviewStatus": "blocked",
+  "checkedAt": "2026-05-23T19:40:35+08:00",
+  "apiId": "COMMON.commonfunc.checkamountlimit",
+  "source": {
+    "tsdFile": "TSD.Common_封存TSD共用开发链路_v1.0_20260523.docx",
+    "workbookFile": "NEWDA_Method_DETAIL_ExchangeCommonFunc_20260522.xlsx",
+    "sheetNames": [
+      "CheckAmountLimit買賣匯交易限額判斷"
+    ]
+  },
+  "summary": {
+    "checks": 83,
+    "matched": 78,
+    "matchPct": 94.0,
+    "blockingCount": 5,
+    "warningCount": 0
+  },
+  "findings": [
+    {
+      "severity": "blocking",
+      "kind": "code_handoff_unresolved",
+      "path": "codeHandoff.unresolved.0",
+      "expected": "no blocking unresolved items",
+      "actual": {
+        "topic": "dependency.db.appservice_dataaccess_etsrateservice",
+        "reason": "业务逻辑正文提到 DB 表 APPSERVICE.DATAACCESS.ETSRATESERVICE，但同一段存在 todo / 待确认语义，不能作为已确认 SQL fixture 需求。"
+      }
+    },
+    {
+      "severity": "blocking",
+      "kind": "code_handoff_unresolved",
+      "path": "codeHandoff.unresolved.1",
+      "expected": "no blocking unresolved items",
+      "actual": {
+        "topic": "dependency.db.member_foreigner_permanent_residency",
+        "reason": "业务逻辑正文提到 DB 表 MEMBER.FOREIGNER.PERMANENT_RESIDENCY，但同一段存在 todo / 待确认语义，不能作为已确认 SQL fixture 需求。"
+      }
+    },
+    {
+      "severity": "blocking",
+      "kind": "code_handoff_unresolved",
+      "path": "codeHandoff.unresolved.2",
+      "expected": "no blocking unresolved items",
+      "actual": {
+        "topic": "dependency.db.member_foreigner_arc_over_one_year",
+        "reason": "业务逻辑正文提到 DB 表 MEMBER.FOREIGNER.ARC_OVER_ONE_YEAR，但同一段存在 todo / 待确认语义，不能作为已确认 SQL fixture 需求。"
+      }
+    },
+    {
+      "severity": "blocking",
+      "kind": "code_handoff_unresolved",
+      "path": "codeHandoff.unresolved.3",
+      "expected": "no blocking unresolved items",
+      "actual": {
+        "topic": "dependency.db.microsoft_ebank_common",
+        "reason": "业务逻辑正文提到 DB 表 MICROSOFT.EBANK.COMMON，但同一段存在 todo / 待确认语义，不能作为已确认 SQL fixture 需求。"
+      }
+    },
+    {
+      "severity": "blocking",
+      "kind": "code_handoff_unresolved",
+      "path": "codeHandoff.unresolved.4",
+      "expected": "no blocking unresolved items",
+      "actual": {
+        "topic": "dependency.db.utilities_loadxmlconfig_loadlimitamt",
+        "reason": "业务逻辑正文提到 DB 表 UTILITIES.LOADXMLCONFIG.LOADLIMITAMT，但同一段存在 todo / 待确认语义，不能作为已确认 SQL fixture 需求。"
+      }
+    }
+  ]
+}

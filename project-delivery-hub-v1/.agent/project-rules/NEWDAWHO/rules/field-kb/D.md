@@ -68,6 +68,8 @@
 | `pageNumber` | 頁碼 | int | 列表查詢 request | 第一頁為 1。 |
 | `pageSize` | 每頁筆數 | int | 列表查詢 request | 預設值需寫在 Notes。 |
 
+D.001/D.002 活存交易日期口徑：查詢日期一律由 APP 傳入 `singleDate` 或 `startDate`/`endDate`；Enterprise 只驗證必填、格式、區間長度、近 2 年範圍與 T-2 資料來源分流，不再呼叫 `CommonUtil.GetMobileDefaultDate` 取得預設查詢日期，也不得保留「前端未傳日期時補預設近 3 個月」的後端邏輯。
+
 ## 活存交易明細
 
 | Canonical field | PRD 中文語意 | Type | Context / APIs | Notes |
@@ -289,9 +291,10 @@ D.001.001/D.002.001 目前凍版口徑：`GetFixedDepositInterestDetail` 只回�
 - 操作型 API 統一用 `action`；舊欄位 `flag` 僅作 alias / 遷移來源。
 - D.001.001/D.002.001 計息明細 API 名稱固定為 `GetFixedDepositInterestDetail`；舊名 `GetDepositInterestDetail` 僅作遷移別名。
 - D.001.001/D.002.001 `GetFixedDepositInterestDetail` 不再回傳摘要欄位 `referenceInterest`、`outstandingInterest`、`estimatedTotalInterest`，也不回傳前端未展示的本金/利率/毛息/計息帳號等內部欄位；摘要資訊由前一頁 `GetFixedDepositDetail` 提供。
+- D.001/D.002 活存交易明細查詢日期一律由 APP 傳入；後端不得呼叫 `CommonUtil.GetMobileDefaultDate` 補預設查詢日期。
 - D.003 利率查詢表的 API 類別為 Deposit，API 名稱為 GetFixedDepositRateOptions；業務 API 查詢幣別使用 `currencyCode`，CommonUtil.GetCENCurr 的 `currEName` 僅作共用幣別資料 API 的來源/相容欄位。
 - D.003 `ratePlanTag`：換匯優利定存標籤依 EC0007 回傳方案；美人雙幣定存標籤需先讀取 `DAWHO_fix.sitemap` 判斷活動，細部活動/額度規則參考 D.006 `DepositCommonUtil.GetExchangeFixLimitAmt`。
-- D.003 幣別資料透過 CommonUtil.GetCENCurr 取得；其底層 CommonFunc.GetCENCurrFunc 先查 Redis Key=`J_CURR`，無資料再查 `[MMA].[dbo].[J_CURR]` 並回寫 Redis。
+- D.003 幣別資料透過 CommonUtil.GetCENCurr 取得；其底層 CommonFunc.GetCENCurrFunc 採 AB 表口徑：A 表為主庫 `J_CURR`，B 表為本地 SQLite 同結構幣別資料表，優先讀 B 表以降低主庫壓力，B 表未初始化、查無資料或同步異常時再回源 A 表。
 
 ## 待確認事項
 

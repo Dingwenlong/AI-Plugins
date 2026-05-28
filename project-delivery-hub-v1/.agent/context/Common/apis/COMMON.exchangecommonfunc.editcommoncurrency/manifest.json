@@ -1,0 +1,58 @@
+{
+  "schemaVersion": "4.1.0",
+  "manifestType": "api",
+  "executionId": "Common",
+  "apiId": "COMMON.exchangecommonfunc.editcommoncurrency",
+  "apiCategory": "ExchangeCommonFunc",
+  "apiName": "EditCommonCurrency",
+  "status": "pending",
+  "phase": "pending",
+  "updatedAt": "2026-05-23T22:18:09+08:00",
+  "newAuthor": "Jimmy",
+  "specStatus": "done",
+  "specUpdatedAt": "2026-05-23T17:54:40+08:00",
+  "specBlockReason": null,
+  "specSourceFingerprint": "sha256:080dc1e18ea4de4dd94585e8f9fae8fbefa2de25b530f881a13ab5f5d0318dec",
+  "specSource": {
+    "tsdFile": "TSD.Common_封存TSD共用开发链路_v1.0_20260523.docx",
+    "workbookFile": "NEWDA_Method_DETAIL_ExchangeCommonFunc_20260522.xlsx",
+    "sheetNames": [
+      "EditCommonCurrency 編輯常用幣別"
+    ]
+  },
+  "specArtifacts": {
+    "apiSpec": "../../../.agent/context/Common/apis/COMMON.exchangecommonfunc.editcommoncurrency/Common_API_Spec.json"
+  },
+  "fixtureStatus": "blocked",
+  "fixturePhase": "inspection_blocked",
+  "fixtureUpdatedAt": "2026-05-23T19:43:13+08:00",
+  "fixtureBlockReason": "missing_schema_authority",
+  "fixtureSourceFingerprint": "sha256:080dc1e18ea4de4dd94585e8f9fae8fbefa2de25b530f881a13ab5f5d0318dec",
+  "fixtureArtifacts": {
+    "dbFixtureReport": "../../.agent/context/Common/apis/COMMON.exchangecommonfunc.editcommoncurrency/db-fixture-report.json",
+    "tableChecks": "../../.agent/context/Common/apis/COMMON.exchangecommonfunc.editcommoncurrency/table-checks.json",
+    "seedPlan": null,
+    "seedExecuted": null,
+    "seedManifest": null
+  },
+  "codeStatus": "pending",
+  "codePhase": "pending",
+  "codeUpdatedAt": "2026-05-23T22:18:09+08:00",
+  "codeBlockReason": null,
+  "codeProjectRoot": ".",
+  "codeSolutionPath": "Sinopac.EnterpriseAPI.slnx",
+  "inputHashes": {
+    "upstreamManifest": "sha256:a55926fc3feb4190a6d6d0841ea7e2e4e1011b32e3ffb54bf5def21746ec726e",
+    "apiSpec": "sha256:b0232628e5a50535d40c0a437e30f601cb6c20e86cf63f4343195a73f6a3bff9"
+  },
+  "modifiedFiles": [],
+  "validationChecks": [],
+  "validationResults": [],
+  "repoDriftFiles": [],
+  "codeArtifacts": {
+    "changePlan": null,
+    "implementationReport": null,
+    "diagnosisReport": null
+  },
+  "lastMessage": null
+}

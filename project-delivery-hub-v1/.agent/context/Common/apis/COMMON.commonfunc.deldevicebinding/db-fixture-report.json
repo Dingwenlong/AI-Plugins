@@ -1,0 +1,65 @@
+{
+  "schemaVersion": "4.1.0",
+  "skillName": "api-sql-fixture-preparer",
+  "manifestType": "db-fixture-report",
+  "updatedAt": "2026-05-23T19:41:55+08:00",
+  "executionId": "Common",
+  "apiId": "COMMON.commonfunc.deldevicebinding",
+  "status": "blocked",
+  "phase": "inspection_blocked",
+  "executionMode": "prepare",
+  "dbTarget": "connection-name:Report",
+  "authorityRoot": "../../.agent/reference/global",
+  "sqlFixtureRequired": true,
+  "sourcesUsed": [
+    "codeHandoff.queryContracts",
+    "businessLogic.sqlSpecs",
+    "backendApis"
+  ],
+  "tableRefs": [
+    "DAWHO.dbo.DeviceBinding",
+    "DAWHO.dbo.DeviceBindingLog",
+    "dbo.MB_PUSHTYPESETTING",
+    "DAWHO.DBO.DEVICEBINDING",
+    "DAWHO.DBO.DEVICEBINDINGLOG",
+    "DBO.MB_PUSHTYPESETTING"
+  ],
+  "summary": {
+    "tableCount": 6,
+    "blockingTableCount": 2,
+    "queryTextCount": 3
+  },
+  "message": "COMMON.commonfunc.deldevicebinding fixture blocked: missing_schema_authority",
+  "findings": [
+    {
+      "tableRef": "DAWHO.dbo.DeviceBinding",
+      "action": "seed",
+      "blockReason": null
+    },
+    {
+      "tableRef": "DAWHO.dbo.DeviceBindingLog",
+      "action": "create",
+      "blockReason": "missing_schema_authority"
+    },
+    {
+      "tableRef": "dbo.MB_PUSHTYPESETTING",
+      "action": "create",
+      "blockReason": null
+    },
+    {
+      "tableRef": "DAWHO.DBO.DEVICEBINDING",
+      "action": "seed",
+      "blockReason": null
+    },
+    {
+      "tableRef": "DAWHO.DBO.DEVICEBINDINGLOG",
+      "action": "create",
+      "blockReason": "missing_schema_authority"
+    },
+    {
+      "tableRef": "DBO.MB_PUSHTYPESETTING",
+      "action": "create",
+      "blockReason": null
+    }
+  ]
+}

@@ -1,0 +1,291 @@
+# 04 Code Style Review
+
+- updatedAt: 2026-05-28T18:41:33+08:00
+- projectRoot: D:\Devs\NEWDAWHO\D.007.002\P240301Git
+- functionCode: D.007.002
+- apiId: all
+- scope: context
+- targetFiles: 18
+- findingCount: 90
+
+- excludedRules: header_author/new_author_windows_login (17 findings removed)
+
+## Rule Sources
+
+- skill api-code-writer: `C:\Users\jimmy\.codex\plugins\cache\personal\project-delivery-hub-v1\1.2.9\skills\api-code-writer\SKILL.md`
+- rule-pack apiCodeWriter: `D:\Devs\NEWDAWHO\.agent\project-rules\NEWDAWHO\catalog.json`
+- external-rule common-style: `D:\Devs\NEWDAWHO\.agent\project-rules\NEWDAWHO\rules\code-guidelines\p240301-v6.2\rules\common-style.md`
+- external-rule data-access: `D:\Devs\NEWDAWHO\.agent\project-rules\NEWDAWHO\rules\code-guidelines\p240301-v6.2\rules\data-access.md`
+
+## Findings
+
+- [warning] namespace_style / file_scoped_namespace at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness.Interface/ICommonFuncService.cs:16` - C# namespace 仍是 block-scoped 候选。
+  - evidence: `namespace Sinopac.EnterpriseAPI.EnterpriseApiBusiness.Interface`
+  - fixHint: 若文件结构允许，改为 file-scoped namespace。
+- [warning] namespace_style / file_scoped_namespace at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonFunc/CommonFuncService.CheckForeignerCustId.cs:13` - C# namespace 仍是 block-scoped 候选。
+  - evidence: `namespace Sinopac.EnterpriseAPI.EnterpriseApiBusiness.CommonFunc`
+  - fixHint: 若文件结构允许，改为 file-scoped namespace。
+- [warning] tagged_comment / await_intent_comment at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonFunc/CommonFuncService.CheckForeignerCustId.cs:64` - 访问外部状态或服务的 await 前缺少即时 [意圖] 注释。
+  - evidence: `var rows = await _db.QueryAsync<DepositForeignerRow>(`
+  - fixHint: 在 await 前说明外部查询、写入、缓存或服务调用意图。
+- [warning] namespace_style / file_scoped_namespace at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonFunc/CommonFuncService.GenFntTranSeq.cs:13` - C# namespace 仍是 block-scoped 候选。
+  - evidence: `namespace Sinopac.EnterpriseAPI.EnterpriseApiBusiness.CommonFunc`
+  - fixHint: 若文件结构允许，改为 file-scoped namespace。
+- [warning] data_access / single_row_query at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonFunc/CommonFuncService.GenFntTranSeq.cs:53` - QueryAsync 后只取 FirstOrDefault()，但 SQL / API 未表达单笔查询意图。
+  - evidence: `var sequence = rows.FirstOrDefault()?.NewSeqVal?.Trim();`
+  - fixHint: 在不改变业务语义前提下，把单笔意图推入 SQL 与数据访问 API。
+- [warning] tagged_comment / tagged_defensive_branch at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonFunc/CommonFuncService.GenFntTranSeq.cs:55` - 防呆 if / defensive branch 前缺少 [業務] 或 [意圖] 标签注释。
+  - evidence: `if (string.IsNullOrWhiteSpace(sequence) || sequence.Length > 13)`
+  - fixHint: 在分支前说明为何短路、跳过或防误判。
+- [warning] namespace_style / file_scoped_namespace at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonFunc/CommonFuncService.GetAccountInfo.cs:15` - C# namespace 仍是 block-scoped 候选。
+  - evidence: `namespace Sinopac.EnterpriseAPI.EnterpriseApiBusiness.CommonFunc`
+  - fixHint: 若文件结构允许，改为 file-scoped namespace。
+- [warning] tagged_comment / await_intent_comment at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonFunc/CommonFuncService.GetAccountInfo.cs:31` - 访问外部状态或服务的 await 前缺少即时 [意圖] 注释。
+  - evidence: `var runtimeContext = await _ctxAccessor.GetCurrentAsync(cancellationToken);`
+  - fixHint: 在 await 前说明外部查询、写入、缓存或服务调用意图。
+- [warning] tagged_comment / tagged_defensive_branch at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonFunc/CommonFuncService.GetAccountInfo.cs:34` - 防呆 if / defensive branch 前缺少 [業務] 或 [意圖] 标签注释。
+  - evidence: `if (string.IsNullOrWhiteSpace(custId))`
+  - fixHint: 在分支前说明为何短路、跳过或防误判。
+- [warning] tagged_comment / await_intent_comment at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonFunc/CommonFuncService.GetAccountInfo.cs:41` - 访问外部状态或服务的 await 前缺少即时 [意圖] 注释。
+  - evidence: `var dbAccounts = await QueryAccountInfoFromDbAsync(custId, cancellationToken);`
+  - fixHint: 在 await 前说明外部查询、写入、缓存或服务调用意图。
+- [warning] tagged_comment / tagged_defensive_branch at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonFunc/CommonFuncService.GetAccountInfo.cs:43` - 防呆 if / defensive branch 前缺少 [業務] 或 [意圖] 标签注释。
+  - evidence: `if (dbAccounts.Count > 0)`
+  - fixHint: 在分支前说明为何短路、跳过或防误判。
+- [warning] tagged_comment / tagged_defensive_branch at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonFunc/CommonFuncService.GetAccountInfo.cs:51` - 防呆 if / defensive branch 前缺少 [業務] 或 [意圖] 标签注释。
+  - evidence: `if (redisAccounts.Count > 0)`
+  - fixHint: 在分支前说明为何短路、跳过或防误判。
+- [warning] tagged_comment / await_intent_comment at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonFunc/CommonFuncService.GetAccountInfo.cs:57` - 访问外部状态或服务的 await 前缺少即时 [意圖] 注释。
+  - evidence: `return await QueryAccountInfoFromIrisAsync(custId, runtimeContext?.SessionRedisKey, cancellationToken);`
+  - fixHint: 在 await 前说明外部查询、写入、缓存或服务调用意图。
+- [warning] tagged_comment / await_intent_comment at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonFunc/CommonFuncService.GetAccountInfo.cs:85` - 访问外部状态或服务的 await 前缺少即时 [意圖] 注释。
+  - evidence: `var rows = await _db.QueryAsync<DepositAccountInfoRow>(`
+  - fixHint: 在 await 前说明外部查询、写入、缓存或服务调用意图。
+- [warning] tagged_comment / tagged_defensive_branch at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonFunc/CommonFuncService.GetAccountInfo.cs:102` - 防呆 if / defensive branch 前缺少 [業務] 或 [意圖] 标签注释。
+  - evidence: `if (string.IsNullOrWhiteSpace(sessionKey))`
+  - fixHint: 在分支前说明为何短路、跳过或防误判。
+- [warning] tagged_comment / await_intent_comment at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonFunc/CommonFuncService.GetAccountInfo.cs:128` - 访问外部状态或服务的 await 前缺少即时 [意圖] 注释。
+  - evidence: `var result = await _apiRequestService.SendAsync<JsonElement>(`
+  - fixHint: 在 await 前说明外部查询、写入、缓存或服务调用意图。
+- [warning] tagged_comment / tagged_defensive_branch at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonFunc/CommonFuncService.GetAccountInfo.cs:141` - 防呆 if / defensive branch 前缺少 [業務] 或 [意圖] 标签注释。
+  - evidence: `if (!string.IsNullOrWhiteSpace(sessionKey) && !string.IsNullOrWhiteSpace(result.Raw))`
+  - fixHint: 在分支前说明为何短路、跳过或防误判。
+- [warning] tagged_comment / tagged_defensive_branch at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonFunc/CommonFuncService.GetAccountInfo.cs:157` - 防呆 if / defensive branch 前缺少 [業務] 或 [意圖] 标签注释。
+  - evidence: `if (string.IsNullOrWhiteSpace(raw))`
+  - fixHint: 在分支前说明为何短路、跳过或防误判。
+- [warning] tagged_comment / tagged_defensive_branch at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonFunc/CommonFuncService.GetAccountInfo.cs:198` - 防呆 if / defensive branch 前缺少 [業務] 或 [意圖] 标签注释。
+  - evidence: `if (!string.IsNullOrWhiteSpace(acctValue) || !string.IsNullOrWhiteSpace(subAcct))`
+  - fixHint: 在分支前说明为何短路、跳过或防误判。
+- [warning] namespace_style / file_scoped_namespace at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonFunc/CommonFuncService.GetCenCurrency.cs:12` - C# namespace 仍是 block-scoped 候选。
+  - evidence: `namespace Sinopac.EnterpriseAPI.EnterpriseApiBusiness.CommonFunc`
+  - fixHint: 若文件结构允许，改为 file-scoped namespace。
+- [warning] tagged_comment / await_intent_comment at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonFunc/CommonFuncService.GetCenCurrency.cs:39` - 访问外部状态或服务的 await 前缺少即时 [意圖] 注释。
+  - evidence: `var rows = await _db.QueryAsync<DepositCurrencyRow>(sql);`
+  - fixHint: 在 await 前说明外部查询、写入、缓存或服务调用意图。
+- [warning] namespace_style / file_scoped_namespace at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonFunc/CommonFuncService.GetCustIDFormat.cs:12` - C# namespace 仍是 block-scoped 候选。
+  - evidence: `namespace Sinopac.EnterpriseAPI.EnterpriseApiBusiness.CommonFunc`
+  - fixHint: 若文件结构允许，改为 file-scoped namespace。
+- [warning] tagged_comment / tagged_defensive_branch at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonFunc/CommonFuncService.GetCustIDFormat.cs:29` - 防呆 if / defensive branch 前缺少 [業務] 或 [意圖] 标签注释。
+  - evidence: `if (string.IsNullOrWhiteSpace(value))`
+  - fixHint: 在分支前说明为何短路、跳过或防误判。
+- [warning] tagged_comment / tagged_defensive_branch at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonFunc/CommonFuncService.GetCustIDFormat.cs:36` - 防呆 if / defensive branch 前缺少 [業務] 或 [意圖] 标签注释。
+  - evidence: `if (value.Length == 11)`
+  - fixHint: 在分支前说明为何短路、跳过或防误判。
+- [warning] tagged_comment / tagged_defensive_branch at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonFunc/CommonFuncService.GetCustIDFormat.cs:42` - 防呆 if / defensive branch 前缺少 [業務] 或 [意圖] 标签注释。
+  - evidence: `if (value.Length == 8)`
+  - fixHint: 在分支前说明为何短路、跳过或防误判。
+- [warning] tagged_comment / tagged_defensive_branch at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonFunc/CommonFuncService.GetCustIDFormat.cs:48` - 防呆 if / defensive branch 前缺少 [業務] 或 [意圖] 标签注释。
+  - evidence: `if (value.Length == 9)`
+  - fixHint: 在分支前说明为何短路、跳过或防误判。
+- [warning] tagged_comment / tagged_defensive_branch at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonFunc/CommonFuncService.GetCustIDFormat.cs:54` - 防呆 if / defensive branch 前缺少 [業務] 或 [意圖] 标签注释。
+  - evidence: `if (value.Length is not 8 and not 10)`
+  - fixHint: 在分支前说明为何短路、跳过或防误判。
+- [warning] namespace_style / file_scoped_namespace at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonFunc/CommonFuncService.GetOperationHour.cs:12` - C# namespace 仍是 block-scoped 候选。
+  - evidence: `namespace Sinopac.EnterpriseAPI.EnterpriseApiBusiness.CommonFunc`
+  - fixHint: 若文件结构允许，改为 file-scoped namespace。
+- [warning] tagged_comment / await_intent_comment at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonFunc/CommonFuncService.GetOperationHour.cs:40` - 访问外部状态或服务的 await 前缺少即时 [意圖] 注释。
+  - evidence: `var rows = await _db.QueryAsync<DepositOperationHourRow>(sql);`
+  - fixHint: 在 await 前说明外部查询、写入、缓存或服务调用意图。
+- [warning] data_access / single_row_query at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonFunc/CommonFuncService.GetOperationHour.cs:42` - QueryAsync 后只取 FirstOrDefault()，但 SQL / API 未表达单笔查询意图。
+  - evidence: `return rows.FirstOrDefault();`
+  - fixHint: 在不改变业务语义前提下，把单笔意图推入 SQL 与数据访问 API。
+- [warning] namespace_style / file_scoped_namespace at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonFunc/CommonFuncService.InputAmtFormat.cs:10` - C# namespace 仍是 block-scoped 候选。
+  - evidence: `namespace Sinopac.EnterpriseAPI.EnterpriseApiBusiness.CommonFunc`
+  - fixHint: 若文件结构允许，改为 file-scoped namespace。
+- [warning] namespace_style / file_scoped_namespace at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonFunc/CommonFuncService.SendToMonitorMailPush.cs:16` - C# namespace 仍是 block-scoped 候选。
+  - evidence: `namespace Sinopac.EnterpriseAPI.EnterpriseApiBusiness.CommonFunc`
+  - fixHint: 若文件结构允许，改为 file-scoped namespace。
+- [warning] tagged_comment / tagged_defensive_branch at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonFunc/CommonFuncService.SendToMonitorMailPush.cs:30` - 防呆 if / defensive branch 前缺少 [業務] 或 [意圖] 标签注释。
+  - evidence: `if (request is null)`
+  - fixHint: 在分支前说明为何短路、跳过或防误判。
+- [warning] tagged_comment / await_intent_comment at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonFunc/CommonFuncService.SendToMonitorMailPush.cs:71` - 访问外部状态或服务的 await 前缺少即时 [意圖] 注释。
+  - evidence: `var runtimeContext = await _ctxAccessor.GetCurrentAsync(cancellationToken);`
+  - fixHint: 在 await 前说明外部查询、写入、缓存或服务调用意图。
+- [warning] tagged_comment / await_intent_comment at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonFunc/CommonFuncService.SendToMonitorMailPush.cs:73` - 访问外部状态或服务的 await 前缺少即时 [意圖] 注释。
+  - evidence: `await _db.ExecteNonQueryAsync(`
+  - fixHint: 在 await 前说明外部查询、写入、缓存或服务调用意图。
+- [warning] tagged_comment / tagged_defensive_branch at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonFunc/CommonFuncService.SendToMonitorMailPush.cs:107` - 防呆 if / defensive branch 前缺少 [業務] 或 [意圖] 标签注释。
+  - evidence: `if (string.IsNullOrWhiteSpace(sessionKey))`
+  - fixHint: 在分支前说明为何短路、跳过或防误判。
+- [warning] tagged_comment / tagged_defensive_branch at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonFunc/CommonFuncService.SendToMonitorMailPush.cs:115` - 防呆 if / defensive branch 前缺少 [業務] 或 [意圖] 标签注释。
+  - evidence: `if (!string.IsNullOrWhiteSpace(value))`
+  - fixHint: 在分支前说明为何短路、跳过或防误判。
+- [warning] tagged_comment / tagged_defensive_branch at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonFunc/CommonFuncService.SendToMonitorMailPush.cs:144` - 防呆 if / defensive branch 前缺少 [業務] 或 [意圖] 标签注释。
+  - evidence: `if (value.Length <= 6)`
+  - fixHint: 在分支前说明为何短路、跳过或防误判。
+- [warning] namespace_style / file_scoped_namespace at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonFunc/CommonFuncService.ShowAcctList.cs:12` - C# namespace 仍是 block-scoped 候选。
+  - evidence: `namespace Sinopac.EnterpriseAPI.EnterpriseApiBusiness.CommonFunc`
+  - fixHint: 若文件结构允许，改为 file-scoped namespace。
+- [warning] tagged_comment / await_intent_comment at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonFunc/CommonFuncService.ShowAcctList.cs:27` - 访问外部状态或服务的 await 前缺少即时 [意圖] 注释。
+  - evidence: `return await GetAccountInfoAsync(cancellationToken);`
+  - fixHint: 在 await 前说明外部查询、写入、缓存或服务调用意图。
+- [warning] namespace_style / file_scoped_namespace at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonFunc/CommonFuncService.cs:18` - C# namespace 仍是 block-scoped 候选。
+  - evidence: `namespace Sinopac.EnterpriseAPI.EnterpriseApiBusiness.CommonFunc`
+  - fixHint: 若文件结构允许，改为 file-scoped namespace。
+- [warning] tagged_comment / tagged_defensive_branch at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/Deposit/DepositService.TerminateFixedDepositConfirm.cs:91` - 防呆 if / defensive branch 前缺少 [業務] 或 [意圖] 标签注释。
+  - evidence: `if (request is null`
+  - fixHint: 在分支前说明为何短路、跳过或防误判。
+- [warning] tagged_comment / await_intent_comment at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/Deposit/DepositService.TerminateFixedDepositConfirm.cs:102` - 访问外部状态或服务的 await 前缺少即时 [意圖] 注释。
+  - evidence: `var runtimeContext = await _ctxAccessor.GetRequiredCurrentContextAsync(cancellationToken);`
+  - fixHint: 在 await 前说明外部查询、写入、缓存或服务调用意图。
+- [warning] tagged_comment / tagged_defensive_branch at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/Deposit/DepositService.TerminateFixedDepositConfirm.cs:114` - 防呆 if / defensive branch 前缺少 [業務] 或 [意圖] 标签注释。
+  - evidence: `if (validationFailure is not null)`
+  - fixHint: 在分支前说明为何短路、跳过或防误判。
+- [warning] tagged_comment / await_intent_comment at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/Deposit/DepositService.TerminateFixedDepositConfirm.cs:122` - 访问外部状态或服务的 await 前缺少即时 [意圖] 注释。
+  - evidence: `var operationHour = await _commonFuncService.GetOperationHourAsync(cancellationToken);`
+  - fixHint: 在 await 前说明外部查询、写入、缓存或服务调用意图。
+- [warning] tagged_comment / tagged_defensive_branch at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/Deposit/DepositService.TerminateFixedDepositConfirm.cs:124` - 防呆 if / defensive branch 前缺少 [業務] 或 [意圖] 标签注释。
+  - evidence: `if (operationHour is null)`
+  - fixHint: 在分支前说明为何短路、跳过或防误判。
+- [warning] tagged_comment / tagged_defensive_branch at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/Deposit/DepositService.TerminateFixedDepositConfirm.cs:132` - 防呆 if / defensive branch 前缺少 [業務] 或 [意圖] 标签注释。
+  - evidence: `if (ec0009 is null)`
+  - fixHint: 在分支前说明为何短路、跳过或防误判。
+- [warning] tagged_comment / await_intent_comment at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/Deposit/DepositService.TerminateFixedDepositConfirm.cs:144` - 访问外部状态或服务的 await 前缺少即时 [意圖] 注释。
+  - evidence: `var ed0012 = await SendIrisFirstAsync<DepositEd0012Row>(`
+  - fixHint: 在 await 前说明外部查询、写入、缓存或服务调用意图。
+- [warning] tagged_comment / tagged_defensive_branch at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/Deposit/DepositService.TerminateFixedDepositConfirm.cs:154` - 防呆 if / defensive branch 前缺少 [業務] 或 [意圖] 标签注释。
+  - evidence: `if (ed0012 is null)`
+  - fixHint: 在分支前说明为何短路、跳过或防误判。
+- [warning] tagged_comment / tagged_defensive_branch at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/Deposit/DepositService.TerminateFixedDepositConfirm.cs:160` - 防呆 if / defensive branch 前缺少 [業務] 或 [意圖] 标签注释。
+  - evidence: `if (!string.IsNullOrWhiteSpace(ed0012.EnqETdAcct)`
+  - fixHint: 在分支前说明为何短路、跳过或防误判。
+- [warning] tagged_comment / await_intent_comment at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/Deposit/DepositService.TerminateFixedDepositConfirm.cs:167` - 访问外部状态或服务的 await 前缺少即时 [意圖] 注释。
+  - evidence: `var ed0013 = await SendIrisFirstAsync<DepositEd0013Row>(`
+  - fixHint: 在 await 前说明外部查询、写入、缓存或服务调用意图。
+- [warning] tagged_comment / tagged_defensive_branch at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/Deposit/DepositService.TerminateFixedDepositConfirm.cs:178` - 防呆 if / defensive branch 前缺少 [業務] 或 [意圖] 标签注释。
+  - evidence: `if (ed0013 is null)`
+  - fixHint: 在分支前说明为何短路、跳过或防误判。
+- [warning] tagged_comment / await_intent_comment at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/Deposit/DepositService.TerminateFixedDepositConfirm.cs:184` - 访问外部状态或服务的 await 前缺少即时 [意圖] 注释。
+  - evidence: `var accountInfos = await _commonFuncService.GetAccountInfoAsync(cancellationToken);`
+  - fixHint: 在 await 前说明外部查询、写入、缓存或服务调用意图。
+- [warning] tagged_comment / await_intent_comment at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/Deposit/DepositService.TerminateFixedDepositConfirm.cs:185` - 访问外部状态或服务的 await 前缺少即时 [意圖] 注释。
+  - evidence: `var showAcctList = await _commonFuncService.ShowAcctListAsync(cancellationToken);`
+  - fixHint: 在 await 前说明外部查询、写入、缓存或服务调用意图。
+- [warning] tagged_comment / await_intent_comment at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/Deposit/DepositService.TerminateFixedDepositConfirm.cs:186` - 访问外部状态或服务的 await 前缺少即时 [意圖] 注释。
+  - evidence: `var currencies = await _commonFuncService.GetCenCurrencyAsync(cancellationToken);`
+  - fixHint: 在 await 前说明外部查询、写入、缓存或服务调用意图。
+- [warning] tagged_comment / tagged_defensive_branch at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/Deposit/DepositService.TerminateFixedDepositConfirm.cs:189` - 防呆 if / defensive branch 前缺少 [業務] 或 [意圖] 标签注释。
+  - evidence: `if (payeeAccount is null)`
+  - fixHint: 在分支前说明为何短路、跳过或防误判。
+- [warning] tagged_comment / await_intent_comment at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/Deposit/DepositService.TerminateFixedDepositConfirm.cs:245` - 访问外部状态或服务的 await 前缺少即时 [意圖] 注释。
+  - evidence: `if (await _commonFuncService.CheckForeignerCustIdAsync(normalizedCustId, cancellationToken))`
+  - fixHint: 在 await 前说明外部查询、写入、缓存或服务调用意图。
+- [warning] tagged_comment / await_intent_comment at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/Deposit/DepositService.TerminateFixedDepositConfirm.cs:251` - 访问外部状态或服务的 await 前缺少即时 [意圖] 注释。
+  - evidence: `var operationHour = await _commonFuncService.GetOperationHourAsync(cancellationToken);`
+  - fixHint: 在 await 前说明外部查询、写入、缓存或服务调用意图。
+- [warning] tagged_comment / tagged_defensive_branch at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/Deposit/DepositService.TerminateFixedDepositConfirm.cs:253` - 防呆 if / defensive branch 前缺少 [業務] 或 [意圖] 标签注释。
+  - evidence: `if (operationHour is null)`
+  - fixHint: 在分支前说明为何短路、跳过或防误判。
+- [warning] tagged_comment / tagged_defensive_branch at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/Deposit/DepositService.TerminateFixedDepositConfirm.cs:308` - 防呆 if / defensive branch 前缺少 [業務] 或 [意圖] 标签注释。
+  - evidence: `if (!string.IsNullOrWhiteSpace(value))`
+  - fixHint: 在分支前说明为何短路、跳过或防误判。
+- [warning] tagged_comment / await_intent_comment at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/Deposit/DepositService.TerminateFixedDepositConfirm.cs:331` - 访问外部状态或服务的 await 前缺少即时 [意圖] 注释。
+  - evidence: `var result = await _apiRequestService.SendAsync<JsonElement>(`
+  - fixHint: 在 await 前说明外部查询、写入、缓存或服务调用意图。
+- [warning] tagged_comment / await_intent_comment at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/Deposit/DepositService.TerminateFixedDepositConfirm.cs:357` - 访问外部状态或服务的 await 前缺少即时 [意圖] 注释。
+  - evidence: `return await SendIrisFirstAsync<DepositEc0009Row>(`
+  - fixHint: 在 await 前说明外部查询、写入、缓存或服务调用意图。
+- [warning] tagged_comment / tagged_defensive_branch at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/Deposit/DepositService.TerminateFixedDepositConfirm.cs:375` - 防呆 if / defensive branch 前缺少 [業務] 或 [意圖] 标签注释。
+  - evidence: `if (string.IsNullOrWhiteSpace(raw))`
+  - fixHint: 在分支前说明为何短路、跳过或防误判。
+- [warning] collection_initialization / collection_expression at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/Deposit/DepositService.TerminateFixedDepositConfirm.cs:405` - 集合或数组初始化可评估改为 collection expression。
+  - evidence: `foreach (var name in new[] { "responseData", "ResponseData", "data", "Data", "body", "Body", "items", "Items" })`
+  - fixHint: 目标型别明确时优先使用 collection expression。
+- [warning] tagged_comment / tagged_defensive_branch at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/Deposit/DepositService.TerminateFixedDepositConfirm.cs:514` - 防呆 if / defensive branch 前缺少 [業務] 或 [意圖] 标签注释。
+  - evidence: `if (!string.IsNullOrWhiteSpace(businessDay)`
+  - fixHint: 在分支前说明为何短路、跳过或防误判。
+- [warning] tagged_comment / tagged_defensive_branch at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/Deposit/DepositService.TerminateFixedDepositConfirm.cs:589` - 防呆 if / defensive branch 前缺少 [業務] 或 [意圖] 标签注释。
+  - evidence: `if (string.IsNullOrWhiteSpace(value))`
+  - fixHint: 在分支前说明为何短路、跳过或防误判。
+- [warning] tagged_comment / tagged_defensive_branch at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/Deposit/DepositService.TerminateFixedDepositConfirm.cs:616` - 防呆 if / defensive branch 前缺少 [業務] 或 [意圖] 标签注释。
+  - evidence: `if (string.IsNullOrWhiteSpace(value))`
+  - fixHint: 在分支前说明为何短路、跳过或防误判。
+- [warning] collection_initialization / collection_expression at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/Deposit/DepositService.TerminateFixedDepositConfirm.cs:621` - 集合或数组初始化可评估改为 collection expression。
+  - evidence: `if (TimeOnly.TryParseExact(value, new[] { "HHmm", "HH:mm", "HH:mm:ss" }, CultureInfo.InvariantCulture, DateTimeStyles.None, out var time))`
+  - fixHint: 目标型别明确时优先使用 collection expression。
+- [warning] tagged_comment / await_intent_comment at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/Deposit/DepositService.TerminateFixedDepositResult.cs:43` - 访问外部状态或服务的 await 前缺少即时 [意圖] 注释。
+  - evidence: `var runtimeContext = await _ctxAccessor.GetRequiredCurrentContextAsync(cancellationToken);`
+  - fixHint: 在 await 前说明外部查询、写入、缓存或服务调用意图。
+- [warning] tagged_comment / tagged_defensive_branch at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/Deposit/DepositService.TerminateFixedDepositResult.cs:50` - 防呆 if / defensive branch 前缺少 [業務] 或 [意圖] 标签注释。
+  - evidence: `if (transactionInfo is null)`
+  - fixHint: 在分支前说明为何短路、跳过或防误判。
+- [warning] tagged_comment / tagged_defensive_branch at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/Deposit/DepositService.TerminateFixedDepositResult.cs:69` - 防呆 if / defensive branch 前缺少 [業務] 或 [意圖] 标签注释。
+  - evidence: `if (validationFailure is not null)`
+  - fixHint: 在分支前说明为何短路、跳过或防误判。
+- [warning] tagged_comment / await_intent_comment at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/Deposit/DepositService.TerminateFixedDepositResult.cs:77` - 访问外部状态或服务的 await 前缺少即时 [意圖] 注释。
+  - evidence: `var ec0009 = await CallEc0009Async(normalizedCustId, transactionInfo.FixTdNo, cancellationToken);`
+  - fixHint: 在 await 前说明外部查询、写入、缓存或服务调用意图。
+- [warning] tagged_comment / tagged_defensive_branch at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/Deposit/DepositService.TerminateFixedDepositResult.cs:79` - 防呆 if / defensive branch 前缺少 [業務] 或 [意圖] 标签注释。
+  - evidence: `if (ec0009 is null)`
+  - fixHint: 在分支前说明为何短路、跳过或防误判。
+- [warning] tagged_comment / await_intent_comment at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/Deposit/DepositService.TerminateFixedDepositResult.cs:95` - 访问外部状态或服务的 await 前缺少即时 [意圖] 注释。
+  - evidence: `await InsertTerminateRecordAsync(normalizedCustId, tranSeqNo, transactionInfo, cancellationToken);`
+  - fixHint: 在 await 前说明外部查询、写入、缓存或服务调用意图。
+- [warning] tagged_comment / await_intent_comment at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/Deposit/DepositService.TerminateFixedDepositResult.cs:107` - 访问外部状态或服务的 await 前缺少即时 [意圖] 注释。
+  - evidence: `id0004Result = await CallId0004Async(normalizedCustId, tranSeqNo, transactionInfo, cancellationToken);`
+  - fixHint: 在 await 前说明外部查询、写入、缓存或服务调用意图。
+- [warning] tagged_comment / await_intent_comment at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/Deposit/DepositService.TerminateFixedDepositResult.cs:122` - 访问外部状态或服务的 await 前缺少即时 [意圖] 注释。
+  - evidence: `await UpdateTerminateRecordAsync(normalizedCustId, tranSeqNo, transactionInfo, id0004Result, CancellationToken.None);`
+  - fixHint: 在 await 前说明外部查询、写入、缓存或服务调用意图。
+- [warning] tagged_comment / await_intent_comment at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/Deposit/DepositService.TerminateFixedDepositResult.cs:141` - 访问外部状态或服务的 await 前缺少即时 [意圖] 注释。
+  - evidence: `await _commonFuncService.SendToMonitorMailPushAsync(`
+  - fixHint: 在 await 前说明外部查询、写入、缓存或服务调用意图。
+- [warning] tagged_comment / await_intent_comment at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/Deposit/DepositService.TerminateFixedDepositResult.cs:226` - 访问外部状态或服务的 await 前缺少即时 [意圖] 注释。
+  - evidence: `await _db.ExecteNonQueryAsync(sql, BuildTerminateRecordParameters(custId, tranSeqNo, transactionInfo, "送出中", string.Empty, string.Empty));`
+  - fixHint: 在 await 前说明外部查询、写入、缓存或服务调用意图。
+- [warning] tagged_comment / await_intent_comment at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/Deposit/DepositService.TerminateFixedDepositResult.cs:265` - 访问外部状态或服务的 await 前缺少即时 [意圖] 注释。
+  - evidence: `await _db.ExecteNonQueryAsync(foreignSql, BuildTerminateRecordParameters(custId, tranSeqNo, transactionInfo, "送出中", string.Empty, string.Empty));`
+  - fixHint: 在 await 前说明外部查询、写入、缓存或服务调用意图。
+- [warning] tagged_comment / await_intent_comment at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/Deposit/DepositService.TerminateFixedDepositResult.cs:302` - 访问外部状态或服务的 await 前缺少即时 [意圖] 注释。
+  - evidence: `await _db.ExecteNonQueryAsync(sql, BuildTerminateRecordParameters(custId, tranSeqNo, transactionInfo, status, id0004Result.IrisSeqNo, id0004Result.Message));`
+  - fixHint: 在 await 前说明外部查询、写入、缓存或服务调用意图。
+- [warning] tagged_comment / await_intent_comment at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/Deposit/DepositService.TerminateFixedDepositResult.cs:320` - 访问外部状态或服务的 await 前缺少即时 [意圖] 注释。
+  - evidence: `await _db.ExecteNonQueryAsync(foreignSql, BuildTerminateRecordParameters(custId, tranSeqNo, transactionInfo, status, id0004Result.IrisSeqNo, id0004Result.Message));`
+  - fixHint: 在 await 前说明外部查询、写入、缓存或服务调用意图。
+- [warning] tagged_comment / tagged_defensive_branch at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/Deposit/DepositService.TerminateFixedDepositResult.cs:376` - 防呆 if / defensive branch 前缺少 [業務] 或 [意圖] 标签注释。
+  - evidence: `if (string.IsNullOrEmpty(message) || message.Length <= IrisMessageMaxLength)`
+  - fixHint: 在分支前说明为何短路、跳过或防误判。
+- [warning] tagged_comment / tagged_defensive_branch at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/Deposit/DepositService.TerminateFixedDepositResult.cs:391` - 防呆 if / defensive branch 前缺少 [業務] 或 [意圖] 标签注释。
+  - evidence: `if (string.IsNullOrWhiteSpace(custId))`
+  - fixHint: 在分支前说明为何短路、跳过或防误判。
+- [warning] tagged_comment / await_intent_comment at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/Deposit/DepositService.TerminateFixedDepositResult.cs:445` - 访问外部状态或服务的 await 前缺少即时 [意圖] 注释。
+  - evidence: `var result = await _apiRequestService.SendAsync<JsonElement>(`
+  - fixHint: 在 await 前说明外部查询、写入、缓存或服务调用意图。
+- [warning] tagged_comment / tagged_defensive_branch at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/Deposit/DepositService.TerminateFixedDepositResult.cs:466` - 防呆 if / defensive branch 前缺少 [業務] 或 [意圖] 标签注释。
+  - evidence: `if (string.IsNullOrWhiteSpace(raw))`
+  - fixHint: 在分支前说明为何短路、跳过或防误判。
+- [warning] tagged_comment / tagged_defensive_branch at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/Deposit/DepositService.TerminateFixedDepositResult.cs:538` - 防呆 if / defensive branch 前缺少 [業務] 或 [意圖] 标签注释。
+  - evidence: `if (!string.IsNullOrWhiteSpace(found))`
+  - fixHint: 在分支前说明为何短路、跳过或防误判。
+- [warning] tagged_comment / tagged_defensive_branch at `Sinopac.EnterpriseAPI/EnterpriseApiBusiness/Deposit/DepositService.TerminateFixedDepositResult.cs:551` - 防呆 if / defensive branch 前缺少 [業務] 或 [意圖] 标签注释。
+  - evidence: `if (!string.IsNullOrWhiteSpace(found))`
+  - fixHint: 在分支前说明为何短路、跳过或防误判。
+- [needs_review] dependency_injection / primary_constructor at `Sinopac.EnterpriseAPI/Sinopac.EnterpriseAPI/Controllers/DepositController.cs:33` - 发现传统构造函数注入候选，需要确认是否可改为 C# 主构造函数。
+  - evidence: `public DepositController(ILogger<DepositController> logger, IDepositService depositService)`
+  - fixHint: 若框架和 partial 结构允许，改用主构造函数；否则在 change-plan 说明原因。
+- [warning] tagged_comment / await_intent_comment at `Sinopac.EnterpriseAPI/Sinopac.EnterpriseAPI/Controllers/DepositController.cs:54` - 访问外部状态或服务的 await 前缺少即时 [意圖] 注释。
+  - evidence: `return await _depositService.TerminateFixedDepositConfirmAsync(request, cancellationToken);`
+  - fixHint: 在 await 前说明外部查询、写入、缓存或服务调用意图。
+- [warning] tagged_comment / await_intent_comment at `Sinopac.EnterpriseAPI/Sinopac.EnterpriseAPI/Controllers/DepositController.cs:70` - 访问外部状态或服务的 await 前缺少即时 [意圖] 注释。
+  - evidence: `return await _depositService.TerminateFixedDepositResultAsync(cancellationToken);`
+  - fixHint: 在 await 前说明外部查询、写入、缓存或服务调用意图。

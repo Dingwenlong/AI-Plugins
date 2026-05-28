@@ -1,0 +1,739 @@
+{
+  "schemaVersion": "4.2.0",
+  "apiId": "COMMON.exchangecommonfunc.gethistbillboardrate",
+  "newAuthor": "Jimmy",
+  "functionCode": "Common",
+  "version": "1.0",
+  "apiCategory": "ExchangeCommonFunc",
+  "apiName": "GetHistBillboardRate",
+  "source": {
+    "tsdFile": "TSD.Common_封存TSD共用开发链路_v1.0_20260523.docx",
+    "workbookFile": "NEWDA_Method_DETAIL_ExchangeCommonFunc_20260522.xlsx",
+    "sheetNames": [
+      "GetHistBillboardRateFunc 查詢歷史匯"
+    ]
+  },
+  "request": [
+    {
+      "rowKey": "1",
+      "fieldName": "currEName",
+      "dataType": "string",
+      "required": false,
+      "description": "幣別",
+      "example": "\"currEName\":\"8938462777\""
+    },
+    {
+      "rowKey": "2",
+      "fieldName": "startDateTime",
+      "dataType": "string",
+      "required": false,
+      "description": "起日",
+      "example": "\"startDateTime\":\"8938462777\""
+    },
+    {
+      "rowKey": "3",
+      "fieldName": "endDateTime",
+      "dataType": "string",
+      "required": false,
+      "description": "迄日",
+      "example": "\"endDateTime\":\"\""
+    }
+  ],
+  "response": [
+    {
+      "rowKey": "1",
+      "fieldName": "isSuccess",
+      "dataType": "boolean",
+      "required": true,
+      "description": "API成功與否",
+      "example": "true",
+      "notes": "true ; false"
+    },
+    {
+      "rowKey": "2",
+      "fieldName": "responseCode",
+      "dataType": "string",
+      "required": true,
+      "description": "回應代碼",
+      "example": "0000",
+      "notes": "成功:0000其餘狀況為失敗"
+    },
+    {
+      "rowKey": "3",
+      "fieldName": "responseMessage",
+      "dataType": "string",
+      "required": true,
+      "description": "回應訊息",
+      "notes": "失敗狀況下回傳錯誤訊息"
+    },
+    {
+      "rowKey": "4",
+      "fieldName": "responseDT",
+      "dataType": "string",
+      "required": true,
+      "description": "系統回應時間",
+      "notes": "yyyy/MM/dd HH:mm:ss"
+    },
+    {
+      "rowKey": "5",
+      "fieldName": "responseData",
+      "dataType": "json",
+      "required": true,
+      "description": "回應資料框",
+      "example": "\"responseData\": {}",
+      "properties": [
+        {
+          "rowKey": "5.01",
+          "fieldName": "billboardRateList",
+          "dataType": "list",
+          "required": true,
+          "description": "牌告匯率",
+          "properties": [
+            {
+              "rowKey": "5.01.01",
+              "fieldName": "dispName",
+              "dataType": "string",
+              "required": true,
+              "description": "幣別",
+              "example": "\"dispName\":\"美元(USD)\"",
+              "notes": "[dbo].[ETS_vSPListHist].DispName"
+            },
+            {
+              "rowKey": "5.01.02",
+              "fieldName": "listBuy",
+              "dataType": "string",
+              "required": true,
+              "description": "買進牌告",
+              "example": "\"listBuy\":\"29.06000\"",
+              "notes": "[dbo].[ETS_vSPListHist].ListBuy"
+            },
+            {
+              "rowKey": "5.01.03",
+              "fieldName": "listSell",
+              "dataType": "string",
+              "required": true,
+              "description": "賣出牌告",
+              "example": "\"listSell\":\"29.15500\"",
+              "notes": "[dbo].[ETS_vSPListHist].ListSell"
+            },
+            {
+              "rowKey": "5.01.04",
+              "fieldName": "noteBuy",
+              "dataType": "string",
+              "required": true,
+              "description": "買進現鈔",
+              "example": "\"noteBuy \":\"29.12500\"",
+              "notes": "[dbo].[ETS_vSPListHist].NoteBuy"
+            },
+            {
+              "rowKey": "5.01.05",
+              "fieldName": "noteSell",
+              "dataType": "string",
+              "required": true,
+              "description": "賣出現鈔",
+              "example": "\"noteSell\":\"29.12500\"",
+              "notes": "[dbo].[ETS_vSPListHist].NoteSell"
+            },
+            {
+              "rowKey": "5.01.06",
+              "fieldName": "rateTime",
+              "dataType": "string",
+              "required": true,
+              "description": "時間",
+              "example": "\"rateTime\":\"20260303\"",
+              "notes": "[dbo].[ETS_vSPListHist].RateTime"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "mockExamples": [
+    {
+      "scenario": "獲取成功結果示例",
+      "requestPayload": {
+        "currEName": "USD",
+        "startDateTime": "2026-03-13 09:00:00",
+        "endDateTime": "2026-03-13 18:00:00"
+      },
+      "responsePayload": {
+        "isSuccess": true,
+        "responseCode": "0000",
+        "responseMessage": "查詢成功",
+        "responseDT": "2026-03-13 14:30:25",
+        "responseData": {
+          "billboardRateList": [
+            {
+              "dispName": "美元(USD)",
+              "listBuy": "29.06000",
+              "listSell": "29.15500",
+              "noteBuy": "29.12500",
+              "noteSell": "29.12500",
+              "rateTime": "20260303"
+            },
+            {
+              "dispName": "日圓(JPY)",
+              "listBuy": "0.19350",
+              "listSell": "0.19850",
+              "noteBuy": "0.19150",
+              "noteSell": "0.20050",
+              "rateTime": "20260303"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "scenario": "請求失敗",
+      "responsePayload": {
+        "isSuccess": false,
+        "responseCode": "9001",
+        "responseMessage": "系統繁忙,請稍後再試！",
+        "responseDT": "2026/02/24 10:30:25",
+        "responseData": {}
+      }
+    }
+  ],
+  "backendApis": {
+    "DB": [
+      "[DAWHO].[dbo].[ETS_vSPListHist]",
+      "DAWHO.DBO.ETS_VSPLISTHIST"
+    ]
+  },
+  "businessLogic": {
+    "steps": [
+      {
+        "step": 1,
+        "title": "查詢匯率走勢",
+        "details": "1.執行SQL查詢\nSELECT\nDispName,\nListBuy,\nListSell,\nNoteBuy,\nNoteSell,\nRateTime\nFROM\n[dbo].[ETS_vSPListHist]\nWHERE\nRateTime >= @startDateTime\nAND RateTime <= @endDateTime\nAND DispName = @currEName\nORDER BY\nRateTime DESC;"
+      },
+      {
+        "step": 2,
+        "title": "回傳結果",
+        "details": "2.回傳結果"
+      },
+      {
+        "step": 3,
+        "title": "流水號",
+        "details": "流水號"
+      },
+      {
+        "step": 4,
+        "title": "呼叫的IRIS編號",
+        "details": "呼叫的IRIS編號\n可读取外援：TW T24 IRIS_OpenAPI_Summary_20231212 -> reference/global/raw/external-api/IRIS/TW T24 IRIS_OpenAPI_Summary_20231212.xlsx#sheetName=IRIS；ED0019_OpenAPI_spec_Enquiry_20260213 -> reference/global/raw/external-api/IRIS/ED0019_OpenAPI_spec_Enquiry_20260213.xlsx#sheetName=JSON Request-Response；EC0002_OpenAPI_spec_Enquiry_20260213 -> reference/global/raw/external-api/IRIS/EC0002_OpenAPI_spec_Enquiry_20260213.xlsx#sheetName=JSON Request-Response",
+        "referenceHints": [
+          {
+            "id": "external.iris.twt24iris-openapi-summary-20231212",
+            "category": "external_api",
+            "matchSource": "iris_keyword",
+            "matchKey": "IRIS",
+            "title": "TW T24 IRIS_OpenAPI_Summary_20231212",
+            "relativePath": "reference/global/raw/external-api/IRIS/TW T24 IRIS_OpenAPI_Summary_20231212.xlsx",
+            "locator": {
+              "sheetName": "IRIS"
+            },
+            "reason": "命中外部接口关键词 IRIS，可读取 IRIS/OpenAPI 设计",
+            "authority": "reference_imported"
+          },
+          {
+            "id": "external.iris.ed0019-openapi-spec-enquiry-20260213",
+            "category": "external_api",
+            "matchSource": "iris_keyword",
+            "matchKey": "IRIS",
+            "title": "ED0019_OpenAPI_spec_Enquiry_20260213",
+            "relativePath": "reference/global/raw/external-api/IRIS/ED0019_OpenAPI_spec_Enquiry_20260213.xlsx",
+            "locator": {
+              "sheetName": "JSON Request-Response"
+            },
+            "reason": "命中外部接口关键词 IRIS，可读取 IRIS/OpenAPI 设计",
+            "authority": "reference_imported"
+          },
+          {
+            "id": "external.iris.ec0002-openapi-spec-enquiry-20260213",
+            "category": "external_api",
+            "matchSource": "iris_keyword",
+            "matchKey": "IRIS",
+            "title": "EC0002_OpenAPI_spec_Enquiry_20260213",
+            "relativePath": "reference/global/raw/external-api/IRIS/EC0002_OpenAPI_spec_Enquiry_20260213.xlsx",
+            "locator": {
+              "sheetName": "JSON Request-Response"
+            },
+            "reason": "命中外部接口关键词 IRIS，可读取 IRIS/OpenAPI 设计",
+            "authority": "reference_imported"
+          }
+        ]
+      },
+      {
+        "step": 5,
+        "title": "帳號",
+        "details": "帳號"
+      },
+      {
+        "step": 6,
+        "title": "上送Json格式資料",
+        "details": "上送Json格式資料"
+      },
+      {
+        "step": 7,
+        "title": "IRIS回覆成功或失敗",
+        "details": "IRIS回覆成功或失敗\n可读取外援：TW T24 IRIS_OpenAPI_Summary_20231212 -> reference/global/raw/external-api/IRIS/TW T24 IRIS_OpenAPI_Summary_20231212.xlsx#sheetName=IRIS；ED0019_OpenAPI_spec_Enquiry_20260213 -> reference/global/raw/external-api/IRIS/ED0019_OpenAPI_spec_Enquiry_20260213.xlsx#sheetName=JSON Request-Response；EC0002_OpenAPI_spec_Enquiry_20260213 -> reference/global/raw/external-api/IRIS/EC0002_OpenAPI_spec_Enquiry_20260213.xlsx#sheetName=JSON Request-Response",
+        "referenceHints": [
+          {
+            "id": "external.iris.twt24iris-openapi-summary-20231212",
+            "category": "external_api",
+            "matchSource": "iris_keyword",
+            "matchKey": "IRIS",
+            "title": "TW T24 IRIS_OpenAPI_Summary_20231212",
+            "relativePath": "reference/global/raw/external-api/IRIS/TW T24 IRIS_OpenAPI_Summary_20231212.xlsx",
+            "locator": {
+              "sheetName": "IRIS"
+            },
+            "reason": "命中外部接口关键词 IRIS，可读取 IRIS/OpenAPI 设计",
+            "authority": "reference_imported"
+          },
+          {
+            "id": "external.iris.ed0019-openapi-spec-enquiry-20260213",
+            "category": "external_api",
+            "matchSource": "iris_keyword",
+            "matchKey": "IRIS",
+            "title": "ED0019_OpenAPI_spec_Enquiry_20260213",
+            "relativePath": "reference/global/raw/external-api/IRIS/ED0019_OpenAPI_spec_Enquiry_20260213.xlsx",
+            "locator": {
+              "sheetName": "JSON Request-Response"
+            },
+            "reason": "命中外部接口关键词 IRIS，可读取 IRIS/OpenAPI 设计",
+            "authority": "reference_imported"
+          },
+          {
+            "id": "external.iris.ec0002-openapi-spec-enquiry-20260213",
+            "category": "external_api",
+            "matchSource": "iris_keyword",
+            "matchKey": "IRIS",
+            "title": "EC0002_OpenAPI_spec_Enquiry_20260213",
+            "relativePath": "reference/global/raw/external-api/IRIS/EC0002_OpenAPI_spec_Enquiry_20260213.xlsx",
+            "locator": {
+              "sheetName": "JSON Request-Response"
+            },
+            "reason": "命中外部接口关键词 IRIS，可读取 IRIS/OpenAPI 设计",
+            "authority": "reference_imported"
+          }
+        ]
+      },
+      {
+        "step": 8,
+        "title": "錯誤代碼",
+        "details": "錯誤代碼"
+      },
+      {
+        "step": 9,
+        "title": "錯誤訊息",
+        "details": "錯誤訊息"
+      },
+      {
+        "step": 10,
+        "title": "交易序號",
+        "details": "交易序號"
+      }
+    ],
+    "fieldMappings": [
+      {
+        "target": "billboardRateList",
+        "source": "[dbo].[ETS_vSPListHist].DispName",
+        "rule": "牌告匯率",
+        "fields": [
+          {
+            "field": "dispName",
+            "source": "[dbo].[ETS_vSPListHist].DispName",
+            "rule": "幣別"
+          },
+          {
+            "field": "listBuy",
+            "source": "[dbo].[ETS_vSPListHist].ListBuy",
+            "rule": "買進牌告"
+          },
+          {
+            "field": "listSell",
+            "source": "[dbo].[ETS_vSPListHist].ListSell",
+            "rule": "賣出牌告"
+          },
+          {
+            "field": "noteBuy",
+            "source": "[dbo].[ETS_vSPListHist].NoteBuy",
+            "rule": "買進現鈔"
+          },
+          {
+            "field": "noteSell",
+            "source": "[dbo].[ETS_vSPListHist].NoteSell",
+            "rule": "賣出現鈔"
+          },
+          {
+            "field": "rateTime",
+            "source": "[dbo].[ETS_vSPListHist].RateTime",
+            "rule": "時間"
+          }
+        ]
+      }
+    ],
+    "errorCodeRules": [
+      {
+        "code": "9001",
+        "scenario": "請求失敗",
+        "message": "系統繁忙,請稍後再試！"
+      }
+    ],
+    "runtimeDependencies": [
+      {
+        "id": "mma_sql_connection",
+        "type": "service",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "Execute authoritative SQL declared in the workbook for DAWHO.DBO.ETS_VSPLISTHIST."
+      },
+      {
+        "id": "sql_table_db_dawho_dbo_ets_vsplisthist",
+        "type": "sql_table",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "业务逻辑正文提到 DB->[DAWHO].[dbo].[ETS_vSPListHist] 依赖。"
+      }
+    ],
+    "dataSources": [
+      {
+        "name": "DAWHO.DBO.ETS_VSPLISTHIST",
+        "type": "sql_table",
+        "authority": "backend_contract",
+        "required": true
+      }
+    ],
+    "sqlSpecs": [],
+    "legacyReferences": [],
+    "prohibitedShortcuts": [
+      "block_comment_header_substitution"
+    ],
+    "referenceHints": [
+      {
+        "id": "external.iris.twt24iris-openapi-summary-20231212",
+        "category": "external_api",
+        "matchSource": "iris_keyword",
+        "matchKey": "IRIS",
+        "title": "TW T24 IRIS_OpenAPI_Summary_20231212",
+        "relativePath": "reference/global/raw/external-api/IRIS/TW T24 IRIS_OpenAPI_Summary_20231212.xlsx",
+        "locator": {
+          "sheetName": "IRIS"
+        },
+        "reason": "命中外部接口关键词 IRIS，可读取 IRIS/OpenAPI 设计",
+        "authority": "reference_imported"
+      },
+      {
+        "id": "external.iris.ed0019-openapi-spec-enquiry-20260213",
+        "category": "external_api",
+        "matchSource": "iris_keyword",
+        "matchKey": "IRIS",
+        "title": "ED0019_OpenAPI_spec_Enquiry_20260213",
+        "relativePath": "reference/global/raw/external-api/IRIS/ED0019_OpenAPI_spec_Enquiry_20260213.xlsx",
+        "locator": {
+          "sheetName": "JSON Request-Response"
+        },
+        "reason": "命中外部接口关键词 IRIS，可读取 IRIS/OpenAPI 设计",
+        "authority": "reference_imported"
+      },
+      {
+        "id": "external.iris.ec0002-openapi-spec-enquiry-20260213",
+        "category": "external_api",
+        "matchSource": "iris_keyword",
+        "matchKey": "IRIS",
+        "title": "EC0002_OpenAPI_spec_Enquiry_20260213",
+        "relativePath": "reference/global/raw/external-api/IRIS/EC0002_OpenAPI_spec_Enquiry_20260213.xlsx",
+        "locator": {
+          "sheetName": "JSON Request-Response"
+        },
+        "reason": "命中外部接口关键词 IRIS，可读取 IRIS/OpenAPI 设计",
+        "authority": "reference_imported"
+      }
+    ]
+  },
+  "codeHandoff": {
+    "schemaVersion": "1.0.0",
+    "logicSummary": {
+      "stepCount": 10,
+      "queryContractCount": 0,
+      "mappingRuleCount": 6,
+      "legacyEvidenceCount": 0,
+      "dependencyHintCount": 3,
+      "constraintCount": 2,
+      "unresolvedCount": 0,
+      "primarySource": "businessLogic"
+    },
+    "logicFlow": [
+      {
+        "stepId": "step_1",
+        "title": "查詢匯率走勢",
+        "actionType": "query",
+        "inputs": [
+          "currEName",
+          "startDateTime",
+          "endDateTime"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_2",
+        "title": "回傳結果",
+        "actionType": "return",
+        "inputs": [
+          "currEName",
+          "startDateTime",
+          "endDateTime"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_3",
+        "title": "流水號",
+        "actionType": "process",
+        "inputs": [
+          "currEName",
+          "startDateTime",
+          "endDateTime"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_4",
+        "title": "呼叫的IRIS編號",
+        "actionType": "return",
+        "inputs": [
+          "currEName",
+          "startDateTime",
+          "endDateTime"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_5",
+        "title": "帳號",
+        "actionType": "process",
+        "inputs": [
+          "currEName",
+          "startDateTime",
+          "endDateTime"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_6",
+        "title": "上送Json格式資料",
+        "actionType": "process",
+        "inputs": [
+          "currEName",
+          "startDateTime",
+          "endDateTime"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_7",
+        "title": "IRIS回覆成功或失敗",
+        "actionType": "return",
+        "inputs": [
+          "currEName",
+          "startDateTime",
+          "endDateTime"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_8",
+        "title": "錯誤代碼",
+        "actionType": "process",
+        "inputs": [
+          "currEName",
+          "startDateTime",
+          "endDateTime"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_9",
+        "title": "錯誤訊息",
+        "actionType": "process",
+        "inputs": [
+          "currEName",
+          "startDateTime",
+          "endDateTime"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_10",
+        "title": "交易序號",
+        "actionType": "process",
+        "inputs": [
+          "currEName",
+          "startDateTime",
+          "endDateTime"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      }
+    ],
+    "legacyEvidence": [],
+    "queryContracts": [],
+    "mappingRules": [
+      {
+        "ruleId": "map_dbo_ets_vsplisthist_dispname_dispname",
+        "sourceField": "[dbo].[ETS_vSPListHist].DispName",
+        "targetField": "dispName",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "幣別",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_dbo_ets_vsplisthist_listbuy_listbuy",
+        "sourceField": "[dbo].[ETS_vSPListHist].ListBuy",
+        "targetField": "listBuy",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "買進牌告",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_dbo_ets_vsplisthist_listsell_listsell",
+        "sourceField": "[dbo].[ETS_vSPListHist].ListSell",
+        "targetField": "listSell",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "賣出牌告",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_dbo_ets_vsplisthist_notebuy_notebuy",
+        "sourceField": "[dbo].[ETS_vSPListHist].NoteBuy",
+        "targetField": "noteBuy",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "買進現鈔",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_dbo_ets_vsplisthist_notesell_notesell",
+        "sourceField": "[dbo].[ETS_vSPListHist].NoteSell",
+        "targetField": "noteSell",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "賣出現鈔",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_dbo_ets_vsplisthist_ratetime_ratetime",
+        "sourceField": "[dbo].[ETS_vSPListHist].RateTime",
+        "targetField": "rateTime",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "時間",
+        "evidenceIds": []
+      }
+    ],
+    "dependencyHints": [
+      {
+        "dependencyType": "service",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor"
+        ],
+        "purpose": "Execute authoritative SQL declared in the workbook for DAWHO.DBO.ETS_VSPLISTHIST.",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "sql_table",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor"
+        ],
+        "purpose": "业务逻辑正文提到 DB->[DAWHO].[dbo].[ETS_vSPListHist] 依赖。",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "sql_table",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor"
+        ],
+        "purpose": "Read from DAWHO.DBO.ETS_VSPLISTHIST",
+        "evidenceIds": []
+      }
+    ],
+    "constraints": [
+      {
+        "constraintType": "prohibited_shortcut",
+        "rule": "block_comment_header_substitution",
+        "severity": "error",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "error_code_rule",
+        "rule": "9001 | 請求失敗 | 系統繁忙,請稍後再試！",
+        "severity": "warning",
+        "evidenceIds": []
+      }
+    ],
+    "unresolved": []
+  }
+}

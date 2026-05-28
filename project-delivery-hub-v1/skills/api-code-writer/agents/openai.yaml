@@ -1,12 +1,12 @@
 interface:
-  display_name: "04 API 业务代码写入器"
+  display_name: "【开发落地】API 业务代码写入器"
   short_description: "把已完成 API Spec 落成 .NET Controller/Service/Entity 业务代码。"
   default_prompt: >-
-    使用 $api-code-writer 执行第 04 步 04 API 业务代码写入器：读取当前项目 `.agent/context`
+    使用 $api-code-writer 执行第 04 步 【开发落地】API 业务代码写入器：读取当前项目 `.agent/context`
     的共享 execution 状态面和 `execution-batch.json`，只更新共享 `execution-state.json`、`api-checklist.json`、
     `manifest.json` 的 `code*` 字段与聚合字段。不要把任何特定上游 workflow / skill 名称当成硬编码前置步骤；
     只要共享 `.agent/context` 内已有可消费的 `spec*` 状态、`manifest.json` 与 `*_API_Spec.json`，就可继续推进。
-    进入 code writer 前不强制先执行可选第 03 步 [$api-sql-fixture-preparer](C:/Users/<username>/plugins/project-delivery-hub-v1/skills/api-sql-fixture-preparer/SKILL.md)：
+    进入 code writer 前不强制先执行可选第 03 步 `skills/api-sql-fixture-preparer/SKILL.md`：
     默认允许先跑 `prepare` 生成 change-plan，再由 AI 直接修改目标仓库代码。若目标 API 后续验证依赖 SQL fixture，
     则在 `apply` 前检查 `fixtureStatus`；只有 `apply` 时 `fixtureStatus` 仍非 `done|skipped` 才应回报 `waiting_fixture`。
     `prepare` 本身内建承担 precheck 职责，不依赖 `workflow-develop-precheck` 或其它外部 precheck skill；
@@ -31,4 +31,11 @@ interface:
     不存在的字段，必须阻塞并写诊断，不允许继续猜测。AI 写入的中文註解、字串、文件说明与角色要求统一使用繁體中文。
     默认一次只推进一支 `specStatus=done` 的 API；未显式传入 `validation-check` 时，固定执行 EnterpriseAPI build、unit test、
     integration test 三段验证。若要产出测试报告，代码与 `.trx` 就绪后再进入可选第 05 步
-    [$docx-unittest-report](C:/Users/<username>/plugins/project-delivery-hub-v1/skills/docx-unittest-report/SKILL.md)。
+    `skills/docx-unittest-report/SKILL.md`。
+
+leaderMode: |
+  在 multi-api-leader 显式编排中，04 必须由 leader 先按 --api-id 串行 prepare 所有 API。
+  prepare 生成 change-plan.json 后，leader 运行 multi-api-leader 的 plan 脚本生成 api-workgroups.json 与 file-claims.json。
+  子 agent 只能修改自己 claim 的代码文件；目标文件重叠的 API 必须同组串行。
+  子 agent 不得写 .agent/context，不得写 UnitTest/IntegrationTest 测试源码。
+  leader 校验 modifiedFiles 未越权后，再串行 apply/验证并写回 codeStatus 与 testCodeHandoff。

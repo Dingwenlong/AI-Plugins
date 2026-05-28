@@ -1,0 +1,8 @@
+-- schema: ../../.agent/context/Common/apis/COMMON.commonfunc.deldevicebinding/generated-schema-dawho_dbo_devicebinding.sql
+-- seed: ../../.agent/context/Common/apis/COMMON.commonfunc.deldevicebinding/generated-seed-dawho_dbo_devicebinding.sql
+-- schema: ../../.agent/context/Common/apis/COMMON.commonfunc.deldevicebinding/generated-schema-dbo_mb_pushtypesetting.sql
+-- seed: ../../.agent/context/Common/apis/COMMON.commonfunc.deldevicebinding/generated-seed-dbo_mb_pushtypesetting.sql
+-- schema: ../../.agent/context/Common/apis/COMMON.commonfunc.deldevicebinding/generated-schema-dawho_dbo_devicebinding.sql
+-- seed: ../../.agent/context/Common/apis/COMMON.commonfunc.deldevicebinding/generated-seed-dawho_dbo_devicebinding.sql
+-- schema: ../../.agent/context/Common/apis/COMMON.commonfunc.deldevicebinding/generated-schema-dbo_mb_pushtypesetting.sql
+-- seed: ../../.agent/context/Common/apis/COMMON.commonfunc.deldevicebinding/generated-seed-dbo_mb_pushtypesetting.sql

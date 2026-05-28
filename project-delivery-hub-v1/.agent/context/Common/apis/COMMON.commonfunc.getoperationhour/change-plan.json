@@ -1,0 +1,1224 @@
+{
+  "schemaVersion": "4.1.0",
+  "skillName": "api-code-writer",
+  "manifestType": "change-plan",
+  "status": "tests_passed",
+  "updatedAt": "2026-05-23T22:17:45+08:00",
+  "executionId": "Common",
+  "apiId": "COMMON.commonfunc.getoperationhour",
+  "projectRoot": ".",
+  "solutionPath": "Sinopac.EnterpriseAPI.slnx",
+  "upstream": {
+    "manifest": "../../../.agent/context/Common/apis/COMMON.commonfunc.getoperationhour/manifest.json",
+    "apiSpec": "../../../.agent/context/Common/apis/COMMON.commonfunc.getoperationhour/Common_API_Spec.json",
+    "sourceFingerprint": "sha256:0b375f3094945a92b0db9ec602d32999ba53efb8ae08382adfe58db354231ee9",
+    "source": {
+      "tsdFile": "TSD.Common_封�?TSD?�用开?�链路_v1.0_20260523.docx",
+      "workbookFile": "NEWDA_Method_DETAIL_ExchangeCommonFunc_20260522.xlsx",
+      "sheetNames": [
+        "GetOperationHour ?��??�業??
+      ]
+    }
+  },
+  "sourceCandidates": [
+    "Libray/Sinopac.CommonFunc/IFuncService/ICommonFuncService.cs",
+    "Libray/Sinopac.CommonFunc/FuncService/CommonFuncService.cs",
+    "Libray/Sinopac.CommonFunc/FuncService/CommonFuncService.GetOperationHour.cs",
+    "Libray/Sinopac.CommonFunc/Dto/GetOperationHourInfo.cs",
+    "Test/EnterpriseApi.Unit/CommonFuncServiceTests.cs"
+  ],
+  "repoDriftDetected": false,
+  "repoDriftFiles": [],
+  "beforeHashes": {
+    "Libray/Sinopac.CommonFunc/IFuncService/ICommonFuncService.cs": "sha256:57d47c9cd92357772c304dfa784e1a8f66140ba66f649c04deedfeeaa3e769e9",
+    "Libray/Sinopac.CommonFunc/FuncService/CommonFuncService.cs": "sha256:f7daae54af90a4370b14980a4b46beed5468f50c4f12710333a9b021dd647f93",
+    "Libray/Sinopac.CommonFunc/FuncService/CommonFuncService.GetOperationHour.cs": null,
+    "Libray/Sinopac.CommonFunc/Dto/GetOperationHourInfo.cs": null
+  },
+  "analysis": {
+    "frameworkProfile": "enterpriseapi",
+    "guidelineAuthority": "?�大?��??�説??V2.0 20260203.docx",
+    "repoRoot": ".",
+    "moduleName": "CommonFunc",
+    "interfaceFile": "Libray/Sinopac.CommonFunc/IFuncService/ICommonFuncService.cs",
+    "serviceFiles": [
+      "Libray/Sinopac.CommonFunc/FuncService/CommonFuncService.cs",
+      "Libray/Sinopac.CommonFunc/FuncService/CommonFuncService.GetOperationHour.cs"
+    ],
+    "entityFiles": [
+      "Libray/Sinopac.CommonFunc/Dto/GetOperationHourInfo.cs"
+    ],
+    "codeTargetFiles": [
+      "Libray/Sinopac.CommonFunc/IFuncService/ICommonFuncService.cs",
+      "Libray/Sinopac.CommonFunc/FuncService/CommonFuncService.GetOperationHour.cs",
+      "Libray/Sinopac.CommonFunc/FuncService/CommonFuncService.cs",
+      "Libray/Sinopac.CommonFunc/Dto/GetOperationHourInfo.cs"
+    ],
+    "unitTestTargetFiles": [
+      "Test/EnterpriseApi.Unit/CommonFuncServiceTests.cs"
+    ],
+    "integrationTestTargetFiles": [
+    ],
+    "testTargetFiles": [
+      "Test/EnterpriseApi.Unit/CommonFuncServiceTests.cs"
+    ],
+    "testCodeHandoff": {
+      "ownerStep": "05 docx-unittest-report",
+      "writerPolicy": "handoff_only",
+      "unitTestTargetFiles": [
+        "Test/EnterpriseApi.Unit/CommonFuncServiceTests.cs"
+      ],
+      "integrationTestTargetFiles": [
+      ],
+      "note": "Step 04 records test targets and scenarios only; UnitTest, IntegrationTest, and service runtime validation source code belong to step 05."
+    },
+    "creationMode": "extend_partial",
+    "registrationStrategy": "manual_registration_review",
+    "targetFile": "Libray/Sinopac.CommonFunc/FuncService/CommonFuncService.GetOperationHour.cs",
+    "targetClass": "CommonFuncService",
+    "targetMethod": "GetOperationHourAsync",
+    "action": "ai_orchestrated_implementation",
+    "requestFields": [],
+    "responseFields": [
+      {
+        "path": "isSuccess",
+        "dataType": "boolean",
+        "required": true,
+        "description": "API?��??�否",
+        "notes": "true ; false"
+      },
+      {
+        "path": "responseCode",
+        "dataType": "string",
+        "required": true,
+        "description": "?��?�?��",
+        "notes": "?��?:0000?��??�況為失�?"
+      },
+      {
+        "path": "responseMessage",
+        "dataType": "string",
+        "required": true,
+        "description": "?��?訊息",
+        "notes": "失�??�況�??�傳?�誤訊息"
+      },
+      {
+        "path": "responseDT",
+        "dataType": "string",
+        "required": true,
+        "description": "系統?��??��?",
+        "notes": "yyyy/MM/dd HH:mm:ss"
+      },
+      {
+        "path": "responseData",
+        "dataType": "json",
+        "required": true,
+        "description": "?��?資�?�?,
+        "notes": ""
+      },
+      {
+        "path": "t24Tbsdy",
+        "dataType": "string",
+        "required": true,
+        "description": "T24 交�???,
+        "notes": "sRespJson.T24_TBSDY"
+      },
+      {
+        "path": "t24Nbsdy",
+        "dataType": "string",
+        "required": true,
+        "description": "T24 ?�交?�日",
+        "notes": "sRespJson.t24 NBSDY"
+      },
+      {
+        "path": "t24Lbsdy",
+        "dataType": "string",
+        "required": true,
+        "description": "T24 ?��?个交?�日",
+        "notes": "sRespJson.T24_LBSDY"
+      },
+      {
+        "path": "t24LLbsdy",
+        "dataType": "string",
+        "required": true,
+        "description": "T24 ?�两个交?�日",
+        "notes": "sRespJson.T24_LLBSDY"
+      },
+      {
+        "path": "t24Mode",
+        "dataType": "string",
+        "required": true,
+        "description": "T24 系�?模�?",
+        "notes": "sRespJson.T24_MODE"
+      },
+      {
+        "path": "t24TbsdyCob",
+        "dataType": "string",
+        "required": true,
+        "description": "T24 ?��??�日终�?�?,
+        "notes": "sRespJson.T24_TBSDYCOB"
+      },
+      {
+        "path": "t24NbsdyCob",
+        "dataType": "string",
+        "required": true,
+        "description": "T24 ?�交?�日�?,
+        "notes": "sRespJson.T24_NBSDYCOB"
+      },
+      {
+        "path": "t24BR121Open",
+        "dataType": "string",
+        "required": true,
+        "description": "?��??��??�否?�業",
+        "notes": "sRespJson.T24_BR1210pen"
+      },
+      {
+        "path": "t24UpdTime",
+        "dataType": "string",
+        "required": true,
+        "description": "?�新?��?",
+        "notes": "sRespJson.T24_UpdTime"
+      },
+      {
+        "path": "fiscTbsdy",
+        "dataType": "string",
+        "required": true,
+        "description": "会计?��???,
+        "notes": "sRespJson.fisc_TBSDY"
+      },
+      {
+        "path": "fiscNbsdy",
+        "dataType": "string",
+        "required": true,
+        "description": "财务?�交?�日",
+        "notes": "sRespJson.fisc_NBSDY"
+      },
+      {
+        "path": "fiscLbsdy",
+        "dataType": "string",
+        "required": true,
+        "description": "",
+        "notes": "sRespJson.fisc_LBSDY"
+      },
+      {
+        "path": "fiscMode",
+        "dataType": "string",
+        "required": true,
+        "description": "财政会计",
+        "notes": "sRespJson.fisc_MODE"
+      },
+      {
+        "path": "rmMode",
+        "dataType": "string",
+        "required": true,
+        "description": "风险管�?",
+        "notes": "sRespJson.rm_Mode"
+      }
+    ],
+    "businessSteps": [
+      {
+        "step": 1,
+        "title": "?�詢資�?�?,
+        "details": "1.?��?SELECT T24_TBSDY ,t24 NBSDY,  t24 NBSDY,  T24_LBSDY,  T24_LLBSDY,  T24_MODE  , T24_TBSDYCOB , T24_NBSDYCOB  , T24_BR1210pen,  T24_UpdTime, fisc_TBSDY ,fisc_NBSDY , fisc_LBSDY , fisc_MODE ,rm_Mode  FROM [L_EAINET].[EAINET].[dbo].[TBDAY]\n2.定義 sRespJson保�??�詢結�?"
+      },
+      {
+        "step": 2,
+        "title": "?�斷結�?",
+        "details": "如�??��?庫查詢失?��?ResponseCode?�傳:9001"
+      },
+      {
+        "step": 3,
+        "title": "?�傳結�?",
+        "details": "如�?請�??��?，解?��??��??��?並�??�給?�端"
+      }
+    ],
+    "fieldMappings": [
+      {
+        "target": "responseData",
+        "source": "sRespJson.T24_TBSDY",
+        "rule": "T24 交�??��?T24 ?�交?�日；T24 ?��?个交?�日；T24 ?�两个交?�日；T24 系�?模�?；T24 ?��??�日终�?账�?T24 ?�交?�日结�??��??��??�否?�業；更?��??��?会计?��??��?财务?�交?�日；财?��?计�?风险管�?",
+        "fields": [
+          {
+            "field": "t24Tbsdy",
+            "source": "sRespJson.T24_TBSDY",
+            "rule": "T24 交�???
+          },
+          {
+            "field": "t24Nbsdy",
+            "source": "sRespJson.t24",
+            "rule": "T24 ?�交?�日"
+          },
+          {
+            "field": "t24Lbsdy",
+            "source": "sRespJson.T24_LBSDY",
+            "rule": "T24 ?��?个交?�日"
+          },
+          {
+            "field": "t24LLbsdy",
+            "source": "sRespJson.T24_LLBSDY",
+            "rule": "T24 ?�两个交?�日"
+          },
+          {
+            "field": "t24Mode",
+            "source": "sRespJson.T24_MODE",
+            "rule": "T24 系�?模�?"
+          },
+          {
+            "field": "t24TbsdyCob",
+            "source": "sRespJson.T24_TBSDYCOB",
+            "rule": "T24 ?��??�日终�?�?
+          },
+          {
+            "field": "t24NbsdyCob",
+            "source": "sRespJson.T24_NBSDYCOB",
+            "rule": "T24 ?�交?�日�?
+          },
+          {
+            "field": "t24BR121Open",
+            "source": "sRespJson.T24_BR1210pen",
+            "rule": "?��??��??�否?�業"
+          },
+          {
+            "field": "t24UpdTime",
+            "source": "sRespJson.T24_UpdTime",
+            "rule": "?�新?��?"
+          },
+          {
+            "field": "fiscTbsdy",
+            "source": "sRespJson.fisc_TBSDY",
+            "rule": "会计?��???
+          },
+          {
+            "field": "fiscNbsdy",
+            "source": "sRespJson.fisc_NBSDY",
+            "rule": "财务?�交?�日"
+          },
+          {
+            "field": "fiscLbsdy",
+            "source": "sRespJson.fisc_LBSDY",
+            "rule": ""
+          },
+          {
+            "field": "fiscMode",
+            "source": "sRespJson.fisc_MODE",
+            "rule": "财政会计"
+          },
+          {
+            "field": "rmMode",
+            "source": "sRespJson.rm_Mode",
+            "rule": "风险管�?"
+          }
+        ]
+      }
+    ],
+    "errorCodes": [
+      {
+        "code": "9001",
+        "scenario": "請�?失�?",
+        "message": "系統繁�?,請�?後�?試�?"
+      }
+    ],
+    "runtimeDependencies": [
+      {
+        "id": "mma_sql_connection",
+        "type": "service",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "Execute authoritative SQL declared in the workbook for L_EAINET.EAINET.DBO."
+      },
+      {
+        "id": "sql_table_db_l_eainet_eainet_dbo",
+        "type": "sql_table",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "Excel 依�?声�??�到 DB->L_EAINET.EAINET.DBO??
+      },
+      {
+        "id": "sql_table_db_l_eainet_eainet_dbo_tbday",
+        "type": "sql_table",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "业务?��?�???�到 DB->[L_EAINET].[EAINET].[dbo].[TBDAY] 依�???
+      }
+    ],
+    "referenceHints": [],
+    "backendApis": [
+      "DB -> TBDAY"
+    ],
+    "mockExamples": [
+      {
+        "scenario": "?��??��?結�?示�?",
+        "responsePayload": {
+          "isSuccess": true,
+          "responseCode": "0000",
+          "responseMessage": "?�詢?��?",
+          "responseDT": "2026-02-02 10:15:30",
+          "responseData": {
+            "t24Tbsdy": "20250416",
+            "t24Nbsdy": "20250326",
+            "t24Lbsdy": "20250227",
+            "t24LLbsdy": "20240131",
+            "t24Mode": "B",
+            "t24TbsdyCob": "20250303",
+            "t24NbsdyCob": "20250304",
+            "t24BR121Open": "N",
+            "t24UpdTime": "20260202",
+            "fiscTbsdy": "20250414",
+            "fiscNbsdy": "20250326",
+            "fiscLbsdy": "20260202",
+            "fiscMODE": "1",
+            "rmMode": "Y"
+          }
+        }
+      },
+      {
+        "scenario": "請�?失�?",
+        "responsePayload": {
+          "isSuccess": false,
+          "responseCode": "9001",
+          "responseMessage": "系統繁�?,請�?後�?試�?",
+          "responseDT": "2026/02/24 10:30:25",
+          "responseData": {}
+        }
+      }
+    ],
+    "handoffSource": "codeHandoff",
+    "logicSummary": {
+      "stepCount": 3,
+      "queryContractCount": 1,
+      "mappingRuleCount": 14,
+      "legacyEvidenceCount": 0,
+      "dependencyHintCount": 4,
+      "constraintCount": 4,
+      "unresolvedCount": 0,
+      "primarySource": "businessLogic"
+    },
+    "logicFlow": [
+      {
+        "stepId": "step_1",
+        "title": "?�詢資�?�?,
+        "actionType": "query",
+        "inputs": [],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_2",
+        "title": "?�斷結�?",
+        "actionType": "query",
+        "inputs": [],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_3",
+        "title": "?�傳結�?",
+        "actionType": "return",
+        "inputs": [],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      }
+    ],
+    "audienceProfile": {
+      "scope": "shared",
+      "confidence": "high",
+      "scores": {
+        "frontstage": 1,
+        "midBackoffice": 0,
+        "shared": 8
+      },
+      "evidence": [
+        {
+          "scope": "frontstage",
+          "keyword": "cust",
+          "weight": 1
+        },
+        {
+          "scope": "shared",
+          "keyword": "common",
+          "weight": 2
+        },
+        {
+          "scope": "shared",
+          "keyword": "commonfunc",
+          "weight": 3
+        },
+        {
+          "scope": "shared",
+          "keyword": "?�用",
+          "weight": 3
+        }
+      ],
+      "unresolved": []
+    },
+    "devGuidelineProfile": {
+      "sourceName": "P240301 永�??��??�大?��?式�??��?�?,
+      "version": "6.2",
+      "catalogPath": "rules/code-guidelines/p240301-v6.2/catalog.json",
+      "rulesRoot": "D:/Devs/NEWDAWHO/.agent/project-rules/NEWDAWHO",
+      "sourceStatus": "converted_reference_required"
+    },
+    "devGuidelineRulesSelected": [
+      {
+        "ruleId": "common-style",
+        "title": "?��??�碼風格?�可維護??,
+        "category": "common-style",
+        "direction": "production-code",
+        "ruleType": "style_only",
+        "audienceScopes": [
+          "frontstage",
+          "midBackoffice",
+          "shared",
+          "unknown"
+        ],
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/common-style.md",
+        "action": "load_on_demand"
+      },
+      {
+        "ruleId": "data-access",
+        "title": "DB / SQL / 資�?檢索規�?",
+        "category": "data-access",
+        "direction": "production-code",
+        "ruleType": "blocking_gap",
+        "audienceScopes": [
+          "frontstage",
+          "midBackoffice",
+          "shared",
+          "unknown"
+        ],
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/data-access.md",
+        "action": "select_and_check_gaps"
+      },
+      {
+        "ruleId": "logging-exception",
+        "title": "Log / Exception / 失�??��?規�?",
+        "category": "logging-exception",
+        "direction": "production-code",
+        "ruleType": "style_only",
+        "audienceScopes": [
+          "frontstage",
+          "midBackoffice",
+          "shared",
+          "unknown"
+        ],
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/logging-exception.md",
+        "action": "load_on_demand"
+      },
+      {
+        "ruleId": "test-handoff",
+        "title": "�?05 步測試交?��?�?,
+        "category": "test-handoff",
+        "direction": "handoff-only",
+        "ruleType": "handoff_only",
+        "audienceScopes": [
+          "frontstage",
+          "midBackoffice",
+          "shared",
+          "unknown"
+        ],
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/test-handoff.md",
+        "action": "handoff_only"
+      }
+    ],
+    "devGuidelineLoadHints": [
+      {
+        "ruleId": "common-style",
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/common-style.md",
+        "reason": "Every API implementation needs only the lightweight shared coding conventions."
+      },
+      {
+        "ruleId": "data-access",
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/data-access.md",
+        "reason": "Load only when the API has queryContracts, SQL dependencies, DB backend APIs, or table evidence."
+      },
+      {
+        "ruleId": "logging-exception",
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/logging-exception.md",
+        "reason": "Load only when the API touches exception handling, logging, or failure disposition."
+      },
+      {
+        "ruleId": "test-handoff",
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/test-handoff.md",
+        "reason": "Load only to describe step-05 UnitTest / IntegrationTest / runtime validation handoff; step 04 must not write test source."
+      }
+    ],
+    "devGuidelineGaps": [],
+    "logicSourcesUsed": [
+      "codeHandoff",
+      "queryContracts",
+      "mappingRules",
+      "dependencyHints",
+      "constraints",
+      "mockExamples"
+    ],
+    "queryContractsSelected": [
+      {
+        "contractId": "1",
+        "purpose": "1.?�詢資�?�?,
+        "dataSources": [
+          "L_EAINET.EAINET.DBO"
+        ],
+        "mustContain": [
+          "L_EAINET.EAINET.DBO",
+          "FROM"
+        ],
+        "sqlText": "1.?��?SELECT T24_TBSDY ,t24 NBSDY,  t24 NBSDY,  T24_LBSDY,  T24_LLBSDY,  T24_MODE  , T24_TBSDYCOB , T24_NBSDYCOB  , T24_BR1210pen,  T24_UpdTime, fisc_TBSDY ,fisc_NBSDY , fisc_LBSDY , fisc_MODE ,rm_Mode  FROM TBDAY\n2.定義 sRespJson保�??�詢結�?",
+        "parameterHints": [],
+        "resultShape": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT",
+          "responseData",
+          "t24Tbsdy",
+          "t24Nbsdy",
+          "t24Lbsdy",
+          "t24LLbsdy",
+          "t24Mode",
+          "t24TbsdyCob",
+          "t24NbsdyCob",
+          "t24BR121Open",
+          "t24UpdTime",
+          "fiscTbsdy",
+          "fiscNbsdy",
+          "fiscLbsdy",
+          "fiscMode",
+          "rmMode"
+        ],
+        "evidenceIds": []
+      }
+    ],
+    "mappingRulesSelected": [
+      {
+        "ruleId": "map_srespjson_t24_tbsdy_t24tbsdy",
+        "sourceField": "sRespJson.T24_TBSDY",
+        "targetField": "t24Tbsdy",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "T24 交�???,
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_srespjson_t24_t24nbsdy",
+        "sourceField": "sRespJson.t24",
+        "targetField": "t24Nbsdy",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "T24 ?�交?�日",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_srespjson_t24_lbsdy_t24lbsdy",
+        "sourceField": "sRespJson.T24_LBSDY",
+        "targetField": "t24Lbsdy",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "T24 ?��?个交?�日",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_srespjson_t24_llbsdy_t24llbsdy",
+        "sourceField": "sRespJson.T24_LLBSDY",
+        "targetField": "t24LLbsdy",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "T24 ?�两个交?�日",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_srespjson_t24_mode_t24mode",
+        "sourceField": "sRespJson.T24_MODE",
+        "targetField": "t24Mode",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "T24 系�?模�?",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_srespjson_t24_tbsdycob_t24tbsdycob",
+        "sourceField": "sRespJson.T24_TBSDYCOB",
+        "targetField": "t24TbsdyCob",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "T24 ?��??�日终�?�?,
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_srespjson_t24_nbsdycob_t24nbsdycob",
+        "sourceField": "sRespJson.T24_NBSDYCOB",
+        "targetField": "t24NbsdyCob",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "T24 ?�交?�日�?,
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_srespjson_t24_br1210pen_t24br121open",
+        "sourceField": "sRespJson.T24_BR1210pen",
+        "targetField": "t24BR121Open",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "?��??��??�否?�業",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_srespjson_t24_updtime_t24updtime",
+        "sourceField": "sRespJson.T24_UpdTime",
+        "targetField": "t24UpdTime",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "?�新?��?",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_srespjson_fisc_tbsdy_fisctbsdy",
+        "sourceField": "sRespJson.fisc_TBSDY",
+        "targetField": "fiscTbsdy",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "会计?��???,
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_srespjson_fisc_nbsdy_fiscnbsdy",
+        "sourceField": "sRespJson.fisc_NBSDY",
+        "targetField": "fiscNbsdy",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "财务?�交?�日",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_srespjson_fisc_lbsdy_fisclbsdy",
+        "sourceField": "sRespJson.fisc_LBSDY",
+        "targetField": "fiscLbsdy",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "T24 交�??��?T24 ?�交?�日；T24 ?��?个交?�日；T24 ?�两个交?�日；T24 系�?模�?；T24 ?��??�日终�?账�?T24 ?�交?�日结�??��??��??�否?�業；更?��??��?会计?��??��?财务?�交?�日；财?��?计�?风险管�?",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_srespjson_fisc_mode_fiscmode",
+        "sourceField": "sRespJson.fisc_MODE",
+        "targetField": "fiscMode",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "财政会计",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_srespjson_rm_mode_rmmode",
+        "sourceField": "sRespJson.rm_Mode",
+        "targetField": "rmMode",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "风险管�?",
+        "evidenceIds": []
+      }
+    ],
+    "dependencyHintsSelected": [
+      {
+        "dependencyType": "service",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor"
+        ],
+        "purpose": "Execute authoritative SQL declared in the workbook for L_EAINET.EAINET.DBO.",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "sql_table",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor"
+        ],
+        "purpose": "Excel 依�?声�??�到 DB->L_EAINET.EAINET.DBO??,
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "sql_table",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor"
+        ],
+        "purpose": "业务?��?�???�到 DB->[L_EAINET].[EAINET].[dbo].[TBDAY] 依�???,
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "sql_table",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor"
+        ],
+        "purpose": "Read from L_EAINET.EAINET.DBO",
+        "evidenceIds": []
+      }
+    ],
+    "legacyEvidenceUsed": [],
+    "constraintsApplied": [
+      {
+        "constraintType": "prohibited_shortcut",
+        "rule": "mock_response_payload",
+        "severity": "error",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "prohibited_shortcut",
+        "rule": "hardcoded_custid",
+        "severity": "error",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "prohibited_shortcut",
+        "rule": "block_comment_header_substitution",
+        "severity": "error",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "error_code_rule",
+        "rule": "9001 | 請�?失�? | 系統繁�?,請�?後�?試�?",
+        "severity": "warning",
+        "evidenceIds": []
+      }
+    ],
+    "unresolvedLogic": [],
+    "testScenarioPlan": [
+      {
+        "source": "mockExamples",
+        "sourceIndex": 1,
+        "scenario": "?��??��?結�?示�?",
+        "requestPayload": {},
+        "expectedResponsePayload": {
+          "isSuccess": true,
+          "responseCode": "0000",
+          "responseMessage": "?�詢?��?",
+          "responseDT": "2026-02-02 10:15:30",
+          "responseData": {
+            "t24Tbsdy": "20250416",
+            "t24Nbsdy": "20250326",
+            "t24Lbsdy": "20250227",
+            "t24LLbsdy": "20240131",
+            "t24Mode": "B",
+            "t24TbsdyCob": "20250303",
+            "t24NbsdyCob": "20250304",
+            "t24BR121Open": "N",
+            "t24UpdTime": "20260202",
+            "fiscTbsdy": "20250414",
+            "fiscNbsdy": "20250326",
+            "fiscLbsdy": "20260202",
+            "fiscMODE": "1",
+            "rmMode": "Y"
+          }
+        },
+        "expectedResponseCode": "0000",
+        "expectedResponseMessage": "?�詢?��?",
+        "expectedIsSuccess": true,
+        "coverageTargets": [
+          "unit_test",
+          "integration_test"
+        ],
+        "preserveScenarioName": true
+      },
+      {
+        "source": "mockExamples",
+        "sourceIndex": 2,
+        "scenario": "請�?失�?",
+        "requestPayload": {},
+        "expectedResponsePayload": {
+          "isSuccess": false,
+          "responseCode": "9001",
+          "responseMessage": "系統繁�?,請�?後�?試�?",
+          "responseDT": "2026/02/24 10:30:25",
+          "responseData": {}
+        },
+        "expectedResponseCode": "9001",
+        "expectedResponseMessage": "系統繁�?,請�?後�?試�?",
+        "expectedIsSuccess": false,
+        "coverageTargets": [
+          "unit_test",
+          "integration_test"
+        ],
+        "preserveScenarioName": true
+      }
+    ],
+    "testScenarioSource": "mockExamples",
+    "testScenarioCoverageRequired": true,
+    "requestValidationPlan": [],
+    "dtoAttributeRules": [],
+    "customValidationAttributesNeeded": [],
+    "validationResponseMappingMode": "not_applicable",
+    "serviceValidationsRetained": [],
+    "validationInfrastructureGap": [],
+    "reviewSources": [],
+    "reviewConstraintsSelected": [
+      {
+        "reviewId": "default_external_api_name",
+        "scope": "global_skill",
+        "fileRole": "shared",
+        "ruleType": "naming",
+        "instruction": "對�? API ?�稱?�route ?��?求說?��??�沿??GetOperationHour，�?得�?外追??Async??,
+        "severity": "warning",
+        "blocking": true,
+        "appliesTo": [
+          "apiName"
+        ],
+        "examples": [
+          "GetOperationHour"
+        ],
+        "source": "default_policy"
+      },
+      {
+        "reviewId": "default_traditional_chinese_code",
+        "scope": "global_skill",
+        "fileRole": "shared",
+        "ruleType": "language",
+        "instruction": "AI 寫入?�中?�註�?���?串、�?案說?��?角色要�?統�?使用繁�?中�???,
+        "severity": "warning",
+        "blocking": false,
+        "appliesTo": [
+          "code_comments",
+          "code_strings",
+          "file_headers"
+        ],
+        "examples": [
+          "繁�?中�?"
+        ],
+        "source": "default_policy"
+      },
+      {
+        "reviewId": "default_dependency_field_naming",
+        "scope": "global_skill",
+        "fileRole": "shared",
+        "ruleType": "naming_style",
+        "instruction": "?�是依賴注入後賦?�到欄�??��??��??��?一律使??_camelCase，�?字固定�?線�?例�? _service?�_ctxAccessor?�_sqlExecutor?�_logger；�?得使??CtxAccessor?�Logger ?��? PascalCase 欄�??��?,
+        "severity": "warning",
+        "blocking": false,
+        "appliesTo": [
+          "constructor_injected_fields",
+          "controller_fields",
+          "service_fields",
+          "fixture_fields"
+        ],
+        "examples": [
+          "_service",
+          "_ctxAccessor",
+          "_sqlExecutor",
+          "_logger"
+        ],
+        "source": "default_policy"
+      }
+    ],
+    "fileRequirements": {
+      "controller": [
+        {
+          "reviewId": "default_external_api_name",
+          "ruleType": "naming",
+          "instruction": "對�? API ?�稱?�route ?��?求說?��??�沿??GetOperationHour，�?得�?外追??Async??,
+          "severity": "warning",
+          "blocking": true,
+          "appliesTo": [
+            "apiName"
+          ],
+          "examples": [
+            "GetOperationHour"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_traditional_chinese_code",
+          "ruleType": "language",
+          "instruction": "AI 寫入?�中?�註�?���?串、�?案說?��?角色要�?統�?使用繁�?中�???,
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "code_comments",
+            "code_strings",
+            "file_headers"
+          ],
+          "examples": [
+            "繁�?中�?"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_dependency_field_naming",
+          "ruleType": "naming_style",
+          "instruction": "?�是依賴注入後賦?�到欄�??��??��??��?一律使??_camelCase，�?字固定�?線�?例�? _service?�_ctxAccessor?�_sqlExecutor?�_logger；�?得使??CtxAccessor?�Logger ?��? PascalCase 欄�??��?,
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "constructor_injected_fields",
+            "controller_fields",
+            "service_fields",
+            "fixture_fields"
+          ],
+          "examples": [
+            "_service",
+            "_ctxAccessor",
+            "_sqlExecutor",
+            "_logger"
+          ],
+          "source": "default_policy"
+        }
+      ],
+      "service": [
+        {
+          "reviewId": "default_external_api_name",
+          "ruleType": "naming",
+          "instruction": "對�? API ?�稱?�route ?��?求說?��??�沿??GetOperationHour，�?得�?外追??Async??,
+          "severity": "warning",
+          "blocking": true,
+          "appliesTo": [
+            "apiName"
+          ],
+          "examples": [
+            "GetOperationHour"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_traditional_chinese_code",
+          "ruleType": "language",
+          "instruction": "AI 寫入?�中?�註�?���?串、�?案說?��?角色要�?統�?使用繁�?中�???,
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "code_comments",
+            "code_strings",
+            "file_headers"
+          ],
+          "examples": [
+            "繁�?中�?"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_dependency_field_naming",
+          "ruleType": "naming_style",
+          "instruction": "?�是依賴注入後賦?�到欄�??��??��??��?一律使??_camelCase，�?字固定�?線�?例�? _service?�_ctxAccessor?�_sqlExecutor?�_logger；�?得使??CtxAccessor?�Logger ?��? PascalCase 欄�??��?,
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "constructor_injected_fields",
+            "controller_fields",
+            "service_fields",
+            "fixture_fields"
+          ],
+          "examples": [
+            "_service",
+            "_ctxAccessor",
+            "_sqlExecutor",
+            "_logger"
+          ],
+          "source": "default_policy"
+        }
+      ],
+      "entity": [
+        {
+          "reviewId": "default_external_api_name",
+          "ruleType": "naming",
+          "instruction": "對�? API ?�稱?�route ?��?求說?��??�沿??GetOperationHour，�?得�?外追??Async??,
+          "severity": "warning",
+          "blocking": true,
+          "appliesTo": [
+            "apiName"
+          ],
+          "examples": [
+            "GetOperationHour"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_traditional_chinese_code",
+          "ruleType": "language",
+          "instruction": "AI 寫入?�中?�註�?���?串、�?案說?��?角色要�?統�?使用繁�?中�???,
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "code_comments",
+            "code_strings",
+            "file_headers"
+          ],
+          "examples": [
+            "繁�?中�?"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_dependency_field_naming",
+          "ruleType": "naming_style",
+          "instruction": "?�是依賴注入後賦?�到欄�??��??��??��?一律使??_camelCase，�?字固定�?線�?例�? _service?�_ctxAccessor?�_sqlExecutor?�_logger；�?得使??CtxAccessor?�Logger ?��? PascalCase 欄�??��?,
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "constructor_injected_fields",
+            "controller_fields",
+            "service_fields",
+            "fixture_fields"
+          ],
+          "examples": [
+            "_service",
+            "_ctxAccessor",
+            "_sqlExecutor",
+            "_logger"
+          ],
+          "source": "default_policy"
+        }
+      ],
+      "unitTest": [
+        {
+          "reviewId": "default_external_api_name",
+          "ruleType": "naming",
+          "instruction": "對�? API ?�稱?�route ?��?求說?��??�沿??GetOperationHour，�?得�?外追??Async??,
+          "severity": "warning",
+          "blocking": true,
+          "appliesTo": [
+            "apiName"
+          ],
+          "examples": [
+            "GetOperationHour"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_traditional_chinese_code",
+          "ruleType": "language",
+          "instruction": "AI 寫入?�中?�註�?���?串、�?案說?��?角色要�?統�?使用繁�?中�???,
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "code_comments",
+            "code_strings",
+            "file_headers"
+          ],
+          "examples": [
+            "繁�?中�?"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_dependency_field_naming",
+          "ruleType": "naming_style",
+          "instruction": "?�是依賴注入後賦?�到欄�??��??��??��?一律使??_camelCase，�?字固定�?線�?例�? _service?�_ctxAccessor?�_sqlExecutor?�_logger；�?得使??CtxAccessor?�Logger ?��? PascalCase 欄�??��?,
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "constructor_injected_fields",
+            "controller_fields",
+            "service_fields",
+            "fixture_fields"
+          ],
+          "examples": [
+            "_service",
+            "_ctxAccessor",
+            "_sqlExecutor",
+            "_logger"
+          ],
+          "source": "default_policy"
+        }
+      ],
+      "integrationTest": [
+        {
+          "reviewId": "default_external_api_name",
+          "ruleType": "naming",
+          "instruction": "對�? API ?�稱?�route ?��?求說?��??�沿??GetOperationHour，�?得�?外追??Async??,
+          "severity": "warning",
+          "blocking": true,
+          "appliesTo": [
+            "apiName"
+          ],
+          "examples": [
+            "GetOperationHour"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_traditional_chinese_code",
+          "ruleType": "language",
+          "instruction": "AI 寫入?�中?�註�?���?串、�?案說?��?角色要�?統�?使用繁�?中�???,
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "code_comments",
+            "code_strings",
+            "file_headers"
+          ],
+          "examples": [
+            "繁�?中�?"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_dependency_field_naming",
+          "ruleType": "naming_style",
+          "instruction": "?�是依賴注入後賦?�到欄�??��??��??��?一律使??_camelCase，�?字固定�?線�?例�? _service?�_ctxAccessor?�_sqlExecutor?�_logger；�?得使??CtxAccessor?�Logger ?��? PascalCase 欄�??��?,
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "constructor_injected_fields",
+            "controller_fields",
+            "service_fields",
+            "fixture_fields"
+          ],
+          "examples": [
+            "_service",
+            "_ctxAccessor",
+            "_sqlExecutor",
+            "_logger"
+          ],
+          "source": "default_policy"
+        }
+      ]
+    },
+    "responseLifecycleRules": [],
+    "failureDisposition": {
+      "mode": "rollback_after_validation_failure",
+      "preserveFailedCode": false,
+      "resumeStrategy": "retry_from_prepare",
+      "source": "default_policy"
+    },
+    "languagePolicy": {
+      "mode": "traditional_chinese_for_ai_code",
+      "appliesTo": [
+        "code_comments",
+        "code_strings",
+        "file_headers",
+        "file_requirements"
+      ],
+      "source": "default_policy"
+    },
+    "externalApiName": "GetOperationHour",
+    "internalAsyncMethod": "GetOperationHourAsync",
+    "resumedFromPhase": "planned"
+  },
+  "validationChecks": [
+    "dotnet build \"D:\\Devs\\NEWDAWHO\\feature_common\\P240301Git\\Sinopac.EnterpriseAPI\\Sinopac.EnterpriseAPI.slnx\" -m:1"
+  ],
+  "steps": [
+    {
+      "id": "precheck",
+      "status": "done",
+      "note": "Resolved EnterpriseAPI framework profile and module slots."
+    },
+    {
+      "id": "write_code",
+      "status": "done",
+      "note": "AI must directly modify controller/interface/service/entity business files for CommonFunc; test targets are handoff-only for step 05 and the script must not generate stubs."
+    },
+    {
+      "id": "validate",
+      "status": "done",
+      "note": "After real code is written, run EnterpriseAPI build, unit test, and integration test validation."
+    }
+  ]
+}

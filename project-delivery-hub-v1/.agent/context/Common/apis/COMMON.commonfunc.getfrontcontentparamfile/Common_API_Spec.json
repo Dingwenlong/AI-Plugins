@@ -1,0 +1,367 @@
+{
+  "schemaVersion": "4.2.0",
+  "apiId": "COMMON.commonfunc.getfrontcontentparamfile",
+  "newAuthor": "Jimmy",
+  "functionCode": "Common",
+  "version": "1.0",
+  "apiCategory": "CommonFunc",
+  "apiName": "GetFrontContentParamFile",
+  "source": {
+    "tsdFile": "TSD.Common_封存TSD共用开发链路_v1.0_20260523.docx",
+    "workbookFile": "NEWDA_Method_DETAIL_ExchangeCommonFunc_20260522.xlsx",
+    "sheetNames": [
+      "GetFrontContentParamFile取得DAWHO"
+    ]
+  },
+  "request": [
+    {
+      "rowKey": "1",
+      "fieldName": "fileName",
+      "dataType": "string",
+      "required": true,
+      "description": "文件名稱",
+      "example": "\"fileName\": \"DAWHO_fix\""
+    }
+  ],
+  "response": [
+    {
+      "rowKey": "1",
+      "fieldName": "isSuccess",
+      "dataType": "boolean",
+      "required": true,
+      "description": "API成功與否",
+      "example": "True",
+      "notes": "true ; false"
+    },
+    {
+      "rowKey": "2",
+      "fieldName": "responseCode",
+      "dataType": "string",
+      "required": true,
+      "description": "回應代碼",
+      "example": "0",
+      "notes": "成功:0000其餘狀況為失敗"
+    },
+    {
+      "rowKey": "3",
+      "fieldName": "responseMessage",
+      "dataType": "string",
+      "required": true,
+      "description": "回應訊息",
+      "notes": "失敗狀況下回傳錯誤訊息"
+    },
+    {
+      "rowKey": "4",
+      "fieldName": "responseDT",
+      "dataType": "string",
+      "required": true,
+      "description": "系統回應時間",
+      "notes": "yyyy/MM/dd HH:mm:ss"
+    },
+    {
+      "rowKey": "5",
+      "fieldName": "responseData",
+      "dataType": "json",
+      "required": true,
+      "description": "回應資料框",
+      "example": "\"responseData\": {}",
+      "properties": [
+        {
+          "rowKey": "5.01",
+          "fieldName": "finalJsonData",
+          "dataType": "json",
+          "required": true,
+          "description": "資料json數據",
+          "example": "\"finalJsonData\":{\n\"UpdateTime\": \"2026/05/20 09:26:08\",\n\"Group\": [\n{\n\"CSRID\": \"123\",\n\"Comments\": \"456\",\n\"description\": \"789\",\n\"start_date\": \"2026/05/01 16:00:00\",\n\"end_date\": \"2026/05/31 16:00:00\",\n\"Premium\": \"0\",\n\"title\": \"美元\",\n\"Loader\": \"USD0283\",\n\"StartDate\": \"2026/05/31 16:00:00\",\n\"EndDate\": \"2026/08/31 15:59:59\"\n}\n]\n}"
+        }
+      ]
+    }
+  ],
+  "mockExamples": [
+    {
+      "scenario": "獲取成功結果示例",
+      "requestPayload": {
+        "fileName": "DAWHO_fix"
+      },
+      "responsePayload": {
+        "isSuccess": true,
+        "responseCode": "0000",
+        "responseMessage": "",
+        "responseDT": "2026/05/21 18:00:00",
+        "responseData": {
+          "finalJsonData": {
+            "UpdateTime": "2026/05/20 09:26:08",
+            "Group": [
+              {
+                "CSRID": "123",
+                "Comments": "456",
+                "description": "789",
+                "start_date": "2026/05/01 16:00:00",
+                "end_date": "2026/05/31 16:00:00",
+                "Premium": "0",
+                "title": "美元",
+                "Loader": "USD0283",
+                "StartDate": "2026/05/31 16:00:00",
+                "EndDate": "2026/08/31 15:59:59"
+              },
+              {
+                "CSRID": "123",
+                "Comments": "456",
+                "description": "789",
+                "start_date": "2026/05/01 16:00:00",
+                "end_date": "2026/05/31 16:00:00",
+                "Premium": "0",
+                "title": "美元",
+                "Loader": "USD0283",
+                "StartDate": "2026/05/31 16:00:00",
+                "EndDate": "2026/08/31 15:59:59"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "scenario": "數據庫連接失敗",
+      "requestPayload": {
+        "fileName": "DAWHO_fix"
+      },
+      "responsePayload": {
+        "isSuccess": false,
+        "responseCode": "9001",
+        "responseMessage": "系統繁忙,請稍後再試！",
+        "responseDT": "2026/02/24 10:30:25",
+        "responseData": {}
+      }
+    },
+    {
+      "scenario": "未輸入必填請求參數",
+      "requestPayload": {
+        "fileName": ""
+      },
+      "responsePayload": {
+        "isSuccess": false,
+        "responseCode": "9999",
+        "responseMessage": "請輸入參數！",
+        "responseDT": "2026/02/24 10:30:25",
+        "responseData": {}
+      }
+    }
+  ],
+  "backendApis": {
+    "DAWHOCSR": [
+      "FrontContent_ParamFile"
+    ]
+  },
+  "businessLogic": {
+    "steps": [
+      {
+        "step": 1,
+        "title": "執行sql查詢",
+        "details": "SELECT\n[FrontContent_ParamFile].[FinalJsonData]\nFROM\n[FrontContent_ParamFile]\nWHERE\n[FrontContent_ParamFile].[FileName] = '你的檔名';"
+      },
+      {
+        "step": 3,
+        "title": "返回資料",
+        "details": "格式化json並返回資料"
+      }
+    ],
+    "fieldMappings": [
+      {
+        "target": "finalJsonData",
+        "source": "",
+        "rule": "資料json數據",
+        "fields": [
+          {
+            "field": "finalJsonData",
+            "source": "",
+            "rule": "資料json數據"
+          }
+        ]
+      }
+    ],
+    "errorCodeRules": [
+      {
+        "code": "9001",
+        "scenario": "數據庫連接失敗",
+        "message": "系統繁忙,請稍後再試！"
+      },
+      {
+        "code": "9999",
+        "scenario": "未輸入必填請求參數",
+        "message": "請輸入參數！"
+      }
+    ],
+    "runtimeDependencies": [
+      {
+        "id": "external_api_dawhocsr_frontcontent_paramfile",
+        "type": "external_api",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "Excel 依赖声明提到 DAWHOCSR->FrontContent_ParamFile。"
+      },
+      {
+        "id": "mma_sql_connection",
+        "type": "service",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "Execute authoritative SQL declared in the workbook."
+      }
+    ],
+    "dataSources": [],
+    "sqlSpecs": [
+      {
+        "id": "1_sql",
+        "title": "1.執行sql查詢",
+        "authority": "backend_contract",
+        "required": true,
+        "dataSources": [],
+        "mustContain": [
+          "SELECT",
+          "FROM",
+          "WHERE"
+        ],
+        "queryText": "SELECT\n[FrontContent_ParamFile].[FinalJsonData]\nFROM\n[FrontContent_ParamFile]\nWHERE\n[FrontContent_ParamFile].[FileName] = '你的檔名';"
+      }
+    ],
+    "legacyReferences": [],
+    "prohibitedShortcuts": [
+      "mock_response_payload",
+      "hardcoded_custid",
+      "block_comment_header_substitution"
+    ]
+  },
+  "codeHandoff": {
+    "schemaVersion": "1.0.0",
+    "logicSummary": {
+      "stepCount": 2,
+      "queryContractCount": 1,
+      "mappingRuleCount": 0,
+      "legacyEvidenceCount": 0,
+      "dependencyHintCount": 2,
+      "constraintCount": 6,
+      "unresolvedCount": 0,
+      "primarySource": "businessLogic"
+    },
+    "logicFlow": [
+      {
+        "stepId": "step_1",
+        "title": "執行sql查詢",
+        "actionType": "query",
+        "inputs": [
+          "fileName"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_3",
+        "title": "返回資料",
+        "actionType": "process",
+        "inputs": [
+          "fileName"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      }
+    ],
+    "legacyEvidence": [],
+    "queryContracts": [
+      {
+        "contractId": "1_sql",
+        "purpose": "1.執行sql查詢",
+        "dataSources": [],
+        "mustContain": [
+          "SELECT",
+          "FROM",
+          "WHERE"
+        ],
+        "sqlText": "SELECT\n[FrontContent_ParamFile].[FinalJsonData]\nFROM\n[FrontContent_ParamFile]\nWHERE\n[FrontContent_ParamFile].[FileName] = '你的檔名';",
+        "parameterHints": [],
+        "resultShape": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT",
+          "responseData",
+          "finalJsonData"
+        ],
+        "evidenceIds": []
+      }
+    ],
+    "mappingRules": [],
+    "dependencyHints": [
+      {
+        "dependencyType": "external_api",
+        "preferredAbstractions": [
+          "IApiRequestService"
+        ],
+        "purpose": "Excel 依赖声明提到 DAWHOCSR->FrontContent_ParamFile。",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "service",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor"
+        ],
+        "purpose": "Execute authoritative SQL declared in the workbook.",
+        "evidenceIds": []
+      }
+    ],
+    "constraints": [
+      {
+        "constraintType": "prohibited_shortcut",
+        "rule": "mock_response_payload",
+        "severity": "error",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "prohibited_shortcut",
+        "rule": "hardcoded_custid",
+        "severity": "error",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "prohibited_shortcut",
+        "rule": "block_comment_header_substitution",
+        "severity": "error",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "error_code_rule",
+        "rule": "9001 | 數據庫連接失敗 | 系統繁忙,請稍後再試！",
+        "severity": "warning",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "error_code_rule",
+        "rule": "9999 | 未輸入必填請求參數 | 請輸入參數！",
+        "severity": "warning",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "request_field_validation",
+        "field": "fileName",
+        "validationLayer": "dto_attribute",
+        "validationType": "required",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸入參數！",
+        "customValidationAttributeNeeded": false,
+        "rule": "fileName | dto_attribute | required | 9999 | 請輸入參數！",
+        "severity": "warning",
+        "evidenceIds": []
+      }
+    ],
+    "unresolved": []
+  }
+}

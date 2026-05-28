@@ -1,0 +1,2 @@
+-- schema: ../../.agent/context/Common/apis/COMMON.commonfunc.getdevicebinding/generated-schema-dawho_devicebinding.sql
+-- seed: ../../.agent/context/Common/apis/COMMON.commonfunc.getdevicebinding/generated-seed-dawho_devicebinding.sql

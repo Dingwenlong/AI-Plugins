@@ -7,7 +7,17 @@ import unicodedata
 from pathlib import Path
 from typing import Any, Iterable
 
-from jsonschema import Draft202012Validator
+try:
+    from jsonschema import Draft202012Validator
+except ModuleNotFoundError as exc:
+    if exc.name == "jsonschema":
+        print(
+            "Missing Python dependency: jsonschema. Install it in the Python runtime used for api-code-writer, "
+            "for example `python -m pip install jsonschema`, then rerun.",
+            file=sys.stderr,
+        )
+        raise SystemExit(2) from exc
+    raise
 
 from runtime import (
     SKILL_NAME,

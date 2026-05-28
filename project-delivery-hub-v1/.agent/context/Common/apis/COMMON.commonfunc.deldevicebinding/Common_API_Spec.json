@@ -1,0 +1,760 @@
+{
+  "schemaVersion": "4.2.0",
+  "apiId": "COMMON.commonfunc.deldevicebinding",
+  "newAuthor": "Jimmy",
+  "functionCode": "Common",
+  "version": "1.0",
+  "apiCategory": "CommonFunc",
+  "apiName": "DelDeviceBinding",
+  "source": {
+    "tsdFile": "TSD.Common_封存TSD共用开发链路_v1.0_20260523.docx",
+    "workbookFile": "NEWDA_Method_DETAIL_ExchangeCommonFunc_20260522.xlsx",
+    "sheetNames": [
+      "DelDeviceBindingFunc 解除裝置綁定"
+    ]
+  },
+  "request": [
+    {
+      "rowKey": "1",
+      "fieldName": "custId",
+      "dataType": "string",
+      "required": true,
+      "description": "用戶ID",
+      "example": "\"custId\":\"A123456789\"",
+      "notes": "來源Redis"
+    },
+    {
+      "rowKey": "2",
+      "fieldName": "udid",
+      "dataType": "string",
+      "required": true,
+      "description": "裝置唯一ID",
+      "example": "\"udid\":\"d9453a28-0e9d-386f-9e80-b2053fc03c7b\""
+    }
+  ],
+  "response": [
+    {
+      "rowKey": "1",
+      "fieldName": "isSuccess",
+      "dataType": "boolean",
+      "required": true,
+      "description": "API成功與否",
+      "example": "true",
+      "notes": "true ; false"
+    },
+    {
+      "rowKey": "2",
+      "fieldName": "responseCode",
+      "dataType": "string",
+      "required": true,
+      "description": "回應代碼",
+      "example": "0000",
+      "notes": "成功:0000其餘狀況為失敗"
+    },
+    {
+      "rowKey": "3",
+      "fieldName": "responseMessage",
+      "dataType": "string",
+      "required": true,
+      "description": "回應訊息",
+      "notes": "失敗狀況下回傳錯誤訊息"
+    }
+  ],
+  "mockExamples": [
+    {
+      "scenario": "解綁成功",
+      "responsePayload": {
+        "isSuccess": true,
+        "responseCode": "0000",
+        "responseMessage": "",
+        "responseDT": "2026/03/10 14:30:00",
+        "responseData": {}
+      }
+    },
+    {
+      "scenario": "SEQ驗證失敗",
+      "responsePayload": {
+        "isSuccess": false,
+        "responseCode": "9996",
+        "responseMessage": "資料驗證錯誤，請重新輸入!",
+        "responseDT": "2026/02/24 15:59:24",
+        "responseData": {}
+      }
+    },
+    {
+      "scenario": "裝置解綁失敗",
+      "responsePayload": {
+        "isSuccess": false,
+        "responseCode": "9997",
+        "responseMessage": "刪除失敗!",
+        "responseDT": "2026/02/24 15:59:24",
+        "responseData": {}
+      }
+    },
+    {
+      "scenario": "其它錯誤",
+      "responsePayload": {
+        "isSuccess": false,
+        "responseCode": "9998",
+        "responseMessage": "發生意外的錯誤，請洽客服人員。",
+        "responseDT": "2026/02/24 15:59:24",
+        "responseData": {}
+      }
+    },
+    {
+      "scenario": "未輸入必填請求參數",
+      "responsePayload": {
+        "isSuccess": false,
+        "responseCode": "9999",
+        "responseMessage": "請輸入{Request參數}！",
+        "responseDT": "2026/02/24 15:59:24",
+        "responseData": {}
+      }
+    }
+  ],
+  "backendApis": {
+    "DAWHO": [
+      "DAWHO.dbo.DeviceBinding",
+      "DAWHO.dbo.DeviceBindingLog"
+    ],
+    "DB": [
+      "dbo.MB_PUSHTYPESETTING",
+      "DAWHO.DBO.DEVICEBINDING",
+      "DAWHO.DBO.DEVICEBINDINGLOG",
+      "DBO.MB_PUSHTYPESETTING"
+    ],
+    "CommonFunc": [
+      "SendToMonitorMail_Push()"
+    ]
+  },
+  "businessLogic": {
+    "steps": [
+      {
+        "step": 1,
+        "title": ":參數",
+        "details": "DefaultViewPresenter presenter = new DefaultViewPresenter(new BindingController(), this);\n從Redis取得 member ;\ncustId:member.CustId\nudid：前端傳遞裝置唯一ID"
+      },
+      {
+        "step": 2,
+        "title": ":取得綁定裝置資訊",
+        "details": "1.根據 udId 查詢綁定裝置資訊\nSELECT CustId,Udid,DeviceName FROM  DAWHO.dbo.DeviceBinding WHERE (UUID = @UUID) and QuickLoginType <> 'P'\n資料庫： DAWHOSql\n目標表： DAWHO.dbo.DeviceBinding\n用途：取得待解綁裝置的完整資訊（排除純推播 'P' 類型）\n查詢結果會轉換為 BindDevice 物件，再轉為 BindDeviceLog 物件，設定：\nBindingType = \"UNBINDING\"\nACTIONTYPE = \"BINDING_DEL\"\nACTIONMPHONENAME = 操作者的手機名稱"
+      },
+      {
+        "step": 3,
+        "title": ":寫入綁定解除 Log",
+        "details": "寫入解綁日誌 — InsertBindingLog\nINSERT INTO DAWHO.dbo.DeviceBindingLog\n(BindingType, PushToken, UserID, UUID, IPAddress, QuickLoginDate, DeviceName,\nQuickLoginType, OSVersion, AppVersion, DeviceActive, GeneralPushActive,\nDevicePushActive, CreateUser, CreateDate, ModifyUser, ModifyDate,\nQuickLoginTermVersion, TermsVersion, ACTIONMPHONENAME, ACTIONTYPE, SMSMOBILE)\nVALUES\n(@BindingType, @PushToken, @UserID, @UUID, @IPAddress, @QuickLoginDate, @DeviceName,\n@QuickLoginType, @OSVersion, @AppVersion, @DeviceActive, @GeneralPushActive,\n@DevicePushActive, @CreateUser, @CreateDate, @ModifyUser, @ModifyDate,\n@QuickLoginTermVersion, @TermsVersion, @ACTIONMPHONENAME, @ACTIONTYPE, @SMSMOBILE)\n資料庫： DAWHOSql\n目標表： DAWHO.dbo.DeviceBindingLog"
+      },
+      {
+        "step": 4,
+        "title": ":執行實際「刪除裝置綁定」",
+        "details": "1、查詢裝置資訊\nSELECT  CustId,Udid,DeviceName  FROM DAWHO.dbo.DeviceBinding\nWHERE UserID = @UserID AND UUID = @UUID AND QuickLoginType <> 'P'\n檢查是否存在指定 UserID 和 UUID 的設備，且該設備的 QuickLoginType 不是 'P'（代表該設備不是被標記為已解綁的設備）查詢結果若有資料，則發送推播通知\nstring parameters = string.Format(\"[PARAM0]={0}^|$[PARAM1]={1}\",\ndsResult.Tables[0].Rows[0][\"DeviceName\"].ToString(), date);\nCommonFunc.SendToMonitorMail_Push(\"Type0_DA_UNBINDING_DEVICE.html\", ...);\n2、檢查是否有推播類型紀錄\nSELECT CustId,Udid,DeviceName  FROM DAWHO.dbo.DeviceBinding\nWHERE UserID = @UserID AND QuickLoginType = 'P'\n若存在則清除舊推播紀錄\nDELETE FROM DAWHO.dbo.DeviceBinding WHERE (UUID=@UUID OR USERID=@USERID) AND QuickLoginType = 'P'\nDELETE FROM dbo.MB_PUSHTYPESETTING WHERE UserId = @UserId\n3、核心解綁（UPDATE，非物理刪除）\nUPDATE DAWHO.dbo.DeviceBinding\nSET QuickLoginType = 'P', MIDTYPE = NULL, MIDTYPEID = NULL, FIDOFLAG = NULL,\nFIDOTIMESTAMP = NULL, MIDREQSEQ = NULL, FIDOQRID = NULL, QKLOGTIMESTAMP = NULL\nWHERE UUID = @uuid AND UserID = @CustID\n重點：解綁不是 DELETE，而是把 QuickLoginType 降級為 'P'（僅保留推播功能），並清空所有 MID/FIDO 相關欄位。\n4、清理殘留紀錄\nDELETE FROM DAWHO.dbo.DeviceBinding\nWHERE (UserID = @UserID OR UUID = @UUID)\nAND QuickLoginType = 'P' AND PushToken IS NULL\n如果設備已成功標記為解綁，則再刪除該設備在資料庫中的資料\n---------------------------\n如果所有操作成功，則回傳 true，表示設備已成功解除綁定。如果過程中出現任何錯誤，則會記錄錯誤並回傳 false。"
+      },
+      {
+        "step": 5,
+        "title": ":寄送通知信 / 推播（根據來源）",
+        "details": "if(解綁裝置成功)\n{\n-- 解綁成功\nif(this.phonename != \"\")\n{\nMail即時通知\n}\n}\nelse\n{\n解綁失敗\n}\n如果 phonename（用戶設備名稱）不為空\nCommonFunc.SendToMonitorMail_Push(member.CustId, member.CustMail, mailtitle2, sContentHtml, \"DA_BINDINGDELETE\", this.phonename, \"\", \"\", PushMsg);\nsContentHtml說明：\nstring param0 = \"[PARAM0]=\" + DateTime.Now.ToString(\"yyyy年MM月dd日\");\nstring param1 = \"[PARAM1]=\" + this.phonename;\nstring param2 = \"[PARAM2]=\" + DateTime.Now.ToString(\"yyyy'/'MM'/'dd HH:mm:ss\");\nstring sContentHtml = param0 + \"^|$\" + param1 + \"^|$\" + param2;\n示例：[PARAM0]=2026年03月10日^|$[PARAM1]=^|$[PARAM2]=2026/03/10 14:30:00\nCommonFunc.SendToMonitorMail_Push(\nmember.CustId,      // 用戶 ID\nmember.CustMail,    // 用戶 Email\nmailtitle,          // \"大戶管理我的行動裝置設定通知\"\nsContentHtml,       // 郵件參數內容\n\"DA_BINDINGDELETE\", // 交易類型\nthis.phonename,     // 用戶設備名稱\n\"\",                 // 空\n\"\",                 // 空\nPushMsg             // \"sinopacaction:{devicemanager}{}\"\n);"
+      },
+      {
+        "step": 6,
+        "title": ":例外處理與最終輸出",
+        "details": "發生例外時記錄錯誤 _Logger.Error，並回傳 EXCEPTION"
+      }
+    ],
+    "fieldMappings": [],
+    "errorCodeRules": [
+      {
+        "code": "9996",
+        "scenario": "SEQ驗證失敗",
+        "message": "資料驗證錯誤，請重新輸入!"
+      },
+      {
+        "code": "9997",
+        "scenario": "裝置解綁失敗",
+        "message": "刪除失敗!"
+      },
+      {
+        "code": "9998",
+        "scenario": "其它錯誤",
+        "message": "發生意外的錯誤，請洽客服人員。"
+      },
+      {
+        "code": "9999",
+        "scenario": "未輸入必填請求參數",
+        "message": "請輸入{Request參數}！"
+      }
+    ],
+    "runtimeDependencies": [
+      {
+        "id": "current_customer_context",
+        "type": "service",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "Resolve keyId/custId from the current request context and Redis."
+      },
+      {
+        "id": "external_api_dawho_dawho_dbo_devicebinding",
+        "type": "external_api",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "Excel 依赖声明提到 DAWHO->DAWHO.dbo.DeviceBinding。"
+      },
+      {
+        "id": "external_api_dawho_dawho_dbo_devicebindinglog",
+        "type": "external_api",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "Excel 依赖声明提到 DAWHO->DAWHO.dbo.DeviceBindingLog。"
+      },
+      {
+        "id": "notification_commonfunc_sendtomonitormail_push",
+        "type": "notification",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "业务逻辑正文提到 CommonFunc->SendToMonitorMail_Push() 依赖。"
+      },
+      {
+        "id": "sql_table_db_dawho_dbo_devicebinding",
+        "type": "sql_table",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "Excel 依赖声明提到 DB->DAWHO.DBO.DEVICEBINDING。"
+      },
+      {
+        "id": "sql_table_db_dawho_dbo_devicebindinglog",
+        "type": "sql_table",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "Excel 依赖声明提到 DB->DAWHO.DBO.DEVICEBINDINGLOG。"
+      },
+      {
+        "id": "sql_table_db_dbo_mb_pushtypesetting",
+        "type": "sql_table",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "业务逻辑正文提到 DB->dbo.MB_PUSHTYPESETTING 依赖。"
+      }
+    ],
+    "dataSources": [
+      {
+        "name": "DAWHO.DBO.DEVICEBINDING",
+        "type": "sql_table",
+        "authority": "backend_contract",
+        "required": true
+      },
+      {
+        "name": "DAWHO.DBO.DEVICEBINDINGLOG",
+        "type": "sql_table",
+        "authority": "backend_contract",
+        "required": true
+      },
+      {
+        "name": "DBO.MB_PUSHTYPESETTING",
+        "type": "sql_table",
+        "authority": "backend_contract",
+        "required": true
+      }
+    ],
+    "sqlSpecs": [
+      {
+        "id": "2",
+        "title": "2:取得綁定裝置資訊",
+        "authority": "backend_contract",
+        "required": true,
+        "dataSources": [
+          "DAWHO.DBO.DEVICEBINDING"
+        ],
+        "mustContain": [
+          "DAWHO.DBO.DEVICEBINDING",
+          "@UUID",
+          "SELECT",
+          "FROM",
+          "WHERE"
+        ],
+        "queryText": "1.根據 udId 查詢綁定裝置資訊\nSELECT CustId,Udid,DeviceName FROM  DAWHO.dbo.DeviceBinding WHERE (UUID = @UUID) and QuickLoginType <> 'P'\n資料庫： DAWHOSql\n目標表： DAWHO.dbo.DeviceBinding\n用途：取得待解綁裝置的完整資訊（排除純推播 'P' 類型）\n查詢結果會轉換為 BindDevice 物件，再轉為 BindDeviceLog 物件，設定：\nBindingType = \"UNBINDING\"\nACTIONTYPE = \"BINDING_DEL\"\nACTIONMPHONENAME = 操作者的手機名稱"
+      },
+      {
+        "id": "3_log",
+        "title": "3:寫入綁定解除 Log",
+        "authority": "backend_contract",
+        "required": true,
+        "dataSources": [
+          "DAWHO.DBO.DEVICEBINDINGLOG"
+        ],
+        "mustContain": [
+          "DAWHO.DBO.DEVICEBINDINGLOG",
+          "@BindingType",
+          "@PushToken",
+          "@UserID",
+          "@UUID",
+          "@IPAddress",
+          "@QuickLoginDate",
+          "@DeviceName",
+          "@QuickLoginType",
+          "@OSVersion",
+          "@AppVersion",
+          "@DeviceActive",
+          "@GeneralPushActive",
+          "@DevicePushActive",
+          "@CreateUser",
+          "@CreateDate",
+          "@ModifyUser",
+          "@ModifyDate",
+          "@QuickLoginTermVersion",
+          "@TermsVersion",
+          "@ACTIONMPHONENAME",
+          "@ACTIONTYPE",
+          "@SMSMOBILE",
+          "INSERT",
+          "VALUES"
+        ],
+        "queryText": "寫入解綁日誌 — InsertBindingLog\nINSERT INTO DAWHO.dbo.DeviceBindingLog\n(BindingType, PushToken, UserID, UUID, IPAddress, QuickLoginDate, DeviceName,\nQuickLoginType, OSVersion, AppVersion, DeviceActive, GeneralPushActive,\nDevicePushActive, CreateUser, CreateDate, ModifyUser, ModifyDate,\nQuickLoginTermVersion, TermsVersion, ACTIONMPHONENAME, ACTIONTYPE, SMSMOBILE)\nVALUES\n(@BindingType, @PushToken, @UserID, @UUID, @IPAddress, @QuickLoginDate, @DeviceName,\n@QuickLoginType, @OSVersion, @AppVersion, @DeviceActive, @GeneralPushActive,\n@DevicePushActive, @CreateUser, @CreateDate, @ModifyUser, @ModifyDate,\n@QuickLoginTermVersion, @TermsVersion, @ACTIONMPHONENAME, @ACTIONTYPE, @SMSMOBILE)\n資料庫： DAWHOSql\n目標表： DAWHO.dbo.DeviceBindingLog"
+      },
+      {
+        "id": "4",
+        "title": "4:執行實際「刪除裝置綁定」",
+        "authority": "backend_contract",
+        "required": true,
+        "dataSources": [
+          "DAWHO.DBO.DEVICEBINDING",
+          "DBO.MB_PUSHTYPESETTING"
+        ],
+        "mustContain": [
+          "DAWHO.DBO.DEVICEBINDING",
+          "DBO.MB_PUSHTYPESETTING",
+          "@UserID",
+          "@UUID",
+          "@CustID",
+          "SELECT",
+          "UPDATE",
+          "DELETE",
+          "FROM",
+          "WHERE",
+          "SET"
+        ],
+        "queryText": "1、查詢裝置資訊\nSELECT  CustId,Udid,DeviceName  FROM DAWHO.dbo.DeviceBinding\nWHERE UserID = @UserID AND UUID = @UUID AND QuickLoginType <> 'P'\n檢查是否存在指定 UserID 和 UUID 的設備，且該設備的 QuickLoginType 不是 'P'（代表該設備不是被標記為已解綁的設備）查詢結果若有資料，則發送推播通知\nstring parameters = string.Format(\"[PARAM0]={0}^|$[PARAM1]={1}\",\ndsResult.Tables[0].Rows[0][\"DeviceName\"].ToString(), date);\nCommonFunc.SendToMonitorMail_Push(\"Type0_DA_UNBINDING_DEVICE.html\", ...);\n2、檢查是否有推播類型紀錄\nSELECT CustId,Udid,DeviceName  FROM DAWHO.dbo.DeviceBinding\nWHERE UserID = @UserID AND QuickLoginType = 'P'\n若存在則清除舊推播紀錄\nDELETE FROM DAWHO.dbo.DeviceBinding WHERE (UUID=@UUID OR USERID=@USERID) AND QuickLoginType = 'P'\nDELETE FROM dbo.MB_PUSHTYPESETTING WHERE UserId = @UserId\n3、核心解綁（UPDATE，非物理刪除）\nUPDATE DAWHO.dbo.DeviceBinding\nSET QuickLoginType = 'P', MIDTYPE = NULL, MIDTYPEID = NULL, FIDOFLAG = NULL,\nFIDOTIMESTAMP = NULL, MIDREQSEQ = NULL, FIDOQRID = NULL, QKLOGTIMESTAMP = NULL\nWHERE UUID = @uuid AND UserID = @CustID\n重點：解綁不是 DELETE，而是把 QuickLoginType 降級為 'P'（僅保留推播功能），並清空所有 MID/FIDO 相關欄位。\n4、清理殘留紀錄\nDELETE FROM DAWHO.dbo.DeviceBinding\nWHERE (UserID = @UserID OR UUID = @UUID)\nAND QuickLoginType = 'P' AND PushToken IS NULL\n如果設備已成功標記為解綁，則再刪除該設備在資料庫中的資料\n---------------------------\n如果所有操作成功，則回傳 true，表示設備已成功解除綁定。如果過程中出現任何錯誤，則會記錄錯誤並回傳 false。\n可读取外援：APP Table -> reference/global/raw/db-schema/APP Table.xlsx#sheetName=MB_PUSHTYPESETTING",
+        "referenceHints": [
+          {
+            "id": "db.mb-pushtypesetting.apptable",
+            "category": "db_schema",
+            "matchSource": "sql_keyword",
+            "matchKey": "MB_PUSHTYPESETTING",
+            "title": "APP Table",
+            "relativePath": "reference/global/raw/db-schema/APP Table.xlsx",
+            "locator": {
+              "sheetName": "MB_PUSHTYPESETTING"
+            },
+            "reason": "命中 SQL 表 MB_PUSHTYPESETTING，可读取数据库参考资料",
+            "authority": "reference_imported"
+          }
+        ]
+      }
+    ],
+    "legacyReferences": [],
+    "prohibitedShortcuts": [
+      "mock_response_payload",
+      "hardcoded_custid",
+      "block_comment_header_substitution"
+    ],
+    "referenceHints": [
+      {
+        "id": "db.mb-pushtypesetting.apptable",
+        "category": "db_schema",
+        "matchSource": "sql_keyword",
+        "matchKey": "MB_PUSHTYPESETTING",
+        "title": "APP Table",
+        "relativePath": "reference/global/raw/db-schema/APP Table.xlsx",
+        "locator": {
+          "sheetName": "MB_PUSHTYPESETTING"
+        },
+        "reason": "命中 SQL 表 MB_PUSHTYPESETTING，可读取数据库参考资料",
+        "authority": "reference_imported"
+      }
+    ]
+  },
+  "codeHandoff": {
+    "schemaVersion": "1.0.0",
+    "logicSummary": {
+      "stepCount": 6,
+      "queryContractCount": 3,
+      "mappingRuleCount": 0,
+      "legacyEvidenceCount": 0,
+      "dependencyHintCount": 13,
+      "constraintCount": 9,
+      "unresolvedCount": 0,
+      "primarySource": "businessLogic"
+    },
+    "logicFlow": [
+      {
+        "stepId": "step_1",
+        "title": ":參數",
+        "actionType": "process",
+        "inputs": [
+          "custId",
+          "udid"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_2",
+        "title": ":取得綁定裝置資訊",
+        "actionType": "query",
+        "inputs": [
+          "custId",
+          "udid"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_3",
+        "title": ":寫入綁定解除 Log",
+        "actionType": "query",
+        "inputs": [
+          "custId",
+          "udid"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_4",
+        "title": ":執行實際「刪除裝置綁定」",
+        "actionType": "query",
+        "inputs": [
+          "custId",
+          "udid"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_5",
+        "title": ":寄送通知信 / 推播（根據來源）",
+        "actionType": "process",
+        "inputs": [
+          "custId",
+          "udid"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_6",
+        "title": ":例外處理與最終輸出",
+        "actionType": "return",
+        "inputs": [
+          "custId",
+          "udid"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage"
+        ],
+        "evidenceIds": []
+      }
+    ],
+    "legacyEvidence": [],
+    "queryContracts": [
+      {
+        "contractId": "2",
+        "purpose": "2:取得綁定裝置資訊",
+        "dataSources": [
+          "DAWHO.DBO.DEVICEBINDING"
+        ],
+        "mustContain": [
+          "DAWHO.DBO.DEVICEBINDING",
+          "@UUID",
+          "SELECT",
+          "FROM",
+          "WHERE"
+        ],
+        "sqlText": "1.根據 udId 查詢綁定裝置資訊\nSELECT CustId,Udid,DeviceName FROM  DAWHO.dbo.DeviceBinding WHERE (UUID = @UUID) and QuickLoginType <> 'P'\n資料庫： DAWHOSql\n目標表： DAWHO.dbo.DeviceBinding\n用途：取得待解綁裝置的完整資訊（排除純推播 'P' 類型）\n查詢結果會轉換為 BindDevice 物件，再轉為 BindDeviceLog 物件，設定：\nBindingType = \"UNBINDING\"\nACTIONTYPE = \"BINDING_DEL\"\nACTIONMPHONENAME = 操作者的手機名稱",
+        "parameterHints": [
+          "@UUID"
+        ],
+        "resultShape": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "contractId": "3_log",
+        "purpose": "3:寫入綁定解除 Log",
+        "dataSources": [
+          "DAWHO.DBO.DEVICEBINDINGLOG"
+        ],
+        "mustContain": [
+          "DAWHO.DBO.DEVICEBINDINGLOG",
+          "@BindingType",
+          "@PushToken",
+          "@UserID",
+          "@UUID",
+          "@IPAddress",
+          "@QuickLoginDate",
+          "@DeviceName",
+          "@QuickLoginType",
+          "@OSVersion",
+          "@AppVersion",
+          "@DeviceActive",
+          "@GeneralPushActive",
+          "@DevicePushActive",
+          "@CreateUser",
+          "@CreateDate",
+          "@ModifyUser",
+          "@ModifyDate",
+          "@QuickLoginTermVersion",
+          "@TermsVersion",
+          "@ACTIONMPHONENAME",
+          "@ACTIONTYPE",
+          "@SMSMOBILE",
+          "INSERT",
+          "VALUES"
+        ],
+        "sqlText": "寫入解綁日誌 — InsertBindingLog\nINSERT INTO DAWHO.dbo.DeviceBindingLog\n(BindingType, PushToken, UserID, UUID, IPAddress, QuickLoginDate, DeviceName,\nQuickLoginType, OSVersion, AppVersion, DeviceActive, GeneralPushActive,\nDevicePushActive, CreateUser, CreateDate, ModifyUser, ModifyDate,\nQuickLoginTermVersion, TermsVersion, ACTIONMPHONENAME, ACTIONTYPE, SMSMOBILE)\nVALUES\n(@BindingType, @PushToken, @UserID, @UUID, @IPAddress, @QuickLoginDate, @DeviceName,\n@QuickLoginType, @OSVersion, @AppVersion, @DeviceActive, @GeneralPushActive,\n@DevicePushActive, @CreateUser, @CreateDate, @ModifyUser, @ModifyDate,\n@QuickLoginTermVersion, @TermsVersion, @ACTIONMPHONENAME, @ACTIONTYPE, @SMSMOBILE)\n資料庫： DAWHOSql\n目標表： DAWHO.dbo.DeviceBindingLog",
+        "parameterHints": [
+          "@BindingType",
+          "@PushToken",
+          "@UserID",
+          "@UUID",
+          "@IPAddress",
+          "@QuickLoginDate",
+          "@DeviceName",
+          "@QuickLoginType",
+          "@OSVersion",
+          "@AppVersion",
+          "@DeviceActive",
+          "@GeneralPushActive",
+          "@DevicePushActive",
+          "@CreateUser",
+          "@CreateDate",
+          "@ModifyUser",
+          "@ModifyDate",
+          "@QuickLoginTermVersion",
+          "@TermsVersion",
+          "@ACTIONMPHONENAME",
+          "@ACTIONTYPE",
+          "@SMSMOBILE"
+        ],
+        "resultShape": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "contractId": "4",
+        "purpose": "4:執行實際「刪除裝置綁定」",
+        "dataSources": [
+          "DAWHO.DBO.DEVICEBINDING",
+          "DBO.MB_PUSHTYPESETTING"
+        ],
+        "mustContain": [
+          "DAWHO.DBO.DEVICEBINDING",
+          "DBO.MB_PUSHTYPESETTING",
+          "@UserID",
+          "@UUID",
+          "@CustID",
+          "SELECT",
+          "UPDATE",
+          "DELETE",
+          "FROM",
+          "WHERE",
+          "SET"
+        ],
+        "sqlText": "1、查詢裝置資訊\nSELECT  CustId,Udid,DeviceName  FROM DAWHO.dbo.DeviceBinding\nWHERE UserID = @UserID AND UUID = @UUID AND QuickLoginType <> 'P'\n檢查是否存在指定 UserID 和 UUID 的設備，且該設備的 QuickLoginType 不是 'P'（代表該設備不是被標記為已解綁的設備）查詢結果若有資料，則發送推播通知\nstring parameters = string.Format(\"[PARAM0]={0}^|$[PARAM1]={1}\",\ndsResult.Tables[0].Rows[0][\"DeviceName\"].ToString(), date);\nCommonFunc.SendToMonitorMail_Push(\"Type0_DA_UNBINDING_DEVICE.html\", ...);\n2、檢查是否有推播類型紀錄\nSELECT CustId,Udid,DeviceName  FROM DAWHO.dbo.DeviceBinding\nWHERE UserID = @UserID AND QuickLoginType = 'P'\n若存在則清除舊推播紀錄\nDELETE FROM DAWHO.dbo.DeviceBinding WHERE (UUID=@UUID OR USERID=@USERID) AND QuickLoginType = 'P'\nDELETE FROM dbo.MB_PUSHTYPESETTING WHERE UserId = @UserId\n3、核心解綁（UPDATE，非物理刪除）\nUPDATE DAWHO.dbo.DeviceBinding\nSET QuickLoginType = 'P', MIDTYPE = NULL, MIDTYPEID = NULL, FIDOFLAG = NULL,\nFIDOTIMESTAMP = NULL, MIDREQSEQ = NULL, FIDOQRID = NULL, QKLOGTIMESTAMP = NULL\nWHERE UUID = @uuid AND UserID = @CustID\n重點：解綁不是 DELETE，而是把 QuickLoginType 降級為 'P'（僅保留推播功能），並清空所有 MID/FIDO 相關欄位。\n4、清理殘留紀錄\nDELETE FROM DAWHO.dbo.DeviceBinding\nWHERE (UserID = @UserID OR UUID = @UUID)\nAND QuickLoginType = 'P' AND PushToken IS NULL\n如果設備已成功標記為解綁，則再刪除該設備在資料庫中的資料\n---------------------------\n如果所有操作成功，則回傳 true，表示設備已成功解除綁定。如果過程中出現任何錯誤，則會記錄錯誤並回傳 false。\n可读取外援：APP Table -> reference/global/raw/db-schema/APP Table.xlsx#sheetName=MB_PUSHTYPESETTING",
+        "parameterHints": [
+          "@UserID",
+          "@UUID",
+          "@USERID",
+          "@UserId",
+          "@uuid",
+          "@CustID"
+        ],
+        "resultShape": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage"
+        ],
+        "evidenceIds": []
+      }
+    ],
+    "mappingRules": [],
+    "dependencyHints": [
+      {
+        "dependencyType": "service",
+        "preferredAbstractions": [
+          "ICurrentRuntimeContextAccessor",
+          "IRedisService"
+        ],
+        "purpose": "Resolve keyId/custId from the current request context and Redis.",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "external_api",
+        "preferredAbstractions": [
+          "IApiRequestService"
+        ],
+        "purpose": "Excel 依赖声明提到 DAWHO->DAWHO.dbo.DeviceBinding。",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "external_api",
+        "preferredAbstractions": [
+          "IApiRequestService"
+        ],
+        "purpose": "Excel 依赖声明提到 DAWHO->DAWHO.dbo.DeviceBindingLog。",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "notification",
+        "preferredAbstractions": [
+          "FrameworkProvidedDependency"
+        ],
+        "purpose": "业务逻辑正文提到 CommonFunc->SendToMonitorMail_Push() 依赖。",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "sql_table",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor"
+        ],
+        "purpose": "Excel 依赖声明提到 DB->DAWHO.DBO.DEVICEBINDING。",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "sql_table",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor"
+        ],
+        "purpose": "Excel 依赖声明提到 DB->DAWHO.DBO.DEVICEBINDINGLOG。",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "sql_table",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor"
+        ],
+        "purpose": "业务逻辑正文提到 DB->dbo.MB_PUSHTYPESETTING 依赖。",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "sql_table",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor"
+        ],
+        "purpose": "Read from DAWHO.DBO.DEVICEBINDING",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "sql_table",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor"
+        ],
+        "purpose": "Read from DAWHO.DBO.DEVICEBINDINGLOG",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "sql_table",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor"
+        ],
+        "purpose": "Read from DBO.MB_PUSHTYPESETTING",
+        "evidenceIds": []
+      }
+    ],
+    "constraints": [
+      {
+        "constraintType": "prohibited_shortcut",
+        "rule": "mock_response_payload",
+        "severity": "error",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "prohibited_shortcut",
+        "rule": "hardcoded_custid",
+        "severity": "error",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "prohibited_shortcut",
+        "rule": "block_comment_header_substitution",
+        "severity": "error",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "error_code_rule",
+        "rule": "9996 | SEQ驗證失敗 | 資料驗證錯誤，請重新輸入!",
+        "severity": "warning",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "error_code_rule",
+        "rule": "9997 | 裝置解綁失敗 | 刪除失敗!",
+        "severity": "warning",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "error_code_rule",
+        "rule": "9998 | 其它錯誤 | 發生意外的錯誤，請洽客服人員。",
+        "severity": "warning",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "error_code_rule",
+        "rule": "9999 | 未輸入必填請求參數 | 請輸入{Request參數}！",
+        "severity": "warning",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "request_field_validation",
+        "field": "custId",
+        "validationLayer": "dto_attribute",
+        "validationType": "required",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸入{Request參數}！",
+        "customValidationAttributeNeeded": false,
+        "rule": "custId | dto_attribute | required | 9999 | 請輸入{Request參數}！",
+        "severity": "warning",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "request_field_validation",
+        "field": "udid",
+        "validationLayer": "dto_attribute",
+        "validationType": "required",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸入{Request參數}！",
+        "customValidationAttributeNeeded": false,
+        "rule": "udid | dto_attribute | required | 9999 | 請輸入{Request參數}！",
+        "severity": "warning",
+        "evidenceIds": []
+      }
+    ],
+    "unresolved": []
+  }
+}

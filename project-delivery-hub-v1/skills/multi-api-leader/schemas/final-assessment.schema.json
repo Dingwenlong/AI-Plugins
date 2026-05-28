@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Multi API Final Assessment",
+  "type": "object",
+  "required": ["schemaVersion", "functionCode", "passed", "gateResults"],
+  "properties": {
+    "schemaVersion": { "type": "string" },
+    "functionCode": { "type": "string" },
+    "generatedAt": { "type": "string" },
+    "passed": { "type": "boolean" },
+    "conclusion": { "type": "string" },
+    "gateResults": { "type": "object" },
+    "blockingIssues": { "type": "array", "items": { "type": "string" } },
+    "openItems": { "type": "array", "items": { "type": "string" } }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,73 @@
+{
+  "schemaVersion": "4.1.0",
+  "manifestType": "api",
+  "executionId": "Common",
+  "apiId": "COMMON.commonfunc.getoperationhour",
+  "apiCategory": "CommonFunc",
+  "apiName": "GetOperationHour",
+  "status": "tests_passed",
+  "phase": "validated",
+  "updatedAt": "2026-05-23T22:18:09+08:00",
+  "newAuthor": "Jimmy",
+  "specStatus": "done",
+  "specUpdatedAt": "2026-05-23T19:16:35+08:00",
+  "specBlockReason": null,
+  "specSourceFingerprint": "sha256:0b375f3094945a92b0db9ec602d32999ba53efb8ae08382adfe58db354231ee9",
+  "specSource": {
+    "tsdFile": "TSD.Common_封存TSD共用开发链路_v1.0_20260523.docx",
+    "workbookFile": "NEWDA_Method_DETAIL_ExchangeCommonFunc_20260522.xlsx",
+    "sheetNames": [
+      "GetOperationHour 取得營業日"
+    ]
+  },
+  "specArtifacts": {
+    "apiSpec": "../../../.agent/context/Common/apis/COMMON.commonfunc.getoperationhour/Common_API_Spec.json"
+  },
+  "fixtureStatus": "done",
+  "fixturePhase": "ready",
+  "fixtureUpdatedAt": "2026-05-23T19:47:00+08:00",
+  "fixtureBlockReason": null,
+  "fixtureSourceFingerprint": "sha256:0b375f3094945a92b0db9ec602d32999ba53efb8ae08382adfe58db354231ee9",
+  "fixtureArtifacts": {
+    "dbFixtureReport": "../../.agent/context/Common/apis/COMMON.commonfunc.getoperationhour/db-fixture-report.json",
+    "tableChecks": "../../.agent/context/Common/apis/COMMON.commonfunc.getoperationhour/table-checks.json",
+    "seedPlan": null,
+    "seedExecuted": null,
+    "seedManifest": null
+  },
+  "codeStatus": "tests_passed",
+  "codePhase": "validated",
+  "codeUpdatedAt": "2026-05-23T22:18:09+08:00",
+  "codeBlockReason": null,
+  "codeProjectRoot": ".",
+  "codeSolutionPath": "Sinopac.EnterpriseAPI.slnx",
+  "inputHashes": {
+    "upstreamManifest": "sha256:df9e557b1d7329d8c526efc7cf9d3d958f07d7597acedcd50f62617cf4e29209",
+    "apiSpec": "sha256:27b52686c3a38e288c937319de16f417bf903150352903f271f90a9a7c628503"
+  },
+  "modifiedFiles": [
+    "EnterpriseApiBusiness.Interface/ICommonFuncService.cs",
+    "EnterpriseApiBusiness/CommonFunc/CommonFuncService.GetOperationHour.cs",
+    "EnterpriseApiEntity/CommonFunc/GetOperationHourInfo.cs"
+  ],
+  "validationChecks": [
+    "dotnet build \"D:\\Devs\\NEWDAWHO\\feature_common\\P240301Git\\Sinopac.EnterpriseAPI\\Sinopac.EnterpriseAPI.slnx\" -m:1"
+  ],
+  "validationResults": [
+    {
+      "command": "dotnet build \"D:\\Devs\\NEWDAWHO\\feature_common\\P240301Git\\Sinopac.EnterpriseAPI\\Sinopac.EnterpriseAPI.slnx\" -m:1",
+      "returncode": 0,
+      "passed": true,
+      "stdout": "正在确定要还原的项目…\n  所有项目均是最新的，无法还原。\nC:\\Program Files\\dotnet\\sdk\\10.0.300-preview.0.26177.108\\Sdks\\Microsoft.NET.Sdk\\targets\\Microsoft.NET.RuntimeIdentifierInference.targets(383,5): message NETSDK1057: 你正在使用 .NET 的预览版。请参阅 https://aka.ms/dotnet-support-policy [D:\\Devs\\NEWDAWHO\\feature_common\\P240301Git\\Sinopac.EnterpriseAPI\\EnterpriseApiBusiness.Interface\\EnterpriseApiBusiness.Interface.csproj]\n  EnterpriseApiEntity -> D:\\Devs\\NEWDAWHO\\feature_common\\P240301Git\\Sinopac.EnterpriseAPI\\EnterpriseApiEntity\\bin\\Debug\\net10.0\\EnterpriseApiEntity.dll\n  EnterpriseApiBusiness.Interface -> D:\\Devs\\NEWDAWHO\\feature_common\\P240301Git\\Sinopac.EnterpriseAPI\\EnterpriseApiBusiness.Interface\\bin\\Debug\\net10.0\\EnterpriseApiBusiness.Interface.dll\n  EnterpriseApiBusiness -> D:\\Devs\\NEWDAWHO\\feature_common\\P240301Git\\Sinopac.EnterpriseAPI\\EnterpriseApiBusiness\\bin\\Debug\\net10.0\\EnterpriseApiBusiness.dll\n  Sinopac.EnterpriseAPI -> D:\\Devs\\NEWDAWHO\\feature_common\\P240301Git\\Sinopac.EnterpriseAPI\\Sinopac.EnterpriseAPI\\bin\\Debug\\net10.0\\Sinopac.EnterpriseAPI.dll\n  EnterpriseApi.Integration -> D:\\Devs\\NEWDAWHO\\feature_common\\P240301Git\\Sinopac.EnterpriseAPI\\Test\\EnterpriseApi.Integration\\bin\\Debug\\net10.0\\EnterpriseApi.Integration.dll\n  EnterpriseApi.Unit -> D:\\Devs\\NEWDAWHO\\feature_common\\P240301Git\\Sinopac.EnterpriseAPI\\Test\\EnterpriseApi.Unit\\bin\\Debug\\net10.0\\EnterpriseApi.Unit.dll\n\n已成功生成。\n    0 个警告\n    0 个错误\n\n已用时间 00:00:01.93",
+      "stderr": "",
+      "attempt": 1
+    }
+  ],
+  "repoDriftFiles": [],
+  "codeArtifacts": {
+    "changePlan": "../../../.agent/context/Common/apis/COMMON.commonfunc.getoperationhour/change-plan.json",
+    "implementationReport": "../../../.agent/context/Common/apis/COMMON.commonfunc.getoperationhour/implementation-report.md",
+    "diagnosisReport": null
+  },
+  "lastMessage": "COMMON.commonfunc.getoperationhour => tests_passed"
+}

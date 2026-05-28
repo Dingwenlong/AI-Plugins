@@ -1,0 +1,3245 @@
+{
+  "schemaVersion": "4.1.0",
+  "skillName": "api-code-writer",
+  "manifestType": "change-plan",
+  "status": "planned",
+  "updatedAt": "2026-05-23T18:10:26+08:00",
+  "executionId": "Common",
+  "apiId": "COMMON.commonfunc.getic0001",
+  "projectRoot": ".",
+  "solutionPath": "Sinopac.EnterpriseAPI/Sinopac.EnterpriseAPI.slnx",
+  "upstream": {
+    "manifest": "../../.agent/context/Common/apis/COMMON.commonfunc.getic0001/manifest.json",
+    "apiSpec": "../../.agent/context/Common/apis/COMMON.commonfunc.getic0001/Common_API_Spec.json",
+    "sourceFingerprint": "sha256:492f34b20a9a2e4ba543feac345f801b5e9015c01235b177e9a8d6c26233d2ad",
+    "source": {
+      "tsdFile": "TSD.Common_封存TSD共用开发链路_v1.0_20260523.docx",
+      "workbookFile": "NEWDA_Method_DETAIL_ExchangeCommonFunc_20260522.xlsx",
+      "sheetNames": [
+        "GetIC0001獲取客戶資料"
+      ]
+    }
+  },
+  "sourceCandidates": [
+    "Libray/Sinopac.CommonFunc/IFuncService/ICommonFuncService.cs",
+    "Libray/Sinopac.CommonFunc/FuncService/CommonFuncService.cs",
+    "Libray/Sinopac.CommonFunc/FuncService/CommonFuncService.GetIC0001.cs",
+    "Libray/Sinopac.CommonFunc/Dto/GetIC0001Info.cs"
+  ],
+  "repoDriftDetected": false,
+  "repoDriftFiles": [],
+  "beforeHashes": {
+    "Libray/Sinopac.CommonFunc/IFuncService/ICommonFuncService.cs": "sha256:4027a6c84328177b3b56cb62bc65883570a4e1b5eeea2fb731b356ad7f2f3ba4",
+    "Libray/Sinopac.CommonFunc/FuncService/CommonFuncService.cs": "sha256:f7daae54af90a4370b14980a4b46beed5468f50c4f12710333a9b021dd647f93",
+    "Libray/Sinopac.CommonFunc/FuncService/CommonFuncService.GetIC0001.cs": null,
+    "Libray/Sinopac.CommonFunc/Dto/GetIC0001Info.cs": null
+  },
+  "analysis": {
+    "frameworkProfile": "enterpriseapi",
+    "guidelineAuthority": "新大戶框架説明 V2.0 20260203.docx",
+    "repoRoot": "Sinopac.EnterpriseAPI",
+    "moduleName": "CommonFunc",
+    "controllerFile": null,
+    "interfaceFile": "Libray/Sinopac.CommonFunc/IFuncService/ICommonFuncService.cs",
+    "serviceFiles": [
+      "Libray/Sinopac.CommonFunc/FuncService/CommonFuncService.cs",
+      "Libray/Sinopac.CommonFunc/FuncService/CommonFuncService.GetIC0001.cs"
+    ],
+    "entityFiles": [
+      "Libray/Sinopac.CommonFunc/Dto/GetIC0001Info.cs"
+    ],
+    "codeTargetFiles": [
+      "Libray/Sinopac.CommonFunc/IFuncService/ICommonFuncService.cs",
+      "Libray/Sinopac.CommonFunc/FuncService/CommonFuncService.GetIC0001.cs",
+      "Libray/Sinopac.CommonFunc/FuncService/CommonFuncService.cs",
+      "Libray/Sinopac.CommonFunc/Dto/GetIC0001Info.cs"
+    ],
+    "unitTestTargetFiles": [],
+    "integrationTestTargetFiles": [],
+    "testTargetFiles": [],
+    "testCodeHandoff": {
+      "ownerStep": "05 docx-unittest-report",
+      "writerPolicy": "handoff_only",
+      "unitTestTargetFiles": [],
+      "integrationTestTargetFiles": [],
+      "note": "Step 04 records test targets and scenarios only; UnitTest, IntegrationTest, and service runtime validation source code belong to step 05."
+    },
+    "creationMode": "extend_partial",
+    "registrationStrategy": "manual_registration_review",
+    "targetFile": "Libray/Sinopac.CommonFunc/FuncService/CommonFuncService.GetIC0001.cs",
+    "targetClass": "CommonFuncService",
+    "targetMethod": "GetIC0001Async",
+    "action": "ai_orchestrated_implementation",
+    "requestFields": [
+      {
+        "path": "accessTokenAuthSn",
+        "dataType": "string",
+        "required": true,
+        "description": "access_token.auth_sn，用於組成 Redis key。",
+        "notes": "Redis key 公式: Share:Data:Sn:{access_token.auth_sn}:Member"
+      },
+      {
+        "path": "refreshFromIris",
+        "dataType": "boolean",
+        "required": false,
+        "description": "是否直接由 IC001 客戶資料刷新 Redis Member 資料。",
+        "notes": "預設 false；false 時優先讀取 Redis"
+      },
+      {
+        "path": "writeBackRedis",
+        "dataType": "boolean",
+        "required": false,
+        "description": "由 IC001 取得客戶資料後是否寫回 Redis key。",
+        "notes": "預設 true"
+      }
+    ],
+    "responseFields": [
+      {
+        "path": "isSuccess",
+        "dataType": "boolean",
+        "required": true,
+        "description": "API成功與否",
+        "notes": "Formula: isSuccess = responseCode == \"0000\""
+      },
+      {
+        "path": "responseCode",
+        "dataType": "string",
+        "required": true,
+        "description": "回應代碼",
+        "notes": "成功:0000；查無資料:9002；下游或WebAPI服務異常:9997；參數異常:9999"
+      },
+      {
+        "path": "responseMessage",
+        "dataType": "string",
+        "required": true,
+        "description": "回應訊息",
+        "notes": "依 Api_Response_Codes_v1.0 20260312.xlsx O_Common 對應訊息"
+      },
+      {
+        "path": "responseDT",
+        "dataType": "string",
+        "required": true,
+        "description": "系統回應時間",
+        "notes": "Formula: DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\")"
+      },
+      {
+        "path": "responseData",
+        "dataType": "json",
+        "required": true,
+        "description": "回應資料框",
+        "notes": ""
+      },
+      {
+        "path": "age",
+        "dataType": "int",
+        "required": false,
+        "description": "年齡",
+        "notes": "-"
+      },
+      {
+        "path": "custId",
+        "dataType": "string",
+        "required": false,
+        "description": "客戶身分證 ID；IC001 中文: 身分證字號 / 統一編號；IC001 英文: Identity card/Tax ID number",
+        "notes": "對應 IC001 API Vocabulary: TMnemonic"
+      },
+      {
+        "path": "custIp",
+        "dataType": "string",
+        "required": false,
+        "description": "客戶 IP",
+        "notes": "-"
+      },
+      {
+        "path": "custPort",
+        "dataType": "int",
+        "required": false,
+        "description": "客戶 Port",
+        "notes": "-"
+      },
+      {
+        "path": "custMail",
+        "dataType": "string",
+        "required": false,
+        "description": "電子信箱；IC001 中文: E-MAIL；IC001 英文: E-MAIL",
+        "notes": "對應 IC001 API Vocabulary: TEmail"
+      },
+      {
+        "path": "t24Mail",
+        "dataType": "string",
+        "required": false,
+        "description": "電子信箱；IC001 中文: E-MAIL；IC001 英文: E-MAIL",
+        "notes": "對應 IC001 API Vocabulary: TEmail"
+      },
+      {
+        "path": "t24Sms",
+        "dataType": "string",
+        "required": false,
+        "description": "行動電話；IC001 中文: 簡訊行動電話號碼；IC001 英文: SMS",
+        "notes": "對應 IC001 API Vocabulary: TmnSms1"
+      },
+      {
+        "path": "t24Birthday",
+        "dataType": "string",
+        "required": false,
+        "description": "生日；IC001 中文: 出生日期 / 成立日期；IC001 英文: Date Of Birth",
+        "notes": "對應 IC001 API Vocabulary: TmnDateOfBirth"
+      },
+      {
+        "path": "t24AoCode",
+        "dataType": "string",
+        "required": false,
+        "description": "客戶 AOCode（掛帳相關使用）；IC001 中文: 業務人員編號；IC001 英文: Account Officer",
+        "notes": "對應 IC001 API Vocabulary: TmnAccountOfficer"
+      },
+      {
+        "path": "userCode",
+        "dataType": "string",
+        "required": false,
+        "description": "使用者代碼",
+        "notes": "-"
+      },
+      {
+        "path": "userAlias",
+        "dataType": "string",
+        "required": false,
+        "description": "使用者暱稱；IC001 中文: 中文簡稱；IC001 英文: Chinese Short Name",
+        "notes": "對應 IC001 API Vocabulary: TmnShortName2"
+      },
+      {
+        "path": "userCName",
+        "dataType": "string",
+        "required": false,
+        "description": "使用者中文名稱；IC001 中文: 戶名；IC001 英文: Chinese Name",
+        "notes": "對應 IC001 API Vocabulary: TmnName1"
+      },
+      {
+        "path": "userEName",
+        "dataType": "string",
+        "required": false,
+        "description": "使用者英文名稱；IC001 中文: 英文姓名；IC001 英文: English Name",
+        "notes": "對應 IC001 API Vocabulary: TmnName2"
+      },
+      {
+        "path": "userId",
+        "dataType": "string",
+        "required": false,
+        "description": "使用者 ID",
+        "notes": "-"
+      },
+      {
+        "path": "gender",
+        "dataType": "string",
+        "required": false,
+        "description": "性別；IC001 中文: 性別；IC001 英文: Gender",
+        "notes": "對應 IC001 API Vocabulary: TmnGender"
+      },
+      {
+        "path": "birthday",
+        "dataType": "string",
+        "required": false,
+        "description": "生日；IC001 中文: 出生日期 / 成立日期；IC001 英文: Date Of Birth",
+        "notes": "對應 IC001 API Vocabulary: TmnDateOfBirth"
+      },
+      {
+        "path": "sslFlag",
+        "dataType": "string",
+        "required": false,
+        "description": "網銀會員註記",
+        "notes": "-"
+      },
+      {
+        "path": "smsStatus",
+        "dataType": "string",
+        "required": false,
+        "description": "簡訊服務註記",
+        "notes": "-"
+      },
+      {
+        "path": "smsMobile",
+        "dataType": "string",
+        "required": false,
+        "description": "簡訊行動電話；IC001 中文: 簡訊行動電話號碼；IC001 英文: SMS",
+        "notes": "對應 IC001 API Vocabulary: TmnSms1"
+      },
+      {
+        "path": "smsMobileSign",
+        "dataType": "string",
+        "required": false,
+        "description": "簡訊行動電話失聯註記（2 表示失聯）；IC001 中文: 簡訊行動電話失聯記號；IC001 英文: SMS lost Flag",
+        "notes": "對應 IC001 API Vocabulary: TSmsSign"
+      },
+      {
+        "path": "investFlag",
+        "dataType": "string",
+        "required": false,
+        "description": "專業投資人記號；IC001 中文: 專業投資人記號；IC001 英文: Professional investor Flag",
+        "notes": "對應 IC001 API Vocabulary: TProfInvest"
+      },
+      {
+        "path": "dcStatus",
+        "dataType": "string",
+        "required": false,
+        "description": "DC 服務註記",
+        "notes": "-"
+      },
+      {
+        "path": "agreement",
+        "dataType": "string",
+        "required": false,
+        "description": "財富業務與投資商品同意書註記；IC001 中文: 特定金錢信託客戶投資有價證券推介同意書；IC001 英文: Trust Referral Consent",
+        "notes": "對應 IC001 API Vocabulary: TetfAgreemt"
+      },
+      {
+        "path": "isObuCustomer",
+        "dataType": "boolean",
+        "required": false,
+        "description": "是否 OBU；IC001 中文: OBU 台商記號；IC001 英文: OBU Taiwanese businessmen flag",
+        "notes": "對應 IC001 API Vocabulary: TObu"
+      },
+      {
+        "path": "isStaff",
+        "dataType": "boolean",
+        "required": false,
+        "description": "是否為行員",
+        "notes": "-"
+      },
+      {
+        "path": "staffTarget",
+        "dataType": "string",
+        "required": false,
+        "description": "行員代號（1=客戶，2=銀行正職員工，3=銀行退休員工，4=現行已享有優惠員工）；IC001 中文: 員工代號；IC001 英文: Staff No",
+        "notes": "對應 IC001 API Vocabulary: TStaffNo"
+      },
+      {
+        "path": "acctTransferType",
+        "dataType": "string",
+        "required": false,
+        "description": "轉帳類型",
+        "notes": "-"
+      },
+      {
+        "path": "userAgent",
+        "dataType": "string",
+        "required": false,
+        "description": "手機的 UserAgent",
+        "notes": "-"
+      },
+      {
+        "path": "parsedUserAgent",
+        "dataType": "string",
+        "required": false,
+        "description": "處理過的 UserAgent",
+        "notes": "-"
+      },
+      {
+        "path": "lastLoginTime",
+        "dataType": "string",
+        "required": false,
+        "description": "上次登入時間",
+        "notes": "-"
+      },
+      {
+        "path": "mobilePhone",
+        "dataType": "string",
+        "required": false,
+        "description": "行動電話；IC001 中文: 電話號碼；IC001 英文: Phone",
+        "notes": "對應 IC001 API Vocabulary: TPhone"
+      },
+      {
+        "path": "mobilePhoneSign",
+        "dataType": "string",
+        "required": false,
+        "description": "行動電話失聯註記（2 表示失聯）；IC001 中文: 電話失聯記號；IC001 英文: Phone lost Flag",
+        "notes": "對應 IC001 API Vocabulary: TPhoneSign"
+      },
+      {
+        "path": "qidType",
+        "dataType": "string",
+        "required": false,
+        "description": "外僑；IC001 中文: 外匯身分別；IC001 英文: Qid Type",
+        "notes": "對應 IC001 API Vocabulary: TQidType"
+      },
+      {
+        "path": "userCreateTime",
+        "dataType": "string",
+        "required": false,
+        "description": "-",
+        "notes": "-"
+      },
+      {
+        "path": "company",
+        "dataType": "string",
+        "required": false,
+        "description": "公司；IC001 中文: 服務機構；IC001 英文: Employers Name",
+        "notes": "對應 IC001 API Vocabulary: TmnEmployersName"
+      },
+      {
+        "path": "workingAge",
+        "dataType": "string",
+        "required": false,
+        "description": "年資；IC001 中文: 服務年資；IC001 英文: Working Age",
+        "notes": "對應 IC001 API Vocabulary: TWorkingAge"
+      },
+      {
+        "path": "companyAddrZip",
+        "dataType": "string",
+        "required": false,
+        "description": "公司郵遞區號；IC001 中文: 戶籍 / 公司註冊地址（郵遞區號）；IC001 英文: Household Post Code",
+        "notes": "對應 IC001 API Vocabulary: TmnPostCode"
+      },
+      {
+        "path": "companyAddr",
+        "dataType": "string",
+        "required": false,
+        "description": "公司地址；IC001 中文: 戶籍 / 公司註冊地址（地址）；IC001 英文: Household Street",
+        "notes": "對應 IC001 API Vocabulary: TmnStreet"
+      },
+      {
+        "path": "marital",
+        "dataType": "string",
+        "required": false,
+        "description": "婚姻狀況；IC001 中文: 婚姻記號；IC001 英文: Marital Status",
+        "notes": "對應 IC001 API Vocabulary: TmnMaritalStatus"
+      },
+      {
+        "path": "degree",
+        "dataType": "string",
+        "required": false,
+        "description": "學歷；IC001 中文: 學歷；IC001 英文: Degree of education",
+        "notes": "對應 IC001 API Vocabulary: TDegree"
+      },
+      {
+        "path": "occupation",
+        "dataType": "string",
+        "required": false,
+        "description": "行業別；IC001 中文: 職業；IC001 英文: Occupation",
+        "notes": "對應 IC001 API Vocabulary: TmnOccupation"
+      },
+      {
+        "path": "jobTitle",
+        "dataType": "string",
+        "required": false,
+        "description": "職稱；IC001 中文: 職稱；IC001 英文: Job Title",
+        "notes": "對應 IC001 API Vocabulary: TmnJobTitle"
+      },
+      {
+        "path": "sinopayKind",
+        "dataType": "string",
+        "required": false,
+        "description": "儲值支付帳號的類型",
+        "notes": "-"
+      },
+      {
+        "path": "sinopayAccounts",
+        "dataType": "string",
+        "required": false,
+        "description": "儲值支付帳號",
+        "notes": "-"
+      },
+      {
+        "path": "addsCountry",
+        "dataType": "string",
+        "required": false,
+        "description": "縣市區域；IC001 中文: 通訊 / 聯絡地址（縣市名稱）；IC001 英文: Current address Town Country",
+        "notes": "對應 IC001 API Vocabulary: TTownCountry"
+      },
+      {
+        "path": "addsLine",
+        "dataType": "string",
+        "required": false,
+        "description": "路名巷弄；IC001 中文: 通訊 / 聯絡地址（地址 1）；IC001 英文: Current address 1",
+        "notes": "對應 IC001 API Vocabulary: TAddress"
+      },
+      {
+        "path": "addsZip",
+        "dataType": "string",
+        "required": false,
+        "description": "郵遞區號；IC001 中文: 通訊 / 聯絡地址（郵遞區號）；IC001 英文: Current address Post Code",
+        "notes": "對應 IC001 API Vocabulary: TPostCode"
+      },
+      {
+        "path": "tcountry",
+        "dataType": "string",
+        "required": false,
+        "description": "通訊 / 聯絡地址（地址 2）；IC001 中文: 通訊 / 聯絡地址（地址 2）；IC001 英文: Current address 2",
+        "notes": "對應 IC001 API Vocabulary: Tcountry"
+      },
+      {
+        "path": "homeNum",
+        "dataType": "string",
+        "required": false,
+        "description": "住家電話；IC001 中文: 電話號碼；IC001 英文: Phone",
+        "notes": "對應 IC001 API Vocabulary: TPhone"
+      },
+      {
+        "path": "officeNum",
+        "dataType": "string",
+        "required": false,
+        "description": "公司電話；IC001 中文: 電話號碼；IC001 英文: Phone",
+        "notes": "對應 IC001 API Vocabulary: TPhone"
+      },
+      {
+        "path": "residentNum",
+        "dataType": "string",
+        "required": false,
+        "description": "戶籍電話；IC001 中文: 電話號碼；IC001 英文: Phone",
+        "notes": "對應 IC001 API Vocabulary: TPhone"
+      },
+      {
+        "path": "commNum",
+        "dataType": "string",
+        "required": false,
+        "description": "通訊電話；IC001 中文: 電話號碼；IC001 英文: Phone",
+        "notes": "對應 IC001 API Vocabulary: TPhone"
+      },
+      {
+        "path": "serveNum1",
+        "dataType": "string",
+        "required": false,
+        "description": "服務機構電話一；IC001 中文: 電話號碼；IC001 英文: Phone",
+        "notes": "對應 IC001 API Vocabulary: TPhone"
+      },
+      {
+        "path": "serveNum2",
+        "dataType": "string",
+        "required": false,
+        "description": "服務機構電話二；IC001 中文: 電話號碼；IC001 英文: Phone",
+        "notes": "對應 IC001 API Vocabulary: TPhone"
+      },
+      {
+        "path": "otherNum",
+        "dataType": "string",
+        "required": false,
+        "description": "其他電話；IC001 中文: 電話號碼；IC001 英文: Phone",
+        "notes": "對應 IC001 API Vocabulary: TPhone"
+      },
+      {
+        "path": "homeNumSign",
+        "dataType": "string",
+        "required": false,
+        "description": "住家電話失聯註記（2 表示失聯）；IC001 中文: 電話失聯記號；IC001 英文: Phone lost Flag",
+        "notes": "對應 IC001 API Vocabulary: TPhoneSign"
+      },
+      {
+        "path": "officeNumSign",
+        "dataType": "string",
+        "required": false,
+        "description": "公司電話失聯註記（2 表示失聯）；IC001 中文: 電話失聯記號；IC001 英文: Phone lost Flag",
+        "notes": "對應 IC001 API Vocabulary: TPhoneSign"
+      },
+      {
+        "path": "residentNumSign",
+        "dataType": "string",
+        "required": false,
+        "description": "戶籍電話失聯註記（2 表示失聯）；IC001 中文: 電話失聯記號；IC001 英文: Phone lost Flag",
+        "notes": "對應 IC001 API Vocabulary: TPhoneSign"
+      },
+      {
+        "path": "commNumSign",
+        "dataType": "string",
+        "required": false,
+        "description": "通訊電話失聯註記（2 表示失聯）；IC001 中文: 電話失聯記號；IC001 英文: Phone lost Flag",
+        "notes": "對應 IC001 API Vocabulary: TPhoneSign"
+      },
+      {
+        "path": "serveNum1Sign",
+        "dataType": "string",
+        "required": false,
+        "description": "服務機構電話一失聯註記（2 表示失聯）；IC001 中文: 電話失聯記號；IC001 英文: Phone lost Flag",
+        "notes": "對應 IC001 API Vocabulary: TPhoneSign"
+      },
+      {
+        "path": "serveNum2Sign",
+        "dataType": "string",
+        "required": false,
+        "description": "服務機構電話二失聯註記（2 表示失聯）；IC001 中文: 電話失聯記號；IC001 英文: Phone lost Flag",
+        "notes": "對應 IC001 API Vocabulary: TPhoneSign"
+      },
+      {
+        "path": "otherNumSign",
+        "dataType": "string",
+        "required": false,
+        "description": "其他電話失聯註記（2 表示失聯）；IC001 中文: 電話失聯記號；IC001 英文: Phone lost Flag",
+        "notes": "對應 IC001 API Vocabulary: TPhoneSign"
+      },
+      {
+        "path": "serveAddrSign",
+        "dataType": "string",
+        "required": false,
+        "description": "服務機構地址失聯註記（2 表示失聯）；IC001 中文: 服務機構地址失聯記號；IC001 英文: Service Address Address lost Flag",
+        "notes": "對應 IC001 API Vocabulary: TSrAddrSign"
+      },
+      {
+        "path": "companyAddrSign",
+        "dataType": "string",
+        "required": false,
+        "description": "戶籍 / 公司地址失聯註記（2 表示失聯）；IC001 中文: 戶籍 / 公司註冊地址失聯記號；IC001 英文: Household Address lost Flag",
+        "notes": "對應 IC001 API Vocabulary: TAddr1Sign"
+      },
+      {
+        "path": "addrSign",
+        "dataType": "string",
+        "required": false,
+        "description": "通訊 / 聯絡地址失聯註記（2 表示失聯）；IC001 中文: 通訊 / 聯絡地址失聯記號；IC001 英文: Current address lost Flag",
+        "notes": "對應 IC001 API Vocabulary: TAddr2Sign"
+      },
+      {
+        "path": "bankAcct",
+        "dataType": "string",
+        "required": false,
+        "description": "線上約定帳號 flag；IC001 中文: 線上新增約定轉入帳號；IC001 英文: Eadd Reg Acct",
+        "notes": "對應 IC001 API Vocabulary: TEaddRegAcct"
+      },
+      {
+        "path": "isGraphicsLogin",
+        "dataType": "boolean",
+        "required": false,
+        "description": "圖形綁登入",
+        "notes": "-"
+      },
+      {
+        "path": "isActiveMember",
+        "dataType": "boolean",
+        "required": false,
+        "description": "啟用網銀會員",
+        "notes": "-"
+      },
+      {
+        "path": "pwdChangeTime",
+        "dataType": "string",
+        "required": false,
+        "description": "六個月未變更密碼提醒",
+        "notes": "-"
+      },
+      {
+        "path": "passMaxLength",
+        "dataType": "string",
+        "required": false,
+        "description": "密碼長度至 20 碼",
+        "notes": "-"
+      },
+      {
+        "path": "cardId",
+        "dataType": "string",
+        "required": false,
+        "description": "卡銷會員編號（整併）",
+        "notes": "-"
+      },
+      {
+        "path": "digitalFg",
+        "dataType": "boolean",
+        "required": false,
+        "description": "數位帳號註記",
+        "notes": "-"
+      },
+      {
+        "path": "serveAddrZip",
+        "dataType": "string",
+        "required": false,
+        "description": "服務機構（郵遞區號）；IC001 中文: 服務機構地址（郵遞區號）；IC001 英文: Service Address Code",
+        "notes": "對應 IC001 API Vocabulary: TSrPostCode"
+      },
+      {
+        "path": "serveAddr",
+        "dataType": "string",
+        "required": false,
+        "description": "服務機構；IC001 中文: 服務機構地址（地址）；IC001 英文: Service Address Address",
+        "notes": "對應 IC001 API Vocabulary: TSrAddress"
+      },
+      {
+        "path": "foreignAlert",
+        "dataType": "boolean",
+        "required": false,
+        "description": "外匯疑似化整為零註記",
+        "notes": "-"
+      },
+      {
+        "path": "foreignStop",
+        "dataType": "boolean",
+        "required": false,
+        "description": "網銀暫停外匯交易註記",
+        "notes": "-"
+      },
+      {
+        "path": "loginType",
+        "dataType": "string",
+        "required": false,
+        "description": "登入方式",
+        "notes": "-"
+      },
+      {
+        "path": "isSysError",
+        "dataType": "boolean",
+        "required": false,
+        "description": "主機系統錯誤問題",
+        "notes": "-"
+      },
+      {
+        "path": "isEmailLost",
+        "dataType": "boolean",
+        "required": false,
+        "description": "Email 失聯；IC001 中文: E-MAIL 失聯註記；IC001 英文: E-MAIL lost Flag",
+        "notes": "對應 IC001 API Vocabulary: TEmailSign"
+      },
+      {
+        "path": "isStatmnt",
+        "dataType": "boolean",
+        "required": false,
+        "description": "銀行綜合對帳單是否為不寄送；IC001 中文: 對帳單寄送記號；IC001 英文: Bank statement send flag",
+        "notes": "對應 IC001 API Vocabulary: TCnsDlvType"
+      },
+      {
+        "path": "tranId",
+        "dataType": "string",
+        "required": false,
+        "description": "客戶 ID 留存於主機對應編號",
+        "notes": "-"
+      },
+      {
+        "path": "eQuotaTotD",
+        "dataType": "string",
+        "required": false,
+        "description": "非約轉提升限額判斷_未變更 10 萬_變更 20 萬",
+        "notes": "-"
+      },
+      {
+        "path": "firstLogins",
+        "dataType": "string",
+        "required": false,
+        "description": "-",
+        "notes": "-"
+      },
+      {
+        "path": "lastLogins",
+        "dataType": "string",
+        "required": false,
+        "description": "-",
+        "notes": "-"
+      },
+      {
+        "path": "dsTrustAcct",
+        "dataType": "string",
+        "required": false,
+        "description": "信託帳戶",
+        "notes": "-"
+      },
+      {
+        "path": "dsGCert",
+        "dataType": "string",
+        "required": false,
+        "description": "基金庫存憑證",
+        "notes": "-"
+      },
+      {
+        "path": "dsTrtAcct",
+        "dataType": "string",
+        "required": false,
+        "description": "轉出 / 轉入帳號",
+        "notes": "-"
+      },
+      {
+        "path": "dsCurrtAcct",
+        "dataType": "string",
+        "required": false,
+        "description": "轉出 / 轉入外幣帳號",
+        "notes": "-"
+      },
+      {
+        "path": "dsCardTrtAcct",
+        "dataType": "string",
+        "required": false,
+        "description": "轉出 / 轉入信用卡號",
+        "notes": "-"
+      },
+      {
+        "path": "dsGiftCardTrtAcct",
+        "dataType": "string",
+        "required": false,
+        "description": "轉出 / 轉入禮物卡號",
+        "notes": "-"
+      },
+      {
+        "path": "inactiveFlag",
+        "dataType": "string",
+        "required": false,
+        "description": "IC001 中文: 久未往來戶記號；IC001 英文: INACTIVE ACCOUNT FLAG",
+        "notes": "對應 IC001 API Vocabulary: EnqEInactiveFlag"
+      }
+    ],
+    "businessSteps": [
+      {
+        "step": 1,
+        "title": ": 請求參數與 Redis key 處理",
+        "details": "1.1 檢核 accessTokenAuthSn 不可為空，為空回 responseCode=9999\n1.2 依 Share:Data:Sn:{access_token.auth_sn}:Member 組成 Redis key\n1.3 refreshFromIris=false 時優先讀取 Redis Member 資料"
+      },
+      {
+        "step": 2,
+        "title": ": Redis 命中處理",
+        "details": "2.1 Redis key 有資料時，直接回傳 responseData\n2.2 member 欄位名稱維持截圖中的 redis 字段名"
+      },
+      {
+        "step": 3,
+        "title": ": IC001 客戶資料刷新",
+        "details": "3.1 Redis 無資料或 refreshFromIris=true 時，取得 IC001 客戶資料\n3.2 依 IC001 API Vocabulary 對應表，將 IC001 欄位映射為 Redis 欄位\n3.3 若 writeBackRedis=true，將映射後 responseData 寫回 Redis key"
+      },
+      {
+        "step": 4,
+        "title": ": 回應與異常",
+        "details": "5.1 成功回 responseCode=0000\n5.2 Redis 與 IC001 皆無資料時回 responseCode=9002\n5.3 IC001 或 Redis 服務異常時回 responseCode=9997\n5.4 未輸入必填參數時回 responseCode=9999"
+      }
+    ],
+    "fieldMappings": [
+      {
+        "target": "responseData",
+        "source": "-",
+        "rule": "年齡；客戶身分證 ID；IC001 中文: 身分證字號 / 統一編號；IC001 英文: Identity card/Tax ID number；客戶 IP；客戶 Port；電子信箱；IC001 中文: E-MAIL；IC001 英文: E-MAIL；行動電話；IC001 中文: 簡訊行動電話號碼；IC001 英文: SMS；生日；IC001 中文: 出生日期 / 成立日期；IC001 英文: Date Of Birth；客戶 AOCode（掛帳相關使用）；IC001 中文: 業務人員編號；IC001 英文: Account Officer；使用者代碼；使用者暱稱；IC001 中文: 中文簡稱；IC001 英文: Chinese Short Name；使用者中文名稱；IC001 中文: 戶名；IC001 英文: Chinese Name；使用者英文名稱；IC001 中文: 英文姓名；IC001 英文: English Name；使用者 ID；性別；IC001 中文: 性別；IC001 英文: Gender；網銀會員註記；簡訊服務註記；簡訊行動電話；IC001 中文: 簡訊行動電話號碼；IC001 英文: SMS；簡訊行動電話失聯註記（2 表示失聯）；IC001 中文: 簡訊行動電話失聯記號；IC001 英文: SMS lost Flag；專業投資人記號；IC001 中文: 專業投資人記號；IC001 英文: Professional investor Flag；DC 服務註記；財富業務與投資商品同意書註記；IC001 中文: 特定金錢信託客戶投資有價證券推介同意書；IC001 英文: Trust Referral Consent；是否 OBU；IC001 中文: OBU 台商記號；IC001 英文: OBU Taiwanese businessmen flag；是否為行員；行員代號（1=客戶，2=銀行正職員工，3=銀行退休員工，4=現行已享有優惠員工）；IC001 中文: 員工代號；IC001 英文: Staff No；轉帳類型；手機的 UserAgent；處理過的 UserAgent；上次登入時間；行動電話；IC001 中文: 電話號碼；IC001 英文: Phone；行動電話失聯註記（2 表示失聯）；IC001 中文: 電話失聯記號；IC001 英文: Phone lost Flag；外僑；IC001 中文: 外匯身分別；IC001 英文: Qid Type；-；公司；IC001 中文: 服務機構；IC001 英文: Employers Name；年資；IC001 中文: 服務年資；IC001 英文: Working Age；公司郵遞區號；IC001 中文: 戶籍 / 公司註冊地址（郵遞區號）；IC001 英文: Household Post Code；公司地址；IC001 中文: 戶籍 / 公司註冊地址（地址）；IC001 英文: Household Street；婚姻狀況；IC001 中文: 婚姻記號；IC001 英文: Marital Status；學歷；IC001 中文: 學歷；IC001 英文: Degree of education；行業別；IC001 中文: 職業；IC001 英文: Occupation；職稱；IC001 中文: 職稱；IC001 英文: Job Title；儲值支付帳號的類型；儲值支付帳號；縣市區域；IC001 中文: 通訊 / 聯絡地址（縣市名稱）；IC001 英文: Current address Town Country；路名巷弄；IC001 中文: 通訊 / 聯絡地址（地址 1）；IC001 英文: Current address 1；郵遞區號；IC001 中文: 通訊 / 聯絡地址（郵遞區號）；IC001 英文: Current address Post Code；通訊 / 聯絡地址（地址 2）；IC001 中文: 通訊 / 聯絡地址（地址 2）；IC001 英文: Current address 2；住家電話；IC001 中文: 電話號碼；IC001 英文: Phone；公司電話；IC001 中文: 電話號碼；IC001 英文: Phone；戶籍電話；IC001 中文: 電話號碼；IC001 英文: Phone；通訊電話；IC001 中文: 電話號碼；IC001 英文: Phone；服務機構電話一；IC001 中文: 電話號碼；IC001 英文: Phone；服務機構電話二；IC001 中文: 電話號碼；IC001 英文: Phone；其他電話；IC001 中文: 電話號碼；IC001 英文: Phone；住家電話失聯註記（2 表示失聯）；IC001 中文: 電話失聯記號；IC001 英文: Phone lost Flag；公司電話失聯註記（2 表示失聯）；IC001 中文: 電話失聯記號；IC001 英文: Phone lost Flag；戶籍電話失聯註記（2 表示失聯）；IC001 中文: 電話失聯記號；IC001 英文: Phone lost Flag；通訊電話失聯註記（2 表示失聯）；IC001 中文: 電話失聯記號；IC001 英文: Phone lost Flag；服務機構電話一失聯註記（2 表示失聯）；IC001 中文: 電話失聯記號；IC001 英文: Phone lost Flag；服務機構電話二失聯註記（2 表示失聯）；IC001 中文: 電話失聯記號；IC001 英文: Phone lost Flag；其他電話失聯註記（2 表示失聯）；IC001 中文: 電話失聯記號；IC001 英文: Phone lost Flag；服務機構地址失聯註記（2 表示失聯）；IC001 中文: 服務機構地址失聯記號；IC001 英文: Service Address Address lost Flag；戶籍 / 公司地址失聯註記（2 表示失聯）；IC001 中文: 戶籍 / 公司註冊地址失聯記號；IC001 英文: Household Address lost Flag；通訊 / 聯絡地址失聯註記（2 表示失聯）；IC001 中文: 通訊 / 聯絡地址失聯記號；IC001 英文: Current address lost Flag；線上約定帳號 flag；IC001 中文: 線上新增約定轉入帳號；IC001 英文: Eadd Reg Acct；圖形綁登入；啟用網銀會員；六個月未變更密碼提醒；密碼長度至 20 碼；卡銷會員編號（整併）；數位帳號註記；服務機構（郵遞區號）；IC001 中文: 服務機構地址（郵遞區號）；IC001 英文: Service Address Code；服務機構；IC001 中文: 服務機構地址（地址）；IC001 英文: Service Address Address；外匯疑似化整為零註記；網銀暫停外匯交易註記；登入方式；主機系統錯誤問題；Email 失聯；IC001 中文: E-MAIL 失聯註記；IC001 英文: E-MAIL lost Flag；銀行綜合對帳單是否為不寄送；IC001 中文: 對帳單寄送記號；IC001 英文: Bank statement send flag；客戶 ID 留存於主機對應編號；非約轉提升限額判斷_未變更 10 萬_變更 20 萬；信託帳戶；基金庫存憑證；轉出 / 轉入帳號；轉出 / 轉入外幣帳號；轉出 / 轉入信用卡號；轉出 / 轉入禮物卡號；IC001 中文: 久未往來戶記號；IC001 英文: INACTIVE ACCOUNT FLAG",
+        "fields": [
+          {
+            "field": "age",
+            "source": "-",
+            "rule": "年齡"
+          },
+          {
+            "field": "custId",
+            "source": "對應 IC001 API Vocabulary: TMnemonic",
+            "rule": "客戶身分證 ID；IC001 中文: 身分證字號 / 統一編號；IC001 英文: Identity card/Tax ID number"
+          },
+          {
+            "field": "custIp",
+            "source": "-",
+            "rule": "客戶 IP"
+          },
+          {
+            "field": "custPort",
+            "source": "-",
+            "rule": "客戶 Port"
+          },
+          {
+            "field": "custMail",
+            "source": "對應 IC001 API Vocabulary: TEmail",
+            "rule": "電子信箱；IC001 中文: E-MAIL；IC001 英文: E-MAIL"
+          },
+          {
+            "field": "t24Mail",
+            "source": "對應 IC001 API Vocabulary: TEmail",
+            "rule": "電子信箱；IC001 中文: E-MAIL；IC001 英文: E-MAIL"
+          },
+          {
+            "field": "t24Sms",
+            "source": "對應 IC001 API Vocabulary: TmnSms1",
+            "rule": "行動電話；IC001 中文: 簡訊行動電話號碼；IC001 英文: SMS"
+          },
+          {
+            "field": "t24Birthday",
+            "source": "對應 IC001 API Vocabulary: TmnDateOfBirth",
+            "rule": "生日；IC001 中文: 出生日期 / 成立日期；IC001 英文: Date Of Birth"
+          },
+          {
+            "field": "t24AoCode",
+            "source": "對應 IC001 API Vocabulary: TmnAccountOfficer",
+            "rule": "客戶 AOCode（掛帳相關使用）；IC001 中文: 業務人員編號；IC001 英文: Account Officer"
+          },
+          {
+            "field": "userCode",
+            "source": "-",
+            "rule": "使用者代碼"
+          },
+          {
+            "field": "userAlias",
+            "source": "對應 IC001 API Vocabulary: TmnShortName2",
+            "rule": "使用者暱稱；IC001 中文: 中文簡稱；IC001 英文: Chinese Short Name"
+          },
+          {
+            "field": "userCName",
+            "source": "對應 IC001 API Vocabulary: TmnName1",
+            "rule": "使用者中文名稱；IC001 中文: 戶名；IC001 英文: Chinese Name"
+          },
+          {
+            "field": "userEName",
+            "source": "對應 IC001 API Vocabulary: TmnName2",
+            "rule": "使用者英文名稱；IC001 中文: 英文姓名；IC001 英文: English Name"
+          },
+          {
+            "field": "userId",
+            "source": "-",
+            "rule": "使用者 ID"
+          },
+          {
+            "field": "gender",
+            "source": "對應 IC001 API Vocabulary: TmnGender",
+            "rule": "性別；IC001 中文: 性別；IC001 英文: Gender"
+          },
+          {
+            "field": "birthday",
+            "source": "對應 IC001 API Vocabulary: TmnDateOfBirth",
+            "rule": "生日；IC001 中文: 出生日期 / 成立日期；IC001 英文: Date Of Birth"
+          },
+          {
+            "field": "sslFlag",
+            "source": "-",
+            "rule": "網銀會員註記"
+          },
+          {
+            "field": "smsStatus",
+            "source": "-",
+            "rule": "簡訊服務註記"
+          },
+          {
+            "field": "smsMobile",
+            "source": "對應 IC001 API Vocabulary: TmnSms1",
+            "rule": "簡訊行動電話；IC001 中文: 簡訊行動電話號碼；IC001 英文: SMS"
+          },
+          {
+            "field": "smsMobileSign",
+            "source": "對應 IC001 API Vocabulary: TSmsSign",
+            "rule": "簡訊行動電話失聯註記（2 表示失聯）；IC001 中文: 簡訊行動電話失聯記號；IC001 英文: SMS lost Flag"
+          },
+          {
+            "field": "investFlag",
+            "source": "對應 IC001 API Vocabulary: TProfInvest",
+            "rule": "專業投資人記號；IC001 中文: 專業投資人記號；IC001 英文: Professional investor Flag"
+          },
+          {
+            "field": "dcStatus",
+            "source": "-",
+            "rule": "DC 服務註記"
+          },
+          {
+            "field": "agreement",
+            "source": "對應 IC001 API Vocabulary: TetfAgreemt",
+            "rule": "財富業務與投資商品同意書註記；IC001 中文: 特定金錢信託客戶投資有價證券推介同意書；IC001 英文: Trust Referral Consent"
+          },
+          {
+            "field": "isObuCustomer",
+            "source": "對應 IC001 API Vocabulary: TObu",
+            "rule": "是否 OBU；IC001 中文: OBU 台商記號；IC001 英文: OBU Taiwanese businessmen flag"
+          },
+          {
+            "field": "isStaff",
+            "source": "-",
+            "rule": "是否為行員"
+          },
+          {
+            "field": "staffTarget",
+            "source": "對應 IC001 API Vocabulary: TStaffNo",
+            "rule": "行員代號（1=客戶，2=銀行正職員工，3=銀行退休員工，4=現行已享有優惠員工）；IC001 中文: 員工代號；IC001 英文: Staff No"
+          },
+          {
+            "field": "acctTransferType",
+            "source": "-",
+            "rule": "轉帳類型"
+          },
+          {
+            "field": "userAgent",
+            "source": "-",
+            "rule": "手機的 UserAgent"
+          },
+          {
+            "field": "parsedUserAgent",
+            "source": "-",
+            "rule": "處理過的 UserAgent"
+          },
+          {
+            "field": "lastLoginTime",
+            "source": "-",
+            "rule": "上次登入時間"
+          },
+          {
+            "field": "mobilePhone",
+            "source": "對應 IC001 API Vocabulary: TPhone",
+            "rule": "行動電話；IC001 中文: 電話號碼；IC001 英文: Phone"
+          },
+          {
+            "field": "mobilePhoneSign",
+            "source": "對應 IC001 API Vocabulary: TPhoneSign",
+            "rule": "行動電話失聯註記（2 表示失聯）；IC001 中文: 電話失聯記號；IC001 英文: Phone lost Flag"
+          },
+          {
+            "field": "qidType",
+            "source": "對應 IC001 API Vocabulary: TQidType",
+            "rule": "外僑；IC001 中文: 外匯身分別；IC001 英文: Qid Type"
+          },
+          {
+            "field": "userCreateTime",
+            "source": "-",
+            "rule": "-"
+          },
+          {
+            "field": "company",
+            "source": "對應 IC001 API Vocabulary: TmnEmployersName",
+            "rule": "公司；IC001 中文: 服務機構；IC001 英文: Employers Name"
+          },
+          {
+            "field": "workingAge",
+            "source": "對應 IC001 API Vocabulary: TWorkingAge",
+            "rule": "年資；IC001 中文: 服務年資；IC001 英文: Working Age"
+          },
+          {
+            "field": "companyAddrZip",
+            "source": "對應 IC001 API Vocabulary: TmnPostCode",
+            "rule": "公司郵遞區號；IC001 中文: 戶籍 / 公司註冊地址（郵遞區號）；IC001 英文: Household Post Code"
+          },
+          {
+            "field": "companyAddr",
+            "source": "對應 IC001 API Vocabulary: TmnStreet",
+            "rule": "公司地址；IC001 中文: 戶籍 / 公司註冊地址（地址）；IC001 英文: Household Street"
+          },
+          {
+            "field": "marital",
+            "source": "對應 IC001 API Vocabulary: TmnMaritalStatus",
+            "rule": "婚姻狀況；IC001 中文: 婚姻記號；IC001 英文: Marital Status"
+          },
+          {
+            "field": "degree",
+            "source": "對應 IC001 API Vocabulary: TDegree",
+            "rule": "學歷；IC001 中文: 學歷；IC001 英文: Degree of education"
+          },
+          {
+            "field": "occupation",
+            "source": "對應 IC001 API Vocabulary: TmnOccupation",
+            "rule": "行業別；IC001 中文: 職業；IC001 英文: Occupation"
+          },
+          {
+            "field": "jobTitle",
+            "source": "對應 IC001 API Vocabulary: TmnJobTitle",
+            "rule": "職稱；IC001 中文: 職稱；IC001 英文: Job Title"
+          },
+          {
+            "field": "sinopayKind",
+            "source": "-",
+            "rule": "儲值支付帳號的類型"
+          },
+          {
+            "field": "sinopayAccounts",
+            "source": "-",
+            "rule": "儲值支付帳號"
+          },
+          {
+            "field": "addsCountry",
+            "source": "對應 IC001 API Vocabulary: TTownCountry",
+            "rule": "縣市區域；IC001 中文: 通訊 / 聯絡地址（縣市名稱）；IC001 英文: Current address Town Country"
+          },
+          {
+            "field": "addsLine",
+            "source": "對應 IC001 API Vocabulary: TAddress",
+            "rule": "路名巷弄；IC001 中文: 通訊 / 聯絡地址（地址 1）；IC001 英文: Current address 1"
+          },
+          {
+            "field": "addsZip",
+            "source": "對應 IC001 API Vocabulary: TPostCode",
+            "rule": "郵遞區號；IC001 中文: 通訊 / 聯絡地址（郵遞區號）；IC001 英文: Current address Post Code"
+          },
+          {
+            "field": "tcountry",
+            "source": "對應 IC001 API Vocabulary: Tcountry",
+            "rule": "通訊 / 聯絡地址（地址 2）；IC001 中文: 通訊 / 聯絡地址（地址 2）；IC001 英文: Current address 2"
+          },
+          {
+            "field": "homeNum",
+            "source": "對應 IC001 API Vocabulary: TPhone",
+            "rule": "住家電話；IC001 中文: 電話號碼；IC001 英文: Phone"
+          },
+          {
+            "field": "officeNum",
+            "source": "對應 IC001 API Vocabulary: TPhone",
+            "rule": "公司電話；IC001 中文: 電話號碼；IC001 英文: Phone"
+          },
+          {
+            "field": "residentNum",
+            "source": "對應 IC001 API Vocabulary: TPhone",
+            "rule": "戶籍電話；IC001 中文: 電話號碼；IC001 英文: Phone"
+          },
+          {
+            "field": "commNum",
+            "source": "對應 IC001 API Vocabulary: TPhone",
+            "rule": "通訊電話；IC001 中文: 電話號碼；IC001 英文: Phone"
+          },
+          {
+            "field": "serveNum1",
+            "source": "對應 IC001 API Vocabulary: TPhone",
+            "rule": "服務機構電話一；IC001 中文: 電話號碼；IC001 英文: Phone"
+          },
+          {
+            "field": "serveNum2",
+            "source": "對應 IC001 API Vocabulary: TPhone",
+            "rule": "服務機構電話二；IC001 中文: 電話號碼；IC001 英文: Phone"
+          },
+          {
+            "field": "otherNum",
+            "source": "對應 IC001 API Vocabulary: TPhone",
+            "rule": "其他電話；IC001 中文: 電話號碼；IC001 英文: Phone"
+          },
+          {
+            "field": "homeNumSign",
+            "source": "對應 IC001 API Vocabulary: TPhoneSign",
+            "rule": "住家電話失聯註記（2 表示失聯）；IC001 中文: 電話失聯記號；IC001 英文: Phone lost Flag"
+          },
+          {
+            "field": "officeNumSign",
+            "source": "對應 IC001 API Vocabulary: TPhoneSign",
+            "rule": "公司電話失聯註記（2 表示失聯）；IC001 中文: 電話失聯記號；IC001 英文: Phone lost Flag"
+          },
+          {
+            "field": "residentNumSign",
+            "source": "對應 IC001 API Vocabulary: TPhoneSign",
+            "rule": "戶籍電話失聯註記（2 表示失聯）；IC001 中文: 電話失聯記號；IC001 英文: Phone lost Flag"
+          },
+          {
+            "field": "commNumSign",
+            "source": "對應 IC001 API Vocabulary: TPhoneSign",
+            "rule": "通訊電話失聯註記（2 表示失聯）；IC001 中文: 電話失聯記號；IC001 英文: Phone lost Flag"
+          },
+          {
+            "field": "serveNum1Sign",
+            "source": "對應 IC001 API Vocabulary: TPhoneSign",
+            "rule": "服務機構電話一失聯註記（2 表示失聯）；IC001 中文: 電話失聯記號；IC001 英文: Phone lost Flag"
+          },
+          {
+            "field": "serveNum2Sign",
+            "source": "對應 IC001 API Vocabulary: TPhoneSign",
+            "rule": "服務機構電話二失聯註記（2 表示失聯）；IC001 中文: 電話失聯記號；IC001 英文: Phone lost Flag"
+          },
+          {
+            "field": "otherNumSign",
+            "source": "對應 IC001 API Vocabulary: TPhoneSign",
+            "rule": "其他電話失聯註記（2 表示失聯）；IC001 中文: 電話失聯記號；IC001 英文: Phone lost Flag"
+          },
+          {
+            "field": "serveAddrSign",
+            "source": "對應 IC001 API Vocabulary: TSrAddrSign",
+            "rule": "服務機構地址失聯註記（2 表示失聯）；IC001 中文: 服務機構地址失聯記號；IC001 英文: Service Address Address lost Flag"
+          },
+          {
+            "field": "companyAddrSign",
+            "source": "對應 IC001 API Vocabulary: TAddr1Sign",
+            "rule": "戶籍 / 公司地址失聯註記（2 表示失聯）；IC001 中文: 戶籍 / 公司註冊地址失聯記號；IC001 英文: Household Address lost Flag"
+          },
+          {
+            "field": "addrSign",
+            "source": "對應 IC001 API Vocabulary: TAddr2Sign",
+            "rule": "通訊 / 聯絡地址失聯註記（2 表示失聯）；IC001 中文: 通訊 / 聯絡地址失聯記號；IC001 英文: Current address lost Flag"
+          },
+          {
+            "field": "bankAcct",
+            "source": "對應 IC001 API Vocabulary: TEaddRegAcct",
+            "rule": "線上約定帳號 flag；IC001 中文: 線上新增約定轉入帳號；IC001 英文: Eadd Reg Acct"
+          },
+          {
+            "field": "isGraphicsLogin",
+            "source": "-",
+            "rule": "圖形綁登入"
+          },
+          {
+            "field": "isActiveMember",
+            "source": "-",
+            "rule": "啟用網銀會員"
+          },
+          {
+            "field": "pwdChangeTime",
+            "source": "-",
+            "rule": "六個月未變更密碼提醒"
+          },
+          {
+            "field": "passMaxLength",
+            "source": "-",
+            "rule": "密碼長度至 20 碼"
+          },
+          {
+            "field": "cardId",
+            "source": "-",
+            "rule": "卡銷會員編號（整併）"
+          },
+          {
+            "field": "digitalFg",
+            "source": "-",
+            "rule": "數位帳號註記"
+          },
+          {
+            "field": "serveAddrZip",
+            "source": "對應 IC001 API Vocabulary: TSrPostCode",
+            "rule": "服務機構（郵遞區號）；IC001 中文: 服務機構地址（郵遞區號）；IC001 英文: Service Address Code"
+          },
+          {
+            "field": "serveAddr",
+            "source": "對應 IC001 API Vocabulary: TSrAddress",
+            "rule": "服務機構；IC001 中文: 服務機構地址（地址）；IC001 英文: Service Address Address"
+          },
+          {
+            "field": "foreignAlert",
+            "source": "-",
+            "rule": "外匯疑似化整為零註記"
+          },
+          {
+            "field": "foreignStop",
+            "source": "-",
+            "rule": "網銀暫停外匯交易註記"
+          },
+          {
+            "field": "loginType",
+            "source": "-",
+            "rule": "登入方式"
+          },
+          {
+            "field": "isSysError",
+            "source": "-",
+            "rule": "主機系統錯誤問題"
+          },
+          {
+            "field": "isEmailLost",
+            "source": "對應 IC001 API Vocabulary: TEmailSign",
+            "rule": "Email 失聯；IC001 中文: E-MAIL 失聯註記；IC001 英文: E-MAIL lost Flag"
+          },
+          {
+            "field": "isStatmnt",
+            "source": "對應 IC001 API Vocabulary: TCnsDlvType",
+            "rule": "銀行綜合對帳單是否為不寄送；IC001 中文: 對帳單寄送記號；IC001 英文: Bank statement send flag"
+          },
+          {
+            "field": "tranId",
+            "source": "-",
+            "rule": "客戶 ID 留存於主機對應編號"
+          },
+          {
+            "field": "eQuotaTotD",
+            "source": "-",
+            "rule": "非約轉提升限額判斷_未變更 10 萬_變更 20 萬"
+          },
+          {
+            "field": "firstLogins",
+            "source": "-",
+            "rule": "-"
+          },
+          {
+            "field": "lastLogins",
+            "source": "-",
+            "rule": "-"
+          },
+          {
+            "field": "dsTrustAcct",
+            "source": "-",
+            "rule": "信託帳戶"
+          },
+          {
+            "field": "dsGCert",
+            "source": "-",
+            "rule": "基金庫存憑證"
+          },
+          {
+            "field": "dsTrtAcct",
+            "source": "-",
+            "rule": "轉出 / 轉入帳號"
+          },
+          {
+            "field": "dsCurrtAcct",
+            "source": "-",
+            "rule": "轉出 / 轉入外幣帳號"
+          },
+          {
+            "field": "dsCardTrtAcct",
+            "source": "-",
+            "rule": "轉出 / 轉入信用卡號"
+          },
+          {
+            "field": "dsGiftCardTrtAcct",
+            "source": "-",
+            "rule": "轉出 / 轉入禮物卡號"
+          },
+          {
+            "field": "inactiveFlag",
+            "source": "對應 IC001 API Vocabulary: EnqEInactiveFlag",
+            "rule": "IC001 中文: 久未往來戶記號；IC001 英文: INACTIVE ACCOUNT FLAG"
+          }
+        ]
+      }
+    ],
+    "errorCodes": [
+      {
+        "code": "9997",
+        "scenario": "連接數據庫或下游服務失敗",
+        "message": "WebAPI服務異常"
+      },
+      {
+        "code": "9002",
+        "scenario": "查詢成功後,回傳的數據為null",
+        "message": "查無資料！"
+      },
+      {
+        "code": "9999",
+        "scenario": "未輸入必填請求參數",
+        "message": "請輸入accessTokenAuthSn！"
+      }
+    ],
+    "runtimeDependencies": [
+      {
+        "id": "external_api_ec001_rawdatajson",
+        "type": "external_api",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "Excel 依赖声明提到 EC001->RAWDATA json 數組。"
+      },
+      {
+        "id": "external_api_ic001",
+        "type": "external_api",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "Excel 依赖声明提到 IC001->客戶資料。"
+      },
+      {
+        "id": "runtime_context_redis_share_data_sn_access_token_auth_sn_member_member",
+        "type": "runtime_context",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "业务逻辑正文提到 Redis->Share:Data:Sn:{access_token.auth_sn}:Member (Member 客戶資料) 依赖。"
+      }
+    ],
+    "referenceHints": [],
+    "backendApis": [
+      "EC001 -> RAWDATA json 數組",
+      "IC001 -> 客戶資料",
+      "Redis -> Share:Data:Sn:{access_token.auth_sn}:Member (Member 客戶資料)"
+    ],
+    "mockExamples": [
+      {
+        "scenario": "正向情境",
+        "requestPayload": {
+          "accessTokenAuthSn": "78f0e06d8e8f4f1ea8a420c8f9300001",
+          "refreshFromIris": false,
+          "writeBackRedis": true
+        },
+        "responsePayload": {
+          "isSuccess": true,
+          "responseCode": "0000",
+          "responseMessage": "成功！",
+          "responseDT": "2026/04/27 10:30:00",
+          "responseData": {
+            "age": 45,
+            "custId": "A123456789",
+            "custIp": "10.10.10.10",
+            "custPort": 443,
+            "custMail": "customer@example.com",
+            "t24Mail": "customer@example.com",
+            "t24Sms": "0912345678",
+            "t24Birthday": "1980/01/01",
+            "t24AoCode": "123",
+            "userCode": "USER001",
+            "userAlias": "王大明",
+            "userCName": "王大明",
+            "userEName": "DA MING WANG",
+            "userId": "A123456789",
+            "gender": "M",
+            "birthday": "1980/01/01",
+            "sslFlag": "1",
+            "smsStatus": "Y",
+            "smsMobile": "0912345678",
+            "smsMobileSign": "1",
+            "investFlag": "N",
+            "dcStatus": "N",
+            "agreement": "Y",
+            "isObuCustomer": false,
+            "isStaff": false,
+            "staffTarget": "1",
+            "acctTransferType": "1",
+            "userAgent": "Mozilla/5.0",
+            "parsedUserAgent": "Chrome",
+            "lastLoginTime": "2026/04/27 10:20:00",
+            "mobilePhone": "0912345678",
+            "mobilePhoneSign": "1",
+            "qidType": "1",
+            "userCreateTime": "2025/01/01 09:00:00",
+            "company": "永豐銀行",
+            "workingAge": "10",
+            "companyAddrZip": "104",
+            "companyAddr": "臺北市中山區南京東路三段36號",
+            "marital": "1",
+            "degree": "5",
+            "occupation": "A01",
+            "jobTitle": "MANAGER",
+            "sinopayKind": "1",
+            "sinopayAccounts": "0071234567890",
+            "addsCountry": "臺北市松山區",
+            "addsLine": "南京東路三段1號",
+            "addsZip": "105",
+            "tcountry": "12樓",
+            "homeNum": "886-02-87612288",
+            "officeNum": "886-02-25008888",
+            "residentNum": "886-02-26001111",
+            "commNum": "886-02-27002222",
+            "serveNum1": "886-02-28003333",
+            "serveNum2": "886-02-29004444",
+            "otherNum": "886-02-30005555",
+            "homeNumSign": "1",
+            "officeNumSign": "1",
+            "residentNumSign": "1",
+            "commNumSign": "1",
+            "serveNum1Sign": "1",
+            "serveNum2Sign": "1",
+            "otherNumSign": "1",
+            "serveAddrSign": "1",
+            "companyAddrSign": "1",
+            "addrSign": "1",
+            "bankAcct": "Y",
+            "isGraphicsLogin": false,
+            "isActiveMember": true,
+            "pwdChangeTime": "2026/01/01 09:00:00",
+            "passMaxLength": "20",
+            "cardId": "CARD123456",
+            "digitalFg": true,
+            "serveAddrZip": "104",
+            "serveAddr": "臺北市中山區南京東路三段36號",
+            "foreignAlert": false,
+            "foreignStop": false,
+            "loginType": "PASSWORD",
+            "isSysError": false,
+            "isEmailLost": false,
+            "isStatmnt": false,
+            "tranId": "IC001202604270001",
+            "eQuotaTotD": "200000",
+            "firstLogins": "2025/01/01 09:00:00",
+            "lastLogins": "2026/04/27 10:20:00",
+            "dsTrustAcct": "Y",
+            "dsGCert": "Y",
+            "dsTrtAcct": "Y",
+            "dsCurrtAcct": "Y",
+            "dsCardTrtAcct": "Y",
+            "dsGiftCardTrtAcct": "N",
+            "inactiveFlag": "N"
+          }
+        }
+      },
+      {
+        "scenario": "連接數據庫或下游服務失敗",
+        "requestPayload": {
+          "accessTokenAuthSn": "78f0e06d8e8f4f1ea8a420c8f9300001",
+          "refreshFromIris": false,
+          "writeBackRedis": true
+        },
+        "responsePayload": {
+          "isSuccess": false,
+          "responseCode": "9997",
+          "responseMessage": "WebAPI服務異常",
+          "responseDT": "2026/04/27 10:30:00",
+          "responseData": {}
+        }
+      },
+      {
+        "scenario": "查詢成功後,回傳的數據為null",
+        "requestPayload": {
+          "accessTokenAuthSn": "78f0e06d8e8f4f1ea8a420c8f9300001",
+          "refreshFromIris": false,
+          "writeBackRedis": true
+        },
+        "responsePayload": {
+          "isSuccess": false,
+          "responseCode": "9002",
+          "responseMessage": "查無資料！",
+          "responseDT": "2026/04/27 10:30:00",
+          "responseData": {}
+        }
+      },
+      {
+        "scenario": "未輸入必填請求參數",
+        "responsePayload": {
+          "isSuccess": false,
+          "responseCode": "9999",
+          "responseMessage": "請輸入accessTokenAuthSn！",
+          "responseDT": "2026/04/27 10:30:00",
+          "responseData": {}
+        }
+      }
+    ],
+    "handoffSource": "codeHandoff",
+    "logicSummary": {
+      "stepCount": 4,
+      "queryContractCount": 0,
+      "mappingRuleCount": 91,
+      "legacyEvidenceCount": 0,
+      "dependencyHintCount": 3,
+      "constraintCount": 5,
+      "unresolvedCount": 0,
+      "primarySource": "businessLogic"
+    },
+    "logicFlow": [
+      {
+        "stepId": "step_1",
+        "title": ": 請求參數與 Redis key 處理",
+        "actionType": "return",
+        "inputs": [
+          "accessTokenAuthSn",
+          "refreshFromIris",
+          "writeBackRedis"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_2",
+        "title": ": Redis 命中處理",
+        "actionType": "return",
+        "inputs": [
+          "accessTokenAuthSn",
+          "refreshFromIris",
+          "writeBackRedis"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_3",
+        "title": ": IC001 客戶資料刷新",
+        "actionType": "mapping",
+        "inputs": [
+          "accessTokenAuthSn",
+          "refreshFromIris",
+          "writeBackRedis"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_4",
+        "title": ": 回應與異常",
+        "actionType": "return",
+        "inputs": [
+          "accessTokenAuthSn",
+          "refreshFromIris",
+          "writeBackRedis"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      }
+    ],
+    "audienceProfile": {
+      "scope": "frontstage",
+      "confidence": "high",
+      "scores": {
+        "frontstage": 12,
+        "midBackoffice": 0,
+        "shared": 9
+      },
+      "evidence": [
+        {
+          "scope": "frontstage",
+          "keyword": "member",
+          "weight": 3
+        },
+        {
+          "scope": "frontstage",
+          "keyword": "cust",
+          "weight": 1
+        },
+        {
+          "scope": "frontstage",
+          "keyword": "客戶",
+          "weight": 1
+        },
+        {
+          "scope": "frontstage",
+          "keyword": "access_token",
+          "weight": 3
+        },
+        {
+          "scope": "frontstage",
+          "keyword": "auth_sn",
+          "weight": 3
+        },
+        {
+          "scope": "frontstage",
+          "keyword": "redis",
+          "weight": 1
+        },
+        {
+          "scope": "shared",
+          "keyword": "common",
+          "weight": 2
+        },
+        {
+          "scope": "shared",
+          "keyword": "commonfunc",
+          "weight": 3
+        },
+        {
+          "scope": "shared",
+          "keyword": "framework",
+          "weight": 1
+        },
+        {
+          "scope": "shared",
+          "keyword": "共用",
+          "weight": 3
+        }
+      ],
+      "unresolved": []
+    },
+    "devGuidelineProfile": {
+      "sourceName": "P240301 永豐商銀新大戶程式開發規範",
+      "version": "6.2",
+      "catalogPath": "rules/code-guidelines/p240301-v6.2/catalog.json",
+      "rulesRoot": "D:/Devs/NEWDAWHO/.agent/project-rules/NEWDAWHO",
+      "sourceStatus": "converted_reference_required"
+    },
+    "devGuidelineRulesSelected": [
+      {
+        "ruleId": "common-style",
+        "title": "共同落碼風格與可維護性",
+        "category": "common-style",
+        "direction": "production-code",
+        "ruleType": "style_only",
+        "audienceScopes": [
+          "frontstage",
+          "midBackoffice",
+          "shared",
+          "unknown"
+        ],
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/common-style.md",
+        "action": "load_on_demand"
+      },
+      {
+        "ruleId": "data-access",
+        "title": "DB / SQL / 資料檢索規範",
+        "category": "data-access",
+        "direction": "production-code",
+        "ruleType": "blocking_gap",
+        "audienceScopes": [
+          "frontstage",
+          "midBackoffice",
+          "shared",
+          "unknown"
+        ],
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/data-access.md",
+        "action": "select_and_check_gaps"
+      },
+      {
+        "ruleId": "frontstage-session",
+        "title": "前台會員 / JWT / Session / Redis 規範",
+        "category": "identity-session",
+        "direction": "production-code",
+        "ruleType": "blocking_gap",
+        "audienceScopes": [
+          "frontstage"
+        ],
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/frontstage-session.md",
+        "action": "select_and_check_gaps"
+      },
+      {
+        "ruleId": "cache",
+        "title": "快取 / Redis / 事實來源規範",
+        "category": "cache",
+        "direction": "production-code",
+        "ruleType": "blocking_gap",
+        "audienceScopes": [
+          "frontstage",
+          "midBackoffice",
+          "shared",
+          "unknown"
+        ],
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/cache.md",
+        "action": "select_and_check_gaps"
+      },
+      {
+        "ruleId": "validation",
+        "title": "Request DTO 驗證與錯誤映射規範",
+        "category": "validation",
+        "direction": "production-code",
+        "ruleType": "blocking_gap",
+        "audienceScopes": [
+          "frontstage",
+          "midBackoffice",
+          "shared",
+          "unknown"
+        ],
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/validation.md",
+        "action": "select_and_check_gaps"
+      },
+      {
+        "ruleId": "config",
+        "title": "AppSettings / 外部服務設定規範",
+        "category": "config",
+        "direction": "production-code",
+        "ruleType": "blocking_gap",
+        "audienceScopes": [
+          "frontstage",
+          "midBackoffice",
+          "shared",
+          "unknown"
+        ],
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/config.md",
+        "action": "select_and_check_gaps"
+      },
+      {
+        "ruleId": "logging-exception",
+        "title": "Log / Exception / 失敗處理規範",
+        "category": "logging-exception",
+        "direction": "production-code",
+        "ruleType": "style_only",
+        "audienceScopes": [
+          "frontstage",
+          "midBackoffice",
+          "shared",
+          "unknown"
+        ],
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/logging-exception.md",
+        "action": "load_on_demand"
+      },
+      {
+        "ruleId": "test-handoff",
+        "title": "第 05 步測試交接規範",
+        "category": "test-handoff",
+        "direction": "handoff-only",
+        "ruleType": "handoff_only",
+        "audienceScopes": [
+          "frontstage",
+          "midBackoffice",
+          "shared",
+          "unknown"
+        ],
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/test-handoff.md",
+        "action": "handoff_only"
+      }
+    ],
+    "devGuidelineLoadHints": [
+      {
+        "ruleId": "common-style",
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/common-style.md",
+        "reason": "Every API implementation needs only the lightweight shared coding conventions."
+      },
+      {
+        "ruleId": "data-access",
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/data-access.md",
+        "reason": "Load only when the API has queryContracts, SQL dependencies, DB backend APIs, or table evidence."
+      },
+      {
+        "ruleId": "frontstage-session",
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/frontstage-session.md",
+        "reason": "Load only for frontstage member/customer APIs that touch identity, JWT, session, Redis, or personal data."
+      },
+      {
+        "ruleId": "cache",
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/cache.md",
+        "reason": "Load only when Redis, cache, TTL, session cache, or stale-read risk appears in the handoff."
+      },
+      {
+        "ruleId": "validation",
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/validation.md",
+        "reason": "Load only when request fields, required fields, custom validation, or validation response mapping is relevant."
+      },
+      {
+        "ruleId": "config",
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/config.md",
+        "reason": "Load only for appsettings, external endpoint, third-party service, or environment config changes."
+      },
+      {
+        "ruleId": "logging-exception",
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/logging-exception.md",
+        "reason": "Load only when the API touches exception handling, logging, or failure disposition."
+      },
+      {
+        "ruleId": "test-handoff",
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/test-handoff.md",
+        "reason": "Load only to describe step-05 UnitTest / IntegrationTest / runtime validation handoff; step 04 must not write test source."
+      }
+    ],
+    "devGuidelineGaps": [],
+    "logicSourcesUsed": [
+      "codeHandoff",
+      "mappingRules",
+      "dependencyHints",
+      "constraints",
+      "mockExamples"
+    ],
+    "queryContractsSelected": [],
+    "mappingRulesSelected": [
+      {
+        "ruleId": "map_age",
+        "sourceField": "-",
+        "targetField": "age",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "年齡",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ic001apivocabulary_tmnemonic_custid",
+        "sourceField": "對應 IC001 API Vocabulary: TMnemonic",
+        "targetField": "custId",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "客戶身分證 ID；IC001 中文: 身分證字號 / 統一編號；IC001 英文: Identity card/Tax ID number",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_custip",
+        "sourceField": "-",
+        "targetField": "custIp",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "客戶 IP",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_custport",
+        "sourceField": "-",
+        "targetField": "custPort",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "客戶 Port",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ic001apivocabulary_temail_custmail",
+        "sourceField": "對應 IC001 API Vocabulary: TEmail",
+        "targetField": "custMail",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "電子信箱；IC001 中文: E-MAIL；IC001 英文: E-MAIL",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ic001apivocabulary_temail_t24mail",
+        "sourceField": "對應 IC001 API Vocabulary: TEmail",
+        "targetField": "t24Mail",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "電子信箱；IC001 中文: E-MAIL；IC001 英文: E-MAIL",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ic001apivocabulary_tmnsms1_t24sms",
+        "sourceField": "對應 IC001 API Vocabulary: TmnSms1",
+        "targetField": "t24Sms",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "行動電話；IC001 中文: 簡訊行動電話號碼；IC001 英文: SMS",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ic001apivocabulary_tmndateofbirth_t24birthday",
+        "sourceField": "對應 IC001 API Vocabulary: TmnDateOfBirth",
+        "targetField": "t24Birthday",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "生日；IC001 中文: 出生日期 / 成立日期；IC001 英文: Date Of Birth",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ic001apivocabulary_tmnaccountofficer_t24aocode",
+        "sourceField": "對應 IC001 API Vocabulary: TmnAccountOfficer",
+        "targetField": "t24AoCode",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "客戶 AOCode（掛帳相關使用）；IC001 中文: 業務人員編號；IC001 英文: Account Officer",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_usercode",
+        "sourceField": "-",
+        "targetField": "userCode",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "使用者代碼",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ic001apivocabulary_tmnshortname2_useralias",
+        "sourceField": "對應 IC001 API Vocabulary: TmnShortName2",
+        "targetField": "userAlias",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "使用者暱稱；IC001 中文: 中文簡稱；IC001 英文: Chinese Short Name",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ic001apivocabulary_tmnname1_usercname",
+        "sourceField": "對應 IC001 API Vocabulary: TmnName1",
+        "targetField": "userCName",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "使用者中文名稱；IC001 中文: 戶名；IC001 英文: Chinese Name",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ic001apivocabulary_tmnname2_userename",
+        "sourceField": "對應 IC001 API Vocabulary: TmnName2",
+        "targetField": "userEName",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "使用者英文名稱；IC001 中文: 英文姓名；IC001 英文: English Name",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_userid",
+        "sourceField": "-",
+        "targetField": "userId",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "使用者 ID",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ic001apivocabulary_tmngender_gender",
+        "sourceField": "對應 IC001 API Vocabulary: TmnGender",
+        "targetField": "gender",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "性別；IC001 中文: 性別；IC001 英文: Gender",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ic001apivocabulary_tmndateofbirth_birthday",
+        "sourceField": "對應 IC001 API Vocabulary: TmnDateOfBirth",
+        "targetField": "birthday",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "生日；IC001 中文: 出生日期 / 成立日期；IC001 英文: Date Of Birth",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_sslflag",
+        "sourceField": "-",
+        "targetField": "sslFlag",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "網銀會員註記",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_smsstatus",
+        "sourceField": "-",
+        "targetField": "smsStatus",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "簡訊服務註記",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ic001apivocabulary_tmnsms1_smsmobile",
+        "sourceField": "對應 IC001 API Vocabulary: TmnSms1",
+        "targetField": "smsMobile",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "簡訊行動電話；IC001 中文: 簡訊行動電話號碼；IC001 英文: SMS",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ic001apivocabulary_tsmssign_smsmobilesign",
+        "sourceField": "對應 IC001 API Vocabulary: TSmsSign",
+        "targetField": "smsMobileSign",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "簡訊行動電話失聯註記（2 表示失聯）；IC001 中文: 簡訊行動電話失聯記號；IC001 英文: SMS lost Flag",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ic001apivocabulary_tprofinvest_investflag",
+        "sourceField": "對應 IC001 API Vocabulary: TProfInvest",
+        "targetField": "investFlag",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "專業投資人記號；IC001 中文: 專業投資人記號；IC001 英文: Professional investor Flag",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_dcstatus",
+        "sourceField": "-",
+        "targetField": "dcStatus",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "DC 服務註記",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ic001apivocabulary_tetfagreemt_agreement",
+        "sourceField": "對應 IC001 API Vocabulary: TetfAgreemt",
+        "targetField": "agreement",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "財富業務與投資商品同意書註記；IC001 中文: 特定金錢信託客戶投資有價證券推介同意書；IC001 英文: Trust Referral Consent",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ic001apivocabulary_tobu_isobucustomer",
+        "sourceField": "對應 IC001 API Vocabulary: TObu",
+        "targetField": "isObuCustomer",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "是否 OBU；IC001 中文: OBU 台商記號；IC001 英文: OBU Taiwanese businessmen flag",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_isstaff",
+        "sourceField": "-",
+        "targetField": "isStaff",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "是否為行員",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ic001apivocabulary_tstaffno_stafftarget",
+        "sourceField": "對應 IC001 API Vocabulary: TStaffNo",
+        "targetField": "staffTarget",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "行員代號（1=客戶，2=銀行正職員工，3=銀行退休員工，4=現行已享有優惠員工）；IC001 中文: 員工代號；IC001 英文: Staff No",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_accttransfertype",
+        "sourceField": "-",
+        "targetField": "acctTransferType",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "轉帳類型",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_useragent",
+        "sourceField": "-",
+        "targetField": "userAgent",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "手機的 UserAgent",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_parseduseragent",
+        "sourceField": "-",
+        "targetField": "parsedUserAgent",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "處理過的 UserAgent",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_lastlogintime",
+        "sourceField": "-",
+        "targetField": "lastLoginTime",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "上次登入時間",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ic001apivocabulary_tphone_mobilephone",
+        "sourceField": "對應 IC001 API Vocabulary: TPhone",
+        "targetField": "mobilePhone",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "行動電話；IC001 中文: 電話號碼；IC001 英文: Phone",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ic001apivocabulary_tphonesign_mobilephonesign",
+        "sourceField": "對應 IC001 API Vocabulary: TPhoneSign",
+        "targetField": "mobilePhoneSign",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "行動電話失聯註記（2 表示失聯）；IC001 中文: 電話失聯記號；IC001 英文: Phone lost Flag",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ic001apivocabulary_tqidtype_qidtype",
+        "sourceField": "對應 IC001 API Vocabulary: TQidType",
+        "targetField": "qidType",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "外僑；IC001 中文: 外匯身分別；IC001 英文: Qid Type",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_usercreatetime",
+        "sourceField": "-",
+        "targetField": "userCreateTime",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "-",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ic001apivocabulary_tmnemployersname_company",
+        "sourceField": "對應 IC001 API Vocabulary: TmnEmployersName",
+        "targetField": "company",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "公司；IC001 中文: 服務機構；IC001 英文: Employers Name",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ic001apivocabulary_tworkingage_workingage",
+        "sourceField": "對應 IC001 API Vocabulary: TWorkingAge",
+        "targetField": "workingAge",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "年資；IC001 中文: 服務年資；IC001 英文: Working Age",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ic001apivocabulary_tmnpostcode_companyaddrzip",
+        "sourceField": "對應 IC001 API Vocabulary: TmnPostCode",
+        "targetField": "companyAddrZip",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "公司郵遞區號；IC001 中文: 戶籍 / 公司註冊地址（郵遞區號）；IC001 英文: Household Post Code",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ic001apivocabulary_tmnstreet_companyaddr",
+        "sourceField": "對應 IC001 API Vocabulary: TmnStreet",
+        "targetField": "companyAddr",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "公司地址；IC001 中文: 戶籍 / 公司註冊地址（地址）；IC001 英文: Household Street",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ic001apivocabulary_tmnmaritalstatus_marital",
+        "sourceField": "對應 IC001 API Vocabulary: TmnMaritalStatus",
+        "targetField": "marital",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "婚姻狀況；IC001 中文: 婚姻記號；IC001 英文: Marital Status",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ic001apivocabulary_tdegree_degree",
+        "sourceField": "對應 IC001 API Vocabulary: TDegree",
+        "targetField": "degree",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "學歷；IC001 中文: 學歷；IC001 英文: Degree of education",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ic001apivocabulary_tmnoccupation_occupation",
+        "sourceField": "對應 IC001 API Vocabulary: TmnOccupation",
+        "targetField": "occupation",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "行業別；IC001 中文: 職業；IC001 英文: Occupation",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ic001apivocabulary_tmnjobtitle_jobtitle",
+        "sourceField": "對應 IC001 API Vocabulary: TmnJobTitle",
+        "targetField": "jobTitle",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "職稱；IC001 中文: 職稱；IC001 英文: Job Title",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_sinopaykind",
+        "sourceField": "-",
+        "targetField": "sinopayKind",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "儲值支付帳號的類型",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_sinopayaccounts",
+        "sourceField": "-",
+        "targetField": "sinopayAccounts",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "儲值支付帳號",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ic001apivocabulary_ttowncountry_addscountry",
+        "sourceField": "對應 IC001 API Vocabulary: TTownCountry",
+        "targetField": "addsCountry",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "縣市區域；IC001 中文: 通訊 / 聯絡地址（縣市名稱）；IC001 英文: Current address Town Country",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ic001apivocabulary_taddress_addsline",
+        "sourceField": "對應 IC001 API Vocabulary: TAddress",
+        "targetField": "addsLine",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "路名巷弄；IC001 中文: 通訊 / 聯絡地址（地址 1）；IC001 英文: Current address 1",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ic001apivocabulary_tpostcode_addszip",
+        "sourceField": "對應 IC001 API Vocabulary: TPostCode",
+        "targetField": "addsZip",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "郵遞區號；IC001 中文: 通訊 / 聯絡地址（郵遞區號）；IC001 英文: Current address Post Code",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ic001apivocabulary_tcountry_tcountry",
+        "sourceField": "對應 IC001 API Vocabulary: Tcountry",
+        "targetField": "tcountry",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "通訊 / 聯絡地址（地址 2）；IC001 中文: 通訊 / 聯絡地址（地址 2）；IC001 英文: Current address 2",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ic001apivocabulary_tphone_homenum",
+        "sourceField": "對應 IC001 API Vocabulary: TPhone",
+        "targetField": "homeNum",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "住家電話；IC001 中文: 電話號碼；IC001 英文: Phone",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ic001apivocabulary_tphone_officenum",
+        "sourceField": "對應 IC001 API Vocabulary: TPhone",
+        "targetField": "officeNum",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "公司電話；IC001 中文: 電話號碼；IC001 英文: Phone",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ic001apivocabulary_tphone_residentnum",
+        "sourceField": "對應 IC001 API Vocabulary: TPhone",
+        "targetField": "residentNum",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "戶籍電話；IC001 中文: 電話號碼；IC001 英文: Phone",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ic001apivocabulary_tphone_commnum",
+        "sourceField": "對應 IC001 API Vocabulary: TPhone",
+        "targetField": "commNum",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "通訊電話；IC001 中文: 電話號碼；IC001 英文: Phone",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ic001apivocabulary_tphone_servenum1",
+        "sourceField": "對應 IC001 API Vocabulary: TPhone",
+        "targetField": "serveNum1",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "服務機構電話一；IC001 中文: 電話號碼；IC001 英文: Phone",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ic001apivocabulary_tphone_servenum2",
+        "sourceField": "對應 IC001 API Vocabulary: TPhone",
+        "targetField": "serveNum2",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "服務機構電話二；IC001 中文: 電話號碼；IC001 英文: Phone",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ic001apivocabulary_tphone_othernum",
+        "sourceField": "對應 IC001 API Vocabulary: TPhone",
+        "targetField": "otherNum",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "其他電話；IC001 中文: 電話號碼；IC001 英文: Phone",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ic001apivocabulary_tphonesign_homenumsign",
+        "sourceField": "對應 IC001 API Vocabulary: TPhoneSign",
+        "targetField": "homeNumSign",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "住家電話失聯註記（2 表示失聯）；IC001 中文: 電話失聯記號；IC001 英文: Phone lost Flag",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ic001apivocabulary_tphonesign_officenumsign",
+        "sourceField": "對應 IC001 API Vocabulary: TPhoneSign",
+        "targetField": "officeNumSign",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "公司電話失聯註記（2 表示失聯）；IC001 中文: 電話失聯記號；IC001 英文: Phone lost Flag",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ic001apivocabulary_tphonesign_residentnumsign",
+        "sourceField": "對應 IC001 API Vocabulary: TPhoneSign",
+        "targetField": "residentNumSign",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "戶籍電話失聯註記（2 表示失聯）；IC001 中文: 電話失聯記號；IC001 英文: Phone lost Flag",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ic001apivocabulary_tphonesign_commnumsign",
+        "sourceField": "對應 IC001 API Vocabulary: TPhoneSign",
+        "targetField": "commNumSign",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "通訊電話失聯註記（2 表示失聯）；IC001 中文: 電話失聯記號；IC001 英文: Phone lost Flag",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ic001apivocabulary_tphonesign_servenum1sign",
+        "sourceField": "對應 IC001 API Vocabulary: TPhoneSign",
+        "targetField": "serveNum1Sign",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "服務機構電話一失聯註記（2 表示失聯）；IC001 中文: 電話失聯記號；IC001 英文: Phone lost Flag",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ic001apivocabulary_tphonesign_servenum2sign",
+        "sourceField": "對應 IC001 API Vocabulary: TPhoneSign",
+        "targetField": "serveNum2Sign",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "服務機構電話二失聯註記（2 表示失聯）；IC001 中文: 電話失聯記號；IC001 英文: Phone lost Flag",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ic001apivocabulary_tphonesign_othernumsign",
+        "sourceField": "對應 IC001 API Vocabulary: TPhoneSign",
+        "targetField": "otherNumSign",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "其他電話失聯註記（2 表示失聯）；IC001 中文: 電話失聯記號；IC001 英文: Phone lost Flag",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ic001apivocabulary_tsraddrsign_serveaddrsign",
+        "sourceField": "對應 IC001 API Vocabulary: TSrAddrSign",
+        "targetField": "serveAddrSign",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "服務機構地址失聯註記（2 表示失聯）；IC001 中文: 服務機構地址失聯記號；IC001 英文: Service Address Address lost Flag",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ic001apivocabulary_taddr1sign_companyaddrsign",
+        "sourceField": "對應 IC001 API Vocabulary: TAddr1Sign",
+        "targetField": "companyAddrSign",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "戶籍 / 公司地址失聯註記（2 表示失聯）；IC001 中文: 戶籍 / 公司註冊地址失聯記號；IC001 英文: Household Address lost Flag",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ic001apivocabulary_taddr2sign_addrsign",
+        "sourceField": "對應 IC001 API Vocabulary: TAddr2Sign",
+        "targetField": "addrSign",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "通訊 / 聯絡地址失聯註記（2 表示失聯）；IC001 中文: 通訊 / 聯絡地址失聯記號；IC001 英文: Current address lost Flag",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ic001apivocabulary_teaddregacct_bankacct",
+        "sourceField": "對應 IC001 API Vocabulary: TEaddRegAcct",
+        "targetField": "bankAcct",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "線上約定帳號 flag；IC001 中文: 線上新增約定轉入帳號；IC001 英文: Eadd Reg Acct",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_isgraphicslogin",
+        "sourceField": "-",
+        "targetField": "isGraphicsLogin",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "圖形綁登入",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_isactivemember",
+        "sourceField": "-",
+        "targetField": "isActiveMember",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "啟用網銀會員",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_pwdchangetime",
+        "sourceField": "-",
+        "targetField": "pwdChangeTime",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "六個月未變更密碼提醒",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_passmaxlength",
+        "sourceField": "-",
+        "targetField": "passMaxLength",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "密碼長度至 20 碼",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_cardid",
+        "sourceField": "-",
+        "targetField": "cardId",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "卡銷會員編號（整併）",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_digitalfg",
+        "sourceField": "-",
+        "targetField": "digitalFg",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "數位帳號註記",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ic001apivocabulary_tsrpostcode_serveaddrzip",
+        "sourceField": "對應 IC001 API Vocabulary: TSrPostCode",
+        "targetField": "serveAddrZip",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "服務機構（郵遞區號）；IC001 中文: 服務機構地址（郵遞區號）；IC001 英文: Service Address Code",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ic001apivocabulary_tsraddress_serveaddr",
+        "sourceField": "對應 IC001 API Vocabulary: TSrAddress",
+        "targetField": "serveAddr",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "服務機構；IC001 中文: 服務機構地址（地址）；IC001 英文: Service Address Address",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_foreignalert",
+        "sourceField": "-",
+        "targetField": "foreignAlert",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "外匯疑似化整為零註記",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_foreignstop",
+        "sourceField": "-",
+        "targetField": "foreignStop",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "網銀暫停外匯交易註記",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_logintype",
+        "sourceField": "-",
+        "targetField": "loginType",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "登入方式",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_issyserror",
+        "sourceField": "-",
+        "targetField": "isSysError",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "主機系統錯誤問題",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ic001apivocabulary_temailsign_isemaillost",
+        "sourceField": "對應 IC001 API Vocabulary: TEmailSign",
+        "targetField": "isEmailLost",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "Email 失聯；IC001 中文: E-MAIL 失聯註記；IC001 英文: E-MAIL lost Flag",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ic001apivocabulary_tcnsdlvtype_isstatmnt",
+        "sourceField": "對應 IC001 API Vocabulary: TCnsDlvType",
+        "targetField": "isStatmnt",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "銀行綜合對帳單是否為不寄送；IC001 中文: 對帳單寄送記號；IC001 英文: Bank statement send flag",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_tranid",
+        "sourceField": "-",
+        "targetField": "tranId",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "客戶 ID 留存於主機對應編號",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_equotatotd",
+        "sourceField": "-",
+        "targetField": "eQuotaTotD",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "非約轉提升限額判斷_未變更 10 萬_變更 20 萬",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_firstlogins",
+        "sourceField": "-",
+        "targetField": "firstLogins",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "-",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_lastlogins",
+        "sourceField": "-",
+        "targetField": "lastLogins",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "-",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_dstrustacct",
+        "sourceField": "-",
+        "targetField": "dsTrustAcct",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "信託帳戶",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_dsgcert",
+        "sourceField": "-",
+        "targetField": "dsGCert",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "基金庫存憑證",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_dstrtacct",
+        "sourceField": "-",
+        "targetField": "dsTrtAcct",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "轉出 / 轉入帳號",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_dscurrtacct",
+        "sourceField": "-",
+        "targetField": "dsCurrtAcct",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "轉出 / 轉入外幣帳號",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_dscardtrtacct",
+        "sourceField": "-",
+        "targetField": "dsCardTrtAcct",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "轉出 / 轉入信用卡號",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_dsgiftcardtrtacct",
+        "sourceField": "-",
+        "targetField": "dsGiftCardTrtAcct",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "轉出 / 轉入禮物卡號",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ic001apivocabulary_enqeinactiveflag_inactiveflag",
+        "sourceField": "對應 IC001 API Vocabulary: EnqEInactiveFlag",
+        "targetField": "inactiveFlag",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "IC001 中文: 久未往來戶記號；IC001 英文: INACTIVE ACCOUNT FLAG",
+        "evidenceIds": []
+      }
+    ],
+    "dependencyHintsSelected": [
+      {
+        "dependencyType": "external_api",
+        "preferredAbstractions": [
+          "IApiRequestService"
+        ],
+        "purpose": "Excel 依赖声明提到 EC001->RAWDATA json 數組。",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "external_api",
+        "preferredAbstractions": [
+          "IApiRequestService"
+        ],
+        "purpose": "Excel 依赖声明提到 IC001->客戶資料。",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "runtime_context",
+        "preferredAbstractions": [
+          "ICurrentRuntimeContextAccessor",
+          "IRedisService"
+        ],
+        "purpose": "业务逻辑正文提到 Redis->Share:Data:Sn:{access_token.auth_sn}:Member (Member 客戶資料) 依赖。",
+        "evidenceIds": []
+      }
+    ],
+    "legacyEvidenceUsed": [],
+    "constraintsApplied": [
+      {
+        "constraintType": "prohibited_shortcut",
+        "rule": "block_comment_header_substitution",
+        "severity": "error",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "error_code_rule",
+        "rule": "9997 | 連接數據庫或下游服務失敗 | WebAPI服務異常",
+        "severity": "warning",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "error_code_rule",
+        "rule": "9002 | 查詢成功後,回傳的數據為null | 查無資料！",
+        "severity": "warning",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "error_code_rule",
+        "rule": "9999 | 未輸入必填請求參數 | 請輸入accessTokenAuthSn！",
+        "severity": "warning",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "request_field_validation",
+        "field": "accessTokenAuthSn",
+        "validationLayer": "dto_attribute",
+        "validationType": "required",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸入accessTokenAuthSn！",
+        "customValidationAttributeNeeded": false,
+        "rule": "accessTokenAuthSn | dto_attribute | required | 9999 | 請輸入accessTokenAuthSn！",
+        "severity": "warning",
+        "evidenceIds": []
+      }
+    ],
+    "unresolvedLogic": [],
+    "testScenarioPlan": [
+      {
+        "source": "mockExamples",
+        "sourceIndex": 1,
+        "scenario": "正向情境",
+        "requestPayload": {
+          "accessTokenAuthSn": "78f0e06d8e8f4f1ea8a420c8f9300001",
+          "refreshFromIris": false,
+          "writeBackRedis": true
+        },
+        "expectedResponsePayload": {
+          "isSuccess": true,
+          "responseCode": "0000",
+          "responseMessage": "成功！",
+          "responseDT": "2026/04/27 10:30:00",
+          "responseData": {
+            "age": 45,
+            "custId": "A123456789",
+            "custIp": "10.10.10.10",
+            "custPort": 443,
+            "custMail": "customer@example.com",
+            "t24Mail": "customer@example.com",
+            "t24Sms": "0912345678",
+            "t24Birthday": "1980/01/01",
+            "t24AoCode": "123",
+            "userCode": "USER001",
+            "userAlias": "王大明",
+            "userCName": "王大明",
+            "userEName": "DA MING WANG",
+            "userId": "A123456789",
+            "gender": "M",
+            "birthday": "1980/01/01",
+            "sslFlag": "1",
+            "smsStatus": "Y",
+            "smsMobile": "0912345678",
+            "smsMobileSign": "1",
+            "investFlag": "N",
+            "dcStatus": "N",
+            "agreement": "Y",
+            "isObuCustomer": false,
+            "isStaff": false,
+            "staffTarget": "1",
+            "acctTransferType": "1",
+            "userAgent": "Mozilla/5.0",
+            "parsedUserAgent": "Chrome",
+            "lastLoginTime": "2026/04/27 10:20:00",
+            "mobilePhone": "0912345678",
+            "mobilePhoneSign": "1",
+            "qidType": "1",
+            "userCreateTime": "2025/01/01 09:00:00",
+            "company": "永豐銀行",
+            "workingAge": "10",
+            "companyAddrZip": "104",
+            "companyAddr": "臺北市中山區南京東路三段36號",
+            "marital": "1",
+            "degree": "5",
+            "occupation": "A01",
+            "jobTitle": "MANAGER",
+            "sinopayKind": "1",
+            "sinopayAccounts": "0071234567890",
+            "addsCountry": "臺北市松山區",
+            "addsLine": "南京東路三段1號",
+            "addsZip": "105",
+            "tcountry": "12樓",
+            "homeNum": "886-02-87612288",
+            "officeNum": "886-02-25008888",
+            "residentNum": "886-02-26001111",
+            "commNum": "886-02-27002222",
+            "serveNum1": "886-02-28003333",
+            "serveNum2": "886-02-29004444",
+            "otherNum": "886-02-30005555",
+            "homeNumSign": "1",
+            "officeNumSign": "1",
+            "residentNumSign": "1",
+            "commNumSign": "1",
+            "serveNum1Sign": "1",
+            "serveNum2Sign": "1",
+            "otherNumSign": "1",
+            "serveAddrSign": "1",
+            "companyAddrSign": "1",
+            "addrSign": "1",
+            "bankAcct": "Y",
+            "isGraphicsLogin": false,
+            "isActiveMember": true,
+            "pwdChangeTime": "2026/01/01 09:00:00",
+            "passMaxLength": "20",
+            "cardId": "CARD123456",
+            "digitalFg": true,
+            "serveAddrZip": "104",
+            "serveAddr": "臺北市中山區南京東路三段36號",
+            "foreignAlert": false,
+            "foreignStop": false,
+            "loginType": "PASSWORD",
+            "isSysError": false,
+            "isEmailLost": false,
+            "isStatmnt": false,
+            "tranId": "IC001202604270001",
+            "eQuotaTotD": "200000",
+            "firstLogins": "2025/01/01 09:00:00",
+            "lastLogins": "2026/04/27 10:20:00",
+            "dsTrustAcct": "Y",
+            "dsGCert": "Y",
+            "dsTrtAcct": "Y",
+            "dsCurrtAcct": "Y",
+            "dsCardTrtAcct": "Y",
+            "dsGiftCardTrtAcct": "N",
+            "inactiveFlag": "N"
+          }
+        },
+        "expectedResponseCode": "0000",
+        "expectedResponseMessage": "成功！",
+        "expectedIsSuccess": true,
+        "coverageTargets": [
+          "unit_test",
+          "integration_test"
+        ],
+        "preserveScenarioName": true
+      },
+      {
+        "source": "mockExamples",
+        "sourceIndex": 2,
+        "scenario": "連接數據庫或下游服務失敗",
+        "requestPayload": {
+          "accessTokenAuthSn": "78f0e06d8e8f4f1ea8a420c8f9300001",
+          "refreshFromIris": false,
+          "writeBackRedis": true
+        },
+        "expectedResponsePayload": {
+          "isSuccess": false,
+          "responseCode": "9997",
+          "responseMessage": "WebAPI服務異常",
+          "responseDT": "2026/04/27 10:30:00",
+          "responseData": {}
+        },
+        "expectedResponseCode": "9997",
+        "expectedResponseMessage": "WebAPI服務異常",
+        "expectedIsSuccess": false,
+        "coverageTargets": [
+          "unit_test",
+          "integration_test"
+        ],
+        "preserveScenarioName": true
+      },
+      {
+        "source": "mockExamples",
+        "sourceIndex": 3,
+        "scenario": "查詢成功後,回傳的數據為null",
+        "requestPayload": {
+          "accessTokenAuthSn": "78f0e06d8e8f4f1ea8a420c8f9300001",
+          "refreshFromIris": false,
+          "writeBackRedis": true
+        },
+        "expectedResponsePayload": {
+          "isSuccess": false,
+          "responseCode": "9002",
+          "responseMessage": "查無資料！",
+          "responseDT": "2026/04/27 10:30:00",
+          "responseData": {}
+        },
+        "expectedResponseCode": "9002",
+        "expectedResponseMessage": "查無資料！",
+        "expectedIsSuccess": false,
+        "coverageTargets": [
+          "unit_test",
+          "integration_test"
+        ],
+        "preserveScenarioName": true
+      },
+      {
+        "source": "mockExamples",
+        "sourceIndex": 4,
+        "scenario": "未輸入必填請求參數",
+        "requestPayload": {},
+        "expectedResponsePayload": {
+          "isSuccess": false,
+          "responseCode": "9999",
+          "responseMessage": "請輸入accessTokenAuthSn！",
+          "responseDT": "2026/04/27 10:30:00",
+          "responseData": {}
+        },
+        "expectedResponseCode": "9999",
+        "expectedResponseMessage": "請輸入accessTokenAuthSn！",
+        "expectedIsSuccess": false,
+        "coverageTargets": [
+          "unit_test",
+          "integration_test"
+        ],
+        "preserveScenarioName": true
+      }
+    ],
+    "testScenarioSource": "mockExamples",
+    "testScenarioCoverageRequired": true,
+    "requestValidationPlan": [
+      {
+        "field": "accessTokenAuthSn",
+        "validationType": "required",
+        "validationLayer": "dto_attribute",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸入accessTokenAuthSn！",
+        "customValidationAttributeNeeded": false
+      }
+    ],
+    "dtoAttributeRules": [
+      {
+        "field": "accessTokenAuthSn",
+        "validationType": "required",
+        "validationLayer": "dto_attribute",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸入accessTokenAuthSn！",
+        "customValidationAttributeNeeded": false
+      }
+    ],
+    "customValidationAttributesNeeded": [],
+    "validationResponseMappingMode": "spec_code_message",
+    "serviceValidationsRetained": [],
+    "validationInfrastructureGap": [
+      {
+        "topic": "validation_response_mapping",
+        "requiredCapability": "attribute_validation_to_spec_transaction_result",
+        "mode": "shared_commonstatic"
+      }
+    ],
+    "reviewSources": [],
+    "reviewConstraintsSelected": [
+      {
+        "reviewId": "default_external_api_name",
+        "scope": "global_skill",
+        "fileRole": "shared",
+        "ruleType": "naming",
+        "instruction": "對外 API 名稱、route 與需求說明必須沿用 GetIC0001，不得額外追加 Async。",
+        "severity": "warning",
+        "blocking": true,
+        "appliesTo": [
+          "apiName"
+        ],
+        "examples": [
+          "GetIC0001"
+        ],
+        "source": "default_policy"
+      },
+      {
+        "reviewId": "default_traditional_chinese_code",
+        "scope": "global_skill",
+        "fileRole": "shared",
+        "ruleType": "language",
+        "instruction": "AI 寫入的中文註解、字串、檔案說明與角色要求統一使用繁體中文。",
+        "severity": "warning",
+        "blocking": false,
+        "appliesTo": [
+          "code_comments",
+          "code_strings",
+          "file_headers"
+        ],
+        "examples": [
+          "繁體中文"
+        ],
+        "source": "default_policy"
+      },
+      {
+        "reviewId": "default_dependency_field_naming",
+        "scope": "global_skill",
+        "fileRole": "shared",
+        "ruleType": "naming_style",
+        "instruction": "凡是依賴注入後賦值到欄位的成員，命名一律使用 _camelCase，首字固定底線，例如 _service、_ctxAccessor、_sqlExecutor、_logger；不得使用 CtxAccessor、Logger 這類 PascalCase 欄位名。",
+        "severity": "warning",
+        "blocking": false,
+        "appliesTo": [
+          "constructor_injected_fields",
+          "controller_fields",
+          "service_fields",
+          "fixture_fields"
+        ],
+        "examples": [
+          "_service",
+          "_ctxAccessor",
+          "_sqlExecutor",
+          "_logger"
+        ],
+        "source": "default_policy"
+      }
+    ],
+    "fileRequirements": {
+      "controller": [
+        {
+          "reviewId": "default_external_api_name",
+          "ruleType": "naming",
+          "instruction": "對外 API 名稱、route 與需求說明必須沿用 GetIC0001，不得額外追加 Async。",
+          "severity": "warning",
+          "blocking": true,
+          "appliesTo": [
+            "apiName"
+          ],
+          "examples": [
+            "GetIC0001"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_traditional_chinese_code",
+          "ruleType": "language",
+          "instruction": "AI 寫入的中文註解、字串、檔案說明與角色要求統一使用繁體中文。",
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "code_comments",
+            "code_strings",
+            "file_headers"
+          ],
+          "examples": [
+            "繁體中文"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_dependency_field_naming",
+          "ruleType": "naming_style",
+          "instruction": "凡是依賴注入後賦值到欄位的成員，命名一律使用 _camelCase，首字固定底線，例如 _service、_ctxAccessor、_sqlExecutor、_logger；不得使用 CtxAccessor、Logger 這類 PascalCase 欄位名。",
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "constructor_injected_fields",
+            "controller_fields",
+            "service_fields",
+            "fixture_fields"
+          ],
+          "examples": [
+            "_service",
+            "_ctxAccessor",
+            "_sqlExecutor",
+            "_logger"
+          ],
+          "source": "default_policy"
+        }
+      ],
+      "service": [
+        {
+          "reviewId": "default_external_api_name",
+          "ruleType": "naming",
+          "instruction": "對外 API 名稱、route 與需求說明必須沿用 GetIC0001，不得額外追加 Async。",
+          "severity": "warning",
+          "blocking": true,
+          "appliesTo": [
+            "apiName"
+          ],
+          "examples": [
+            "GetIC0001"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_traditional_chinese_code",
+          "ruleType": "language",
+          "instruction": "AI 寫入的中文註解、字串、檔案說明與角色要求統一使用繁體中文。",
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "code_comments",
+            "code_strings",
+            "file_headers"
+          ],
+          "examples": [
+            "繁體中文"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_dependency_field_naming",
+          "ruleType": "naming_style",
+          "instruction": "凡是依賴注入後賦值到欄位的成員，命名一律使用 _camelCase，首字固定底線，例如 _service、_ctxAccessor、_sqlExecutor、_logger；不得使用 CtxAccessor、Logger 這類 PascalCase 欄位名。",
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "constructor_injected_fields",
+            "controller_fields",
+            "service_fields",
+            "fixture_fields"
+          ],
+          "examples": [
+            "_service",
+            "_ctxAccessor",
+            "_sqlExecutor",
+            "_logger"
+          ],
+          "source": "default_policy"
+        }
+      ],
+      "entity": [
+        {
+          "reviewId": "default_external_api_name",
+          "ruleType": "naming",
+          "instruction": "對外 API 名稱、route 與需求說明必須沿用 GetIC0001，不得額外追加 Async。",
+          "severity": "warning",
+          "blocking": true,
+          "appliesTo": [
+            "apiName"
+          ],
+          "examples": [
+            "GetIC0001"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_traditional_chinese_code",
+          "ruleType": "language",
+          "instruction": "AI 寫入的中文註解、字串、檔案說明與角色要求統一使用繁體中文。",
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "code_comments",
+            "code_strings",
+            "file_headers"
+          ],
+          "examples": [
+            "繁體中文"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_dependency_field_naming",
+          "ruleType": "naming_style",
+          "instruction": "凡是依賴注入後賦值到欄位的成員，命名一律使用 _camelCase，首字固定底線，例如 _service、_ctxAccessor、_sqlExecutor、_logger；不得使用 CtxAccessor、Logger 這類 PascalCase 欄位名。",
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "constructor_injected_fields",
+            "controller_fields",
+            "service_fields",
+            "fixture_fields"
+          ],
+          "examples": [
+            "_service",
+            "_ctxAccessor",
+            "_sqlExecutor",
+            "_logger"
+          ],
+          "source": "default_policy"
+        }
+      ],
+      "unitTest": [
+        {
+          "reviewId": "default_external_api_name",
+          "ruleType": "naming",
+          "instruction": "對外 API 名稱、route 與需求說明必須沿用 GetIC0001，不得額外追加 Async。",
+          "severity": "warning",
+          "blocking": true,
+          "appliesTo": [
+            "apiName"
+          ],
+          "examples": [
+            "GetIC0001"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_traditional_chinese_code",
+          "ruleType": "language",
+          "instruction": "AI 寫入的中文註解、字串、檔案說明與角色要求統一使用繁體中文。",
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "code_comments",
+            "code_strings",
+            "file_headers"
+          ],
+          "examples": [
+            "繁體中文"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_dependency_field_naming",
+          "ruleType": "naming_style",
+          "instruction": "凡是依賴注入後賦值到欄位的成員，命名一律使用 _camelCase，首字固定底線，例如 _service、_ctxAccessor、_sqlExecutor、_logger；不得使用 CtxAccessor、Logger 這類 PascalCase 欄位名。",
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "constructor_injected_fields",
+            "controller_fields",
+            "service_fields",
+            "fixture_fields"
+          ],
+          "examples": [
+            "_service",
+            "_ctxAccessor",
+            "_sqlExecutor",
+            "_logger"
+          ],
+          "source": "default_policy"
+        }
+      ],
+      "integrationTest": [
+        {
+          "reviewId": "default_external_api_name",
+          "ruleType": "naming",
+          "instruction": "對外 API 名稱、route 與需求說明必須沿用 GetIC0001，不得額外追加 Async。",
+          "severity": "warning",
+          "blocking": true,
+          "appliesTo": [
+            "apiName"
+          ],
+          "examples": [
+            "GetIC0001"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_traditional_chinese_code",
+          "ruleType": "language",
+          "instruction": "AI 寫入的中文註解、字串、檔案說明與角色要求統一使用繁體中文。",
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "code_comments",
+            "code_strings",
+            "file_headers"
+          ],
+          "examples": [
+            "繁體中文"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_dependency_field_naming",
+          "ruleType": "naming_style",
+          "instruction": "凡是依賴注入後賦值到欄位的成員，命名一律使用 _camelCase，首字固定底線，例如 _service、_ctxAccessor、_sqlExecutor、_logger；不得使用 CtxAccessor、Logger 這類 PascalCase 欄位名。",
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "constructor_injected_fields",
+            "controller_fields",
+            "service_fields",
+            "fixture_fields"
+          ],
+          "examples": [
+            "_service",
+            "_ctxAccessor",
+            "_sqlExecutor",
+            "_logger"
+          ],
+          "source": "default_policy"
+        }
+      ]
+    },
+    "responseLifecycleRules": [],
+    "failureDisposition": {
+      "mode": "rollback_after_validation_failure",
+      "preserveFailedCode": false,
+      "resumeStrategy": "retry_from_prepare",
+      "source": "default_policy"
+    },
+    "languagePolicy": {
+      "mode": "traditional_chinese_for_ai_code",
+      "appliesTo": [
+        "code_comments",
+        "code_strings",
+        "file_headers",
+        "file_requirements"
+      ],
+      "source": "default_policy"
+    },
+    "externalApiName": "GetIC0001",
+    "internalAsyncMethod": "GetIC0001Async",
+    "resumedFromPhase": "blocked"
+  },
+  "validationChecks": [
+    "dotnet build \"Sinopac.EnterpriseAPI/Sinopac.EnterpriseAPI/Sinopac.EnterpriseAPI.csproj\" -m:1",
+    "dotnet test \"Sinopac.EnterpriseAPI/Test/EnterpriseApi.Unit/EnterpriseApi.Unit.csproj\" -m:1",
+    "dotnet test \"Sinopac.EnterpriseAPI/Test/EnterpriseApi.Integration/EnterpriseApi.Integration.csproj\" -m:1"
+  ],
+  "steps": [
+    {
+      "id": "precheck",
+      "status": "done",
+      "note": "Resolved EnterpriseAPI framework profile and module slots."
+    },
+    {
+      "id": "write_code",
+      "status": "pending",
+      "note": "AI must directly modify controller/interface/service/entity business files for CommonFunc; test targets are handoff-only for step 05 and the script must not generate stubs."
+    },
+    {
+      "id": "validate",
+      "status": "pending",
+      "note": "After real code is written, run EnterpriseAPI build, unit test, and integration test validation."
+    }
+  ]
+}

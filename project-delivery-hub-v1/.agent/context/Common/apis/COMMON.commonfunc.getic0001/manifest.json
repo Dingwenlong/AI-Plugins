@@ -1,0 +1,62 @@
+{
+  "schemaVersion": "4.1.0",
+  "manifestType": "api",
+  "executionId": "Common",
+  "apiId": "COMMON.commonfunc.getic0001",
+  "apiCategory": "CommonFunc",
+  "apiName": "GetIC0001",
+  "status": "pending",
+  "phase": "planned",
+  "updatedAt": "2026-05-23T22:18:09+08:00",
+  "newAuthor": "Jimmy",
+  "specStatus": "done",
+  "specUpdatedAt": "2026-05-23T19:25:30+08:00",
+  "specBlockReason": null,
+  "specSourceFingerprint": "sha256:3a5f15864dd8f4b241d604937da4559d9821fb7812c3af1ff4fbff4d47f6f304",
+  "specSource": {
+    "tsdFile": "TSD.Common_封存TSD共用开发链路_v1.0_20260523.docx",
+    "workbookFile": "NEWDA_Method_DETAIL_ExchangeCommonFunc_20260522.xlsx",
+    "sheetNames": [
+      "GetIC0001獲取客戶資料"
+    ]
+  },
+  "specArtifacts": {
+    "apiSpec": "../../../.agent/context/Common/apis/COMMON.commonfunc.getic0001/Common_API_Spec.json"
+  },
+  "fixtureStatus": "skipped",
+  "fixturePhase": "no_sql",
+  "fixtureUpdatedAt": "2026-05-23T19:42:31+08:00",
+  "fixtureBlockReason": null,
+  "fixtureSourceFingerprint": "sha256:3a5f15864dd8f4b241d604937da4559d9821fb7812c3af1ff4fbff4d47f6f304",
+  "fixtureArtifacts": {
+    "dbFixtureReport": "../../.agent/context/Common/apis/COMMON.commonfunc.getic0001/db-fixture-report.json",
+    "tableChecks": "../../.agent/context/Common/apis/COMMON.commonfunc.getic0001/table-checks.json",
+    "seedPlan": null,
+    "seedExecuted": null,
+    "seedManifest": null
+  },
+  "codeStatus": "pending",
+  "codePhase": "planned",
+  "codeUpdatedAt": "2026-05-23T22:18:09+08:00",
+  "codeBlockReason": null,
+  "codeProjectRoot": ".",
+  "codeSolutionPath": "Sinopac.EnterpriseAPI.slnx",
+  "inputHashes": {
+    "upstreamManifest": "sha256:10ffc5aa9cb3c2a99d0c3ae2f16a4648e757ca22db681c49e76c297bdc34a8f3",
+    "apiSpec": "sha256:7e7f733147e7b76daef7b61dc844c7914b7da1caa06c77d7b15041fe4ac6bdc9"
+  },
+  "modifiedFiles": [],
+  "validationChecks": [
+    "dotnet build \"Sinopac.EnterpriseAPI/Sinopac.EnterpriseAPI.csproj\" -m:1",
+    "dotnet test \"Test/EnterpriseApi.Unit/EnterpriseApi.Unit.csproj\" -m:1",
+    "dotnet test \"Test/EnterpriseApi.Integration/EnterpriseApi.Integration.csproj\" -m:1"
+  ],
+  "validationResults": [],
+  "repoDriftFiles": [],
+  "codeArtifacts": {
+    "changePlan": "../../../.agent/context/Common/apis/COMMON.commonfunc.getic0001/change-plan.json",
+    "implementationReport": null,
+    "diagnosisReport": null
+  },
+  "lastMessage": "COMMON.commonfunc.getic0001 change-plan generated for EnterpriseApiBusiness/CommonFunc/CommonFuncService.GetIC0001.cs; waiting for AI-authored code changes."
+}

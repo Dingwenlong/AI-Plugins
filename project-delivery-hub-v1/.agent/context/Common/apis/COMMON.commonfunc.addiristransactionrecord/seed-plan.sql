@@ -1,0 +1,4 @@
+-- schema: ../../.agent/context/Common/apis/COMMON.commonfunc.addiristransactionrecord/generated-schema-dawho_dbo_iristransactionrecord.sql
+-- seed: ../../.agent/context/Common/apis/COMMON.commonfunc.addiristransactionrecord/generated-seed-dawho_dbo_iristransactionrecord.sql
+-- schema: ../../.agent/context/Common/apis/COMMON.commonfunc.addiristransactionrecord/generated-schema-dawho_dbo_iristransactionrecord.sql
+-- seed: ../../.agent/context/Common/apis/COMMON.commonfunc.addiristransactionrecord/generated-seed-dawho_dbo_iristransactionrecord.sql

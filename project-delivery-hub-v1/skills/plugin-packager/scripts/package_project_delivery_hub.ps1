@@ -1,5 +1,5 @@
 param(
-  [ValidateSet("company-dev", "company-jimmy", "both")]
+  [ValidateSet("company-dev", "company-jimmy", "personal", "both")]
   [string]$Target,
   [string]$SourceRoot,
   [switch]$DryRun,
@@ -12,10 +12,14 @@ $PrivateWedocConfigFileNames = @(
   "wedoc-smartsheet-targets.json",
   "wedoc-smartsheet-targets.local.json"
 )
+$PrivateSqlFixtureConfigFileNames = @(
+  "sql-fixture-targets.local.json"
+)
 $PrivateWedocDirectoryNames = @(
   "wedoc-smartsheet-receipts"
 )
-$PackageExcludedFilePatterns = @("*.bak", "*.tmp", "*.log", "*.pyc") + $PrivateWedocConfigFileNames
+$PrivateRuntimeConfigFileNames = $PrivateWedocConfigFileNames + $PrivateSqlFixtureConfigFileNames
+$PackageExcludedFilePatterns = @("*.bak", "*.tmp", "*.log", "*.pyc") + $PrivateRuntimeConfigFileNames
 
 function Get-FullPath {
   param([string]$Path)
@@ -91,9 +95,6 @@ function Get-AgentBundleInfo {
   if ([string]::IsNullOrWhiteSpace($agentRoot)) {
     throw "Workspace '$workspaceKey' does not define agentRoot"
   }
-  if (-not (Test-Path -LiteralPath $agentRoot)) {
-    throw "agentBundle source .agent does not exist: $agentRoot"
-  }
 
   $targetRelativePath = [string]$agentBundle.targetRelativePath
   if ([string]::IsNullOrWhiteSpace($targetRelativePath)) {
@@ -102,31 +103,51 @@ function Get-AgentBundleInfo {
   if ([System.IO.Path]::IsPathRooted($targetRelativePath)) {
     throw "agentBundle.targetRelativePath must be relative: $targetRelativePath"
   }
+  $pluginAgentRoot = Join-Path $PluginRoot $targetRelativePath
+
+  $agentRootExists = $false
+  try {
+    $agentRootExists = Test-Path -LiteralPath $agentRoot
+  } catch {
+    $agentRootExists = $false
+  }
+
+  if (-not $agentRootExists) {
+    if (Test-Path -LiteralPath $pluginAgentRoot) {
+      return [PSCustomObject]@{
+        WorkspaceKey = $workspaceKey
+        SourceAgentRoot = (Resolve-Path -LiteralPath $pluginAgentRoot).Path
+        TargetRelativePath = $targetRelativePath
+        PluginAgentRoot = $pluginAgentRoot
+        SourceIsBundledSnapshot = $true
+      }
+    }
+    throw "agentBundle source .agent does not exist: $agentRoot"
+  }
 
   return [PSCustomObject]@{
     WorkspaceKey = $workspaceKey
     SourceAgentRoot = (Resolve-Path -LiteralPath $agentRoot).Path
     TargetRelativePath = $targetRelativePath
-    PluginAgentRoot = Join-Path $PluginRoot $targetRelativePath
+    PluginAgentRoot = $pluginAgentRoot
+    SourceIsBundledSnapshot = $false
   }
 }
 
 function Assert-BundledDiagramAssets {
   param([string]$PluginRoot)
   $diagramRoot = Join-Path $PluginRoot "skills\plugin-packager\assets\diagrams"
-  $requiredDiagrams = @(
-    "专案交付中枢_主流程图.svg",
-    "专案交付中枢_技能与agent架构图.svg",
-    "专案交付中枢_工作区与agent结构树.svg"
-  )
-  foreach ($diagramName in $requiredDiagrams) {
-    $diagramPath = Join-Path $diagramRoot $diagramName
-    if (-not (Test-Path -LiteralPath $diagramPath)) {
-      throw "Missing bundled diagram asset: $diagramPath"
-    }
-    $diagramText = Read-Utf8Text $diagramPath
+  if (-not (Test-Path -LiteralPath $diagramRoot)) {
+    throw "Missing bundled diagram directory: $diagramRoot"
+  }
+  $diagrams = @(Get-ChildItem -LiteralPath $diagramRoot -Filter "*.svg" -File)
+  if ($diagrams.Count -ne 3) {
+    throw "Expected exactly 3 bundled SVG diagram assets in $diagramRoot, found $($diagrams.Count)"
+  }
+  foreach ($diagram in $diagrams) {
+    $diagramText = Read-Utf8Text $diagram.FullName
     if (-not $diagramText.Contains("<svg")) {
-      throw "Bundled diagram asset is not a readable SVG: $diagramPath"
+      throw "Bundled diagram asset is not a readable SVG: $($diagram.FullName)"
     }
   }
   Write-Host "[ok] bundled diagrams verified"
@@ -140,9 +161,15 @@ function Assert-UsageGuide {
   }
   $usageText = Read-Utf8Text $usagePath
   $requiredTokens = @(
-    "项目工作区",
-    "<workspaceRoot>\.agent",
-    "local-workspaces.json"
+    ".agent",
+    "<workspaceRoot>/.agent",
+    "local-workspaces.json",
+    "orchestration",
+    ".agent/context/<functionCode>/orchestration/",
+    ".agent/functions/<functionCode>/orchestration/",
+    "design-leader-protocol.md",
+    "office-deliverable-edit-protocol.md",
+    "office-edit-plan.json"
   )
   foreach ($token in $requiredTokens) {
     if (-not $usageText.Contains($token)) {
@@ -152,13 +179,75 @@ function Assert-UsageGuide {
   Write-Host "[ok] usage guide verified"
 }
 
+function Assert-MultiApiLeaderAssets {
+  param([string]$PluginRoot)
+  $leaderRoot = Join-Path $PluginRoot "skills\multi-api-leader"
+  $requiredFiles = @(
+    "SKILL.md",
+    "agents\openai.yaml",
+    "scripts\orchestrate_multi_api.py",
+    "tests\run_regressions.py",
+    "schemas\leader-run.schema.json",
+    "schemas\api-workgroups.schema.json",
+    "schemas\file-claims.schema.json",
+    "schemas\final-assessment.schema.json"
+  )
+  foreach ($relativePath in $requiredFiles) {
+    $path = Join-Path $leaderRoot $relativePath
+    if (-not (Test-Path -LiteralPath $path)) {
+      throw "Missing multi-api leader asset: $path"
+    }
+    if ($path.EndsWith(".json")) {
+      Assert-JsonFile $path | Out-Null
+    }
+  }
+  Write-Host "[ok] multi-api leader assets verified"
+}
+
+function Assert-DesignLeaderAssets {
+  param([string]$PluginRoot)
+  $requiredFiles = @(
+    "references\design-leader-protocol.md",
+    "references\office-deliverable-edit-protocol.md",
+    "skills\api-detail-tsd-sync\SKILL.md",
+    "skills\api-detail-tsd-sync\agents\openai.yaml",
+    "skills\design-feedback-fix-coordinator\SKILL.md",
+    "skills\design-feedback-fix-coordinator\agents\openai.yaml",
+    "skills\office-deliverable-editor\SKILL.md",
+    "skills\office-deliverable-editor\agents\openai.yaml"
+  )
+  foreach ($relativePath in $requiredFiles) {
+    $path = Join-Path $PluginRoot $relativePath
+    if (-not (Test-Path -LiteralPath $path)) {
+      throw "Missing design leader asset: $path"
+    }
+  }
+  $standardPath = Join-Path $PluginRoot "references\artifact-naming-standard.json"
+  $standard = Assert-JsonFile $standardPath
+  $requiredMappingIds = @(
+    "00-design-leader-change-plan",
+    "00-design-leader-file-claims",
+    "00-office-edit-plan",
+    "00-office-edit-results",
+    "00-design-leader-worker-results",
+    "00-design-leader-final-report"
+  )
+  foreach ($mappingId in $requiredMappingIds) {
+    $mapping = @($standard.mappings | Where-Object { $_.id -eq $mappingId })[0]
+    if (-not $mapping) {
+      throw "Missing design leader artifact naming mapping: $mappingId"
+    }
+  }
+  Write-Host "[ok] design leader assets verified"
+}
+
 function Remove-PackagingExclusions {
   param([string]$Destination)
   if (-not (Test-Path -LiteralPath $Destination)) {
     return
   }
   Get-ChildItem -LiteralPath $Destination -Recurse -Directory -Force |
-    Where-Object { $_.Name -eq "__pycache__" -or $PrivateWedocDirectoryNames -contains $_.Name } |
+    Where-Object { $_.Name -eq "__pycache__" -or $_.Name -like "*.bak" -or $_.Name -like ".before_*" -or $PrivateWedocDirectoryNames -contains $_.Name } |
     Sort-Object FullName -Descending |
     Remove-Item -Recurse -Force
   Get-ChildItem -LiteralPath $Destination -Recurse -File -Force |
@@ -177,13 +266,13 @@ function Invoke-Mirror {
     [string]$Label
   )
   $sourcePath = (Resolve-Path -LiteralPath $Source).Path.TrimEnd('\')
+  if ($DryRun) {
+    Write-Host "[dry-run] mirror $Label`: $sourcePath -> $Destination"
+    return
+  }
   $destinationPath = Get-FullPath $Destination
   if ($sourcePath.Equals($destinationPath.TrimEnd('\'), [System.StringComparison]::OrdinalIgnoreCase)) {
     Write-Host "[skip] $Label already points to source: $destinationPath"
-    return
-  }
-  if ($DryRun) {
-    Write-Host "[dry-run] mirror $Label`: $sourcePath -> $destinationPath"
     return
   }
   New-Item -ItemType Directory -Force -Path $destinationPath | Out-Null
@@ -222,8 +311,7 @@ function Test-NoOldRuntimeIds {
         $relativePath = $_.FullName.Substring($rootPath.Length).TrimStart('\')
         $isBundledAgentFile = $false
         if ($normalizedAgentRelativePath) {
-          $isBundledAgentFile =
-            $relativePath.StartsWith($normalizedAgentRelativePath + "\", [System.StringComparison]::OrdinalIgnoreCase)
+          $isBundledAgentFile = $relativePath.StartsWith($normalizedAgentRelativePath + "\", [System.StringComparison]::OrdinalIgnoreCase)
         }
         $_.Name -notlike "*.bak" -and
         $_.FullName -notmatch "\\__pycache__\\" -and
@@ -310,9 +398,7 @@ function Test-NoWedocSecrets {
     if (-not (Test-Path -LiteralPath $root)) { continue }
     Get-ChildItem -LiteralPath $root -Recurse -Directory -Force |
       Where-Object { $PrivateWedocDirectoryNames -contains $_.Name } |
-      ForEach-Object {
-        $hits.Add("$($_.FullName): private WeDoc smartsheet receipt directory")
-      }
+      ForEach-Object { $hits.Add("$($_.FullName): private WeDoc smartsheet receipt directory") }
     Get-ChildItem -LiteralPath $root -Recurse -File -Force |
       Where-Object {
         $_.Name -notlike "*.bak" -and
@@ -320,8 +406,8 @@ function Test-NoWedocSecrets {
         $extensions -contains $_.Extension.ToLowerInvariant()
       } |
       ForEach-Object {
-        if ($PrivateWedocConfigFileNames -contains $_.Name) {
-          $hits.Add("$($_.FullName): private WeDoc smartsheet config file")
+        if ($PrivateRuntimeConfigFileNames -contains $_.Name) {
+          $hits.Add("$($_.FullName): private runtime config file")
         } else {
           $text = Read-Utf8Text $_.FullName
           if ([regex]::IsMatch($text, $webhookPattern)) {
@@ -331,9 +417,9 @@ function Test-NoWedocSecrets {
       }
   }
   if ($hits.Count -gt 0) {
-    throw "Private WeDoc smartsheet configuration or webhook URL found in package roots:`n$($hits -join "`n")"
+    throw "Private runtime configuration or webhook URL found in package roots:`n$($hits -join "`n")"
   }
-  Write-Host "[ok] no private WeDoc smartsheet config or webhook URLs found"
+  Write-Host "[ok] no private runtime config or webhook URLs found"
 }
 
 $pluginRoot = Get-PluginRoot
@@ -352,9 +438,16 @@ if (-not $Target) {
 
 Assert-UsageGuide -PluginRoot $pluginRoot
 Assert-BundledDiagramAssets -PluginRoot $pluginRoot
+Assert-MultiApiLeaderAssets -PluginRoot $pluginRoot
+Assert-DesignLeaderAssets -PluginRoot $pluginRoot
+
 $agentBundleInfo = Get-AgentBundleInfo -PluginRoot $pluginRoot -PackageTargets $packageTargets
 if ($agentBundleInfo) {
-  Invoke-Mirror -Source $agentBundleInfo.SourceAgentRoot -Destination $agentBundleInfo.PluginAgentRoot -Label "$($agentBundleInfo.WorkspaceKey) .agent bundle"
+  if ($DryRun -and [bool]$agentBundleInfo.SourceIsBundledSnapshot) {
+    Write-Host "[dry-run] agentBundle source missing; validating bundled .agent snapshot instead: $($agentBundleInfo.SourceAgentRoot)"
+  } else {
+    Invoke-Mirror -Source $agentBundleInfo.SourceAgentRoot -Destination $agentBundleInfo.PluginAgentRoot -Label "$($agentBundleInfo.WorkspaceKey) .agent bundle"
+  }
 }
 
 $targetNames = if ($Target -eq "both") { @("company-jimmy", "company-dev") } else { @($Target) }
@@ -367,13 +460,26 @@ foreach ($targetName in $targetNames) {
   }
 
   $marketplacePath = [string]$targetInfo.marketplacePath
-  $marketplace = Assert-JsonFile $marketplacePath
-  if ($marketplace.name -ne $targetName) {
-    throw "Marketplace name '$($marketplace.name)' does not match target '$targetName'"
+  $marketplaceExists = $false
+  try {
+    $marketplaceExists = Test-Path -LiteralPath $marketplacePath
+  } catch {
+    if (-not $DryRun) {
+      throw
+    }
+    $marketplaceExists = $false
   }
-  $pluginEntry = @($marketplace.plugins | Where-Object { $_.name -eq $packageTargets.pluginId })[0]
-  if (-not $pluginEntry) {
-    throw "Marketplace '$targetName' does not list plugin '$($packageTargets.pluginId)'"
+  if ($DryRun -and -not $marketplaceExists) {
+    Write-Host "[dry-run] marketplace config missing; skipping marketplace validation: $marketplacePath"
+  } else {
+    $marketplace = Assert-JsonFile $marketplacePath
+    if ($marketplace.name -ne $targetName) {
+      throw "Marketplace name '$($marketplace.name)' does not match target '$targetName'"
+    }
+    $pluginEntry = @($marketplace.plugins | Where-Object { $_.name -eq $packageTargets.pluginId })[0]
+    if (-not $pluginEntry) {
+      throw "Marketplace '$targetName' does not list plugin '$($packageTargets.pluginId)'"
+    }
   }
 
   $sourceRoot = [string]$targetInfo.sourceRoot

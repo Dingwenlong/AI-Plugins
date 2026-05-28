@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "4.1.0",
+  "skillName": "api-code-writer",
+  "executionId": "Common",
+  "apiId": "COMMON.commonfunc.getrateenquiry",
+  "status": "blocked",
+  "phase": "blocked",
+  "updatedAt": "2026-05-23T22:08:59+08:00",
+  "diagnosisType": "dev_guideline_gap",
+  "detail": "V6.2 dev-guideline selection blocked: API 同時命中前台與中後台線索，需由 spec/handoff 補明確調用者或使用場景。; frontstage-session: 命中特定前台/中後台規範，但 API 使用者或入口方向證據不足。",
+  "targetFile": "EnterpriseApiBusiness/CommonFunc/CommonFuncService.GetRateEnquiry.cs",
+  "modifiedFiles": [],
+  "validationChecks": [
+    "dotnet build \"Sinopac.EnterpriseAPI/Sinopac.EnterpriseAPI.csproj\" -m:1",
+    "dotnet test \"Test/EnterpriseApi.Unit/EnterpriseApi.Unit.csproj\" -m:1",
+    "dotnet test \"Test/EnterpriseApi.Integration/EnterpriseApi.Integration.csproj\" -m:1"
+  ],
+  "validationResults": [],
+  "failureKind": null,
+  "failureClassifications": [],
+  "unresolvedLogic": [
+    {
+      "gapType": "audience_profile_ambiguous",
+      "severity": "error",
+      "blocking": true,
+      "message": "API 同時命中前台與中後台線索，需由 spec/handoff 補明確調用者或使用場景。"
+    },
+    {
+      "gapType": "audience_profile_required",
+      "ruleId": "frontstage-session",
+      "severity": "error",
+      "blocking": true,
+      "message": "命中特定前台/中後台規範，但 API 使用者或入口方向證據不足。",
+      "missingEvidence": [
+        "caller channel",
+        "frontstage/backoffice scope",
+        "route or TSD audience"
+      ]
+    }
+  ],
+  "repoDriftFiles": []
+}

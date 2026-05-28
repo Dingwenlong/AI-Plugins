@@ -1,0 +1,63 @@
+{
+  "schemaVersion": "4.1.0",
+  "manifestType": "api",
+  "executionId": "Common",
+  "apiId": "COMMON.commonfunc.getaccountlistbytranscode",
+  "apiCategory": "CommonFunc",
+  "apiName": "GetAccountListByTransCode",
+  "status": "pending",
+  "phase": "planned",
+  "updatedAt": "2026-05-23T22:18:09+08:00",
+  "newAuthor": "Jimmy",
+  "specStatus": "done",
+  "specUpdatedAt": "2026-05-23T17:52:07+08:00",
+  "specBlockReason": null,
+  "specSourceFingerprint": "sha256:15d3749e4d900b0e6c816ff71b27c37c54ecbaecc6ce82f4b211a5317bf69e49",
+  "specSource": {
+    "tsdFile": "TSD.Common_封存TSD共用开发链路_v1.0_20260523.docx",
+    "workbookFile": "NEWDA_Method_DETAIL_ExchangeCommonFunc_20260522.xlsx",
+    "sheetNames": [
+      "GetAccountListByTransCode 全帳戶信息",
+      "GetAccountListByTransCode根據交易代 "
+    ]
+  },
+  "specArtifacts": {
+    "apiSpec": "../../../.agent/context/Common/apis/COMMON.commonfunc.getaccountlistbytranscode/Common_API_Spec.json"
+  },
+  "fixtureStatus": "skipped",
+  "fixturePhase": "no_sql",
+  "fixtureUpdatedAt": "2026-05-23T18:03:30+08:00",
+  "fixtureBlockReason": null,
+  "fixtureSourceFingerprint": "sha256:15d3749e4d900b0e6c816ff71b27c37c54ecbaecc6ce82f4b211a5317bf69e49",
+  "fixtureArtifacts": {
+    "dbFixtureReport": "../../.agent/context/Common/apis/COMMON.commonfunc.getaccountlistbytranscode/db-fixture-report.json",
+    "tableChecks": "../../.agent/context/Common/apis/COMMON.commonfunc.getaccountlistbytranscode/table-checks.json",
+    "seedPlan": null,
+    "seedExecuted": null,
+    "seedManifest": null
+  },
+  "codeStatus": "pending",
+  "codePhase": "planned",
+  "codeUpdatedAt": "2026-05-23T22:18:09+08:00",
+  "codeBlockReason": null,
+  "codeProjectRoot": ".",
+  "codeSolutionPath": "Sinopac.EnterpriseAPI.slnx",
+  "inputHashes": {
+    "upstreamManifest": "sha256:89269bf0d5a4791a9a3c6af0362ece99bfecf516d1645b1908c0ccdaec9a3c40",
+    "apiSpec": "sha256:e293c8506c5c0ffe9c8ba5431c841c954ed590adbcd5384dbfce5d4e3e7b6cfe"
+  },
+  "modifiedFiles": [],
+  "validationChecks": [
+    "dotnet build \"Sinopac.EnterpriseAPI/Sinopac.EnterpriseAPI.csproj\" -m:1",
+    "dotnet test \"Test/EnterpriseApi.Unit/EnterpriseApi.Unit.csproj\" -m:1",
+    "dotnet test \"Test/EnterpriseApi.Integration/EnterpriseApi.Integration.csproj\" -m:1"
+  ],
+  "validationResults": [],
+  "repoDriftFiles": [],
+  "codeArtifacts": {
+    "changePlan": "../../../.agent/context/Common/apis/COMMON.commonfunc.getaccountlistbytranscode/change-plan.json",
+    "implementationReport": null,
+    "diagnosisReport": null
+  },
+  "lastMessage": "COMMON.commonfunc.getaccountlistbytranscode change-plan generated for EnterpriseApiBusiness/CommonFunc/CommonFuncService.GetAccountListByTransCode.cs; waiting for AI-authored code changes."
+}

@@ -1,0 +1,95 @@
+{
+  "schemaVersion": "4.1.0",
+  "manifestType": "api",
+  "executionId": "Common",
+  "apiId": "COMMON.commonfunc.getcencurr",
+  "apiCategory": "CommonFunc",
+  "apiName": "GetCENCurr",
+  "status": "tests_passed",
+  "phase": "validated",
+  "updatedAt": "2026-05-23T22:18:09+08:00",
+  "newAuthor": "Jimmy",
+  "specStatus": "done",
+  "specUpdatedAt": "2026-05-23T19:22:08+08:00",
+  "specBlockReason": null,
+  "specSourceFingerprint": "sha256:8a666163941e1a7426643b9a155f5202137fc7859d06a5ab6544d32929abb6da",
+  "specSource": {
+    "tsdFile": "TSD.Common_封存TSD共用开发链路_v1.0_20260523.docx",
+    "workbookFile": "NEWDA_Method_DETAIL_ExchangeCommonFunc_20260522.xlsx",
+    "sheetNames": [
+      "GetCENCurr 取幣別資料"
+    ]
+  },
+  "specArtifacts": {
+    "apiSpec": "../../../.agent/context/Common/apis/COMMON.commonfunc.getcencurr/Common_API_Spec.json"
+  },
+  "fixtureStatus": "done",
+  "fixturePhase": "ready",
+  "fixtureUpdatedAt": "2026-05-23T19:47:00+08:00",
+  "fixtureBlockReason": null,
+  "fixtureSourceFingerprint": "sha256:8a666163941e1a7426643b9a155f5202137fc7859d06a5ab6544d32929abb6da",
+  "fixtureArtifacts": {
+    "dbFixtureReport": "../../.agent/context/Common/apis/COMMON.commonfunc.getcencurr/db-fixture-report.json",
+    "tableChecks": "../../.agent/context/Common/apis/COMMON.commonfunc.getcencurr/table-checks.json",
+    "seedPlan": null,
+    "seedExecuted": null,
+    "seedManifest": null
+  },
+  "codeStatus": "tests_passed",
+  "codePhase": "validated",
+  "codeUpdatedAt": "2026-05-23T22:18:09+08:00",
+  "codeBlockReason": null,
+  "codeProjectRoot": ".",
+  "codeSolutionPath": "Sinopac.EnterpriseAPI.slnx",
+  "inputHashes": {
+    "upstreamManifest": "sha256:437dadf4b1d7c86f585bbfa6ea2e7e0ec1d7a4c332cf2f3e1aee0cd70faa36a1",
+    "apiSpec": "sha256:071c6f38047de1b82d0d20d01d83eb8678ca93f55a4a6cd5a5ead22d20ce763f"
+  },
+  "modifiedFiles": [
+    "EnterpriseApiBusiness.Interface/ICommonFuncService.cs",
+    "EnterpriseApiBusiness/CommonFunc/CommonFuncService.GetCENCurr.cs",
+    "EnterpriseApiEntity/CommonFunc/GetCENCurrInfo.cs"
+  ],
+  "validationChecks": [
+    "dotnet build \"Sinopac.EnterpriseAPI/Sinopac.EnterpriseAPI.csproj\" -m:1",
+    "dotnet test \"Test/EnterpriseApi.Unit/EnterpriseApi.Unit.csproj\" -m:1",
+    "dotnet test \"Test/EnterpriseApi.Integration/EnterpriseApi.Integration.csproj\" -m:1"
+  ],
+  "validationResults": [
+    {
+      "command": "dotnet build \"Sinopac.EnterpriseAPI/Sinopac.EnterpriseAPI.csproj\" -m:1",
+      "returncode": 0,
+      "passed": true,
+      "stdout": "正在确定要还原的项目…\n  所有项目均是最新的，无法还原。\nC:\\Program Files\\dotnet\\sdk\\10.0.300-preview.0.26177.108\\Sdks\\Microsoft.NET.Sdk\\targets\\Microsoft.NET.RuntimeIdentifierInference.targets(383,5): message NETSDK1057: 你正在使用 .NET 的预览版。请参阅 https://aka.ms/dotnet-support-policy [D:\\Devs\\NEWDAWHO\\feature_common\\P240301Git\\Sinopac.EnterpriseAPI\\Sinopac.EnterpriseAPI\\Sinopac.EnterpriseAPI.csproj]\n  EnterpriseApiEntity -> D:\\Devs\\NEWDAWHO\\feature_common\\P240301Git\\Sinopac.EnterpriseAPI\\EnterpriseApiEntity\\bin\\Debug\\net10.0\\EnterpriseApiEntity.dll\n  EnterpriseApiBusiness.Interface -> D:\\Devs\\NEWDAWHO\\feature_common\\P240301Git\\Sinopac.EnterpriseAPI\\EnterpriseApiBusiness.Interface\\bin\\Debug\\net10.0\\EnterpriseApiBusiness.Interface.dll\n  EnterpriseApiBusiness -> D:\\Devs\\NEWDAWHO\\feature_common\\P240301Git\\Sinopac.EnterpriseAPI\\EnterpriseApiBusiness\\bin\\Debug\\net10.0\\EnterpriseApiBusiness.dll\n  Sinopac.EnterpriseAPI -> D:\\Devs\\NEWDAWHO\\feature_common\\P240301Git\\Sinopac.EnterpriseAPI\\Sinopac.EnterpriseAPI\\bin\\Debug\\net10.0\\Sinopac.EnterpriseAPI.dll\n\n已成功生成。\n    0 个警告\n    0 个错误\n\n已用时间 00:00:01.79",
+      "stderr": "",
+      "attempt": 1
+    },
+    {
+      "command": "dotnet test \"Test/EnterpriseApi.Unit/EnterpriseApi.Unit.csproj\" -m:1",
+      "returncode": 0,
+      "passed": true,
+      "stdout": "正在确定要还原的项目…\n  所有项目均是最新的，无法还原。\nC:\\Program Files\\dotnet\\sdk\\10.0.300-preview.0.26177.108\\Sdks\\Microsoft.NET.Sdk\\targets\\Microsoft.NET.RuntimeIdentifierInference.targets(383,5): message NETSDK1057: 你正在使用 .NET 的预览版。请参阅 https://aka.ms/dotnet-support-policy [D:\\Devs\\NEWDAWHO\\feature_common\\P240301Git\\Sinopac.EnterpriseAPI\\Test\\EnterpriseApi.Unit\\EnterpriseApi.Unit.csproj]\n  EnterpriseApi.Unit -> D:\\Devs\\NEWDAWHO\\feature_common\\P240301Git\\Sinopac.EnterpriseAPI\\Test\\EnterpriseApi.Unit\\bin\\Debug\\net10.0\\EnterpriseApi.Unit.dll\nD:\\Devs\\NEWDAWHO\\feature_common\\P240301Git\\Sinopac.EnterpriseAPI\\Test\\EnterpriseApi.Unit\\bin\\Debug\\net10.0\\EnterpriseApi.Unit.dll (.NETCoreApp,Version=v10.0)的测试运行\n总共 1 个测试文件与指定模式相匹配。\n\n已通过! - 失败:     0，通过:     1，已跳过:     0，总计:     1，持续时间: 18 ms - EnterpriseApi.Unit.dll (net10.0)",
+      "stderr": "",
+      "attempt": 1
+    },
+    {
+      "command": "dotnet test \"Test/EnterpriseApi.Integration/EnterpriseApi.Integration.csproj\" -m:1",
+      "returncode": 0,
+      "passed": true,
+      "stdout": "正在确定要还原的项目…\n  所有项目均是最新的，无法还原。\nC:\\Program Files\\dotnet\\sdk\\10.0.300-preview.0.26177.108\\Sdks\\Microsoft.NET.Sdk\\targets\\Microsoft.NET.RuntimeIdentifierInference.targets(383,5): message NETSDK1057: 你正在使用 .NET 的预览版。请参阅 https://aka.ms/dotnet-support-policy [D:\\Devs\\NEWDAWHO\\feature_common\\P240301Git\\Sinopac.EnterpriseAPI\\Test\\EnterpriseApi.Integration\\EnterpriseApi.Integration.csproj]\n  EnterpriseApi.Integration -> D:\\Devs\\NEWDAWHO\\feature_common\\P240301Git\\Sinopac.EnterpriseAPI\\Test\\EnterpriseApi.Integration\\bin\\Debug\\net10.0\\EnterpriseApi.Integration.dll\nD:\\Devs\\NEWDAWHO\\feature_common\\P240301Git\\Sinopac.EnterpriseAPI\\Test\\EnterpriseApi.Integration\\bin\\Debug\\net10.0\\EnterpriseApi.Integration.dll (.NETCoreApp,Version=v10.0)的测试运行\n总共 1 个测试文件与指定模式相匹配。\n\n已通过! - 失败:     0，通过:     1，已跳过:     0，总计:     1，持续时间: 18 ms - EnterpriseApi.Integration.dll (net10.0)",
+      "stderr": "",
+      "attempt": 1
+    }
+  ],
+  "repoDriftFiles": [
+    "EnterpriseApiBusiness.Interface/ICommonFuncService.cs",
+    "EnterpriseApiBusiness/CommonFunc/CommonFuncService.GetCENCurr.cs",
+    "EnterpriseApiEntity/CommonFunc/GetCENCurrInfo.cs"
+  ],
+  "codeArtifacts": {
+    "changePlan": "../../../.agent/context/Common/apis/COMMON.commonfunc.getcencurr/change-plan.json",
+    "implementationReport": "../../../.agent/context/Common/apis/COMMON.commonfunc.getcencurr/implementation-report.md",
+    "diagnosisReport": null
+  },
+  "lastMessage": "COMMON.commonfunc.getcencurr => tests_passed"
+}

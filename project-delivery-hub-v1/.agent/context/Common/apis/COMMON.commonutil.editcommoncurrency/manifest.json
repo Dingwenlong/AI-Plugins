@@ -1,0 +1,58 @@
+{
+  "schemaVersion": "4.1.0",
+  "manifestType": "api",
+  "executionId": "Common",
+  "apiId": "COMMON.commonutil.editcommoncurrency",
+  "apiCategory": "CommonUtil",
+  "apiName": "EditCommonCurrency",
+  "status": "pending",
+  "phase": "pending",
+  "updatedAt": "2026-05-23T22:18:09+08:00",
+  "newAuthor": "Jimmy",
+  "specStatus": "done",
+  "specUpdatedAt": "2026-05-23T17:44:48+08:00",
+  "specBlockReason": null,
+  "specSourceFingerprint": "sha256:1b18c56e97bacef9ae26f4a6d3a37dd156bb7119e719f48bd3f05cfc9eb96726",
+  "specSource": {
+    "tsdFile": "TSD.Common_封存TSD共用开发链路_v1.0_20260523.docx",
+    "workbookFile": "NEWDA_API_DETAIL_CommonUtil_20260522.xlsx",
+    "sheetNames": [
+      "EditCommonCurrency編輯常用幣別"
+    ]
+  },
+  "specArtifacts": {
+    "apiSpec": "../../../.agent/context/Common/apis/COMMON.commonutil.editcommoncurrency/Common_API_Spec.json"
+  },
+  "fixtureStatus": "blocked",
+  "fixturePhase": "inspection_blocked",
+  "fixtureUpdatedAt": "2026-05-23T19:41:27+08:00",
+  "fixtureBlockReason": "missing_schema_authority",
+  "fixtureSourceFingerprint": "sha256:1b18c56e97bacef9ae26f4a6d3a37dd156bb7119e719f48bd3f05cfc9eb96726",
+  "fixtureArtifacts": {
+    "dbFixtureReport": "../../.agent/context/Common/apis/COMMON.commonutil.editcommoncurrency/db-fixture-report.json",
+    "tableChecks": "../../.agent/context/Common/apis/COMMON.commonutil.editcommoncurrency/table-checks.json",
+    "seedPlan": null,
+    "seedExecuted": null,
+    "seedManifest": null
+  },
+  "codeStatus": "pending",
+  "codePhase": "pending",
+  "codeUpdatedAt": "2026-05-23T22:18:09+08:00",
+  "codeBlockReason": null,
+  "codeProjectRoot": ".",
+  "codeSolutionPath": "Sinopac.EnterpriseAPI.slnx",
+  "inputHashes": {
+    "upstreamManifest": "sha256:2f8c21a20aa7ba2ed943f2cd95b89fc4790ad11a5ff993c898e56389feb262cc",
+    "apiSpec": "sha256:b21b3378d927bfe7d2fcb5f0abc9b584a36d444bc71c7424da9473492c599866"
+  },
+  "modifiedFiles": [],
+  "validationChecks": [],
+  "validationResults": [],
+  "repoDriftFiles": [],
+  "codeArtifacts": {
+    "changePlan": null,
+    "implementationReport": null,
+    "diagnosisReport": null
+  },
+  "lastMessage": null
+}

@@ -1,0 +1,141 @@
+{
+  "schemaVersion": "4.2.0",
+  "apiId": "COMMON.commonfunc.checkforeignercustid",
+  "newAuthor": "Jimmy",
+  "functionCode": "Common",
+  "version": "1.0",
+  "apiCategory": "CommonFunc",
+  "apiName": "CheckForeignerCustId",
+  "source": {
+    "tsdFile": "TSD.Common_封存TSD共用开发链路_v1.0_20260523.docx",
+    "workbookFile": "NEWDA_Method_DETAIL_ExchangeCommonFunc_20260522.xlsx",
+    "sheetNames": [
+      "CheckForeignerCustId是否為外國人"
+    ]
+  },
+  "request": [
+    {
+      "rowKey": "1",
+      "fieldName": "custId",
+      "dataType": "string",
+      "required": true,
+      "description": "客戶ID"
+    }
+  ],
+  "response": [
+    {
+      "rowKey": "1",
+      "fieldName": "result",
+      "dataType": "boolean",
+      "required": true,
+      "description": "是否外國人",
+      "example": "true",
+      "notes": "true ; false"
+    }
+  ],
+  "mockExamples": [
+    {
+      "scenario": "查詢成功",
+      "responsePayload": {
+        "isSuccess": true,
+        "responseCode": "0000",
+        "responseMessage": "成功",
+        "responseDT": "2026/03/25 11:16:30",
+        "responseData": {
+          "checkCount": 1
+        }
+      }
+    }
+  ],
+  "backendApis": {},
+  "businessLogic": {
+    "steps": [
+      {
+        "step": 1,
+        "title": "業務邏輯",
+        "details": "/// <summary>\n/// 是否為外國人\n/// </summary>\n/// <param name=\"custId\"></param>\n/// <returns></returns>\npublic static bool IsForeignerCustId( string custId )\n{\nstring userId = custId.PadRight( 10 , ' ' ).Substring( 0 , 10 );\nif ( Regex.IsMatch( userId , @\"^[A-Z]{2}\\d{8}$\" ) )\n{\nreturn true;\n}\nelse if ( Regex.IsMatch( userId , @\"^\\d{8}[A-Z]{2}$\" ) )\n{\nreturn true;\n}\n//202001150072 外來人口新式統一證號\nelse if (Regex.IsMatch(userId, @\"^[A-Z][89]\\d{8}$\"))\n{\nreturn true;\n}"
+      }
+    ],
+    "fieldMappings": [],
+    "errorCodeRules": [
+      {
+        "code": "9999",
+        "scenario": "未輸入必填請求參數",
+        "message": "請輸入{Request參數}！"
+      }
+    ],
+    "runtimeDependencies": [],
+    "dataSources": [],
+    "sqlSpecs": [],
+    "legacyReferences": [],
+    "prohibitedShortcuts": [
+      "block_comment_header_substitution"
+    ]
+  },
+  "codeHandoff": {
+    "schemaVersion": "1.0.0",
+    "logicSummary": {
+      "stepCount": 1,
+      "queryContractCount": 0,
+      "mappingRuleCount": 0,
+      "legacyEvidenceCount": 1,
+      "dependencyHintCount": 0,
+      "constraintCount": 2,
+      "unresolvedCount": 0,
+      "primarySource": "businessLogic"
+    },
+    "logicFlow": [
+      {
+        "stepId": "step_1",
+        "title": "業務邏輯",
+        "actionType": "return",
+        "inputs": [
+          "custId"
+        ],
+        "outputs": [
+          "result"
+        ],
+        "evidenceIds": []
+      }
+    ],
+    "legacyEvidence": [
+      {
+        "evidenceId": "response_code.o_common.9999",
+        "kind": "responseCodeCatalog",
+        "origin": "feature_common/P240301Git/Sinopac.EnterpriseAPI/EnterpriseApiEntity/ResponseCodes/O_Common.resx",
+        "authority": "existing_code",
+        "symbols": [
+          "O_Common.Code_9999"
+        ],
+        "summary": "公共必填参数错误码 9999 = 請輸入{Request參數}！",
+        "snippet": "Code_9999: 請輸入{Request參數}！"
+      }
+    ],
+    "queryContracts": [],
+    "mappingRules": [],
+    "dependencyHints": [],
+    "constraints": [
+      {
+        "constraintType": "prohibited_shortcut",
+        "rule": "block_comment_header_substitution",
+        "severity": "error",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "request_field_validation",
+        "field": "custId",
+        "validationLayer": "dto_attribute",
+        "validationType": "required",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸入{Request參數}！",
+        "customValidationAttributeNeeded": false,
+        "rule": "custId | dto_attribute | required | 9999 | 請輸入{Request參數}！",
+        "severity": "warning",
+        "evidenceIds": [
+          "response_code.o_common.9999"
+        ]
+      }
+    ],
+    "unresolved": []
+  }
+}

@@ -1,0 +1,1912 @@
+{
+  "schemaVersion": "4.1.0",
+  "skillName": "api-code-writer",
+  "manifestType": "change-plan",
+  "status": "planned",
+  "updatedAt": "2026-05-23T18:10:24+08:00",
+  "executionId": "Common",
+  "apiId": "COMMON.commonfunc.getaccountlistbytranscode",
+  "projectRoot": ".",
+  "solutionPath": "Sinopac.EnterpriseAPI/Sinopac.EnterpriseAPI.slnx",
+  "upstream": {
+    "manifest": "../../.agent/context/Common/apis/COMMON.commonfunc.getaccountlistbytranscode/manifest.json",
+    "apiSpec": "../../.agent/context/Common/apis/COMMON.commonfunc.getaccountlistbytranscode/Common_API_Spec.json",
+    "sourceFingerprint": "sha256:15d3749e4d900b0e6c816ff71b27c37c54ecbaecc6ce82f4b211a5317bf69e49",
+    "source": {
+      "tsdFile": "TSD.Common_封存TSD共用开发链路_v1.0_20260523.docx",
+      "workbookFile": "NEWDA_Method_DETAIL_ExchangeCommonFunc_20260522.xlsx",
+      "sheetNames": [
+        "GetAccountListByTransCode 全帳戶信息",
+        "GetAccountListByTransCode根據交易代 "
+      ]
+    }
+  },
+  "sourceCandidates": [
+    "Libray/Sinopac.CommonFunc/IFuncService/ICommonFuncService.cs",
+    "Libray/Sinopac.CommonFunc/FuncService/CommonFuncService.cs",
+    "Libray/Sinopac.CommonFunc/FuncService/CommonFuncService.GetAccountListByTransCode.cs",
+    "Libray/Sinopac.CommonFunc/Dto/GetAccountListByTransCodeInfo.cs"
+  ],
+  "repoDriftDetected": false,
+  "repoDriftFiles": [],
+  "beforeHashes": {
+    "Libray/Sinopac.CommonFunc/IFuncService/ICommonFuncService.cs": "sha256:4027a6c84328177b3b56cb62bc65883570a4e1b5eeea2fb731b356ad7f2f3ba4",
+    "Libray/Sinopac.CommonFunc/FuncService/CommonFuncService.cs": "sha256:f7daae54af90a4370b14980a4b46beed5468f50c4f12710333a9b021dd647f93",
+    "Libray/Sinopac.CommonFunc/FuncService/CommonFuncService.GetAccountListByTransCode.cs": null,
+    "Libray/Sinopac.CommonFunc/Dto/GetAccountListByTransCodeInfo.cs": null
+  },
+  "analysis": {
+    "frameworkProfile": "enterpriseapi",
+    "guidelineAuthority": "新大戶框架説明 V2.0 20260203.docx",
+    "repoRoot": "Sinopac.EnterpriseAPI",
+    "moduleName": "CommonFunc",
+    "controllerFile": null,
+    "interfaceFile": "Libray/Sinopac.CommonFunc/IFuncService/ICommonFuncService.cs",
+    "serviceFiles": [
+      "Libray/Sinopac.CommonFunc/FuncService/CommonFuncService.cs",
+      "Libray/Sinopac.CommonFunc/FuncService/CommonFuncService.GetAccountListByTransCode.cs"
+    ],
+    "entityFiles": [
+      "Libray/Sinopac.CommonFunc/Dto/GetAccountListByTransCodeInfo.cs"
+    ],
+    "codeTargetFiles": [
+      "Libray/Sinopac.CommonFunc/IFuncService/ICommonFuncService.cs",
+      "Libray/Sinopac.CommonFunc/FuncService/CommonFuncService.GetAccountListByTransCode.cs",
+      "Libray/Sinopac.CommonFunc/FuncService/CommonFuncService.cs",
+      "Libray/Sinopac.CommonFunc/Dto/GetAccountListByTransCodeInfo.cs"
+    ],
+    "unitTestTargetFiles": [],
+    "integrationTestTargetFiles": [],
+    "testTargetFiles": [],
+    "testCodeHandoff": {
+      "ownerStep": "05 docx-unittest-report",
+      "writerPolicy": "handoff_only",
+      "unitTestTargetFiles": [],
+      "integrationTestTargetFiles": [],
+      "note": "Step 04 records test targets and scenarios only; UnitTest, IntegrationTest, and service runtime validation source code belong to step 05."
+    },
+    "creationMode": "extend_partial",
+    "registrationStrategy": "manual_registration_review",
+    "targetFile": "Libray/Sinopac.CommonFunc/FuncService/CommonFuncService.GetAccountListByTransCode.cs",
+    "targetClass": "CommonFuncService",
+    "targetMethod": "GetAccountListByTransCodeAsync",
+    "action": "ai_orchestrated_implementation",
+    "requestFields": [
+      {
+        "path": "APNOKindParams",
+        "dataType": "object[]",
+        "required": true,
+        "description": "APNOKind規則參數集合",
+        "notes": "來自 GetAccountListByAPNOKindFunc 的回傳結果"
+      }
+    ],
+    "responseFields": [
+      {
+        "path": "isSuccess",
+        "dataType": "boolean",
+        "required": true,
+        "description": "API成功與否",
+        "notes": "true ; false"
+      },
+      {
+        "path": "responseCode",
+        "dataType": "string",
+        "required": true,
+        "description": "回應代碼",
+        "notes": "成功:0000其餘狀況為失敗"
+      },
+      {
+        "path": "responseMessage",
+        "dataType": "string",
+        "required": true,
+        "description": "回應訊息",
+        "notes": "失敗狀況下回傳錯誤訊息"
+      },
+      {
+        "path": "responseDT",
+        "dataType": "string",
+        "required": true,
+        "description": "系統回應時間",
+        "notes": "yyyy/MM/dd HH:mm:ss"
+      },
+      {
+        "path": "responseData",
+        "dataType": "json",
+        "required": true,
+        "description": "回應資料框",
+        "notes": ""
+      },
+      {
+        "path": "responseData.accList",
+        "dataType": "list",
+        "required": true,
+        "description": "帳號列表",
+        "notes": ""
+      },
+      {
+        "path": "responseData.accList[].acctValue",
+        "dataType": "string",
+        "required": true,
+        "description": "帳號",
+        "notes": "EC0001.EnqEAcctId 新臺幣 /  EC0001.EnqEMainAcctId 外幣"
+      },
+      {
+        "path": "responseData.accList[].acctCName",
+        "dataType": "string",
+        "required": true,
+        "description": "帳號中文名稱",
+        "notes": "BP_BANK_BAL.ACCOUNT_NAME"
+      },
+      {
+        "path": "responseData.accList[].acctText",
+        "dataType": "string",
+        "required": true,
+        "description": "帳號文字說明",
+        "notes": "手機APP acctText=acctCName"
+      },
+      {
+        "path": "responseData.accList[].subAcct",
+        "dataType": "string",
+        "required": true,
+        "description": "外幣放入的是子帳號",
+        "notes": "EC0001.EnqEAcctId"
+      },
+      {
+        "path": "responseData.accList[].curr",
+        "dataType": "string",
+        "required": true,
+        "description": "幣別",
+        "notes": "EC0001.EnqEAcctCurr"
+      },
+      {
+        "path": "responseData.accList[].curText",
+        "dataType": "string",
+        "required": true,
+        "description": "幣別中文",
+        "notes": "J_CURR.CURRCNAME"
+      },
+      {
+        "path": "responseData.accList[].availBalance",
+        "dataType": "decimal",
+        "required": true,
+        "description": "(帳戶)餘額",
+        "notes": "EC0001.EnqEAcctWkBal"
+      },
+      {
+        "path": "responseData.accList[].acctCategory",
+        "dataType": "string",
+        "required": true,
+        "description": "帳戶種類",
+        "notes": "EC0001.EnqEAcctCatg"
+      },
+      {
+        "path": "responseData.accList[].digitalFg",
+        "dataType": "string",
+        "required": true,
+        "description": "數位帳號幾號",
+        "notes": "EC0001.EnqEDigitalFg（數位帳號標記：數據為空表示“一般帳戶”，不為空表示：\"數位帳戶\"）"
+      },
+      {
+        "path": "responseData.accList[].foreignStop",
+        "dataType": "string",
+        "required": true,
+        "description": "開啟外匯交易管控註記",
+        "notes": "EC0001.EnqEMemo15"
+      },
+      {
+        "path": "responseData.accList[].foreignAlert",
+        "dataType": "string",
+        "required": true,
+        "description": "外匯疑似化整為零註記",
+        "notes": "EC0001.EnqEMemo14"
+      },
+      {
+        "path": "responseData.accList[].enqECustSms1",
+        "dataType": "string",
+        "required": true,
+        "description": "連絡電話",
+        "notes": "EC0001.EnqECustSms1"
+      },
+      {
+        "path": "responseData.accList[].enqECustEmail",
+        "dataType": "string",
+        "required": true,
+        "description": "郵箱",
+        "notes": "EC0001.EnqECustEmail"
+      },
+      {
+        "path": "responseData.accList[].genQuotaMark",
+        "dataType": "int",
+        "required": true,
+        "description": "cancel，均可做綜合額度",
+        "notes": "固定值1"
+      },
+      {
+        "path": "responseData.accList[].genAcctMark",
+        "dataType": "string",
+        "required": true,
+        "description": "綜存戶記號",
+        "notes": "EC0001.EnqELinkAioAc==Y 或者 accType 等於11 或 acctype 等於13 或者subAcct.Length==6時賦值為1；"
+      },
+      {
+        "path": "responseData.accList[].acctStat",
+        "dataType": "string",
+        "required": true,
+        "description": "久未往來戶記號",
+        "notes": "EC0001.EnqEInactiveFlag"
+      },
+      {
+        "path": "responseData.accList[].nonTrxferFlg",
+        "dataType": "string",
+        "required": true,
+        "description": "禁止轉出記號",
+        "notes": "通過mma的禁止轉出帳號列表進行判斷   1為禁止轉出記號"
+      },
+      {
+        "path": "responseData.accList[].goalbr",
+        "dataType": "string",
+        "required": true,
+        "description": "績效行",
+        "notes": "EC0001.EnqEAcctKpiBr"
+      },
+      {
+        "path": "responseData.accList[].accType",
+        "dataType": "string",
+        "required": true,
+        "description": "帳號類型",
+        "notes": "帳號類型，01：臺幣、02：支存、03儲值支付帳號、04行儲、11：外組、12：002、21：信用卡、22：GIFTCARD、23：598、30：虛擬帳號、80：有無單定存、05數位帳號(台)、13數位帳號(外)、14外匯授信目的帳戶(不計息)"
+      },
+      {
+        "path": "responseData.accList[].fixBalance",
+        "dataType": "string",
+        "required": true,
+        "description": "AIO定存單金額",
+        "notes": "EC0001.EnqEAioTdBalTot"
+      },
+      {
+        "path": "responseData.accList[].maxAvail",
+        "dataType": "string",
+        "required": true,
+        "description": "最高可使用額",
+        "notes": "EC0001.EnqEAcctAvlAmt"
+      },
+      {
+        "path": "responseData.accList[].blkAmt",
+        "dataType": "string",
+        "required": true,
+        "description": "只扣金額",
+        "notes": "EC0001.EnqEAcctBlkAmt"
+      },
+      {
+        "path": "responseData.accList[].outStdLmt",
+        "dataType": "string",
+        "required": true,
+        "description": "透支額度",
+        "notes": "EC0001.EnqEAcctLmAmt"
+      },
+      {
+        "path": "responseData.accList[].allowPledge",
+        "dataType": "string",
+        "required": true,
+        "description": "質借記號",
+        "notes": "EC0001.EnqEAllowPledge"
+      },
+      {
+        "path": "responseData.accList[].ipIGFg",
+        "dataType": "string",
+        "required": true,
+        "description": "是否有開智能撲滿",
+        "notes": "EC0001.EnqEIpigFg"
+      },
+      {
+        "path": "responseData.accList[].pockeyFg",
+        "dataType": "string",
+        "required": true,
+        "description": "是否有綁定私房錢",
+        "notes": "EC0001.EnqEPockeyFg"
+      },
+      {
+        "path": "responseData.accList[].evtFg",
+        "dataType": "string",
+        "required": true,
+        "description": "止扣記號",
+        "notes": "EC0001.EnqEEvtType"
+      },
+      {
+        "path": "responseData.accList[].eQuotaTotD",
+        "dataType": "string",
+        "required": true,
+        "description": "非約轉日限額",
+        "notes": "EC0001.EnqEQuotaTotD"
+      },
+      {
+        "path": "responseData.accList[].applyCCYProject",
+        "dataType": "string",
+        "required": true,
+        "description": "外幣階梯活期存款專案記號",
+        "notes": "EC0001.EnqEProject"
+      },
+      {
+        "path": "responseData.accList[].applyCCYProjectMDATE",
+        "dataType": "string",
+        "required": true,
+        "description": "專案到期日",
+        "notes": "EC0001.EnqEProjectMdate"
+      },
+      {
+        "path": "responseData.accList[].applyCCYStairateFG",
+        "dataType": "string",
+        "required": true,
+        "description": "外幣階梯活期存款階梯存款記號",
+        "notes": "EC0001.EnqEStairateFg"
+      },
+      {
+        "path": "responseData.accList[].isStaff",
+        "dataType": "boolean",
+        "required": true,
+        "description": "是否行員",
+        "notes": ""
+      },
+      {
+        "path": "responseData.accList[].isOBUCustome",
+        "dataType": "boolean",
+        "required": true,
+        "description": "是否OBU身分",
+        "notes": ""
+      }
+    ],
+    "businessSteps": [
+      {
+        "step": 1,
+        "title": "初始化與參數處理",
+        "details": "1. 接收 APNOKindParams，解析各索引對應的過濾參數：\n- NonTrxferFlg = APNOKindParams[0]\n- GenQuotaMark = APNOKindParams[1]\n- GenAcctMark = APNOKindParams[2]\n- SinopayFlag = APNOKindParams[3]\n- DisplayFormat = APNOKindParams[4]\n- AccTypeList = APNOKindParams[5..N]（ApnoList）"
+      },
+      {
+        "step": 2,
+        "title": "查詢取帳戶訊息",
+        "details": "1. 請求 GetEC0001() 取帳戶訊息\n2. 若查詢失敗或count=0，回傳空列表"
+      },
+      {
+        "step": 3,
+        "title": "規則過濾",
+        "details": "3. 循環 GetEC0001 回傳的帳號列表，依解析出的規則參數進行過濾：\n3.1 若 NonTrxferFlg==\"1\"，排除 nonTrxferFlg==\"1\" 的帳號\n3.2 若 GenQuotaMark==\"1\"，排除 genQuotaMark!=1 的帳號\n3.3 若 GenAcctMark==\"1\"，排除 genAcctMark!=\"1\" 的帳號\n3.4 保留 accType 在 AccTypeList（ApnoList）中的帳號"
+      },
+      {
+        "step": 4,
+        "title": "回傳結果",
+        "details": "將查詢結果回傳給前端"
+      }
+    ],
+    "fieldMappings": [
+      {
+        "target": "accList",
+        "source": "EC0001.EnqEAcctId",
+        "rule": "帳號列表",
+        "fields": [
+          {
+            "field": "acctValue",
+            "source": "EC0001.EnqEAcctId",
+            "rule": "帳號"
+          },
+          {
+            "field": "acctCName",
+            "source": "BP_BANK_BAL.ACCOUNT_NAME",
+            "rule": "帳號中文名稱"
+          },
+          {
+            "field": "acctText",
+            "source": "手機APP acctText=acctCName",
+            "rule": "帳號文字說明"
+          },
+          {
+            "field": "subAcct",
+            "source": "EC0001.EnqEAcctId",
+            "rule": "外幣放入的是子帳號"
+          },
+          {
+            "field": "curr",
+            "source": "EC0001.EnqEAcctCurr",
+            "rule": "幣別"
+          },
+          {
+            "field": "curText",
+            "source": "J_CURR.CURRCNAME",
+            "rule": "幣別中文"
+          },
+          {
+            "field": "availBalance",
+            "source": "EC0001.EnqEAcctWkBal",
+            "rule": "(帳戶)餘額"
+          },
+          {
+            "field": "acctCategory",
+            "source": "EC0001.EnqEAcctCatg",
+            "rule": "帳戶種類"
+          },
+          {
+            "field": "digitalFg",
+            "source": "EC0001.EnqEDigitalFg",
+            "rule": "數位帳號幾號"
+          },
+          {
+            "field": "foreignStop",
+            "source": "EC0001.EnqEMemo15",
+            "rule": "開啟外匯交易管控註記"
+          },
+          {
+            "field": "foreignAlert",
+            "source": "EC0001.EnqEMemo14",
+            "rule": "外匯疑似化整為零註記"
+          },
+          {
+            "field": "enqECustSms1",
+            "source": "EC0001.EnqECustSms1",
+            "rule": "連絡電話"
+          },
+          {
+            "field": "enqECustEmail",
+            "source": "EC0001.EnqECustEmail",
+            "rule": "郵箱"
+          },
+          {
+            "field": "genQuotaMark",
+            "source": "固定值1",
+            "rule": "cancel，均可做綜合額度"
+          },
+          {
+            "field": "genAcctMark",
+            "source": "EC0001.EnqELinkAioAc==Y 或者 accType 等於11 或 acctype 等於13 或者subAcct.Length==6時賦值為1；",
+            "rule": "綜存戶記號"
+          },
+          {
+            "field": "acctStat",
+            "source": "EC0001.EnqEInactiveFlag",
+            "rule": "久未往來戶記號"
+          },
+          {
+            "field": "nonTrxferFlg",
+            "source": "通過mma的禁止轉出帳號列表進行判斷   1為禁止轉出記號",
+            "rule": "禁止轉出記號"
+          },
+          {
+            "field": "goalbr",
+            "source": "EC0001.EnqEAcctKpiBr",
+            "rule": "績效行"
+          },
+          {
+            "field": "accType",
+            "source": "帳號類型，01：臺幣、02：支存、03儲值支付帳號、04行儲、11：外組、12：002、21：信用卡、22：GIFTCARD、23：598、30：虛擬帳號、80：有無單定存、05數位帳號(台)、13數位帳號(外)、14外匯授信目的帳戶(不計息)",
+            "rule": "帳號類型"
+          },
+          {
+            "field": "fixBalance",
+            "source": "EC0001.EnqEAioTdBalTot",
+            "rule": "AIO定存單金額"
+          },
+          {
+            "field": "maxAvail",
+            "source": "EC0001.EnqEAcctAvlAmt",
+            "rule": "最高可使用額"
+          },
+          {
+            "field": "blkAmt",
+            "source": "EC0001.EnqEAcctBlkAmt",
+            "rule": "只扣金額"
+          },
+          {
+            "field": "outStdLmt",
+            "source": "EC0001.EnqEAcctLmAmt",
+            "rule": "透支額度"
+          },
+          {
+            "field": "allowPledge",
+            "source": "EC0001.EnqEAllowPledge",
+            "rule": "質借記號"
+          },
+          {
+            "field": "ipIGFg",
+            "source": "EC0001.EnqEIpigFg",
+            "rule": "是否有開智能撲滿"
+          },
+          {
+            "field": "pockeyFg",
+            "source": "EC0001.EnqEPockeyFg",
+            "rule": "是否有綁定私房錢"
+          },
+          {
+            "field": "evtFg",
+            "source": "EC0001.EnqEEvtType",
+            "rule": "止扣記號"
+          },
+          {
+            "field": "eQuotaTotD",
+            "source": "EC0001.EnqEQuotaTotD",
+            "rule": "非約轉日限額"
+          },
+          {
+            "field": "applyCCYProject",
+            "source": "EC0001.EnqEProject",
+            "rule": "外幣階梯活期存款專案記號"
+          },
+          {
+            "field": "applyCCYProjectMDATE",
+            "source": "EC0001.EnqEProjectMdate",
+            "rule": "專案到期日"
+          },
+          {
+            "field": "applyCCYStairateFG",
+            "source": "EC0001.EnqEStairateFg",
+            "rule": "外幣階梯活期存款階梯存款記號"
+          },
+          {
+            "field": "isStaff",
+            "source": "",
+            "rule": "是否行員"
+          },
+          {
+            "field": "isOBUCustome",
+            "source": "",
+            "rule": "是否OBU身分"
+          }
+        ]
+      }
+    ],
+    "errorCodes": [
+      {
+        "code": "9001",
+        "scenario": "查詢數據庫失敗",
+        "message": "系統繁忙,請稍後再試"
+      },
+      {
+        "code": "9001",
+        "scenario": "IRIS帳戶資料查詢失敗",
+        "message": "系統繁忙,請稍後再試"
+      },
+      {
+        "code": "0200",
+        "scenario": "EC0001集合count=0",
+        "message": "未查詢到可用帳號"
+      },
+      {
+        "code": "9999",
+        "scenario": "未輸入必填請求參數",
+        "message": "請輸入{Request參數}！"
+      }
+    ],
+    "runtimeDependencies": [
+      {
+        "id": "external_api_commonfunc_getec0001",
+        "type": "external_api",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "业务逻辑正文提到 commonfunc->GetEC0001() 取帳戶訊息 依赖。"
+      }
+    ],
+    "referenceHints": [],
+    "backendApis": [
+      "commonfunc -> GetEC0001() 取帳戶訊息"
+    ],
+    "mockExamples": [
+      {
+        "scenario": "帳戶訊息結果",
+        "requestPayload": {
+          "APNOKindParams": [
+            "1",
+            "",
+            "",
+            "",
+            "{0}-{1}-{2}",
+            "05",
+            "13"
+          ]
+        },
+        "responsePayload": {
+          "isSuccess": true,
+          "responseCode": "0000",
+          "responseMessage": "查詢成功",
+          "responseDT": "2026/03/11 11:20:30",
+          "responseData": {
+            "accList": [
+              {
+                "acctValue": "19801800292333",
+                "acctCName": "營業部DAWHO活期儲蓄存款",
+                "acctText": "營業部DAWHO活期儲蓄存款",
+                "subAcct": "",
+                "curr": "TWD",
+                "curText": "新臺幣",
+                "availBalance": 531,
+                "acctCategory": "6001",
+                "digitalFg": "",
+                "foreignStop": "Y",
+                "foreignAlert": "Y",
+                "enqECustSms1": "029384-088948",
+                "enqECustEmail": "029384@XX",
+                "genQuotaMark": 1,
+                "genAcctMark": "1",
+                "acctStat": "Y",
+                "nonTrxferFlg": "0",
+                "goalbr": "001",
+                "accType": "01",
+                "fixBalance": "0",
+                "maxAvail": "100000",
+                "blkAmt": "0",
+                "outStdLmt": "0",
+                "allowPledge": "N",
+                "ipIGFg": "N",
+                "pockeyFg": "N",
+                "evtFg": "N",
+                "eQuotaTotD": "50000",
+                "applyCCYProject": "N",
+                "applyCCYProjectMDATE": "",
+                "applyCCYStairateFG": "N",
+                "isStaff": false
+              }
+            ]
+          }
+        }
+      },
+      {
+        "scenario": "查詢數據庫失敗",
+        "requestPayload": {
+          "APNOKindParams": [
+            "1",
+            "",
+            "",
+            "",
+            "{0}-{1}-{2}",
+            "05",
+            "13"
+          ]
+        },
+        "responsePayload": {
+          "isSuccess": false,
+          "responseCode": "9001",
+          "responseMessage": "系統繁忙,請稍後再試",
+          "responseDT": "2026/02/24 10:30:25",
+          "responseData": {}
+        }
+      },
+      {
+        "scenario": "IRIS帳戶資料查詢失敗",
+        "requestPayload": {
+          "APNOKindParams": [
+            "1",
+            "",
+            "",
+            "",
+            "{0}-{1}-{2}",
+            "05",
+            "13"
+          ]
+        },
+        "responsePayload": {
+          "isSuccess": false,
+          "responseCode": "9001",
+          "responseMessage": "系統繁忙,請稍後再試",
+          "responseDT": "2026/02/24 10:30:25",
+          "responseData": {}
+        }
+      },
+      {
+        "scenario": "EC0001集合count=0",
+        "requestPayload": {
+          "APNOKindParams": [
+            "1",
+            "",
+            "",
+            "",
+            "{0}-{1}-{2}",
+            "05",
+            "13"
+          ]
+        },
+        "responsePayload": {
+          "isSuccess": false,
+          "responseCode": "0200",
+          "responseMessage": "未查詢到可用帳號",
+          "responseDT": "2026/02/24 10:30:25",
+          "responseData": {}
+        }
+      },
+      {
+        "scenario": "未輸入必填請求參數",
+        "requestPayload": {
+          "APNOKindParams": []
+        },
+        "responsePayload": {
+          "isSuccess": false,
+          "responseCode": "9999",
+          "responseMessage": "請輸入{Request參數}！",
+          "responseDT": "2026/02/24 15:59:24",
+          "responseData": {}
+        }
+      }
+    ],
+    "handoffSource": "codeHandoff",
+    "logicSummary": {
+      "stepCount": 4,
+      "queryContractCount": 0,
+      "mappingRuleCount": 33,
+      "legacyEvidenceCount": 0,
+      "dependencyHintCount": 1,
+      "constraintCount": 6,
+      "unresolvedCount": 0,
+      "primarySource": "businessLogic"
+    },
+    "logicFlow": [
+      {
+        "stepId": "step_1",
+        "title": "初始化與參數處理",
+        "actionType": "mapping",
+        "inputs": [
+          "APNOKindParams"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_2",
+        "title": "查詢取帳戶訊息",
+        "actionType": "query",
+        "inputs": [
+          "APNOKindParams"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_3",
+        "title": "規則過濾",
+        "actionType": "return",
+        "inputs": [
+          "APNOKindParams"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_4",
+        "title": "回傳結果",
+        "actionType": "query",
+        "inputs": [
+          "APNOKindParams"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      }
+    ],
+    "audienceProfile": {
+      "scope": "shared",
+      "confidence": "high",
+      "scores": {
+        "frontstage": 1,
+        "midBackoffice": 0,
+        "shared": 9
+      },
+      "evidence": [
+        {
+          "scope": "frontstage",
+          "keyword": "cust",
+          "weight": 1
+        },
+        {
+          "scope": "shared",
+          "keyword": "common",
+          "weight": 2
+        },
+        {
+          "scope": "shared",
+          "keyword": "commonfunc",
+          "weight": 3
+        },
+        {
+          "scope": "shared",
+          "keyword": "framework",
+          "weight": 1
+        },
+        {
+          "scope": "shared",
+          "keyword": "共用",
+          "weight": 3
+        }
+      ],
+      "unresolved": []
+    },
+    "devGuidelineProfile": {
+      "sourceName": "P240301 永豐商銀新大戶程式開發規範",
+      "version": "6.2",
+      "catalogPath": "rules/code-guidelines/p240301-v6.2/catalog.json",
+      "rulesRoot": "D:/Devs/NEWDAWHO/.agent/project-rules/NEWDAWHO",
+      "sourceStatus": "converted_reference_required"
+    },
+    "devGuidelineRulesSelected": [
+      {
+        "ruleId": "common-style",
+        "title": "共同落碼風格與可維護性",
+        "category": "common-style",
+        "direction": "production-code",
+        "ruleType": "style_only",
+        "audienceScopes": [
+          "frontstage",
+          "midBackoffice",
+          "shared",
+          "unknown"
+        ],
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/common-style.md",
+        "action": "load_on_demand"
+      },
+      {
+        "ruleId": "data-access",
+        "title": "DB / SQL / 資料檢索規範",
+        "category": "data-access",
+        "direction": "production-code",
+        "ruleType": "blocking_gap",
+        "audienceScopes": [
+          "frontstage",
+          "midBackoffice",
+          "shared",
+          "unknown"
+        ],
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/data-access.md",
+        "action": "select_and_check_gaps"
+      },
+      {
+        "ruleId": "validation",
+        "title": "Request DTO 驗證與錯誤映射規範",
+        "category": "validation",
+        "direction": "production-code",
+        "ruleType": "blocking_gap",
+        "audienceScopes": [
+          "frontstage",
+          "midBackoffice",
+          "shared",
+          "unknown"
+        ],
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/validation.md",
+        "action": "select_and_check_gaps"
+      },
+      {
+        "ruleId": "config",
+        "title": "AppSettings / 外部服務設定規範",
+        "category": "config",
+        "direction": "production-code",
+        "ruleType": "blocking_gap",
+        "audienceScopes": [
+          "frontstage",
+          "midBackoffice",
+          "shared",
+          "unknown"
+        ],
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/config.md",
+        "action": "select_and_check_gaps"
+      },
+      {
+        "ruleId": "logging-exception",
+        "title": "Log / Exception / 失敗處理規範",
+        "category": "logging-exception",
+        "direction": "production-code",
+        "ruleType": "style_only",
+        "audienceScopes": [
+          "frontstage",
+          "midBackoffice",
+          "shared",
+          "unknown"
+        ],
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/logging-exception.md",
+        "action": "load_on_demand"
+      },
+      {
+        "ruleId": "test-handoff",
+        "title": "第 05 步測試交接規範",
+        "category": "test-handoff",
+        "direction": "handoff-only",
+        "ruleType": "handoff_only",
+        "audienceScopes": [
+          "frontstage",
+          "midBackoffice",
+          "shared",
+          "unknown"
+        ],
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/test-handoff.md",
+        "action": "handoff_only"
+      }
+    ],
+    "devGuidelineLoadHints": [
+      {
+        "ruleId": "common-style",
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/common-style.md",
+        "reason": "Every API implementation needs only the lightweight shared coding conventions."
+      },
+      {
+        "ruleId": "data-access",
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/data-access.md",
+        "reason": "Load only when the API has queryContracts, SQL dependencies, DB backend APIs, or table evidence."
+      },
+      {
+        "ruleId": "validation",
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/validation.md",
+        "reason": "Load only when request fields, required fields, custom validation, or validation response mapping is relevant."
+      },
+      {
+        "ruleId": "config",
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/config.md",
+        "reason": "Load only for appsettings, external endpoint, third-party service, or environment config changes."
+      },
+      {
+        "ruleId": "logging-exception",
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/logging-exception.md",
+        "reason": "Load only when the API touches exception handling, logging, or failure disposition."
+      },
+      {
+        "ruleId": "test-handoff",
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/test-handoff.md",
+        "reason": "Load only to describe step-05 UnitTest / IntegrationTest / runtime validation handoff; step 04 must not write test source."
+      }
+    ],
+    "devGuidelineGaps": [],
+    "logicSourcesUsed": [
+      "codeHandoff",
+      "mappingRules",
+      "dependencyHints",
+      "constraints",
+      "mockExamples"
+    ],
+    "queryContractsSelected": [],
+    "mappingRulesSelected": [
+      {
+        "ruleId": "map_ec0001_enqeacctid_acctvalue",
+        "sourceField": "EC0001.EnqEAcctId",
+        "targetField": "acctValue",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "帳號",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_bp_bank_bal_account_name_acctcname",
+        "sourceField": "BP_BANK_BAL.ACCOUNT_NAME",
+        "targetField": "acctCName",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "帳號中文名稱",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_appaccttext_acctcname_accttext",
+        "sourceField": "手機APP acctText=acctCName",
+        "targetField": "acctText",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "帳號文字說明",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ec0001_enqeacctid_subacct",
+        "sourceField": "EC0001.EnqEAcctId",
+        "targetField": "subAcct",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "外幣放入的是子帳號",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ec0001_enqeacctcurr_curr",
+        "sourceField": "EC0001.EnqEAcctCurr",
+        "targetField": "curr",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "幣別",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_j_curr_currcname_curtext",
+        "sourceField": "J_CURR.CURRCNAME",
+        "targetField": "curText",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "幣別中文",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ec0001_enqeacctwkbal_availbalance",
+        "sourceField": "EC0001.EnqEAcctWkBal",
+        "targetField": "availBalance",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "(帳戶)餘額",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ec0001_enqeacctcatg_acctcategory",
+        "sourceField": "EC0001.EnqEAcctCatg",
+        "targetField": "acctCategory",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "帳戶種類",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ec0001_enqedigitalfg_digitalfg",
+        "sourceField": "EC0001.EnqEDigitalFg",
+        "targetField": "digitalFg",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "數位帳號幾號",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ec0001_enqememo15_foreignstop",
+        "sourceField": "EC0001.EnqEMemo15",
+        "targetField": "foreignStop",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "開啟外匯交易管控註記",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ec0001_enqememo14_foreignalert",
+        "sourceField": "EC0001.EnqEMemo14",
+        "targetField": "foreignAlert",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "外匯疑似化整為零註記",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ec0001_enqecustsms1_enqecustsms1",
+        "sourceField": "EC0001.EnqECustSms1",
+        "targetField": "enqECustSms1",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "連絡電話",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ec0001_enqecustemail_enqecustemail",
+        "sourceField": "EC0001.EnqECustEmail",
+        "targetField": "enqECustEmail",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "郵箱",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_1_genquotamark",
+        "sourceField": "固定值1",
+        "targetField": "genQuotaMark",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "cancel，均可做綜合額度",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ec0001_enqelinkaioac_y_acctype_11_acctype_13_subacct_length_6_1_genacctmark",
+        "sourceField": "EC0001.EnqELinkAioAc==Y 或者 accType 等於11 或 acctype 等於13 或者subAcct.Length==6時賦值為1；",
+        "targetField": "genAcctMark",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "綜存戶記號",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ec0001_enqeinactiveflag_acctstat",
+        "sourceField": "EC0001.EnqEInactiveFlag",
+        "targetField": "acctStat",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "久未往來戶記號",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_mma_1_nontrxferflg",
+        "sourceField": "通過mma的禁止轉出帳號列表進行判斷   1為禁止轉出記號",
+        "targetField": "nonTrxferFlg",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "禁止轉出記號",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ec0001_enqeacctkpibr_goalbr",
+        "sourceField": "EC0001.EnqEAcctKpiBr",
+        "targetField": "goalbr",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "績效行",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_01_02_03_04_11_12_002_21_22_giftcard_23_598_30_80_05_13_14_acctype",
+        "sourceField": "帳號類型，01：臺幣、02：支存、03儲值支付帳號、04行儲、11：外組、12：002、21：信用卡、22：GIFTCARD、23：598、30：虛擬帳號、80：有無單定存、05數位帳號(台)、13數位帳號(外)、14外匯授信目的帳戶(不計息)",
+        "targetField": "accType",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "帳號類型",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ec0001_enqeaiotdbaltot_fixbalance",
+        "sourceField": "EC0001.EnqEAioTdBalTot",
+        "targetField": "fixBalance",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "AIO定存單金額",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ec0001_enqeacctavlamt_maxavail",
+        "sourceField": "EC0001.EnqEAcctAvlAmt",
+        "targetField": "maxAvail",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "最高可使用額",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ec0001_enqeacctblkamt_blkamt",
+        "sourceField": "EC0001.EnqEAcctBlkAmt",
+        "targetField": "blkAmt",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "只扣金額",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ec0001_enqeacctlmamt_outstdlmt",
+        "sourceField": "EC0001.EnqEAcctLmAmt",
+        "targetField": "outStdLmt",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "透支額度",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ec0001_enqeallowpledge_allowpledge",
+        "sourceField": "EC0001.EnqEAllowPledge",
+        "targetField": "allowPledge",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "質借記號",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ec0001_enqeipigfg_ipigfg",
+        "sourceField": "EC0001.EnqEIpigFg",
+        "targetField": "ipIGFg",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "是否有開智能撲滿",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ec0001_enqepockeyfg_pockeyfg",
+        "sourceField": "EC0001.EnqEPockeyFg",
+        "targetField": "pockeyFg",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "是否有綁定私房錢",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ec0001_enqeevttype_evtfg",
+        "sourceField": "EC0001.EnqEEvtType",
+        "targetField": "evtFg",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "止扣記號",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ec0001_enqequotatotd_equotatotd",
+        "sourceField": "EC0001.EnqEQuotaTotD",
+        "targetField": "eQuotaTotD",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "非約轉日限額",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ec0001_enqeproject_applyccyproject",
+        "sourceField": "EC0001.EnqEProject",
+        "targetField": "applyCCYProject",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "外幣階梯活期存款專案記號",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ec0001_enqeprojectmdate_applyccyprojectmdate",
+        "sourceField": "EC0001.EnqEProjectMdate",
+        "targetField": "applyCCYProjectMDATE",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "專案到期日",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ec0001_enqestairatefg_applyccystairatefg",
+        "sourceField": "EC0001.EnqEStairateFg",
+        "targetField": "applyCCYStairateFG",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "外幣階梯活期存款階梯存款記號",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ec0001_enqeacctid_isstaff",
+        "sourceField": "EC0001.EnqEAcctId",
+        "targetField": "isStaff",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "是否行員",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ec0001_enqeacctid_isobucustome",
+        "sourceField": "EC0001.EnqEAcctId",
+        "targetField": "isOBUCustome",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "是否OBU身分",
+        "evidenceIds": []
+      }
+    ],
+    "dependencyHintsSelected": [
+      {
+        "dependencyType": "external_api",
+        "preferredAbstractions": [
+          "IApiRequestService"
+        ],
+        "purpose": "业务逻辑正文提到 commonfunc->GetEC0001() 取帳戶訊息 依赖。",
+        "evidenceIds": []
+      }
+    ],
+    "legacyEvidenceUsed": [],
+    "constraintsApplied": [
+      {
+        "constraintType": "prohibited_shortcut",
+        "rule": "block_comment_header_substitution",
+        "severity": "error",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "error_code_rule",
+        "rule": "9001 | 查詢數據庫失敗 | 系統繁忙,請稍後再試",
+        "severity": "warning",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "error_code_rule",
+        "rule": "9001 | IRIS帳戶資料查詢失敗 | 系統繁忙,請稍後再試",
+        "severity": "warning",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "error_code_rule",
+        "rule": "0200 | EC0001集合count=0 | 未查詢到可用帳號",
+        "severity": "warning",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "error_code_rule",
+        "rule": "9999 | 未輸入必填請求參數 | 請輸入{Request參數}！",
+        "severity": "warning",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "request_field_validation",
+        "field": "APNOKindParams",
+        "validationLayer": "dto_attribute",
+        "validationType": "required",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸入{Request參數}！",
+        "customValidationAttributeNeeded": false,
+        "rule": "APNOKindParams | dto_attribute | required | 9999 | 請輸入{Request參數}！",
+        "severity": "warning",
+        "evidenceIds": []
+      }
+    ],
+    "unresolvedLogic": [],
+    "testScenarioPlan": [
+      {
+        "source": "mockExamples",
+        "sourceIndex": 1,
+        "scenario": "帳戶訊息結果",
+        "requestPayload": {
+          "APNOKindParams": [
+            "1",
+            "",
+            "",
+            "",
+            "{0}-{1}-{2}",
+            "05",
+            "13"
+          ]
+        },
+        "expectedResponsePayload": {
+          "isSuccess": true,
+          "responseCode": "0000",
+          "responseMessage": "查詢成功",
+          "responseDT": "2026/03/11 11:20:30",
+          "responseData": {
+            "accList": [
+              {
+                "acctValue": "19801800292333",
+                "acctCName": "營業部DAWHO活期儲蓄存款",
+                "acctText": "營業部DAWHO活期儲蓄存款",
+                "subAcct": "",
+                "curr": "TWD",
+                "curText": "新臺幣",
+                "availBalance": 531,
+                "acctCategory": "6001",
+                "digitalFg": "",
+                "foreignStop": "Y",
+                "foreignAlert": "Y",
+                "enqECustSms1": "029384-088948",
+                "enqECustEmail": "029384@XX",
+                "genQuotaMark": 1,
+                "genAcctMark": "1",
+                "acctStat": "Y",
+                "nonTrxferFlg": "0",
+                "goalbr": "001",
+                "accType": "01",
+                "fixBalance": "0",
+                "maxAvail": "100000",
+                "blkAmt": "0",
+                "outStdLmt": "0",
+                "allowPledge": "N",
+                "ipIGFg": "N",
+                "pockeyFg": "N",
+                "evtFg": "N",
+                "eQuotaTotD": "50000",
+                "applyCCYProject": "N",
+                "applyCCYProjectMDATE": "",
+                "applyCCYStairateFG": "N",
+                "isStaff": false
+              }
+            ]
+          }
+        },
+        "expectedResponseCode": "0000",
+        "expectedResponseMessage": "查詢成功",
+        "expectedIsSuccess": true,
+        "coverageTargets": [
+          "unit_test",
+          "integration_test"
+        ],
+        "preserveScenarioName": true
+      },
+      {
+        "source": "mockExamples",
+        "sourceIndex": 2,
+        "scenario": "查詢數據庫失敗",
+        "requestPayload": {
+          "APNOKindParams": [
+            "1",
+            "",
+            "",
+            "",
+            "{0}-{1}-{2}",
+            "05",
+            "13"
+          ]
+        },
+        "expectedResponsePayload": {
+          "isSuccess": false,
+          "responseCode": "9001",
+          "responseMessage": "系統繁忙,請稍後再試",
+          "responseDT": "2026/02/24 10:30:25",
+          "responseData": {}
+        },
+        "expectedResponseCode": "9001",
+        "expectedResponseMessage": "系統繁忙,請稍後再試",
+        "expectedIsSuccess": false,
+        "coverageTargets": [
+          "unit_test",
+          "integration_test"
+        ],
+        "preserveScenarioName": true
+      },
+      {
+        "source": "mockExamples",
+        "sourceIndex": 3,
+        "scenario": "IRIS帳戶資料查詢失敗",
+        "requestPayload": {
+          "APNOKindParams": [
+            "1",
+            "",
+            "",
+            "",
+            "{0}-{1}-{2}",
+            "05",
+            "13"
+          ]
+        },
+        "expectedResponsePayload": {
+          "isSuccess": false,
+          "responseCode": "9001",
+          "responseMessage": "系統繁忙,請稍後再試",
+          "responseDT": "2026/02/24 10:30:25",
+          "responseData": {}
+        },
+        "expectedResponseCode": "9001",
+        "expectedResponseMessage": "系統繁忙,請稍後再試",
+        "expectedIsSuccess": false,
+        "coverageTargets": [
+          "unit_test",
+          "integration_test"
+        ],
+        "preserveScenarioName": true
+      },
+      {
+        "source": "mockExamples",
+        "sourceIndex": 4,
+        "scenario": "EC0001集合count=0",
+        "requestPayload": {
+          "APNOKindParams": [
+            "1",
+            "",
+            "",
+            "",
+            "{0}-{1}-{2}",
+            "05",
+            "13"
+          ]
+        },
+        "expectedResponsePayload": {
+          "isSuccess": false,
+          "responseCode": "0200",
+          "responseMessage": "未查詢到可用帳號",
+          "responseDT": "2026/02/24 10:30:25",
+          "responseData": {}
+        },
+        "expectedResponseCode": "0200",
+        "expectedResponseMessage": "未查詢到可用帳號",
+        "expectedIsSuccess": false,
+        "coverageTargets": [
+          "unit_test",
+          "integration_test"
+        ],
+        "preserveScenarioName": true
+      },
+      {
+        "source": "mockExamples",
+        "sourceIndex": 5,
+        "scenario": "未輸入必填請求參數",
+        "requestPayload": {
+          "APNOKindParams": []
+        },
+        "expectedResponsePayload": {
+          "isSuccess": false,
+          "responseCode": "9999",
+          "responseMessage": "請輸入{Request參數}！",
+          "responseDT": "2026/02/24 15:59:24",
+          "responseData": {}
+        },
+        "expectedResponseCode": "9999",
+        "expectedResponseMessage": "請輸入{Request參數}！",
+        "expectedIsSuccess": false,
+        "coverageTargets": [
+          "unit_test",
+          "integration_test"
+        ],
+        "preserveScenarioName": true
+      }
+    ],
+    "testScenarioSource": "mockExamples",
+    "testScenarioCoverageRequired": true,
+    "requestValidationPlan": [
+      {
+        "field": "APNOKindParams",
+        "validationType": "required",
+        "validationLayer": "dto_attribute",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸入{Request參數}！",
+        "customValidationAttributeNeeded": false
+      }
+    ],
+    "dtoAttributeRules": [
+      {
+        "field": "APNOKindParams",
+        "validationType": "required",
+        "validationLayer": "dto_attribute",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸入{Request參數}！",
+        "customValidationAttributeNeeded": false
+      }
+    ],
+    "customValidationAttributesNeeded": [],
+    "validationResponseMappingMode": "spec_code_message",
+    "serviceValidationsRetained": [],
+    "validationInfrastructureGap": [
+      {
+        "topic": "validation_response_mapping",
+        "requiredCapability": "attribute_validation_to_spec_transaction_result",
+        "mode": "shared_commonstatic"
+      }
+    ],
+    "reviewSources": [],
+    "reviewConstraintsSelected": [
+      {
+        "reviewId": "default_external_api_name",
+        "scope": "global_skill",
+        "fileRole": "shared",
+        "ruleType": "naming",
+        "instruction": "對外 API 名稱、route 與需求說明必須沿用 GetAccountListByTransCode，不得額外追加 Async。",
+        "severity": "warning",
+        "blocking": true,
+        "appliesTo": [
+          "apiName"
+        ],
+        "examples": [
+          "GetAccountListByTransCode"
+        ],
+        "source": "default_policy"
+      },
+      {
+        "reviewId": "default_traditional_chinese_code",
+        "scope": "global_skill",
+        "fileRole": "shared",
+        "ruleType": "language",
+        "instruction": "AI 寫入的中文註解、字串、檔案說明與角色要求統一使用繁體中文。",
+        "severity": "warning",
+        "blocking": false,
+        "appliesTo": [
+          "code_comments",
+          "code_strings",
+          "file_headers"
+        ],
+        "examples": [
+          "繁體中文"
+        ],
+        "source": "default_policy"
+      },
+      {
+        "reviewId": "default_dependency_field_naming",
+        "scope": "global_skill",
+        "fileRole": "shared",
+        "ruleType": "naming_style",
+        "instruction": "凡是依賴注入後賦值到欄位的成員，命名一律使用 _camelCase，首字固定底線，例如 _service、_ctxAccessor、_sqlExecutor、_logger；不得使用 CtxAccessor、Logger 這類 PascalCase 欄位名。",
+        "severity": "warning",
+        "blocking": false,
+        "appliesTo": [
+          "constructor_injected_fields",
+          "controller_fields",
+          "service_fields",
+          "fixture_fields"
+        ],
+        "examples": [
+          "_service",
+          "_ctxAccessor",
+          "_sqlExecutor",
+          "_logger"
+        ],
+        "source": "default_policy"
+      }
+    ],
+    "fileRequirements": {
+      "controller": [
+        {
+          "reviewId": "default_external_api_name",
+          "ruleType": "naming",
+          "instruction": "對外 API 名稱、route 與需求說明必須沿用 GetAccountListByTransCode，不得額外追加 Async。",
+          "severity": "warning",
+          "blocking": true,
+          "appliesTo": [
+            "apiName"
+          ],
+          "examples": [
+            "GetAccountListByTransCode"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_traditional_chinese_code",
+          "ruleType": "language",
+          "instruction": "AI 寫入的中文註解、字串、檔案說明與角色要求統一使用繁體中文。",
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "code_comments",
+            "code_strings",
+            "file_headers"
+          ],
+          "examples": [
+            "繁體中文"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_dependency_field_naming",
+          "ruleType": "naming_style",
+          "instruction": "凡是依賴注入後賦值到欄位的成員，命名一律使用 _camelCase，首字固定底線，例如 _service、_ctxAccessor、_sqlExecutor、_logger；不得使用 CtxAccessor、Logger 這類 PascalCase 欄位名。",
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "constructor_injected_fields",
+            "controller_fields",
+            "service_fields",
+            "fixture_fields"
+          ],
+          "examples": [
+            "_service",
+            "_ctxAccessor",
+            "_sqlExecutor",
+            "_logger"
+          ],
+          "source": "default_policy"
+        }
+      ],
+      "service": [
+        {
+          "reviewId": "default_external_api_name",
+          "ruleType": "naming",
+          "instruction": "對外 API 名稱、route 與需求說明必須沿用 GetAccountListByTransCode，不得額外追加 Async。",
+          "severity": "warning",
+          "blocking": true,
+          "appliesTo": [
+            "apiName"
+          ],
+          "examples": [
+            "GetAccountListByTransCode"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_traditional_chinese_code",
+          "ruleType": "language",
+          "instruction": "AI 寫入的中文註解、字串、檔案說明與角色要求統一使用繁體中文。",
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "code_comments",
+            "code_strings",
+            "file_headers"
+          ],
+          "examples": [
+            "繁體中文"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_dependency_field_naming",
+          "ruleType": "naming_style",
+          "instruction": "凡是依賴注入後賦值到欄位的成員，命名一律使用 _camelCase，首字固定底線，例如 _service、_ctxAccessor、_sqlExecutor、_logger；不得使用 CtxAccessor、Logger 這類 PascalCase 欄位名。",
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "constructor_injected_fields",
+            "controller_fields",
+            "service_fields",
+            "fixture_fields"
+          ],
+          "examples": [
+            "_service",
+            "_ctxAccessor",
+            "_sqlExecutor",
+            "_logger"
+          ],
+          "source": "default_policy"
+        }
+      ],
+      "entity": [
+        {
+          "reviewId": "default_external_api_name",
+          "ruleType": "naming",
+          "instruction": "對外 API 名稱、route 與需求說明必須沿用 GetAccountListByTransCode，不得額外追加 Async。",
+          "severity": "warning",
+          "blocking": true,
+          "appliesTo": [
+            "apiName"
+          ],
+          "examples": [
+            "GetAccountListByTransCode"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_traditional_chinese_code",
+          "ruleType": "language",
+          "instruction": "AI 寫入的中文註解、字串、檔案說明與角色要求統一使用繁體中文。",
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "code_comments",
+            "code_strings",
+            "file_headers"
+          ],
+          "examples": [
+            "繁體中文"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_dependency_field_naming",
+          "ruleType": "naming_style",
+          "instruction": "凡是依賴注入後賦值到欄位的成員，命名一律使用 _camelCase，首字固定底線，例如 _service、_ctxAccessor、_sqlExecutor、_logger；不得使用 CtxAccessor、Logger 這類 PascalCase 欄位名。",
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "constructor_injected_fields",
+            "controller_fields",
+            "service_fields",
+            "fixture_fields"
+          ],
+          "examples": [
+            "_service",
+            "_ctxAccessor",
+            "_sqlExecutor",
+            "_logger"
+          ],
+          "source": "default_policy"
+        }
+      ],
+      "unitTest": [
+        {
+          "reviewId": "default_external_api_name",
+          "ruleType": "naming",
+          "instruction": "對外 API 名稱、route 與需求說明必須沿用 GetAccountListByTransCode，不得額外追加 Async。",
+          "severity": "warning",
+          "blocking": true,
+          "appliesTo": [
+            "apiName"
+          ],
+          "examples": [
+            "GetAccountListByTransCode"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_traditional_chinese_code",
+          "ruleType": "language",
+          "instruction": "AI 寫入的中文註解、字串、檔案說明與角色要求統一使用繁體中文。",
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "code_comments",
+            "code_strings",
+            "file_headers"
+          ],
+          "examples": [
+            "繁體中文"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_dependency_field_naming",
+          "ruleType": "naming_style",
+          "instruction": "凡是依賴注入後賦值到欄位的成員，命名一律使用 _camelCase，首字固定底線，例如 _service、_ctxAccessor、_sqlExecutor、_logger；不得使用 CtxAccessor、Logger 這類 PascalCase 欄位名。",
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "constructor_injected_fields",
+            "controller_fields",
+            "service_fields",
+            "fixture_fields"
+          ],
+          "examples": [
+            "_service",
+            "_ctxAccessor",
+            "_sqlExecutor",
+            "_logger"
+          ],
+          "source": "default_policy"
+        }
+      ],
+      "integrationTest": [
+        {
+          "reviewId": "default_external_api_name",
+          "ruleType": "naming",
+          "instruction": "對外 API 名稱、route 與需求說明必須沿用 GetAccountListByTransCode，不得額外追加 Async。",
+          "severity": "warning",
+          "blocking": true,
+          "appliesTo": [
+            "apiName"
+          ],
+          "examples": [
+            "GetAccountListByTransCode"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_traditional_chinese_code",
+          "ruleType": "language",
+          "instruction": "AI 寫入的中文註解、字串、檔案說明與角色要求統一使用繁體中文。",
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "code_comments",
+            "code_strings",
+            "file_headers"
+          ],
+          "examples": [
+            "繁體中文"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_dependency_field_naming",
+          "ruleType": "naming_style",
+          "instruction": "凡是依賴注入後賦值到欄位的成員，命名一律使用 _camelCase，首字固定底線，例如 _service、_ctxAccessor、_sqlExecutor、_logger；不得使用 CtxAccessor、Logger 這類 PascalCase 欄位名。",
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "constructor_injected_fields",
+            "controller_fields",
+            "service_fields",
+            "fixture_fields"
+          ],
+          "examples": [
+            "_service",
+            "_ctxAccessor",
+            "_sqlExecutor",
+            "_logger"
+          ],
+          "source": "default_policy"
+        }
+      ]
+    },
+    "responseLifecycleRules": [],
+    "failureDisposition": {
+      "mode": "rollback_after_validation_failure",
+      "preserveFailedCode": false,
+      "resumeStrategy": "retry_from_prepare",
+      "source": "default_policy"
+    },
+    "languagePolicy": {
+      "mode": "traditional_chinese_for_ai_code",
+      "appliesTo": [
+        "code_comments",
+        "code_strings",
+        "file_headers",
+        "file_requirements"
+      ],
+      "source": "default_policy"
+    },
+    "externalApiName": "GetAccountListByTransCode",
+    "internalAsyncMethod": "GetAccountListByTransCodeAsync",
+    "resumedFromPhase": "blocked"
+  },
+  "validationChecks": [
+    "dotnet build \"Sinopac.EnterpriseAPI/Sinopac.EnterpriseAPI/Sinopac.EnterpriseAPI.csproj\" -m:1",
+    "dotnet test \"Sinopac.EnterpriseAPI/Test/EnterpriseApi.Unit/EnterpriseApi.Unit.csproj\" -m:1",
+    "dotnet test \"Sinopac.EnterpriseAPI/Test/EnterpriseApi.Integration/EnterpriseApi.Integration.csproj\" -m:1"
+  ],
+  "steps": [
+    {
+      "id": "precheck",
+      "status": "done",
+      "note": "Resolved EnterpriseAPI framework profile and module slots."
+    },
+    {
+      "id": "write_code",
+      "status": "pending",
+      "note": "AI must directly modify controller/interface/service/entity business files for CommonFunc; test targets are handoff-only for step 05 and the script must not generate stubs."
+    },
+    {
+      "id": "validate",
+      "status": "pending",
+      "note": "After real code is written, run EnterpriseAPI build, unit test, and integration test validation."
+    }
+  ]
+}

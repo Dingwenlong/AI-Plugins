@@ -4,14 +4,16 @@ from __future__ import annotations
 import argparse
 import json
 import re
-import sqlite3
 import subprocess
 import sys
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-from jsonschema import Draft202012Validator
+try:
+    from jsonschema import Draft202012Validator
+except ModuleNotFoundError:
+    Draft202012Validator = None
 
 from chain_workspace import update_chain_status
 from runtime import (
@@ -38,11 +40,22 @@ from runtime import (
 )
 
 
-FIXTURE_STATUSES = {"pending", "in_progress", "done", "skipped", "blocked", "error"}
+FIXTURE_STATUSES = {"pending", "in_progress", "done", "skipped", "not_required", "blocked", "error"}
+TERMINAL_FIXTURE_STATUSES = {"done", "skipped", "not_required"}
 UPSTREAM_READY_STATUS = "done"
 DEFAULT_SQLSERVER_DATABASE = ""
 APP_SAMPLE_SQL_LITERAL = "'APP'"
 MISSING_SCHEMA_AUTHORITY_REASON = "missing_schema_authority"
+UNSAFE_DATABASE_TARGET_REASON = "unsafe_database_target"
+MISSING_DB_TARGET_REASON = "missing_db_target"
+SQLITE_TARGET_DISABLED_REASON = "sqlite_target_disabled"
+SQL_FIXTURE_TARGETS_LOCAL_CONFIG = Path("config") / "sql-fixture-targets.local.json"
+SAFE_SQL_FIXTURE_ENVIRONMENTS = {"local", "test", "fixture", "sandbox", "integration", "develop"}
+SQLSERVER_ALLOWED_TARGET_RULES: list[Any] = []
+SQLSERVER_ALLOWED_SERVERS: set[str] = set()
+SQLSERVER_ALLOWED_DATABASES: set[str] = set()
+SQLSERVER_ALLOWED_SOURCES: set[str] = set()
+SQLSERVER_ALLOWED_CONNECTION_NAMES: set[str] = set()
 SQL_TABLE_PATTERN = re.compile(
     r"(?is)\b(?:from|join|into|update)\s+((?:\[[^\]]+\]|[A-Za-z_][A-Za-z0-9_$]*)"
     r"(?:\s*\.\s*(?:\[[^\]]+\]|[A-Za-z_][A-Za-z0-9_$]*)){0,2})"
@@ -54,6 +67,12 @@ class SkillError(RuntimeError):
         super().__init__(message)
         self.status = status
         self.diagnosis_type = diagnosis_type
+
+
+@dataclass(frozen=True)
+class SimpleValidationError:
+    absolute_path: tuple[object, ...]
+    message: str
 
 
 class ZhArgumentParser(argparse.ArgumentParser):
@@ -95,11 +114,6 @@ class UpstreamApiRecord:
 
 
 @dataclass(frozen=True)
-class SqliteTarget:
-    db_path: Path
-
-
-@dataclass(frozen=True)
 class SqlServerTarget:
     server: str
     database: str
@@ -108,6 +122,18 @@ class SqlServerTarget:
     password: str | None
     trust_server_certificate: bool
     source: str
+    connection_name: str | None = None
+    target_name: str | None = None
+    environment: str | None = None
+    allow_create_table: bool = False
+    allow_seed: bool = False
+
+
+@dataclass(frozen=True)
+class BlockedDbTarget:
+    raw_target: str | None
+    block_reason: str
+    message: str
 
 
 @dataclass(frozen=True)
@@ -155,10 +181,61 @@ def format_validation_path(path_items: list[object] | tuple[object, ...]) -> str
     return rendered or "$"
 
 
+def schema_type_matches(value: Any, expected_type: str) -> bool:
+    if expected_type == "object":
+        return isinstance(value, dict)
+    if expected_type == "array":
+        return isinstance(value, list)
+    if expected_type == "string":
+        return isinstance(value, str)
+    if expected_type == "integer":
+        return isinstance(value, int) and not isinstance(value, bool)
+    if expected_type == "number":
+        return isinstance(value, (int, float)) and not isinstance(value, bool)
+    if expected_type == "boolean":
+        return isinstance(value, bool)
+    if expected_type == "null":
+        return value is None
+    return True
+
+
+def simple_schema_errors(value: Any, schema: dict[str, Any], path: tuple[object, ...] = ()) -> list[SimpleValidationError]:
+    errors: list[SimpleValidationError] = []
+    expected_type = schema.get("type")
+    if expected_type is not None:
+        expected_types = expected_type if isinstance(expected_type, list) else [expected_type]
+        if not any(schema_type_matches(value, clean_text(item)) for item in expected_types):
+            rendered = " or ".join(clean_text(item) for item in expected_types)
+            return [SimpleValidationError(path, f"{value!r} is not of type {rendered}")]
+
+    if "const" in schema and value != schema["const"]:
+        errors.append(SimpleValidationError(path, f"{value!r} was expected to be constant {schema['const']!r}"))
+    if "enum" in schema and value not in list(schema.get("enum") or []):
+        errors.append(SimpleValidationError(path, f"{value!r} is not one of {list(schema.get('enum') or [])!r}"))
+
+    if isinstance(value, dict):
+        for required_key in list(schema.get("required") or []):
+            if required_key not in value:
+                errors.append(SimpleValidationError((*path, required_key), "is a required property"))
+        properties = schema.get("properties") if isinstance(schema.get("properties"), dict) else {}
+        for key, child_schema in properties.items():
+            if key in value and isinstance(child_schema, dict):
+                errors.extend(simple_schema_errors(value[key], child_schema, (*path, key)))
+    elif isinstance(value, list):
+        item_schema = schema.get("items")
+        if isinstance(item_schema, dict):
+            for index, item in enumerate(value):
+                errors.extend(simple_schema_errors(item, item_schema, (*path, index)))
+    return errors
+
+
 def validate_payload_against_schema(payload: dict[str, Any], schema_name: str, label: str) -> None:
     schema = load_schema(schema_name)
-    validator = Draft202012Validator(schema)
-    errors = sorted(validator.iter_errors(payload), key=lambda item: list(item.absolute_path))
+    if Draft202012Validator is None:
+        errors = simple_schema_errors(payload, schema)
+    else:
+        validator = Draft202012Validator(schema)
+        errors = sorted(validator.iter_errors(payload), key=lambda item: list(item.absolute_path))
     if errors:
         first = errors[0]
         raise SkillError(f"{label} schema 校验失败：{format_validation_path(list(first.absolute_path))} - {first.message}")
@@ -257,8 +334,43 @@ def resolve_context_rules_root(agent_dir: Path) -> Path | None:
     return path.resolve()
 
 
+def reset_project_sql_defaults() -> None:
+    global DEFAULT_SQLSERVER_DATABASE, APP_SAMPLE_SQL_LITERAL
+    global SQLSERVER_ALLOWED_TARGET_RULES, SQLSERVER_ALLOWED_SERVERS
+    global SQLSERVER_ALLOWED_DATABASES, SQLSERVER_ALLOWED_SOURCES, SQLSERVER_ALLOWED_CONNECTION_NAMES
+    DEFAULT_SQLSERVER_DATABASE = ""
+    APP_SAMPLE_SQL_LITERAL = "'APP'"
+    SQLSERVER_ALLOWED_TARGET_RULES = []
+    SQLSERVER_ALLOWED_SERVERS = set()
+    SQLSERVER_ALLOWED_DATABASES = set()
+    SQLSERVER_ALLOWED_SOURCES = set()
+    SQLSERVER_ALLOWED_CONNECTION_NAMES = set()
+
+
+def list_from_rule_value(value: Any) -> list[Any]:
+    if value is None:
+        return []
+    if isinstance(value, list):
+        return value
+    return [value]
+
+
+def collect_rule_values(defaults: dict[str, Any], keys: tuple[str, ...]) -> list[Any]:
+    values: list[Any] = []
+    for key in keys:
+        values.extend(list_from_rule_value(defaults.get(key)))
+    return values
+
+
+def normalized_rule_strings(defaults: dict[str, Any], keys: tuple[str, ...]) -> set[str]:
+    return {clean_text(item).casefold() for item in collect_rule_values(defaults, keys) if clean_text(item)}
+
+
 def configure_project_sql_defaults(agent_dir: Path) -> None:
     global DEFAULT_SQLSERVER_DATABASE, APP_SAMPLE_SQL_LITERAL
+    global SQLSERVER_ALLOWED_TARGET_RULES, SQLSERVER_ALLOWED_SERVERS
+    global SQLSERVER_ALLOWED_DATABASES, SQLSERVER_ALLOWED_SOURCES, SQLSERVER_ALLOWED_CONNECTION_NAMES
+    reset_project_sql_defaults()
     rules_root = resolve_context_rules_root(agent_dir)
     if rules_root is None:
         return
@@ -269,12 +381,30 @@ def configure_project_sql_defaults(agent_dir: Path) -> None:
         defaults = json.loads(defaults_path.read_text(encoding="utf-8-sig"))
     except Exception:
         return
-    database = clean_text(defaults.get("defaultSqlServerDatabase")) if isinstance(defaults, dict) else ""
-    app_literal = clean_text(defaults.get("appSampleSqlLiteral")) if isinstance(defaults, dict) else ""
+    if not isinstance(defaults, dict):
+        return
+    database = clean_text(defaults.get("defaultSqlServerDatabase"))
+    app_literal = clean_text(defaults.get("appSampleSqlLiteral"))
     if database:
         DEFAULT_SQLSERVER_DATABASE = database
     if app_literal:
         APP_SAMPLE_SQL_LITERAL = app_literal
+    SQLSERVER_ALLOWED_TARGET_RULES = collect_rule_values(
+        defaults,
+        (
+            "allowedSqlServerTargets",
+            "safeSqlServerTargets",
+            "sqlServerTargetAllowlist",
+            "sqlServerFixtureTargetAllowlist",
+        ),
+    )
+    SQLSERVER_ALLOWED_SERVERS = normalized_rule_strings(defaults, ("allowedSqlServerServers", "safeSqlServerServers"))
+    SQLSERVER_ALLOWED_DATABASES = normalized_rule_strings(defaults, ("allowedSqlServerDatabases", "safeSqlServerDatabases"))
+    SQLSERVER_ALLOWED_SOURCES = normalized_rule_strings(defaults, ("allowedSqlServerSources", "safeSqlServerSources"))
+    SQLSERVER_ALLOWED_CONNECTION_NAMES = normalized_rule_strings(
+        defaults,
+        ("allowedSqlServerConnectionNames", "safeSqlServerConnectionNames"),
+    )
 
 
 def build_context(args: argparse.Namespace) -> tuple[ExecutionContext, dict[str, Any], dict[str, Any], dict[str, UpstreamApiRecord]]:
@@ -494,7 +624,12 @@ def is_local_sqlserver_target(target: SqlServerTarget) -> bool:
     )
 
 
-def build_sqlserver_target_from_connection_string(connection_string: str, *, source: str) -> SqlServerTarget:
+def build_sqlserver_target_from_connection_string(
+    connection_string: str,
+    *,
+    source: str,
+    connection_name: str | None = None,
+) -> SqlServerTarget:
     parsed = parse_ado_connection_string(connection_string)
     server = clean_text(parsed.get("data source") or parsed.get("server"))
     database = clean_text(parsed.get("initial catalog") or parsed.get("database"))
@@ -512,70 +647,280 @@ def build_sqlserver_target_from_connection_string(connection_string: str, *, sou
         password=password,
         trust_server_certificate=trust_server_certificate,
         source=source,
+        connection_name=connection_name,
     )
+
+
+def redact_db_target_text(value: str | None) -> str | None:
+    text = clean_text(value)
+    if not text:
+        return None
+    segments = []
+    for segment in text.split(";"):
+        if "=" not in segment:
+            segments.append(segment)
+            continue
+        key, raw_value = segment.split("=", 1)
+        if clean_text(key).casefold().endswith(("password", "pwd")):
+            segments.append(f"{key}=***")
+        else:
+            segments.append(f"{key}={raw_value}")
+    return ";".join(segments)
+
+
+def sqlserver_source_keys(target: SqlServerTarget) -> set[str]:
+    keys = {clean_text(target.source).casefold()}
+    if target.connection_name:
+        connection_name = clean_text(target.connection_name).casefold()
+        keys.add(connection_name)
+        keys.add(f"connectionstrings.{connection_name}")
+    return {key for key in keys if key}
+
+
+def sqlserver_target_signature(target: SqlServerTarget) -> str:
+    return f"{clean_text(target.server).casefold()}|{clean_text(target.database).casefold()}"
+
+
+def sqlserver_target_rule_matches(target: SqlServerTarget, rule: Any) -> bool:
+    if isinstance(rule, str):
+        text = clean_text(rule)
+        lowered = text.casefold()
+        if is_sqlserver_connection_string(text):
+            try:
+                rule_target = build_sqlserver_target_from_connection_string(text, source="project_rules")
+            except SkillError:
+                return False
+            return sqlserver_target_signature(rule_target) == sqlserver_target_signature(target)
+        return lowered in {
+            *sqlserver_source_keys(target),
+            clean_text(target.server).casefold(),
+            clean_text(target.database).casefold(),
+            sqlserver_target_signature(target),
+        }
+
+    if not isinstance(rule, dict):
+        return False
+    checks: list[bool] = []
+    server = clean_text(rule.get("server") or rule.get("dataSource"))
+    database = clean_text(rule.get("database") or rule.get("initialCatalog"))
+    source = clean_text(rule.get("source"))
+    connection_name = clean_text(rule.get("connectionName") or rule.get("connection"))
+    connection_string = clean_text(rule.get("connectionString"))
+    if server:
+        checks.append(server.casefold() == clean_text(target.server).casefold())
+    if database:
+        checks.append(database.casefold() == clean_text(target.database).casefold())
+    if source:
+        checks.append(source.casefold() in sqlserver_source_keys(target))
+    if connection_name:
+        checks.append(connection_name.casefold() in sqlserver_source_keys(target))
+    if connection_string:
+        try:
+            rule_target = build_sqlserver_target_from_connection_string(connection_string, source="project_rules")
+        except SkillError:
+            checks.append(False)
+        else:
+            checks.append(sqlserver_target_signature(rule_target) == sqlserver_target_signature(target))
+    return bool(checks) and all(checks)
+
+
+def sqlserver_target_safety_proof(target: SqlServerTarget) -> str | None:
+    if target.target_name and clean_text(target.source).startswith(".agent/config/sql-fixture-targets.local.json"):
+        return "agent_local_sql_fixture_target"
+    return None
+
+
+def require_safe_sqlserver_target(target: SqlServerTarget, raw_target: str | None = None) -> SqlServerTarget | BlockedDbTarget:
+    if sqlserver_target_safety_proof(target):
+        return target
+    label = redact_db_target_text(raw_target) or target.source
+    return BlockedDbTarget(
+        raw_target=label,
+        block_reason=UNSAFE_DATABASE_TARGET_REASON,
+        message=f"SQL Server fixture target must be configured in .agent/config/sql-fixture-targets.local.json: {label}",
+    )
+
+
+def sql_fixture_target_config_path(agent_dir: Path) -> Path:
+    return agent_dir / SQL_FIXTURE_TARGETS_LOCAL_CONFIG
+
+
+def bool_from_config(value: Any) -> bool:
+    if isinstance(value, bool):
+        return value
+    text = clean_text(value).casefold()
+    return text in {"1", "true", "yes", "y"}
+
+
+def allowed_sqlserver_target_database_names() -> set[str]:
+    names = set(SQLSERVER_ALLOWED_DATABASES)
+    if clean_text(DEFAULT_SQLSERVER_DATABASE):
+        names.add(clean_text(DEFAULT_SQLSERVER_DATABASE).casefold())
+    return names
+
+
+def validate_configured_target_database(target_database: str) -> str | BlockedDbTarget:
+    database = clean_text(target_database)
+    if not database:
+        return BlockedDbTarget(
+            raw_target=".agent/config/sql-fixture-targets.local.json",
+            block_reason=MISSING_DB_TARGET_REASON,
+            message="SQL fixture targetDatabase is required.",
+        )
+    allowed_databases = allowed_sqlserver_target_database_names()
+    if allowed_databases and database.casefold() not in allowed_databases:
+        return BlockedDbTarget(
+            raw_target=f"targetDatabase={database}",
+            block_reason=UNSAFE_DATABASE_TARGET_REASON,
+            message=f"SQL fixture targetDatabase is not allowed by project rules: {database}",
+        )
+    return database
+
+
+def read_sql_fixture_targets_config(agent_dir: Path) -> dict[str, Any] | None:
+    config_path = sql_fixture_target_config_path(agent_dir)
+    if not config_path.exists():
+        return None
+    try:
+        payload = json.loads(config_path.read_text(encoding="utf-8-sig"))
+    except Exception as exc:
+        raise SkillError(
+            f"Invalid SQL fixture target config: {config_path}",
+            status="blocked",
+            diagnosis_type="invalid_db_target_config",
+        ) from exc
+    if not isinstance(payload, dict):
+        raise SkillError(
+            f"SQL fixture target config must be a JSON object: {config_path}",
+            status="blocked",
+            diagnosis_type="invalid_db_target_config",
+        )
+    return payload
+
+
+def configured_sqlserver_target_report_label(target: SqlServerTarget) -> str:
+    pieces = [
+        f"source={target.source}",
+        f"target={target.target_name}" if target.target_name else "",
+        f"environment={target.environment}" if target.environment else "",
+        f"server={target.server}",
+        f"database={target.database}",
+    ]
+    return ";".join(piece for piece in pieces if piece)
+
+
+def select_sql_fixture_target_payload(payload: dict[str, Any], target_name: str | None) -> tuple[str, dict[str, Any] | None]:
+    selected_name = clean_text(target_name) or clean_text(payload.get("defaultTarget"))
+    targets = payload.get("targets")
+    if isinstance(targets, dict):
+        if not selected_name and len(targets) == 1:
+            selected_name = clean_text(next(iter(targets.keys())))
+        target_payload = targets.get(selected_name) if selected_name else None
+        return selected_name, target_payload if isinstance(target_payload, dict) else None
+    if not selected_name:
+        selected_name = "default"
+    return selected_name, payload
+
+
+def build_sqlserver_target_from_agent_config(agent_dir: Path, target_name: str | None = None) -> SqlServerTarget | BlockedDbTarget | None:
+    payload = read_sql_fixture_targets_config(agent_dir)
+    if payload is None:
+        return None
+    selected_name, target_payload = select_sql_fixture_target_payload(payload, target_name)
+    if target_payload is None:
+        return BlockedDbTarget(
+            raw_target=f"target={selected_name or '<missing>'}",
+            block_reason=MISSING_DB_TARGET_REASON,
+            message="SQL fixture target config does not contain the selected target.",
+        )
+
+    provider = clean_text(target_payload.get("provider")).casefold()
+    if provider != "sqlserver":
+        return BlockedDbTarget(
+            raw_target=f"target={selected_name};provider={provider or '<missing>'}",
+            block_reason=UNSAFE_DATABASE_TARGET_REASON,
+            message="SQL fixture target provider must be sqlserver.",
+        )
+
+    environment = clean_text(target_payload.get("environment"))
+    if environment.casefold() not in SAFE_SQL_FIXTURE_ENVIRONMENTS:
+        return BlockedDbTarget(
+            raw_target=f"target={selected_name};environment={environment or '<missing>'}",
+            block_reason=UNSAFE_DATABASE_TARGET_REASON,
+            message="SQL fixture target environment must be local/test/fixture/sandbox/integration/develop.",
+        )
+
+    target_database = validate_configured_target_database(clean_text(target_payload.get("targetDatabase")))
+    if isinstance(target_database, BlockedDbTarget):
+        return target_database
+
+    connection_string = clean_text(target_payload.get("connectionString"))
+    if not connection_string:
+        return BlockedDbTarget(
+            raw_target=f"target={selected_name};connectionString=<missing>",
+            block_reason=MISSING_DB_TARGET_REASON,
+            message="SQL fixture target connectionString is required.",
+        )
+    if not is_sqlserver_connection_string(connection_string):
+        return BlockedDbTarget(
+            raw_target=f"target={selected_name};connectionString=<invalid>",
+            block_reason=UNSAFE_DATABASE_TARGET_REASON,
+            message="SQL fixture target connectionString must be a SQL Server connection string.",
+        )
+
+    parsed = build_sqlserver_target_from_connection_string(
+        connection_string,
+        source=f".agent/config/sql-fixture-targets.local.json:{selected_name}",
+        connection_name=selected_name,
+    )
+    configured = SqlServerTarget(
+        server=parsed.server,
+        database=target_database,
+        integrated_security=parsed.integrated_security,
+        username=parsed.username,
+        password=parsed.password,
+        trust_server_certificate=parsed.trust_server_certificate,
+        source=f".agent/config/sql-fixture-targets.local.json:{selected_name}",
+        connection_name=selected_name,
+        target_name=selected_name,
+        environment=environment,
+        allow_create_table=bool_from_config(target_payload.get("allowCreateTable")),
+        allow_seed=bool_from_config(target_payload.get("allowSeed")),
+    )
+    return require_safe_sqlserver_target(configured, raw_target=configured_sqlserver_target_report_label(configured))
+
+
+def blocked_explicit_db_target(raw_target: str, reason: str = UNSAFE_DATABASE_TARGET_REASON) -> BlockedDbTarget:
+    label = redact_db_target_text(raw_target) or "<empty>"
+    message = "SQLite fixture targets are disabled; configure SQL Server in .agent/config/sql-fixture-targets.local.json."
+    if reason != SQLITE_TARGET_DISABLED_REASON:
+        message = "SQL fixture targets must come from .agent/config/sql-fixture-targets.local.json."
+    return BlockedDbTarget(raw_target=label, block_reason=reason, message=message)
 
 
 def parse_db_target(
     db_target: str | None,
     project_root: Path,
     *,
+    agent_dir: Path,
     preferred_connection_names: list[str] | None = None,
-) -> SqliteTarget | SqlServerTarget | None:
+) -> SqlServerTarget | BlockedDbTarget | None:
+    _ = project_root
+    _ = preferred_connection_names
     text = clean_text(db_target)
     if not text:
-        connection_strings = load_connection_strings_from_appsettings(project_root)
-        for name in preferred_connection_names or []:
-            if name in connection_strings:
-                return build_sqlserver_target_from_connection_string(connection_strings[name], source=f"ConnectionStrings.{name}")
-        local_sql_targets: list[SqlServerTarget] = []
-        for name, value in connection_strings.items():
-            if not is_sqlserver_connection_string(value):
-                continue
-            target = build_sqlserver_target_from_connection_string(value, source=f"ConnectionStrings.{name}")
-            if is_local_sqlserver_target(target):
-                local_sql_targets.append(target)
-        if len(local_sql_targets) == 1:
-            return local_sql_targets[0]
-        return None
+        return build_sqlserver_target_from_agent_config(agent_dir)
+    if text.casefold().startswith("agent-config:"):
+        return build_sqlserver_target_from_agent_config(agent_dir, text.split(":", 1)[1].strip())
     if text.casefold().startswith("sqlite:///"):
-        raw_path = text[len("sqlite:///") :]
-        db_path = Path(raw_path)
-        if not db_path.is_absolute():
-            db_path = (project_root / db_path).resolve()
-        return SqliteTarget(db_path)
-    if text.casefold().startswith("connstr:") or text.casefold().startswith("connection-name:"):
-        connection_name = text.split(":", 1)[1].strip()
-        connection_strings = load_connection_strings_from_appsettings(project_root)
-        if connection_name not in connection_strings:
-            raise SkillError(f"connection string not found in appsettings: {connection_name}", status="blocked", diagnosis_type="missing_connection_string")
-        return build_sqlserver_target_from_connection_string(connection_strings[connection_name], source=f"ConnectionStrings.{connection_name}")
+        return blocked_explicit_db_target("sqlite:///<disabled>", SQLITE_TARGET_DISABLED_REASON)
+    if text.casefold().startswith("connection-name:"):
+        return blocked_explicit_db_target(text)
+    if text.casefold().startswith("connstr:"):
+        return blocked_explicit_db_target(text)
     if "data source=" in text.casefold() or "server=" in text.casefold():
-        return build_sqlserver_target_from_connection_string(text, source="raw_connection_string")
+        return blocked_explicit_db_target(text)
     raise SkillError(f"unsupported db target in skeleton: {text}", status="blocked", diagnosis_type="unsupported_db_target")
-
-
-def connect_sqlite(target: SqliteTarget) -> sqlite3.Connection:
-    target.db_path.parent.mkdir(parents=True, exist_ok=True)
-    return sqlite3.connect(target.db_path)
-
-
-def sqlite_find_existing_table(conn: sqlite3.Connection, table_ref: str) -> str | None:
-    candidates = dedupe_strings([normalize_identifier(table_ref), leaf_table_name(table_ref)])
-    existing = {
-        clean_text(row[0]).casefold(): clean_text(row[0])
-        for row in conn.execute("SELECT name FROM sqlite_master WHERE type IN ('table', 'view')")
-    }
-    for candidate in candidates:
-        actual = existing.get(candidate.casefold())
-        if actual:
-            return actual
-    return None
-
-
-def sqlite_row_count(conn: sqlite3.Connection, table_name: str) -> int:
-    quoted = '"' + table_name.replace('"', '""') + '"'
-    row = conn.execute(f"SELECT COUNT(1) FROM {quoted}").fetchone()
-    return int(row[0] or 0) if row else 0
 
 
 def run_sqlcmd(target: SqlServerTarget, query: str, *, database_override: str | None = None) -> subprocess.CompletedProcess[str]:
@@ -601,74 +946,39 @@ def sqlserver_database_exists(target: SqlServerTarget, database_name: str | None
     return clean_text(result.stdout).casefold() == database.casefold()
 
 
-def infer_sqlserver_table_variants(target: SqlServerTarget, table_ref: str) -> list[TableRefParts]:
-    normalized = normalize_identifier(table_ref)
-    raw_parts = [segment for segment in normalized.split(".") if segment]
-    if len(raw_parts) != 2:
-        return [parse_table_ref(table_ref)]
-
-    first, second = raw_parts
-    candidates: list[TableRefParts] = []
-    if sqlserver_database_exists(target, first):
-        candidates.append(TableRefParts(database=first, schema="dbo", table=second))
-    candidates.append(TableRefParts(database=None, schema=first, table=second))
-    deduped: list[TableRefParts] = []
-    seen: set[tuple[str | None, str | None, str]] = set()
-    for candidate in candidates:
-        key = (candidate.database, candidate.schema, candidate.table)
-        if key in seen:
-            continue
-        seen.add(key)
-        deduped.append(candidate)
-    return deduped
+def sqlserver_target_database(target: SqlServerTarget) -> str:
+    return clean_text(DEFAULT_SQLSERVER_DATABASE) or target.database
 
 
-def list_sqlserver_databases(target: SqlServerTarget) -> list[str]:
-    result = run_sqlcmd(target, "SET NOCOUNT ON; SELECT name FROM sys.databases WHERE database_id > 4 ORDER BY name;", database_override="master")
-    if result.returncode != 0:
-        raise SkillError(clean_text(result.stderr) or "sqlcmd failed while listing databases.", status="blocked", diagnosis_type="sqlcmd_failed")
-    return [line for line in (clean_text(segment) for segment in result.stdout.splitlines()) if line]
+def sqlserver_target_table_parts(target: SqlServerTarget, table_ref: str) -> TableRefParts:
+    target_database = sqlserver_target_database(target)
+    parts = parse_table_ref(table_ref)
+    schema = parts.schema or "dbo"
+    if parts.database:
+        schema = parts.schema or "dbo"
+    elif schema.casefold() == target_database.casefold():
+        schema = "dbo"
+    return TableRefParts(database=target_database, schema=schema, table=parts.table)
 
 
 def sqlserver_find_existing_table(target: SqlServerTarget, table_ref: str) -> str | None:
-    for parts in infer_sqlserver_table_variants(target, table_ref):
-        database = parts.database or DEFAULT_SQLSERVER_DATABASE or target.database
-        schema_name = parts.schema.replace("'", "''") if parts.schema else None
-        schema_predicate = f" AND TABLE_SCHEMA = '{schema_name}'" if schema_name else ""
-        leaf = parts.table.replace("'", "''")
-        result = run_sqlcmd(
-            target,
-            "SET NOCOUNT ON; "
-            "SELECT TOP 1 TABLE_SCHEMA + '.' + TABLE_NAME "
-            f"FROM [{database}].INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = '{leaf}'{schema_predicate} ORDER BY TABLE_SCHEMA, TABLE_NAME;",
-            database_override="master",
-        )
-        if result.returncode != 0:
-            raise SkillError(clean_text(result.stderr) or "sqlcmd failed while checking table existence.", status="blocked", diagnosis_type="sqlcmd_failed")
-        value = clean_text(result.stdout)
-        if value:
-            return value
-    return None
-
-
-def sqlserver_find_existing_table_any_database(target: SqlServerTarget, table_ref: str) -> str | None:
-    variants = infer_sqlserver_table_variants(target, table_ref)
-    for parts in variants:
-        if parts.database:
-            scoped_ref = f"{parts.database}.{parts.schema}.{parts.table}" if parts.schema else f"{parts.database}.{parts.table}"
-            actual_name = sqlserver_find_existing_table(target, scoped_ref)
-            if actual_name:
-                return f"{parts.database}.{actual_name}"
-    parts = variants[0]
-    matches: list[str] = []
-    for database_name in list_sqlserver_databases(target):
-        scoped_ref = f"{database_name}.{parts.schema}.{parts.table}" if parts.schema else f"{database_name}.dbo.{parts.table}"
-        actual_name = sqlserver_find_existing_table(target, scoped_ref)
-        if actual_name:
-            matches.append(f"{database_name}.{actual_name}")
-    deduped_matches = dedupe_strings(matches)
-    if len(deduped_matches) == 1:
-        return deduped_matches[0]
+    parts = sqlserver_target_table_parts(target, table_ref)
+    database = parts.database or target.database
+    schema_name = parts.schema.replace("'", "''") if parts.schema else None
+    schema_predicate = f" AND TABLE_SCHEMA = '{schema_name}'" if schema_name else ""
+    leaf = parts.table.replace("'", "''")
+    result = run_sqlcmd(
+        target,
+        "SET NOCOUNT ON; "
+        "SELECT TOP 1 TABLE_SCHEMA + '.' + TABLE_NAME "
+        f"FROM [{database}].INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = '{leaf}'{schema_predicate} ORDER BY TABLE_SCHEMA, TABLE_NAME;",
+        database_override="master",
+    )
+    if result.returncode != 0:
+        raise SkillError(clean_text(result.stderr) or "sqlcmd failed while checking table existence.", status="blocked", diagnosis_type="sqlcmd_failed")
+    value = clean_text(result.stdout)
+    if value:
+        return f"{database}.{value}"
     return None
 
 
@@ -913,6 +1223,29 @@ def build_generated_seed_sql(table_ref: str, columns: list[dict[str, Any]]) -> s
     )
 
 
+def build_blocked_target_table_checks(
+    context: ExecutionContext,
+    api_id: str,
+    table_refs: list[str],
+    blocked_target: BlockedDbTarget,
+    authority_root: Path | None,
+) -> list[dict[str, Any]]:
+    refs = table_refs or ["<database-target>"]
+    return [
+        {
+            "tableRef": table_ref,
+            "resolvedTableName": None,
+            "exists": False,
+            "rowCount": None,
+            "action": "blocked",
+            "blockReason": blocked_target.block_reason,
+            "schemaSql": normalize_persisted_path(find_schema_sql(authority_root, table_ref), project_root=context.project_root),
+            "seedSql": normalize_persisted_path(find_seed_sql(authority_root, api_id, table_ref), project_root=context.project_root),
+        }
+        for table_ref in refs
+    ]
+
+
 def ensure_generated_authority_sql(
     context: ExecutionContext,
     api_id: str,
@@ -930,63 +1263,6 @@ def ensure_generated_authority_sql(
     return schema_path, seed_path
 
 
-def inspect_sqlite_tables(
-    context: ExecutionContext,
-    api_id: str,
-    table_refs: list[str],
-    sqlite_target: SqliteTarget | None,
-    authority_root: Path | None,
-) -> list[dict[str, Any]]:
-    if sqlite_target is None:
-        return [
-            {
-                "tableRef": table_ref,
-                "resolvedTableName": None,
-                "exists": False,
-                "rowCount": None,
-                "action": "blocked",
-                "blockReason": "missing_db_target",
-                "schemaSql": normalize_persisted_path(find_schema_sql(authority_root, table_ref), project_root=context.project_root),
-                "seedSql": normalize_persisted_path(find_seed_sql(authority_root, api_id, table_ref), project_root=context.project_root),
-            }
-            for table_ref in table_refs
-        ]
-
-    checks: list[dict[str, Any]] = []
-    with connect_sqlite(sqlite_target) as conn:
-        for table_ref in table_refs:
-            actual_name = sqlite_find_existing_table(conn, table_ref)
-            row_count = sqlite_row_count(conn, actual_name) if actual_name else None
-            schema_sql = find_schema_sql(authority_root, table_ref)
-            seed_sql = find_seed_sql(authority_root, api_id, table_ref)
-            if schema_sql is None or seed_sql is None:
-                generated_schema_sql, generated_seed_sql = ensure_generated_authority_sql(context, api_id, table_ref, authority_root)
-                schema_sql = schema_sql or generated_schema_sql
-                seed_sql = seed_sql or generated_seed_sql
-            if actual_name and row_count and row_count > 0:
-                action = "reuse"
-                block_reason = None
-            elif actual_name:
-                action = "seed"
-                block_reason = None if seed_sql else "seed_file_missing"
-            else:
-                action = "create"
-                block_reason = None if schema_sql else MISSING_SCHEMA_AUTHORITY_REASON
-            checks.append(
-                {
-                    "tableRef": table_ref,
-                    "resolvedTableName": actual_name,
-                    "exists": bool(actual_name),
-                    "rowCount": row_count,
-                    "action": action,
-                    "blockReason": block_reason,
-                    "schemaSql": normalize_persisted_path(schema_sql, project_root=context.project_root),
-                    "seedSql": normalize_persisted_path(seed_sql, project_root=context.project_root),
-                }
-            )
-    return checks
-
-
 def inspect_sqlserver_tables(
     context: ExecutionContext,
     api_id: str,
@@ -996,8 +1272,7 @@ def inspect_sqlserver_tables(
 ) -> list[dict[str, Any]]:
     checks: list[dict[str, Any]] = []
     for table_ref in table_refs:
-        table_parts = parse_table_ref(table_ref)
-        target_database = table_parts.database or DEFAULT_SQLSERVER_DATABASE or sqlserver_target.database
+        target_database = sqlserver_target_database(sqlserver_target)
         schema_sql = find_schema_sql(authority_root, table_ref)
         seed_sql = find_seed_sql(authority_root, api_id, table_ref)
         if schema_sql is None or seed_sql is None:
@@ -1005,7 +1280,7 @@ def inspect_sqlserver_tables(
             schema_sql = schema_sql or generated_schema_sql
             seed_sql = seed_sql or generated_seed_sql
 
-        actual_name = sqlserver_find_existing_table_any_database(sqlserver_target, table_ref)
+        actual_name = sqlserver_find_existing_table(sqlserver_target, table_ref)
         if actual_name:
             row_count = sqlserver_row_count(sqlserver_target, table_ref, actual_name)
         elif not sqlserver_database_exists(sqlserver_target, target_database):
@@ -1058,73 +1333,6 @@ def resolve_artifact_path(project_root: Path, relative_value: str | None) -> Pat
     return path if path.exists() else None
 
 
-def execute_sqlite_apply(
-    context: ExecutionContext,
-    api_id: str,
-    sqlite_target: SqliteTarget,
-    table_checks: list[dict[str, Any]],
-    *,
-    allow_create_table: bool,
-    allow_seed: bool,
-) -> tuple[list[dict[str, Any]], list[str]]:
-    executed_sql_texts: list[str] = []
-    updated_checks = json.loads(json.dumps(table_checks, ensure_ascii=False))
-    with connect_sqlite(sqlite_target) as conn:
-        for check in updated_checks:
-            table_ref = clean_text(check.get("tableRef"))
-            schema_sql_path = resolve_artifact_path(context.project_root, check.get("schemaSql"))
-            seed_sql_path = resolve_artifact_path(context.project_root, check.get("seedSql"))
-
-            actual_name = sqlite_find_existing_table(conn, table_ref)
-            if actual_name is None:
-                if not allow_create_table:
-                    check["blockReason"] = "table_missing_and_create_not_allowed"
-                    continue
-                if schema_sql_path is None:
-                    check["blockReason"] = MISSING_SCHEMA_AUTHORITY_REASON
-                    continue
-                sql_text = read_text(schema_sql_path)
-                conn.executescript(sql_text)
-                executed_sql_texts.append(sql_text.strip())
-                actual_name = sqlite_find_existing_table(conn, table_ref)
-                if actual_name is None:
-                    check["blockReason"] = "create_table_no_effect"
-                    continue
-
-            row_count = sqlite_row_count(conn, actual_name)
-            if row_count == 0:
-                if not allow_seed:
-                    check["blockReason"] = "seed_required_but_not_allowed"
-                    check["resolvedTableName"] = actual_name
-                    check["exists"] = True
-                    check["rowCount"] = row_count
-                    continue
-                if seed_sql_path is None:
-                    check["blockReason"] = "seed_file_missing"
-                    check["resolvedTableName"] = actual_name
-                    check["exists"] = True
-                    check["rowCount"] = row_count
-                    continue
-                sql_text = read_text(seed_sql_path)
-                conn.executescript(sql_text)
-                executed_sql_texts.append(sql_text.strip())
-                row_count = sqlite_row_count(conn, actual_name)
-                if row_count == 0:
-                    check["blockReason"] = "seed_no_effect"
-                    check["resolvedTableName"] = actual_name
-                    check["exists"] = True
-                    check["rowCount"] = row_count
-                    continue
-
-            check["resolvedTableName"] = actual_name
-            check["exists"] = True
-            check["rowCount"] = row_count
-            check["blockReason"] = None
-            check["action"] = "reuse"
-        conn.commit()
-    return updated_checks, executed_sql_texts
-
-
 def execute_sqlserver_apply(
     context: ExecutionContext,
     table_checks: list[dict[str, Any]],
@@ -1139,21 +1347,17 @@ def execute_sqlserver_apply(
 
     for check in updated_checks:
         table_ref = clean_text(check.get("tableRef"))
-        table_parts = parse_table_ref(table_ref)
-        target_database = table_parts.database or DEFAULT_SQLSERVER_DATABASE or sqlserver_target.database
+        target_database = sqlserver_target_database(sqlserver_target)
         schema_sql_path = resolve_artifact_path(context.project_root, check.get("schemaSql"))
         seed_sql_path = resolve_artifact_path(context.project_root, check.get("seedSql"))
 
         if not sqlserver_database_exists(sqlserver_target, target_database):
-            if sqlserver_find_existing_table_any_database(sqlserver_target, table_ref):
-                target_database = parse_table_ref(sqlserver_find_existing_table_any_database(sqlserver_target, table_ref)).database or target_database
-            else:
-                if not allow_create_database:
-                    check["blockReason"] = "database_missing"
-                    continue
-                sqlserver_create_database(sqlserver_target, target_database)
-                executed_sql_texts.append(f"CREATE DATABASE [{target_database}];")
-        actual_name = sqlserver_find_existing_table_any_database(sqlserver_target, table_ref)
+            if not allow_create_database:
+                check["blockReason"] = "database_missing"
+                continue
+            sqlserver_create_database(sqlserver_target, target_database)
+            executed_sql_texts.append(f"CREATE DATABASE [{target_database}];")
+        actual_name = sqlserver_find_existing_table(sqlserver_target, table_ref)
         if actual_name is None:
             if not allow_create_table:
                 check["blockReason"] = "table_missing_and_create_not_allowed"
@@ -1167,7 +1371,7 @@ def execute_sqlserver_apply(
                 check["blockReason"] = "create_table_failed"
                 continue
             executed_sql_texts.append(sql_text.strip())
-            actual_name = sqlserver_find_existing_table_any_database(sqlserver_target, table_ref)
+            actual_name = sqlserver_find_existing_table(sqlserver_target, table_ref)
             if actual_name is None:
                 check["blockReason"] = "create_table_no_effect"
                 continue
@@ -1278,6 +1482,16 @@ def build_table_checks_payload(
     }
 
 
+def db_target_for_report(raw_arg: str | None, db_target: SqlServerTarget | BlockedDbTarget | None) -> str | None:
+    if isinstance(db_target, BlockedDbTarget):
+        return db_target.raw_target
+    if raw_arg:
+        return redact_db_target_text(raw_arg)
+    if isinstance(db_target, SqlServerTarget):
+        return configured_sqlserver_target_report_label(db_target)
+    return None
+
+
 def build_seed_manifest(
     context: ExecutionContext,
     item: dict[str, Any],
@@ -1304,7 +1518,16 @@ def build_seed_manifest(
 
 
 def summarize_fixture_status(items: list[dict[str, Any]]) -> dict[str, int]:
-    counts = {"total": len(items), "pending": 0, "in_progress": 0, "done": 0, "skipped": 0, "blocked": 0, "error": 0}
+    counts = {
+        "total": len(items),
+        "pending": 0,
+        "in_progress": 0,
+        "done": 0,
+        "skipped": 0,
+        "not_required": 0,
+        "blocked": 0,
+        "error": 0,
+    }
     for item in items:
         status = clean_text(item.get("fixtureStatus"))
         if status in counts:
@@ -1381,7 +1604,7 @@ def update_execution_state_payload(
         **execution_state,
         "updatedAt": now_iso(),
         "fixtureStatus": "blocked" if any(clean_text(item.get("fixtureStatus")) == "blocked" for item in items) else (
-            "done" if all(clean_text(item.get("fixtureStatus")) in {"done", "skipped"} for item in items if clean_text(item.get("specStatus")) == UPSTREAM_READY_STATUS)
+            "done" if all(clean_text(item.get("fixtureStatus")) in TERMINAL_FIXTURE_STATUSES for item in items if clean_text(item.get("specStatus")) == UPSTREAM_READY_STATUS)
             else "running" if any(clean_text(item.get("fixtureStatus")) == "in_progress" for item in items)
             else "waiting_fixture"
         ),
@@ -1485,6 +1708,7 @@ def main() -> int:
         db_target = parse_db_target(
             args.db_target,
             context.project_root,
+            agent_dir=context.agent_dir,
             preferred_connection_names=detection.get("backendSystems") or [],
         )
 
@@ -1496,32 +1720,44 @@ def main() -> int:
             executed_sql_texts: list[str] = []
             message = f"{selected_item['apiId']} fixture skipped: no SQL dependency."
         else:
-            if isinstance(db_target, SqliteTarget):
-                table_checks = inspect_sqlite_tables(context, selected_item["apiId"], detection["tableRefs"], db_target, authority_root)
+            if isinstance(db_target, BlockedDbTarget):
+                table_checks = build_blocked_target_table_checks(
+                    context,
+                    selected_item["apiId"],
+                    detection["tableRefs"],
+                    db_target,
+                    authority_root,
+                )
             elif isinstance(db_target, SqlServerTarget):
                 table_checks = inspect_sqlserver_tables(context, selected_item["apiId"], detection["tableRefs"], db_target, authority_root)
             else:
-                table_checks = inspect_sqlite_tables(context, selected_item["apiId"], detection["tableRefs"], None, authority_root)
+                table_checks = build_blocked_target_table_checks(
+                    context,
+                    selected_item["apiId"],
+                    detection["tableRefs"],
+                    BlockedDbTarget(
+                        raw_target=".agent/config/sql-fixture-targets.local.json",
+                        block_reason=MISSING_DB_TARGET_REASON,
+                        message="SQL fixture target config is missing.",
+                    ),
+                    authority_root,
+                )
             blocking_reasons = [clean_text(check.get("blockReason")) for check in table_checks if clean_text(check.get("blockReason"))]
             executed_sql_texts = []
-            if mode == "apply" and db_target is not None and not any(reason == "missing_db_target" for reason in blocking_reasons):
-                if isinstance(db_target, SqliteTarget):
-                    table_checks, executed_sql_texts = execute_sqlite_apply(
-                        context,
-                        selected_item["apiId"],
-                        db_target,
-                        table_checks,
-                        allow_create_table=args.allow_create_table,
-                        allow_seed=args.allow_seed,
-                    )
-                elif isinstance(db_target, SqlServerTarget):
+            if (
+                mode == "apply"
+                and db_target is not None
+                and not isinstance(db_target, BlockedDbTarget)
+                and not any(reason == "missing_db_target" for reason in blocking_reasons)
+            ):
+                if isinstance(db_target, SqlServerTarget):
                     table_checks, executed_sql_texts = execute_sqlserver_apply(
                         context,
                         table_checks,
                         db_target,
                         allow_create_database=args.allow_create_database,
-                        allow_create_table=args.allow_create_table,
-                        allow_seed=args.allow_seed,
+                        allow_create_table=args.allow_create_table or db_target.allow_create_table,
+                        allow_seed=args.allow_seed or db_target.allow_seed,
                     )
                 blocking_reasons = [clean_text(check.get("blockReason")) for check in table_checks if clean_text(check.get("blockReason"))]
 
@@ -1557,7 +1793,7 @@ def main() -> int:
             status=fixture_status,
             phase=fixture_phase,
             message=message,
-            db_target=args.db_target or (db_target.source if isinstance(db_target, SqlServerTarget) else None),
+            db_target=db_target_for_report(args.db_target, db_target),
             authority_root=authority_root,
             execution_mode=mode,
         )
@@ -1565,7 +1801,7 @@ def main() -> int:
             context,
             selected_item,
             table_checks,
-            db_target=args.db_target or (db_target.source if isinstance(db_target, SqlServerTarget) else None),
+            db_target=db_target_for_report(args.db_target, db_target),
             authority_root=authority_root,
         )
         seed_manifest_payload = build_seed_manifest(context, selected_item, table_checks, executed_sql_texts) if executed_sql_texts else None
@@ -1605,7 +1841,7 @@ def main() -> int:
         )
         save_batch_file(context.batch_file, {**load_batch_file(context.batch_file), "activeFunctionCode": context.execution_id}, updated_by=SKILL_NAME)
         print(message)
-        return 0 if fixture_status in {"done", "skipped"} else 1
+        return 0 if fixture_status in TERMINAL_FIXTURE_STATUSES else 1
     except SkillError as exc:
         print(f"[ERROR] {exc}", file=sys.stderr)
         return 1

@@ -1,0 +1,81 @@
+{
+  "schemaVersion": "4.1.0",
+  "skillName": "api-code-writer",
+  "manifestType": "code-contract-review",
+  "updatedAt": "2026-05-23T22:17:46+08:00",
+  "executionId": "Common",
+  "apiId": "COMMON.commonfunc.isintradedate",
+  "status": "warnings",
+  "summary": {
+    "findingCount": 1,
+    "blockingCount": 0,
+    "warningCount": 1
+  },
+  "contractSnapshot": {
+    "requestFields": [],
+    "responseFields": [
+      {
+        "path": "isSuccess",
+        "dataType": "boolean",
+        "required": true,
+        "description": "API成功與否",
+        "notes": "true ; false"
+      },
+      {
+        "path": "responseCode",
+        "dataType": "string",
+        "required": true,
+        "description": "回應代碼",
+        "notes": "成功:0000其餘狀況為失敗"
+      },
+      {
+        "path": "responseMessage",
+        "dataType": "string",
+        "required": true,
+        "description": "回應訊息",
+        "notes": "失敗狀況下回傳錯誤訊息"
+      },
+      {
+        "path": "responseDT",
+        "dataType": "string",
+        "required": true,
+        "description": "系統回應時間",
+        "notes": "yyyy/MM/dd HH:mm:ss"
+      },
+      {
+        "path": "responseData",
+        "dataType": "json",
+        "required": true,
+        "description": "回應資料框",
+        "notes": ""
+      },
+      {
+        "path": "isInTradeDate",
+        "dataType": "boolean",
+        "required": true,
+        "description": "是否為交易日",
+        "notes": ""
+      },
+      {
+        "path": "t24BR121Open",
+        "dataType": "string",
+        "required": true,
+        "description": "是否為颱風天",
+        "notes": "Y=營業   N=颱風天"
+      }
+    ],
+    "responseDataIsCollection": false,
+    "responseItemFields": []
+  },
+  "findings": [
+    {
+      "severity": "warning",
+      "category": "method_signature_missing",
+      "file": "Sinopac.EnterpriseAPI/Controllers/CommonFuncController.cs",
+      "line": null,
+      "message": "找不到 IsInTradeDateAsync 方法簽名，無法驗證 controller 與 spec 契約是否一致。",
+      "expected": "IsInTradeDateAsync",
+      "actual": "not found"
+    }
+  ]
+}

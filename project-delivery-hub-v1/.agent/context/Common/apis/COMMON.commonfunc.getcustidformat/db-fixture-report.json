@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "4.1.0",
+  "skillName": "api-sql-fixture-preparer",
+  "manifestType": "db-fixture-report",
+  "updatedAt": "2026-05-23T19:47:00+08:00",
+  "executionId": "Common",
+  "apiId": "COMMON.commonfunc.getcustidformat",
+  "status": "done",
+  "phase": "ready",
+  "executionMode": "prepare",
+  "dbTarget": "connection-name:Report",
+  "authorityRoot": "../../.agent/reference/global",
+  "sqlFixtureRequired": true,
+  "sourcesUsed": [
+    "backendApis"
+  ],
+  "tableRefs": [
+    "MMA.dbo.USER_FOREIGNER_LIST",
+    "MMA.DBO.USER_FOREIGNER_LIST"
+  ],
+  "summary": {
+    "tableCount": 2,
+    "blockingTableCount": 0,
+    "queryTextCount": 0
+  },
+  "message": "COMMON.commonfunc.getcustidformat fixture ready: existing local/test data can be reused.",
+  "findings": [
+    {
+      "tableRef": "MMA.dbo.USER_FOREIGNER_LIST",
+      "action": "reuse",
+      "blockReason": null
+    },
+    {
+      "tableRef": "MMA.DBO.USER_FOREIGNER_LIST",
+      "action": "reuse",
+      "blockReason": null
+    }
+  ]
+}

@@ -24,6 +24,25 @@
       "action": "load_on_demand"
     },
     {
+      "ruleId": "implementation-profile",
+      "title": "NEWDAWHO EnterpriseAPI implementation profile",
+      "category": "framework-profile",
+      "direction": "production-code",
+      "ruleType": "blocking_gap",
+      "audienceScopes": [
+        "frontstage",
+        "midBackoffice",
+        "shared",
+        "unknown"
+      ],
+      "featureTriggers": [
+        "always"
+      ],
+      "loadPath": "rules/code-guidelines/p240301-v6.2/rules/implementation-profile.md",
+      "loadReason": "Load for NEWDAWHO API code writing to apply framework slots, response contracts, validation commands, code style, and file-lock handling.",
+      "action": "select_and_check_gaps"
+    },
+    {
       "ruleId": "data-access",
       "title": "DB / SQL / 資料檢索規範",
       "category": "data-access",

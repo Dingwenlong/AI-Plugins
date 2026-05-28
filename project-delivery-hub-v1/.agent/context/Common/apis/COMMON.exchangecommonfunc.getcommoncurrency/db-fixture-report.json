@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "4.1.0",
+  "skillName": "api-sql-fixture-preparer",
+  "manifestType": "db-fixture-report",
+  "updatedAt": "2026-05-23T19:43:29+08:00",
+  "executionId": "Common",
+  "apiId": "COMMON.exchangecommonfunc.getcommoncurrency",
+  "status": "blocked",
+  "phase": "inspection_blocked",
+  "executionMode": "prepare",
+  "dbTarget": "connection-name:Report",
+  "authorityRoot": "../../.agent/reference/global",
+  "sqlFixtureRequired": true,
+  "sourcesUsed": [
+    "codeHandoff.queryContracts",
+    "businessLogic.sqlSpecs",
+    "backendApis"
+  ],
+  "tableRefs": [
+    "CommonCurrencyList",
+    "DaWho.dbo.CommonCurrencyList（Redis 未命中時回源）",
+    "DAWHO.DBO.COMMONCURRENCYLIST"
+  ],
+  "summary": {
+    "tableCount": 3,
+    "blockingTableCount": 3,
+    "queryTextCount": 1
+  },
+  "message": "COMMON.exchangecommonfunc.getcommoncurrency fixture blocked: missing_schema_authority",
+  "findings": [
+    {
+      "tableRef": "CommonCurrencyList",
+      "action": "create",
+      "blockReason": "missing_schema_authority"
+    },
+    {
+      "tableRef": "DaWho.dbo.CommonCurrencyList（Redis 未命中時回源）",
+      "action": "create",
+      "blockReason": "missing_schema_authority"
+    },
+    {
+      "tableRef": "DAWHO.DBO.COMMONCURRENCYLIST",
+      "action": "create",
+      "blockReason": "missing_schema_authority"
+    }
+  ]
+}

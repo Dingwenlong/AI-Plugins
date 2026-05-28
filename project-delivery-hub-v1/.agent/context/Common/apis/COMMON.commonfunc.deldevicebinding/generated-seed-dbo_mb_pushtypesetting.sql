@@ -1,0 +1,5 @@
+IF NOT EXISTS (SELECT 1 FROM [DBO].[MB_PUSHTYPESETTING] WHERE [UserId] = 'FIXTURE')
+BEGIN
+    INSERT INTO [DBO].[MB_PUSHTYPESETTING] ([UserId], [DeviceId], [Type], [Active], [CreateDate], [CreateUser], [ModifyDate], [ModifyUser])
+    VALUES ('FIXTURE', 'FIXTURE', 'FIXTURE', 'FIXTURE', '2026-04-15T10:00:00', 'FIXTURE', '2026-04-15T10:00:00', 'FIXTURE');
+END

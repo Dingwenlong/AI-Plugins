@@ -1,4 +1,9 @@
 interface:
-  display_name: "03 可选 SQL 测试资料准备器"
+  display_name: "【开发落地】SQL 测试资料准备器"
   short_description: "为 SQL 依赖 API 准备测试库 schema 与 seed 数据。"
-  default_prompt: "使用 $api-sql-fixture-preparer 作为可选第 03 步 03 可选 SQL 测试资料准备器：在共享 `.agent/context` 中读取已完成 spec 的 API，判断是否需要 SQL 测试资料，并在允许时为本地或测试数据库准备表结构与最小测试数据，只更新 `fixture*` 状态。若不需要 SQL 测试资料，也应明确回写 `skipped`，供第 04 步 [$api-code-writer](C:/Users/<username>/plugins/project-delivery-hub-v1/skills/api-code-writer/SKILL.md) 后续 `apply` 使用。"
+  default_prompt: "使用 $api-sql-fixture-preparer 作为可选第 03 步 【开发落地】SQL 测试资料准备器：在共享 `.agent/context` 中读取已完成 spec 的 API，判断是否需要 SQL 测试资料，并在允许时为本地或测试数据库准备表结构与最小测试数据，只更新 `fixture*` 状态。若不需要 SQL 测试资料，也应明确回写 `skipped`，供第 04 步 [$api-code-writer](<pluginRoot>/skills/api-code-writer/SKILL.md) 后续 `apply` 使用。"
+
+leaderMode: |
+  在 multi-api-leader 显式编排中，03 SQL fixture 写入和 fixtureStatus 更新只能由 leader 串行完成。
+  子 agent 只允许只读 review schema、seed、queryContracts 与 SQL 安全边界。
+  若缺少权威 schema、连接或安全授权，必须向 leader 返回 blocking。

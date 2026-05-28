@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "1.0.0",
+  "executionId": "Common",
+  "apiId": "COMMON.commonfunc.getvirtualacctprefix",
+  "projectRoot": "D:/Devs/NEWDAWHO/feature_common/P240301Git/Sinopac.EnterpriseAPI",
+  "solutionPath": "D:/Devs/NEWDAWHO/feature_common/P240301Git/Sinopac.EnterpriseAPI/Sinopac.EnterpriseAPI.slnx",
+  "moduleName": "CommonFunc",
+  "apiCategory": "CommonFunc",
+  "apiName": "GetVirtualAcctPreFix",
+  "apiDisplayName": "CommonFunc/GetVirtualAcctPreFix",
+  "unitTestProject": "Test/EnterpriseApi.Unit/EnterpriseApi.Unit.csproj",
+  "integrationTestProject": "Test/EnterpriseApi.Integration/EnterpriseApi.Integration.csproj",
+  "validationChecks": [
+    "dotnet build \"D:\\Devs\\NEWDAWHO\\feature_common\\P240301Git\\Sinopac.EnterpriseAPI\\Sinopac.EnterpriseAPI.slnx\" -m:1"
+  ],
+  "validationResults": [
+    {
+      "command": "dotnet build \"D:\\Devs\\NEWDAWHO\\feature_common\\P240301Git\\Sinopac.EnterpriseAPI\\Sinopac.EnterpriseAPI.slnx\" -m:1",
+      "returncode": 0,
+      "passed": true,
+      "stdout": "正在确定要还原的项目…\n  所有项目均是最新的，无法还原。\nC:\\Program Files\\dotnet\\sdk\\10.0.300-preview.0.26177.108\\Sdks\\Microsoft.NET.Sdk\\targets\\Microsoft.NET.RuntimeIdentifierInference.targets(383,5): message NETSDK1057: 你正在使用 .NET 的预览版。请参阅 https://aka.ms/dotnet-support-policy [D:\\Devs\\NEWDAWHO\\feature_common\\P240301Git\\Sinopac.EnterpriseAPI\\EnterpriseApiBusiness.Interface\\EnterpriseApiBusiness.Interface.csproj]\n  EnterpriseApiEntity -> D:\\Devs\\NEWDAWHO\\feature_common\\P240301Git\\Sinopac.EnterpriseAPI\\EnterpriseApiEntity\\bin\\Debug\\net10.0\\EnterpriseApiEntity.dll\n  EnterpriseApiBusiness.Interface -> D:\\Devs\\NEWDAWHO\\feature_common\\P240301Git\\Sinopac.EnterpriseAPI\\EnterpriseApiBusiness.Interface\\bin\\Debug\\net10.0\\EnterpriseApiBusiness.Interface.dll\n  EnterpriseApiBusiness -> D:\\Devs\\NEWDAWHO\\feature_common\\P240301Git\\Sinopac.EnterpriseAPI\\EnterpriseApiBusiness\\bin\\Debug\\net10.0\\EnterpriseApiBusiness.dll\n  Sinopac.EnterpriseAPI -> D:\\Devs\\NEWDAWHO\\feature_common\\P240301Git\\Sinopac.EnterpriseAPI\\Sinopac.EnterpriseAPI\\bin\\Debug\\net10.0\\Sinopac.EnterpriseAPI.dll\n  EnterpriseApi.Integration -> D:\\Devs\\NEWDAWHO\\feature_common\\P240301Git\\Sinopac.EnterpriseAPI\\Test\\EnterpriseApi.Integration\\bin\\Debug\\net10.0\\EnterpriseApi.Integration.dll\n  EnterpriseApi.Unit -> D:\\Devs\\NEWDAWHO\\feature_common\\P240301Git\\Sinopac.EnterpriseAPI\\Test\\EnterpriseApi.Unit\\bin\\Debug\\net10.0\\EnterpriseApi.Unit.dll\n\n已成功生成。\n    0 个警告\n    0 个错误\n\n已用时间 00:00:01.98",
+      "stderr": "",
+      "attempt": 1
+    }
+  ],
+  "trxHints": {
+    "unit": "D:/Devs/NEWDAWHO/feature_common/P240301Git/Sinopac.EnterpriseAPI/.agent/report-results/Common/COMMON.commonfunc.getvirtualacctprefix/unit",
+    "integration": "D:/Devs/NEWDAWHO/feature_common/P240301Git/Sinopac.EnterpriseAPI/.agent/report-results/Common/COMMON.commonfunc.getvirtualacctprefix/integration"
+  },
+  "testTargetFiles": {
+    "unit": [
+      "Test/EnterpriseApi.Unit/CommonFuncControllerTest.cs",
+      "Test/EnterpriseApi.Unit/CommonFuncServiceTests.cs"
+    ],
+    "integration": [
+      "Test/EnterpriseApi.Integration/CommonFuncControllerTests.cs"
+    ],
+    "ownerStep": "05 docx-unittest-report",
+    "writerPolicy": "handoff_only"
+  },
+  "testNames": {
+    "unit": [],
+    "integration": []
+  },
+  "reportHints": {
+    "recommendedSections": [
+      "UT-01",
+      "UT-03",
+      "UT-10",
+      "UT-04"
+    ],
+    "sourceFiles": [
+      "Sinopac.EnterpriseAPI/Controllers/CommonFuncController.cs",
+      "EnterpriseApiBusiness.Interface/ICommonFuncService.cs",
+      "EnterpriseApiBusiness/CommonFunc/CommonFuncService.GetVirtualAcctPreFix.cs",
+      "EnterpriseApiBusiness/CommonFunc/CommonFuncService.cs",
+      "EnterpriseApiEntity/CommonFunc/GetVirtualAcctPreFixInfo.cs"
+    ]
+  }
+}

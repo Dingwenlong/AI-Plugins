@@ -1,13 +1,15 @@
 ---
-name: 专案交付包收集器
-description: 按功能编号收集冻版专案交付物并整理成交付目录。根据已冻版或近冻版的功能设计梳理稿复制 TSD、API Detail、VSDX、报告等文件到 `TSD 交付 YYYYMMDD`；找不到梳理稿或未达开发就绪时停止。关键词：交付包、冻版、功能设计梳理、TSD 交付。
+name: 【交付文件】专案交付包收集器
+description: 按功能编号收集冻版专案交付物并整理成交付目录。仅在功能设计梳理稿已达冻版或近冻版、且 `已确认交付物` 明确列出 TSD、API Detail、VSDX/报告等文件时复制到 `TSD 交付 YYYYMMDD`；找不到梳理稿、交付物不完整或未达开发就绪时停止。关键词：交付包、冻版、功能设计梳理、TSD 交付。
 ---
 
-# 专案交付包收集器
+# 【交付文件】专案交付包收集器
 
 ## 目的
 
 用于根据功能设计梳理稿创建客户交付包。事实来源以梳理稿中的 `已确认交付物` 章节为准；执行时只复制文件，不移动或删除原始文件。
+
+本技能只处理客户交付包收集，不修改 TSD/API Detail/时序图内容，也不打包插件本身。工作区参数中的 `--workspace` 是系统设计文件所在目录；集中 `.agent` 位置由 `--agent-root`、环境变量或插件根目录 `references/local-workspaces.json` 解析，不从代码分支目录猜测。
 
 ## 安全门槛
 
@@ -62,19 +64,32 @@ TSD 交付客戶版本/
 - 功能自身 VSDX / SVG 只有在梳理稿将其列为当前交付物时才复制。
 - 外部或共用 VSDX / SVG 只有在梳理稿列为当前引用交付物时才复制。
 
+### 时序图强约束
+
+- 正式时序图来源只允许两类：
+  1. `<agentRoot>/functions/<functionCode>/analysis/sequence-diagrams`，包含 `vsdx/`、`*_native_visio_spec.json`、`*_sequence.puml` 与落版说明。
+  2. `v1.x Reference`，仅在用户明确指定该正式目录，或集中 `.agent` 对应功能时序图不存在时使用。
+- 禁止把 `output/sequence_diagram` 作为正式打包来源；若只在该 legacy 目录找到时序图，必须停止并提示先同步到 `.agent/functions` 或确认 `v1.x Reference`。
+- `已确认交付物` 必须分开列「本功能时序图」与「共用/外部时序图」。本功能图至少要有正式 `.vsdx`，若有多页 `.svg` 预览也应列入；共用/外部图必须分别说明 `.vsdx` 与 `.svg` 是否存在。
+- 打包前必须读取本功能时序图的 native spec / PUML / SVG / VSDX 可读文本，解析 `循序圖請參考：...`、`CommonFunc.*` 与 `CommonUtil/*` 引用。
+- 若本功能时序图引用了 CommonFunc/CommonUtil 共用图，但 `已确认交付物` 没有列出对应共用 `.vsdx` 与 `.svg`，必须阻塞打包并列出缺失的 ref 与格式；不得自动补齐、静默跳过或只给警告。
+- 共用 VSDX 正式目标为 `vsdx源文件/共用vsdx/`，共用 SVG 正式目标为 `共用svg/`。
+- 时序图匹配必须按完整功能编号前缀精确匹配，例如 `D.001.001_D.002.001*`；不得误收旧命名 `D.001_D.002*`、Visio 锁档 `~$*` / `~$$*`、`.bak`、`.before_*`、preview/temp/visual QA 文件。
+
 不要复制：
 
 - `.bak` 备份文件，除非用户明确要求。
 - PRD、IT SPEC、旧代码分析、视觉 QA PDF/PNG、草稿文件或历史参考图，除非梳理稿明确列为已确认交付物。
 - 标记为 `历史参考`、`本次未作为冻版图`、`不应视为当前冻版图` 或类似状态的项目。
+- `output/sequence_diagram` 下的 legacy 时序图，即使文件名匹配，也不得进入正式交付包。
 
 ## 推荐执行方式
 
-先用内置脚本执行 dry-run：
+先用内置脚本执行 dry-run。`--dry-run` 只解析梳理稿、验证交付物与输出 copy plan，不创建交付目录、不复制文件：
 
 ```powershell
 $env:PYTHONUTF8='1'
-python C:\Users\<username>\plugins\project-delivery-hub-v1\skills\delivery-packager\scripts\package_delivery.py `
+python "<pluginRoot>\skills\delivery-packager\scripts\package_delivery.py" `
   --workspace "D:\Devs\<PROJECT_DOCS>\branches\02系統設計\2-1系統設計書" `
   --workspace-key "NEWDAWHO" `
   --function L.005 `
@@ -85,7 +100,7 @@ python C:\Users\<username>\plugins\project-delivery-hub-v1\skills\delivery-packa
 
 ```powershell
 $env:PYTHONUTF8='1'
-python C:\Users\<username>\plugins\project-delivery-hub-v1\skills\delivery-packager\scripts\package_delivery.py `
+python "<pluginRoot>\skills\delivery-packager\scripts\package_delivery.py" `
   --workspace "D:\Devs\<PROJECT_DOCS>\branches\02系統設計\2-1系統設計書" `
   --workspace-key "NEWDAWHO" `
   --function L.005
@@ -99,6 +114,22 @@ python C:\Users\<username>\plugins\project-delivery-hub-v1\skills\delivery-packa
 - `--summary <path>`：指定明确的梳理稿。
 - `--overwrite`：目标文件已存在时允许替换。
 - `--keep-source-dates`：完整保留源文件名，不把文件名末尾日期替换成交付包日期。
+- `--json`：输出 JSON，且必须包含 `sequenceValidation`。
+
+`sequenceValidation` 至少列出：
+
+- `sourceRoot`：本功能时序图实际来源。
+- `functionFiles`：本功能 VSDX/SVG。
+- `requiredCommonRefs`：图面解析出的 CommonFunc/CommonUtil ref。
+- `confirmedCommonRefs`：梳理稿已确认的共用图路径。
+- `missingCommonRefs`：阻塞前识别出的缺失共用图。
+- `skippedUnsafeFiles`：被排除的锁档、备份或临时图。
+
+## 资源
+
+- `agents/openai.yaml`
+- `scripts/package_delivery.py`
+- `tests/test_package_delivery.py`
 
 ## 最终回报
 

@@ -1,0 +1,662 @@
+{
+  "schemaVersion": "4.2.0",
+  "apiId": "COMMON.commonfunc.sendtomonitormail-push",
+  "newAuthor": "Jimmy",
+  "functionCode": "Common",
+  "version": "1.0",
+  "apiCategory": "CommonFunc",
+  "apiName": "SendToMonitorMail_Push",
+  "source": {
+    "tsdFile": "TSD.Common_封存TSD共用开发链路_v1.0_20260523.docx",
+    "workbookFile": "NEWDA_Method_DETAIL_ExchangeCommonFunc_20260522.xlsx",
+    "sheetNames": [
+      "SendToMonitorMail_Push新版MAIL機制 "
+    ]
+  },
+  "request": [
+    {
+      "rowKey": "1",
+      "fieldName": "mETemplateID",
+      "dataType": "string",
+      "required": false,
+      "description": "樣版檔檔名，可不填",
+      "example": "\"mETMnemonic\":\"\"TYPE0_\" + TranType + \".HTML\"\""
+    },
+    {
+      "rowKey": "2",
+      "fieldName": "mEReferenceID",
+      "dataType": "string",
+      "required": true,
+      "description": "CUSTID",
+      "example": "\"mEReferenceID\":\"123464324\""
+    },
+    {
+      "rowKey": "3",
+      "fieldName": "mESubject",
+      "dataType": "string",
+      "required": true,
+      "description": "MAIL標題",
+      "example": "\"mESubject\":\"123464324\""
+    },
+    {
+      "rowKey": "4",
+      "fieldName": "mEContent",
+      "dataType": "string",
+      "required": true,
+      "description": "MAIL內容",
+      "example": "\"mEContent\":\"123464324\""
+    },
+    {
+      "rowKey": "5",
+      "fieldName": "mEReceivers",
+      "dataType": "string",
+      "required": true,
+      "description": "收件者EMAIL",
+      "example": "\"mEReceivers\":\"123464324\""
+    },
+    {
+      "rowKey": "6",
+      "fieldName": "mEParameters",
+      "dataType": "string",
+      "required": true,
+      "description": "MAIL內容參數",
+      "example": "\"mEParameters\":\"123464324\""
+    },
+    {
+      "rowKey": "7",
+      "fieldName": "mECreator",
+      "dataType": "string",
+      "required": true,
+      "description": "MMAMember 系統_交易類型",
+      "example": "\"mECreator\":\"123464324\""
+    },
+    {
+      "rowKey": "8",
+      "fieldName": "mETMnemonic",
+      "dataType": "string",
+      "required": true,
+      "description": "收件者ID(身份證 or 統編需補最後一碼需補 0)",
+      "example": "\"mETMnemonic\":\"123464324\""
+    },
+    {
+      "rowKey": "9",
+      "fieldName": "tranType",
+      "dataType": "string",
+      "required": false,
+      "description": "交易類型",
+      "example": "\"tranType\":\"M_CARDLESS_TXN\""
+    },
+    {
+      "rowKey": "10",
+      "fieldName": "debitCurr",
+      "dataType": "string",
+      "required": false,
+      "description": "幣別",
+      "example": "\"debitCurr\":\"123464324\""
+    },
+    {
+      "rowKey": "11",
+      "fieldName": "debitCurrText",
+      "dataType": "string",
+      "required": false,
+      "description": "幣別名稱",
+      "example": "\"debitCurrText\":\"123464324\""
+    },
+    {
+      "rowKey": "12",
+      "fieldName": "debitAmt",
+      "dataType": "string",
+      "required": false,
+      "description": "金額",
+      "example": "\"debitAmt\":\"123464324\""
+    },
+    {
+      "rowKey": "13",
+      "fieldName": "pushMsg",
+      "dataType": "string",
+      "required": false,
+      "description": "推送消息內容",
+      "example": "\"pushMsg\":\"123464324\""
+    }
+  ],
+  "response": [
+    {
+      "rowKey": "1",
+      "fieldName": "isSuccess",
+      "dataType": "boolean",
+      "required": true,
+      "description": "API成功與否",
+      "example": "true",
+      "notes": "true ; false"
+    },
+    {
+      "rowKey": "2",
+      "fieldName": "responseCode",
+      "dataType": "string",
+      "required": true,
+      "description": "回應代碼",
+      "example": "0000",
+      "notes": "成功:0000其餘狀況為失敗"
+    },
+    {
+      "rowKey": "3",
+      "fieldName": "responseMessage",
+      "dataType": "string",
+      "required": true,
+      "description": "回應訊息",
+      "notes": "失敗狀況下回傳錯誤訊息"
+    },
+    {
+      "rowKey": "4",
+      "fieldName": "responseDT",
+      "dataType": "string",
+      "required": true,
+      "description": "系統回應時間",
+      "notes": "yyyy/MM/dd HH:mm:ss"
+    },
+    {
+      "rowKey": "5",
+      "fieldName": "responseData",
+      "dataType": "json",
+      "required": true,
+      "description": "回應資料框",
+      "example": "\"responseData\":{}"
+    }
+  ],
+  "mockExamples": [
+    {
+      "scenario": "推送成功",
+      "requestPayload": {
+        "mETemplateID": "TYPE0_M_CARDLESS_TXN.HTML",
+        "mEReferenceID": "123464324",
+        "mESubject": "交易通知",
+        "mEContent": "您的交易已完成，金額為123464324。",
+        "mEReceivers": "user@example.com",
+        "mEParameters": "交易金額=123464324;幣別=TWD",
+        "mECreator": "MMAMember_M_CARDLESS_TXN",
+        "mETMnemonic": "A1234567890",
+        "tranType": "M_CARDLESS_TXN",
+        "debitCurr": "TWD",
+        "debitCurrText": "新臺幣",
+        "debitAmt": "123464324",
+        "pushMsg": "您的交易已完成，請查收。"
+      },
+      "responsePayload": {
+        "isSuccess": true,
+        "responseCode": "0000",
+        "responseMessage": "",
+        "responseDT": "2025/06/30 11:20:35",
+        "responseData": {}
+      }
+    },
+    {
+      "scenario": "推送失敗",
+      "responsePayload": {
+        "isSuccess": false,
+        "responseCode": "9001",
+        "responseMessage": "系統繁忙,請稍後再試！",
+        "responseDT": "2026/02/24 10:30:25",
+        "responseData": {}
+      }
+    }
+  ],
+  "backendApis": {
+    "DB": [
+      "B2C_CUSTOMER"
+    ]
+  },
+  "businessLogic": {
+    "steps": [
+      {
+        "step": 1,
+        "title": "初始化參數",
+        "details": "1. 判斷tranType參數是否以B2C_開頭，如果是B2C_XID=mEReferenceID;\n2.mEReferenceID進行格式化處理，補足11位，Common.getCustIDFormat(MEReferenceID);\n3. 定義bSendMail是否可以發送的變量，默認為false\n4.定義TWTranType變量，存放交易類型描述"
+      },
+      {
+        "step": 2,
+        "title": ": 判斷tranType",
+        "details": "如果（TranType=\"M_PAYEEEMAIL\" 或 TranType=\"MMA_PAYEEEMAIL\" 或 TranType=\"MMA_REMIT\")\n並且MEParameters.IndexOf(\"交易已受理\") > -1))\nbSendMail=true；"
+      },
+      {
+        "step": 2,
+        "title": "依交易區分PUSH提示（需要進行推播的組合參數進行推播）",
+        "details": "如果不滿足條件2，繼續針對交易類型進行判斷推播3.3  20160119依交易區分PUSH提示，請自行代換下列PUSH_TRANS_MSG變數，並於PushHelper新增提示句子\n取得交易類型的中文描述進行賦值  TWTranType=PushHelper.changeTranType(TranType);\n1.如果(TranType == \"M_BANKCURR\" || TranType == \"M_BANKCURR_CNY\" || TranType == \"MMA_BANKCURR\" || TranType == \"MMA_BANKCURR_CNY\") && MEParameters.IndexOf(\"交易成功\") > -1)\n組合推播消息內容：string PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_EXCHANGE, DebitCurrText, DebitCurr, DebitAmt, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));\n進行推送：PushHelper.SendPushMessage(MEReferenceID, \"\", PushHelper.PUSH_TRANS, PushMessage, PushMsg);\n2.如果 (TranType == \"M_BANKFIX\" || TranType == \"M_BANKFIXCURR\" && MEParameters.IndexOf(\"交易成功\") > -1)\n組合推送消息內容 PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_BANKFIX, DebitCurr, DebitAmt, DebitCurrText, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));\n進行推送：PushHelper.SendPushMessage(MEReferenceID, \"\", PushHelper.PUSH_TRANS, PushMessage, PushMsg);\n3.如果(TranType == \"M_PRE_BANKFIX\" && MEParameters.IndexOf(\"委託完成\") > -1)\n組合推送消息內容 PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_PRE_BANKFIX, DebitCurr, DebitAmt, DebitCurrText, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));\n進行推送： PushHelper.SendPushMessage(MEReferenceID, \"\", PushHelper.PUSH_TRANS, PushMessage, PushMsg);\n4.如果((TranType == \"M_BANKTRADE\" || TranType == \"MMA_BANKTRADE\") && MEParameters.IndexOf(\"交易成功\") > -1)\n組合推送消息內容 String.Format(PushHelper.PUSH_TRANS_MSG, DebitCurrText, DebitCurr, DebitAmt, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));\n進行推送： PushHelper.SendPushMessage(MEReferenceID, \"\", PushHelper.PUSH_TRANS, PushMessage, PushMsg);\n5.如果((TranType == \"M_PHONEBANKTRADE\" || TranType == \"MMA_PHONEBANKTRADE\") && MEParameters.IndexOf(\"交易成功\") > -1)\n組合推送消息內容 PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_M_PHONETRANS_ADD, DebitCurrText, DebitCurr, DebitAmt, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));\n進行推送： PushHelper.SendPushMessage(MEReferenceID, \"\", PushHelper.PUSH_TRANS, PushMessage, PushMsg);\n6.如果 (TranType == \"M_GOLDTRADE_BUY\" && MEParameters.IndexOf(\"交易成功\") > -1)\n組合推送消息內容 PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_GOLDTRADE_BUY, DebitCurr, DebitAmt, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"), TWTranType);\n進行推送： PushHelper.SendPushMessage(MEReferenceID, \"\", PushHelper.PUSH_TRANS, PushMessage, PushMsg);\n7.如果(TranType == \"M_GOLDTRADE_SELL\" && MEParameters.IndexOf(\"交易成功\") > -1)\n組合推送消息內容PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_GOLDTRADE_SELL, DebitCurr, DebitAmt, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"), TWTranType);\n進行推送： PushHelper.SendPushMessage(MEReferenceID, \"\", PushHelper.PUSH_TRANS, PushMessage, PushMsg);\n8.如果((TranType == \"M_CARDTRADE\" || TranType == \"MMA_CARDTRADE\") && MEParameters.IndexOf(\"交易成功\") > -1)\n組合推送消息內容：String.Format(PushHelper.PUSH_TRANS_MSG_CARD, DebitCurrText, DebitCurr, DebitAmt, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));\n推送消息： PushHelper.SendPushMessage(MEReferenceID, \"\", PushHelper.PUSH_TRANS, PushMessage, PushMsg);\n9.如果 (TranType == \"M_FUND_COMMON\" && MEParameters.IndexOf(\"交易成功\") > -1)\n//行動銀行基金贖回 M_FUND_COMMON\nstring[] dollar = DebitAmt.Split(' ');\nDebitAmt = dollar[0] + \" $\" + dollar[1];\n組合推送消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_FUNDCREDEM, DebitAmt, TWTranType, DebitCurrText, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));\n進行推送：PushHelper.SendPushMessage(MEReferenceID, \"\", PushHelper.PUSH_TRANS, PushMessage, PushMsg);\n10.如果((TranType == \"M_CGENERAL\" || TranType == \"MMA_FUND_CGENERALN\") && MEParameters.IndexOf(\"已完成\") > -1)\nstring[] dollar = DebitCurrText.Split(' ');\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_FUNDCGENERAL, dollar[1], DebitAmt, TWTranType, DebitCurr, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));\n進行推送：PushHelper.SendPushMessage(MEReferenceID, \"\", PushHelper.PUSH_TRANS, PushMessage, PushMsg);\n11.如果((TranType == \"M_FUND_CAUTO\" || TranType == \"MMA_FUND_CAUTON\" || TranType == \"MMA_FUND_CAUTO\") && MEParameters.IndexOf(\"完成交易\") > -1)\nstring[] dollar = DebitCurrText.Split(' ');\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_FUNDCAUTO, dollar[1], DebitAmt, TWTranType, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));\n進行推送： PushHelper.SendPushMessage(MEReferenceID, \"\", PushHelper.PUSH_TRANS, PushMessage, PushMsg);\n12.如果 (TranType == \"M_PERFOREIGNCASH\" && MEParameters.IndexOf(\"交易成功\") > -1)\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_ForeignCash, DebitCurr, DebitAmt, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"), TWTranType);\n進行推送： PushHelper.SendPushMessage(MEReferenceID, \"\", PushHelper.PUSH_TRANS, PushMessage, PushMsg);\n13.如果(TranType == \"M_VISA\" && MEParameters.IndexOf(\"交易成功\") > -1)\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_VISA, DebitCurr, DebitAmt, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"), TWTranType);\n進行推送：PushHelper.SendPushMessage(MEReferenceID, \"\", PushHelper.PUSH_TRANS, PushMessage, PushMsg);\n14.如果(TranType == \"M_BANK_TFRIN\" && MEParameters.IndexOf(\"設定成功\") > -1)\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_BANK_TFRIN, DebitCurr, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));\n進行推送：PushHelper.SendPushMessage(MEReferenceID, \"\", PushHelper.PUSH_TRANS, PushMessage, PushMsg);\n15.如果(TranType == \"M_BANKCURR_PRE\" && MEParameters.IndexOf(\"委託完成\") > -1)\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_EXCHANGE_PRE, DebitCurrText, DebitCurr, DebitAmt, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));\n進行推送：PushHelper.SendPushMessage(MEReferenceID, \"\", PushHelper.PUSH_TRANS, PushMessage, PushMsg);\n16.如果（(TranType == \"M_PREBANKTRADE\" || TranType == \"MMA_PREBANKTRADE\") && (MEParameters.IndexOf(\"委託完成\") > -1 || MEParameters.IndexOf(\"預約交易已受理\") > -1))\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_BANKTRADE_PRE, DebitCurrText, DebitCurr, DebitAmt, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));\n進行推送：PushHelper.SendPushMessage(MEReferenceID, \"\", PushHelper.PUSH_TRANS, PushMessage, PushMsg);\n17.如果((TranType == \"M_FUND_CAIR_GENERAL\" || TranType == \"MMA_FUND_CAIR_GENERAL\") && MEParameters.IndexOf(\"交易完成\") > -1)\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_FUNDCAIR_GENNERAL, DebitAmt, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));\n進行推送：PushHelper.SendPushMessage(MEReferenceID, \"\", PushHelper.PUSH_TRANS, PushMessage, PushMsg);\n18.如果((TranType == \"M_FUND_CAIR_GENERAL_PRE\" || TranType == \"MMA_FUND_CAIR_GENERAL_PRE\") && MEParameters.IndexOf(\"交易完成\") > -1)\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_FUNDCAIR_GENNERAL_PRE, DebitAmt, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));\n進行推送： PushHelper.SendPushMessage(MEReferenceID, \"\", PushHelper.PUSH_TRANS, PushMessage, PushMsg);\n19.如果 ((TranType == \"M_FUND_CAIR_REDEM\" || TranType == \"MMA_FUND_CAIR_REDEM\") && MEParameters.IndexOf(\"交易完成\") > -1)\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_FUNDCAIR_REDEM, DebitAmt, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));\n進行推送： PushHelper.SendPushMessage(MEReferenceID, \"\", PushHelper.PUSH_TRANS, PushMessage, PushMsg);\n20.如果((TranType == \"M_FUND_CAIR_REDEM_PRE\" || TranType == \"MMA_FUND_CAIR_REDEM_PRE\") && MEParameters.IndexOf(\"交易完成\") > -1)\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_FUNDCAIR_REDEM_PRE, DebitAmt, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));\n進行推送：PushHelper.SendPushMessage(MEReferenceID, \"\", PushHelper.PUSH_TRANS, PushMessage, PushMsg);\n21.如果((TranType == \"M_FUND_CAIR_REDEM_GEN\" || TranType == \"MMA_FUND_CAIR_REDEM_GEN\") && MEParameters.IndexOf(\"交易完成\") > -1)\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_FUNDCAIR_REDEM_GEN, DebitAmt, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));\n進行推送：PushHelper.SendPushMessage(MEReferenceID, \"\", PushHelper.PUSH_TRANS, PushMessage, PushMsg);\n22.如果((TranType == \"M_FUND_CAIR_AUTO\" || TranType == \"MMA_FUND_CAIR_AUTO\") && MEParameters.IndexOf(\"交易完成\") > -1)\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_FUNDCAIR_AUTO, DebitAmt, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));\n進行推送：PushHelper.SendPushMessage(MEReferenceID, \"\", PushHelper.PUSH_TRANS, PushMessage, PushMsg);\n23.如果 ((TranType == \"M_FUND_CAIR_SWITCH\" || TranType == \"MMA_FUND_CAIR_SWITCH\") && MEParameters.IndexOf(\"交易完成\") > -1)\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_FUNDCAIR_SWITCH, DebitAmt, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));\n進行推送：PushHelper.SendPushMessage(MEReferenceID, \"\", PushHelper.PUSH_TRANS, PushMessage, PushMsg);\n24.如果((TranType == \"M_FUND_CAIR_SWITCH_PRE\" || TranType == \"MMA_FUND_CAIR_SWITCH_PRE\") && MEParameters.IndexOf(\"交易完成\") > -1)\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_FUNDCAIR_SWITCH_PRE, DebitAmt, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));\n進行推送：PushHelper.SendPushMessage(MEReferenceID, \"\", PushHelper.PUSH_TRANS, PushMessage, PushMsg);\n25.如果((TranType == \"M_FUND_CAIR_GAINLOSS\" || TranType == \"MMA_FUND_CAIR_GAINLOSS\") && MEParameters.IndexOf(\"交易完成\") > -1)\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_FUNDCAIR_GAINLOSS, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));進行推送；\n26.如果((TranType == \"M_FUND_CAIR_EIM\" || TranType == \"MMA_FUND_CAIR_EIM\") && MEParameters.IndexOf(\"交易完成\") > -1)\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_FUNDCAIR_EIM, DebitAmt, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));進行推送；\n27.如果((TranType == \"M_FUND_CAIR_EIM_PRE\" || TranType == \"MMA_FUND_CAIR_EIM_PRE\") && MEParameters.IndexOf(\"交易完成\") > -1)\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_FUNDCAIR_EIM_PRE, DebitAmt, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));進行推送；\n28. 如果((TranType == \"M_FUND_CAIR_EIM_SWITCH\" || TranType == \"MMA_FUND_CAIR_EIM_SWITCH\") && MEParameters.IndexOf(\"交易完成\") > -1)\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_FUNDCAIR_EIM_SWITCH, DebitAmt, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));進行推送\n29.如果((TranType == \"M_FUND_CAIR_EIM_SWITCH_PRE\" || TranType == \"MMA_FUND_CAIR_EIM_SWITCH_PRE\") && MEParameters.IndexOf(\"交易完成\") > -1)\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_FUNDCAIR_EIM_SWITCH_PRE, DebitAmt, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));進行推送；\n30.如果 ((TranType == \"M_FUND_CAIR_EIM_TERM\" || TranType == \"MMA_FUND_CAIR_EIM_TERM\") && MEParameters.IndexOf(\"交易完成\") > -1)\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_FUNDCAIR_EIM_TERM, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));進行推送\n31.如果((TranType == \"M_FUND_CAIR_EIM_TERM_PRE\" || TranType == \"MMA_FUND_CAIR_EIM_TERM_PRE\") && MEParameters.IndexOf(\"交易完成\") > -1)\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_FUNDCAIR_EIM_TERM_PRE, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));進行推送\n32.如果((TranType == \"M_FUND_CAIR_EIM_REDEM\" || TranType == \"MMA_FUND_CAIR_EIM_REDEM\") && MEParameters.IndexOf(\"交易完成\") > -1)\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_FUNDCAIR_EIM_REDEM, DebitAmt, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));進行推送；\n33.如果((TranType == \"M_FUND_CAIR_EIM_REDEM_PRE\" || TranType == \"MMA_FUND_CAIR_EIM_REDEM_PRE\") && MEParameters.IndexOf(\"交易完成\") > -1)\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_FUNDCAIR_EIM_REDEM_PRE, DebitAmt, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));進行推送；\n34.如果((TranType == \"M_BANKFIX_CANCEL\" || TranType == \"MMA_BANKFIX_CANCEL\") && MEParameters.IndexOf(\"交易成功\") > -1)\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_BANKFIX_CANCEL, DebitCurr, DebitAmt, DebitCurrText, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));進行推送\n35.如果((TranType == \"M_FUND_CGENERALBAS\" || TranType == \"MMA_FUND_CGENERALBAS\") && MEParameters.IndexOf(\"交易完成\") > -1)\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_FUNDCGENERALBAS, DebitAmt, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));進行推送\n36.如果((TranType == \"M_FUND_CAUTOBAS\" || TranType == \"MMA_FUND_CAUTOBAS\") && MEParameters.IndexOf(\"交易完成\") > -1)\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_FUNDCAUTOBAS, DebitAmt, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));進行推送\n37.如果((TranType == \"M_FUND_CAUTOSUSP\" || TranType == \"MMA_FUND_CAUTOSUSP\") && MEParameters.IndexOf(\"交易完成\") > -1)\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_FUNDCAUTOSUSP, DebitAmt, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));進行推送\n38.如果 ((TranType == \"M_FUND_CAUTORESUM\" || TranType == \"MMA_FUND_CAUTORESUM\") && MEParameters.IndexOf(\"交易完成\") > -1)\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_FUNDCAUTORESUM, DebitAmt, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));進行推送\n39.如果((TranType == \"M_FUND_CAUTOTERM\" || TranType == \"MMA_FUND_CAUTOTERM\") && MEParameters.IndexOf(\"交易完成\") > -1)\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_FUNDCAUTOTERM, DebitAmt, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));進行推送\n40.如果((TranType == \"M_FUND_TRUSTAPPLY\" || TranType == \"MMA_FUND_TRUSTAPPLY\") && MEParameters.IndexOf(\"開立信託帳戶成功\") > -1)\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_FUND_TRUSTAPPLY, DebitAmt, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));進行推送\n41.如果((TranType == \"M_BOND_SUBS\" || TranType == \"MMA_BOND_SUBS\") && MEParameters.IndexOf(\"委託已完成\") > -1)\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_BONDSUBS, DebitCurr, DebitAmt, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));進行推送\n42.如果((TranType == \"M_BOND_REDEM\" || TranType == \"MMA_BOND_REDEM\") && MEParameters.IndexOf(\"委託已完成\") > -1)\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_BONDREDEM, DebitCurr, DebitAmt, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));進行推送\n43.如果((TranType == \"M_BOND_AIR_SUBS\" || TranType == \"MMA_BOND_AIR_SUBS\") && MEParameters.IndexOf(\"委託已完成\") > -1)\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_BONDAIR_SUBS, DebitAmt, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));進行推送\n44.如果((TranType == \"M_BOND_AIR_REDEM\" || TranType == \"MMA_BOND_AIR_REDEM\") && MEParameters.IndexOf(\"委託已完成\") > -1)\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_BONDAIR_REDEM, DebitAmt, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));進行推送\n45.如果((TranType == \"M_REMIT_REMITCHECK\") && MEParameters.IndexOf(\"交易已受理\") > -1)\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_REMIT_REMITCHECK, DebitCurr, DebitCurrText, DebitAmt, DebitCurr, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));進行推送\n46.如果(TranType == \"FlexHouseLoan_Apply\")\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_HOUSEAPPLY, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));進行推送\n47. 如果(TranType == \"FlexHouseLoan_Terminate\")\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_HOUSETERMINATE, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));進行推送\n48.如果(TranType == \"MMA_MORTORTGAGES\" || TranType == \"M_MORTORTGAGES\")，判斷(MESubject.IndexOf(\"取消通知\") > -1)，符合結果：組合消息內容PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_CANCEL_MORTORTGAGES, DateTime.Now.ToString(\"yyyy/MM/dd\"), TWTranType);；不符合結果：組合消息內容PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_MORTORTGAGES, DateTime.Now.ToString(\"yyyy\"), DateTime.Now.ToString(\"MM\"), DateTime.Now.ToString(\"dd\"));進行推送；\n49如果(TranType == \"M_PREBANKDELETE\")\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_PREBANKTRADE_DELETE, DebitAmt, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));進行推送\n50.如果(TranType == \"M_PRECURR_delete\")\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_PRECURR_DELETE, DebitCurr, DebitAmt, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));進行推送\n51.如果(（TranType == \"M_UPFCHANGE\" || TranType == \"MMA_UPFCHANGE\"）&&PushMsg！=“”)\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_UPFCHANGE, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));進行推送\n52.如果(TranType == \"M_GRAPHICSENABLE\")\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_GRAPHICSENABLE, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));進行推送\n53.如果(TranType == \"M_GRAPHICSPWDERROR\"&&PushMsg！=“”)\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_GRAPHICSPASSERROR, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));進行推送\n54.如果(TranType == \"M_GRAPHICSDISABLE\")\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_GRAPHICSDISABLE, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));進行推送\n55.如果((TranType == \"M_AI_BUY_CREATE\" || TranType == \"MMA_AI_BUY_CREATE\") && MEParameters.IndexOf(\"成功\") > -1)\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_AI_BUY, DebitCurrText, DebitAmt, DateTime.Now.ToString(\"yyyy/MM/dd\"));進行推送\n56.如果 ((TranType == \"M_AI_REDEM_CREATE\" || TranType == \"MMA_AI_REDEM_CREATE\") && MEParameters.IndexOf(\"成功\") > -1)\n組合消息：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_AI_REDEM, DebitCurr, DebitCurrText, DebitAmt, DateTime.Now.ToString(\"yyyy/MM/dd\"));進行推送\n57.如果((TranType == \"M_AI_REBALANCE_CREATE\" || TranType == \"MMA_AI_REBALANCE_CREATE\") && MEParameters.IndexOf(\"成功\") > -1)\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_AI_REBALANCE, DebitCurr, DebitCurrText, DateTime.Now.ToString(\"yyyy/MM/dd\"));進行推送\n58.如果((TranType == \"M_AI_DEDUCHANGE_CREATE\" || TranType == \"MMA_AI_DEDUCHANGE_CREATE\")&&MEParameters.IndexOf(\"失敗\") < 0)\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_AI_DEDUCHANGE, DebitCurr, DebitCurrText, DateTime.Now.ToString(\"yyyy/MM/dd\"));進行推送\n59.如果((TranType == \"M_AI_ADJUSTPLAN_CREATE\" || TranType == \"MMA_AI_ADJUSTPLAN_CREATE\")&&MEParameters.IndexOf(\"成功\") > -1)\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_AI_ADJUSTPLAN, DebitCurr, DateTime.Now.ToString(\"yyyy年MM月dd日\"), DateTime.Now.ToString(\"yyyy/MM/dd\"));進行推送\n60.如果 ((TranType == \"M_AI_RISKSWITCH_CREATE\" || TranType == \"MMA_AI_RISKSWITCH_CREATE\")&&MEParameters.IndexOf(\"成功\") > -1)\n組合消息內容：PushMessage = PushHelper.PUSH_TRANS_MSG_AI_RISKSWITCH;進行推送\n61.如果(TranType == \"MMA_NonTransferAmtUp\")\n組合消息內容：PushMessage = PushHelper.PUSH_TRANS_MSG_NonTransferAmtUp;進行推送\n62.如果(TranType == \"MMA_NonTransferAmtUpUnderReview\")\n組合消息內容：PushMessage = PushHelper.PUSH_TRANS_MSG_NonTransferAmtUpUnderReview;進行推送\n63.如果(TranType == \"MMA_NonTransferAmtUpReject\")\n組合消息內容：PushMessage = PushHelper.PUSH_TRANS_MSG_NonTransferAmtUpReject;進行推送\n64.如果(TranType == \"M_CARDLESS_ENABLE\")\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_CARDLESS_MSG_ENABLE, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"), TWTranType);進行推送\n65.如果 (TranType == \"M_CARDLESS_DISABLE\")\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_CARDLESS_MSG_DISABLE, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"), TWTranType);進行推送\n66.如果 (TranType == \"M_CARDLESS_PWDERRORTIMES\")\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_CARDLESS_MSG_PERRORTIMES, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"), TWTranType);進行推送\n67.如果 (TranType == \"M_CARDLESS_PWDCHANGE\")\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_CARDLESS_MSG_PCHANGE, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"), TWTranType);進行推送\n68.如果 (TranType == \"M_CARDLESS_TXN_TIMEFAIL\")\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_CARDLESS_MSG_TXN_TIMEFAIL, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"), TWTranType);進行推送\n69.如果 (TranType == \"M_CARDLESS_TXN_CANCEL\")\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_CARDLESS_MSG_TXN_CANCEL, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"), TWTranType);進行推送\n70.如果(TranType == \"M_CARDLESS_TXN\")\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_CARDLESS_MSG_TXN, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"), DebitCurr, DebitAmt, TWTranType);進行推送\n71.如果 (TranType == \"M_CARDLESS_TXN_ATMDONE\")\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_CARDLESS_MSG_TXN_ATMDONE, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"), DebitCurr, TransformHelper.CountFormat(DebitAmt), TWTranType);進行推送\n72.如果(TranType == \"MMA_BINDINGDELETE\" || TranType == \"M_BINDINGDELETE\")\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_BINDING_DELETE, DebitCurr, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));進行推送\n73.如果(TranType == \"M_BINDINGADD\")\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_BINDING_ADD, DebitCurr, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));進行推送\n74.如果(TranType == \"M_BINDINGDEVICEADD\")\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_BINDING_DEVICE_ADD); 進行推送\n75.如果(TranType == \"M_PIGCASHADD\" && MEParameters.IndexOf(\"設定成功\") > -1)\n組合消息內容PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_M_PIGCASHADD, DebitAmt, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));進行推送\n76.如果(TranType == \"M_PIGCASHEDIT\" && MEParameters.IndexOf(\"設定成功\") > -1)\n組合消息內容PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_M_PIGCASHEDIT, DebitAmt, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));進行推送\n77.如果(TranType == \"M_PIGDREAMADD\" && MEParameters.IndexOf(\"建立成功\") > -1)\n組合消息內容PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_M_PIGDREAMADD, DebitAmt, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));進行推送\n78.如果(TranType == \"M_PIGDREAMEDIT\" && MEParameters.IndexOf(\"建立成功\") > -1)\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_M_PIGDREAMEDIT, DebitAmt, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));進行推送\n79.如果(TranType == \"M_PIGCASH_WITHDRAW\" && MEParameters.IndexOf(\"交易成功\") > -1)\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_M_PIGCASH_WITHDRAW, DebitAmt, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));進行推送\n80.如果 (TranType == \"M_PIGDREAM_WITHDRAW\" && MEParameters.IndexOf(\"交易成功\") > -1)\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_M_PIGDREAM_WITHDRAW, DebitAmt, DebitCurrText, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));進行推送\n81.如果(TranType == \"M_PIGDREAM_DEPOSIT\" && MEParameters.IndexOf(\"交易成功\") > -1)\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_M_PIGDREAM_DEPOSIT, DebitCurrText, DebitAmt, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));進行推送\n82.如果(TranType == \"M_PIGDREAM_CLOSE\" && MEParameters.IndexOf(\"交易成功\") > -1)\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_M_PIGDREAM_CLOSE, DebitAmt, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));進行推送\n83.如果 (TranType == \"M_EXCHANGEFIX\" && MEParameters.IndexOf(\"交易成功\") > -1)\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_M_EXCHANGEFIX, DebitCurr, DebitAmt, DebitCurrText, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));進行推送\n84.如果(TranType == \"M_EXCHANGEFIX_EXTD\" && MEParameters.IndexOf(\"交易成功\") > -1)\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_M_EXCHANGEFIX_EXTD, DebitCurr, DebitAmt, DebitCurrText, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));進行推送\n85.如果(TranType == \"M_EXCHANGEFIX_EXTDS\" && MEParameters.IndexOf(\"交易成功\") > -1)\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_M_EXCHANGEFIX_EXTDS, DebitCurr, DebitAmt, DebitCurrText, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));進行推送\n86.如果(TranType.IndexOf(\"M_PHONEBINDING_ADD\") > -1)\n組合消息內容： int iAccLen = DebitCurr.Length;\nstring sub3PhoneNumber = DebitCurr.Substring(iAccLen - 3, 3);\nstring PushMessage = \"\";\nif(TranType == \"M_PHONEBINDING_ADD\")\n{\nPushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_M_PHONEBINDING_ADD, sub3PhoneNumber, DebitAmt, DebitCurrText, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));\n}\nelse if (TranType == \"M_PHONEBINDING_ADD_DE\")\n{\nPushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_M_PHONEBINDING_ADD_DE, sub3PhoneNumber, DebitAmt, DebitCurrText, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));\n}然後進行推送；\n87.如果 (TranType.IndexOf(\"M_PHONEBINDING_UPDATE\") > -1)\n根據不同情況組合消息內容： int iAccLen = DebitCurr.Length;\nstring sub3PhoneNumber = DebitCurr.Substring(iAccLen - 3, 3);\nstring PushMessage = \"\";\nif (TranType == \"M_PHONEBINDING_UPDATE\")\n{\nPushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_M_PHONEBINDING_UPDATE, sub3PhoneNumber, DebitAmt, DebitCurrText, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));\n}\nelse if (TranType == \"M_PHONEBINDING_UPDATE_DE\")\n{\nPushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_M_PHONEBINDING_UPDATE_DE, sub3PhoneNumber, DebitAmt, DebitCurrText, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));\n}，然後進行推送\n88.如果(TranType.IndexOf(\"M_PHONEBINDING_DELETE\") > -1)\nint iAccLen = DebitCurr.Length;\nstring sub3PhoneNumber = DebitCurr.Substring(iAccLen - 3, 3);\nstring PushMessage = \"\";\nif (TranType == \"M_PHONEBINDING_DELETE\")\n{\nPushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_M_PHONEBINDING_DELETE, sub3PhoneNumber, DebitAmt, DebitCurrText, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));\n}\nelse if (TranType == \"M_PHONEBINDING_DELETE_DE\")\n{\nPushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_M_PHONEBINDING_DELETE_DE, sub3PhoneNumber, DebitAmt, DebitCurrText, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));\n}然後進行推送；\n89.如果 (TranType.IndexOf(\"M_PHONEBINDING_DEFAULT_ADD\") > -1)\n組合消息內容： int iAccLen = DebitCurr.Length;\nstring sub3PhoneNumber = DebitCurr.Substring(iAccLen - 3, 3);\nstring PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_M_PHONEBINDING_DEFAULT_ADD, sub3PhoneNumber, DebitAmt, DebitCurrText, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));進行推送；\n90.如果(TranType.IndexOf(\"M_PHONEBINDING_DEFAULT_DELETE\") > -1)\n組合消息內容： int iAccLen = DebitCurr.Length;\nstring sub3PhoneNumber = DebitCurr.Substring(iAccLen - 3, 3);\nstring PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_M_PHONEBINDING_DEFAULT_DELETE, sub3PhoneNumber, DebitAmt, DebitCurrText, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));進行推送；\n91.如果(TranType == \"M_PAYMENT_TELECOM\" && MEParameters.IndexOf(\"交易成功\") > -1 )\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_PAYMENT_TELECOM, DebitAmt, DebitCurr, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));進行推送\n92.如果(TranType == \"M_PAYMENT_OTHERBANKCREDIT\" && MEParameters.IndexOf(\"交易成功\") > -1)\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_PAYMENT_OTHERBANKCREDIT, DebitAmt, DebitCurr, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));進行推送\n93.如果(TranType == \"M_PAYMENT_TPEWATER\" && MEParameters.IndexOf(\"交易成功\") > -1)\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_PAYMENT_TPEWATER, DebitAmt, DebitCurr, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));進行推送\n94.如果(TranType == \"M_PAYMENT_TWWATER\" && MEParameters.IndexOf(\"交易成功\") > -1)\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_PAYMENT_TWWATER, DebitAmt, DebitCurr, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"));進行推送\n95.如果(TranType == \"M_CASEDOUGH_APPLY_NOFINANCIAL\")\n組合消息內容：PushMessage = PushHelper.PUSH_TRANS_MSG_M_CASEDOUGH_APPLY_NOFINANCIAL;進行推送\n96.如果(TranType == \"M_CASEDOUGH_APPLY\")\n組合消息內容：PushMessage = PushHelper.PUSH_TRANS_MSG_M_CASEDOUGH_APPLY;進行推送\n97.如果 (TranType == \"M_CASEDOUGH_REPAY\")\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_M_CASEDOUGH_REPAY, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"), DebitAmt);進行推送\n98.如果(TranType == \"M_CASEDOUGH_WITHDRAW\")\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_M_CASEDOUGH_WITHDRAW, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss\"), DebitAmt);進行推送\n99.如果((TranType == \"M_PF_STAFFBUY_CREATE\" || TranType == \"MMA_PF_STAFFBUY_CREATE\")&&MEParameters.IndexOf(\"成功\") > -1)\n組合消息內容：PushMessage = string.Format(PushHelper.PUSH_TRANS_MSG_PF_STAFFBUY, DebitAmt, DateTime.Now.ToString(\"yyyy年MM月dd日\"));進行推送\n100.如果(TranType == \"M_BANK_TFRIN_VIDEO\" && MEParameters.IndexOf(\"設定成功\") > -1)\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_BANK_TFRIN_VIDEO, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm\"));進行推送\n101.如果(TranType == \"M_BANK_TFRIN_VIDEO\" && MEParameters.IndexOf(\"設定失敗\") > -1)\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_BANK_TFRIN_VIDEO_FAIL, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm\"));進行推送\n102.如果(TranType== \"M_VideoVerifyFail\")\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_VIDEO_VERIFY_FAIL, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm\"), DebitAmt);進行推送\n103.如果(TranType == \"MyAssetReport_Accept\")\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_MYASSETREPORT_ACCEPT);進行推送\n104.如果 (TranType == \"MyAssetReport_Cancel\")\n組合消息內容：PushMessage = String.Format(PushHelper.PUSH_TRANS_MSG_MYASSETREPORT_CANCEL);\n105.如果(TranType == \"MMA_SETREMIT\")\n根據不同情況組合消息內容： if(DebitCurr == \"1\")\nPushMessage = String.Format(PushHelper.PUSH_TRANS_SETREMIT_ADD, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm\"));\nelse if (DebitCurr == \"2\")\nPushMessage = String.Format(PushHelper.PUSH_TRANS_SETREMIT_EDIT, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm\"));\nelse if (DebitCurr == \"3\")\nPushMessage = String.Format(PushHelper.PUSH_TRANS_SETREMIT_DEL, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm\"));\n進行推送\n判斷完成後 bSendMail賦值為true；"
+      },
+      {
+        "step": 3,
+        "title": "不需要推播，只需要發送郵件的邏輯",
+        "details": "1.如果(TranType == \"M_PERFOREIGNCASH\" || TranType == \"MMA_PERFOREIGNCASH\") bSendMail賦值為true\n2.如果(TranType == \"M_BANK_TFRIN\" || TranType == \"MMA_BANK_TFRIN\") bSendMail賦值為true\n3.如果(TranType == \"FlexHouseLoan_Terminate\" || TranType == \"FlexHouseLoan_Apply\")bSendMail賦值為true\n4.如果 (TranType == \"MMA_MORTORTGAGES\" || TranType == \"M_MORTORTGAGES\")bSendMail賦值為true\n5.如果 (TranType == \"SecCheckError\")bSendMail賦值為true\n6.如果(!string.IsNullOrEmpty(TranType) && TranType.StartsWith(\"M_CARDLESS_\"))bSendMail賦值為true"
+      },
+      {
+        "step": 4,
+        "title": "行動銀行、大戶APP財金繳費項目-繳費成功不需要發送郵件",
+        "details": "1.如果((TranType == \"M_PAYMENT_TPEWATER\" || TranType == \"M_PAYMENT_TELECOM\" || TranType == \"M_PAYMENT_OTHERBANKCREDIT\")\n&& DateTime.Now >= DateTime.ParseExact(ConfigurationManager.AppSettings[\"PaymentStartMailStopDate\"], \"yyyy/MM/dd\", null))；bSendMail賦值為false"
+      },
+      {
+        "step": 5,
+        "title": "B2C 交易寄信",
+        "details": "1.如果(!string.IsNullOrEmpty(TranType) && TranType.StartsWith(\"B2C_\"))\nbSendMail賦值為false\nMEReceivers收件Email賦值為空字串，\n執行查詢語句：SELECT  待補充欄位 FROM B2C_CUSTOMER WHERE XID=MEReferenceID，取得尚未刪除的匯款約定資料，從資料內獲取到Email地址，如果資料內的Email不為空不為null:bSendMail賦值為true;MEReceivers賦值為資料內的Email地址；如果為空或null，bSendMail賦值為false;\n如果未查到資料：bSendMail賦值為false;"
+      },
+      {
+        "step": 6,
+        "title": "發送郵件",
+        "details": "1.定義newAcct變量，用於存放隱匿後賬號訊息\n2.根據賬號格式隱匿賬號中間數字，對newAcct進行賦值\n3.調用 MailQueue.AddMonitorMail(METemplateID, MEReferenceID, MESubject, MEContent, MEReceivers,MEParameters, MECreator, TranType);發送郵件"
+      }
+    ],
+    "fieldMappings": [],
+    "errorCodeRules": [
+      {
+        "code": "9001",
+        "scenario": "推送失敗",
+        "message": "系統繁忙,請稍後再試！"
+      },
+      {
+        "code": "9999",
+        "scenario": "未輸入必填請求參數",
+        "message": "請輸入{Request參數}！"
+      }
+    ],
+    "runtimeDependencies": [
+      {
+        "id": "mma_sql_connection",
+        "type": "service",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "Execute authoritative SQL declared in the workbook for B2C_CUSTOMER."
+      },
+      {
+        "id": "sql_table_db_b2c_customer",
+        "type": "sql_table",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "Excel 依赖声明提到 DB->B2C_CUSTOMER。"
+      }
+    ],
+    "dataSources": [
+      {
+        "name": "B2C_CUSTOMER",
+        "type": "sql_table",
+        "authority": "backend_contract",
+        "required": true
+      }
+    ],
+    "sqlSpecs": [
+      {
+        "id": "5_b2c",
+        "title": "5.B2C 交易寄信",
+        "authority": "backend_contract",
+        "required": true,
+        "dataSources": [
+          "B2C_CUSTOMER"
+        ],
+        "mustContain": [
+          "B2C_CUSTOMER",
+          "SELECT",
+          "FROM",
+          "WHERE"
+        ],
+        "queryText": "1.如果(!string.IsNullOrEmpty(TranType) && TranType.StartsWith(\"B2C_\"))\nbSendMail賦值為false\nMEReceivers收件Email賦值為空字串，\n執行查詢語句：SELECT  待補充欄位 FROM B2C_CUSTOMER WHERE XID=MEReferenceID，取得尚未刪除的匯款約定資料，從資料內獲取到Email地址，如果資料內的Email不為空不為null:bSendMail賦值為true;MEReceivers賦值為資料內的Email地址；如果為空或null，bSendMail賦值為false;\n如果未查到資料：bSendMail賦值為false;"
+      }
+    ],
+    "legacyReferences": [],
+    "prohibitedShortcuts": [
+      "mock_response_payload",
+      "hardcoded_custid",
+      "block_comment_header_substitution"
+    ],
+    "referenceHints": []
+  },
+  "codeHandoff": {
+    "schemaVersion": "1.0.0",
+    "logicSummary": {
+      "stepCount": 7,
+      "queryContractCount": 1,
+      "mappingRuleCount": 0,
+      "legacyEvidenceCount": 1,
+      "dependencyHintCount": 5,
+      "constraintCount": 11,
+      "unresolvedCount": 1,
+      "primarySource": "businessLogic"
+    },
+    "logicFlow": [
+      {
+        "stepId": "step_1",
+        "title": "初始化參數",
+        "actionType": "process",
+        "inputs": [
+          "mETemplateID",
+          "mEReferenceID",
+          "mESubject",
+          "mEContent"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_2",
+        "title": ": 判斷tranType",
+        "actionType": "process",
+        "inputs": [
+          "mETemplateID",
+          "mEReferenceID",
+          "mESubject",
+          "mEContent"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_2",
+        "title": "依交易區分PUSH提示（需要進行推播的組合參數進行推播）",
+        "actionType": "validation",
+        "inputs": [
+          "mETemplateID",
+          "mEReferenceID",
+          "mESubject",
+          "mEContent"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_3",
+        "title": "不需要推播，只需要發送郵件的邏輯",
+        "actionType": "validation",
+        "inputs": [
+          "mETemplateID",
+          "mEReferenceID",
+          "mESubject",
+          "mEContent"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_4",
+        "title": "行動銀行、大戶APP財金繳費項目-繳費成功不需要發送郵件",
+        "actionType": "process",
+        "inputs": [
+          "mETemplateID",
+          "mEReferenceID",
+          "mESubject",
+          "mEContent"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_5",
+        "title": "B2C 交易寄信",
+        "actionType": "query",
+        "inputs": [
+          "mETemplateID",
+          "mEReferenceID",
+          "mESubject",
+          "mEContent"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_6",
+        "title": "發送郵件",
+        "actionType": "process",
+        "inputs": [
+          "mETemplateID",
+          "mEReferenceID",
+          "mESubject",
+          "mEContent"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      }
+    ],
+    "legacyEvidence": [
+      {
+        "evidenceId": "response_code.o_common.9999",
+        "kind": "responseCodeCatalog",
+        "origin": "feature_common/P240301Git/Sinopac.EnterpriseAPI/EnterpriseApiEntity/ResponseCodes/O_Common.resx",
+        "authority": "existing_code",
+        "symbols": [
+          "O_Common.Code_9999"
+        ],
+        "summary": "公共必填参数错误码 9999 = 請輸入{Request參數}！",
+        "snippet": "Code_9999: 請輸入{Request參數}！"
+      }
+    ],
+    "queryContracts": [
+      {
+        "contractId": "5_b2c",
+        "purpose": "5.B2C 交易寄信",
+        "dataSources": [
+          "B2C_CUSTOMER"
+        ],
+        "mustContain": [
+          "B2C_CUSTOMER",
+          "SELECT",
+          "FROM",
+          "WHERE"
+        ],
+        "sqlText": "1.如果(!string.IsNullOrEmpty(TranType) && TranType.StartsWith(\"B2C_\"))\nbSendMail賦值為false\nMEReceivers收件Email賦值為空字串，\n執行查詢語句：SELECT  待補充欄位 FROM B2C_CUSTOMER WHERE XID=MEReferenceID，取得尚未刪除的匯款約定資料，從資料內獲取到Email地址，如果資料內的Email不為空不為null:bSendMail賦值為true;MEReceivers賦值為資料內的Email地址；如果為空或null，bSendMail賦值為false;\n如果未查到資料：bSendMail賦值為false;",
+        "parameterHints": [],
+        "resultShape": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT",
+          "responseData"
+        ],
+        "evidenceIds": []
+      }
+    ],
+    "mappingRules": [],
+    "dependencyHints": [
+      {
+        "dependencyType": "service",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor"
+        ],
+        "purpose": "Execute authoritative SQL declared in the workbook for B2C_CUSTOMER.",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "sql_table",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor",
+          "ICurrentRuntimeContextAccessor",
+          "IRedisService"
+        ],
+        "purpose": "Excel 依赖声明提到 DB->B2C_CUSTOMER。",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "sql_table",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor"
+        ],
+        "purpose": "Read from B2C_CUSTOMER",
+        "evidenceIds": []
+      }
+    ],
+    "constraints": [
+      {
+        "constraintType": "prohibited_shortcut",
+        "rule": "mock_response_payload",
+        "severity": "error",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "prohibited_shortcut",
+        "rule": "hardcoded_custid",
+        "severity": "error",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "prohibited_shortcut",
+        "rule": "block_comment_header_substitution",
+        "severity": "error",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "error_code_rule",
+        "rule": "9001 | 推送失敗 | 系統繁忙,請稍後再試！",
+        "severity": "warning",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "request_field_validation",
+        "field": "mEReferenceID",
+        "validationLayer": "dto_attribute",
+        "validationType": "required",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸入{Request參數}！",
+        "customValidationAttributeNeeded": false,
+        "rule": "mEReferenceID | dto_attribute | required | 9999 | 請輸入{Request參數}！",
+        "severity": "warning",
+        "evidenceIds": [
+          "response_code.o_common.9999"
+        ]
+      },
+      {
+        "constraintType": "request_field_validation",
+        "field": "mESubject",
+        "validationLayer": "dto_attribute",
+        "validationType": "required",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸入{Request參數}！",
+        "customValidationAttributeNeeded": false,
+        "rule": "mESubject | dto_attribute | required | 9999 | 請輸入{Request參數}！",
+        "severity": "warning",
+        "evidenceIds": [
+          "response_code.o_common.9999"
+        ]
+      },
+      {
+        "constraintType": "request_field_validation",
+        "field": "mEContent",
+        "validationLayer": "dto_attribute",
+        "validationType": "required",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸入{Request參數}！",
+        "customValidationAttributeNeeded": false,
+        "rule": "mEContent | dto_attribute | required | 9999 | 請輸入{Request參數}！",
+        "severity": "warning",
+        "evidenceIds": [
+          "response_code.o_common.9999"
+        ]
+      },
+      {
+        "constraintType": "request_field_validation",
+        "field": "mEReceivers",
+        "validationLayer": "dto_attribute",
+        "validationType": "required",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸入{Request參數}！",
+        "customValidationAttributeNeeded": false,
+        "rule": "mEReceivers | dto_attribute | required | 9999 | 請輸入{Request參數}！",
+        "severity": "warning",
+        "evidenceIds": [
+          "response_code.o_common.9999"
+        ]
+      },
+      {
+        "constraintType": "request_field_validation",
+        "field": "mEParameters",
+        "validationLayer": "dto_attribute",
+        "validationType": "required",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸入{Request參數}！",
+        "customValidationAttributeNeeded": false,
+        "rule": "mEParameters | dto_attribute | required | 9999 | 請輸入{Request參數}！",
+        "severity": "warning",
+        "evidenceIds": [
+          "response_code.o_common.9999"
+        ]
+      },
+      {
+        "constraintType": "request_field_validation",
+        "field": "mECreator",
+        "validationLayer": "dto_attribute",
+        "validationType": "required",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸入{Request參數}！",
+        "customValidationAttributeNeeded": false,
+        "rule": "mECreator | dto_attribute | required | 9999 | 請輸入{Request參數}！",
+        "severity": "warning",
+        "evidenceIds": [
+          "response_code.o_common.9999"
+        ]
+      },
+      {
+        "constraintType": "request_field_validation",
+        "field": "mETMnemonic",
+        "validationLayer": "dto_attribute",
+        "validationType": "required",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸入{Request參數}！",
+        "customValidationAttributeNeeded": false,
+        "rule": "mETMnemonic | dto_attribute | required | 9999 | 請輸入{Request參數}！",
+        "severity": "warning",
+        "evidenceIds": [
+          "response_code.o_common.9999"
+        ]
+      }
+    ],
+    "unresolved": [
+      {
+        "topic": "dependency.db_b2c_customertodo",
+        "reason": "业务逻辑正文提到依赖 DB->B2C_CUSTOMER todo 未找到資料表的說明和數據結構，麻煩告知屬於哪個資料庫以及數據結構，但同一段存在 todo / 待确认语义，不能作为已确认实现或 fixture 需求。",
+        "blocking": true,
+        "blockedReason": "dependency contract unresolved",
+        "missingFacts": [
+          "DB->B2C_CUSTOMER todo 未找到資料表的說明和數據結構，麻煩告知屬於哪個資料庫以及數據結構 是否仍需接线",
+          "该依赖的权威来源、调用条件与失败处理"
+        ],
+        "suggestedOwner": "spec",
+        "nextDecisionNeeded": "确认 DB->B2C_CUSTOMER todo 未找到資料表的說明和數據結構，麻煩告知屬於哪個資料庫以及數據結構 是实现必需依赖、可忽略旧逻辑，还是仅作为历史备注。"
+      }
+    ]
+  },
+  "rawAppendix": {
+    "backendApiLines": [
+      "1.  ->  MailQueue.AddMonitorMail",
+      "2.  http://MMA-eBank:808/AppService/WebServices/ws_SpoolMessage.ashx  推播地址",
+      "3.DB->B2C_CUSTOMER todo 未找到資料表的說明和數據結構，麻煩告知屬於哪個資料庫以及數據結構"
+    ]
+  }
+}

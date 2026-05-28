@@ -1,0 +1,711 @@
+{
+  "schemaVersion": "4.2.0",
+  "apiId": "COMMON.depositcommonutil.getdawhofixsetting",
+  "newAuthor": "Jimmy",
+  "functionCode": "Common",
+  "version": "1.0",
+  "apiCategory": "DepositCommonUtil",
+  "apiName": "GetDawhoFixSetting",
+  "source": {
+    "tsdFile": "TSD.Common_封存TSD共用开发链路_v1.0_20260523.docx",
+    "workbookFile": "NEWDA_API_DETAIL_DepositCommonUtil_20260522.xlsx",
+    "sheetNames": [
+      "GetDawhoFixSetting取得定存設定檔"
+    ]
+  },
+  "request": [
+    {
+      "rowKey": "1",
+      "fieldName": "curr",
+      "dataType": "string",
+      "required": false,
+      "description": "幣別",
+      "example": "\"curr\": \"TWD\""
+    },
+    {
+      "rowKey": "2",
+      "fieldName": "fixAPNo",
+      "dataType": "string",
+      "required": false,
+      "description": "存款類型",
+      "example": "\"fixAPNo\": \"011\""
+    },
+    {
+      "rowKey": "3",
+      "fieldName": "period",
+      "dataType": "string",
+      "required": false,
+      "description": "期別",
+      "example": "\"period\": 3"
+    }
+  ],
+  "response": [
+    {
+      "rowKey": "1",
+      "dataType": "boolean",
+      "required": true,
+      "description": "API成功與否",
+      "example": "True",
+      "notes": "true ; false"
+    },
+    {
+      "rowKey": "2",
+      "dataType": "string",
+      "required": true,
+      "description": "回應代碼",
+      "example": "0",
+      "notes": "成功:0000其餘狀況為失敗"
+    },
+    {
+      "rowKey": "3",
+      "dataType": "string",
+      "required": true,
+      "description": "回應訊息",
+      "notes": "失敗狀況下回傳錯誤訊息"
+    },
+    {
+      "rowKey": "4",
+      "dataType": "string",
+      "required": true,
+      "description": "系統回應時間",
+      "notes": "yyyy/MM/dd HH:mm:ss"
+    },
+    {
+      "rowKey": "5",
+      "dataType": "json",
+      "required": true,
+      "description": "回應資料框",
+      "example": "\"responseData\": {}",
+      "properties": [
+        {
+          "rowKey": "5.1",
+          "dataType": "list",
+          "required": true,
+          "properties": [
+            {
+              "rowKey": "5.1.1",
+              "dataType": "string",
+              "required": true,
+              "description": "開始日期",
+              "example": "\"startDate\":\"2026-03-03\"",
+              "notes": "GetDawhoFixSettingFunc().StartDate"
+            },
+            {
+              "rowKey": "5.1.2",
+              "dataType": "string",
+              "required": true,
+              "description": "結束日期",
+              "example": "\"endDate\":\"2029-03-03\"",
+              "notes": "GetDawhoFixSettingFunc().EndDate"
+            },
+            {
+              "rowKey": "5.1.3",
+              "dataType": "string",
+              "required": true,
+              "description": "定存活動同意書版號",
+              "notes": "GetDawhoFixSettingFunc().TermVersion"
+            },
+            {
+              "rowKey": "5.1.4",
+              "dataType": "string",
+              "required": true,
+              "description": "活動說明",
+              "example": "無範例",
+              "notes": "OBU法人(同意書):DB.ActivityURL_1\nOBU自然人:DB.ActivityURL_2;\nDBU法人:DB.ActivityURL_3;\nDBU自然人:DB.ActivityURL_4;"
+            },
+            {
+              "rowKey": "5.1.5",
+              "dataType": "string",
+              "required": true,
+              "description": "活動詳情",
+              "example": "無範例",
+              "notes": "GetDawhoFixSettingFunc().ActivityPage"
+            },
+            {
+              "rowKey": "5.1.6",
+              "dataType": "string",
+              "required": true,
+              "description": "設定檔的期別資料（格式：幣別+科目別+期別，換匯定存除外）\n換匯定存格式：EXCHAGEFIX",
+              "example": "\"loader\":\"CNY0286\"\n換匯定存格式：\"loader\":\"EXCHAGEFIX\"",
+              "notes": "GetDawhoFixSettingFunc().loader"
+            },
+            {
+              "rowKey": "5.1.7",
+              "dataType": "string",
+              "required": true,
+              "description": "幣別中文",
+              "example": "\"currText\":\"人民幣\"",
+              "notes": "GetDawhoFixSettingFunc(..currText"
+            },
+            {
+              "rowKey": "5.1.8",
+              "dataType": "string",
+              "required": false,
+              "description": "幣別",
+              "example": "\"curr\":\"CNY\"",
+              "notes": "GetDawhoFixSettingFunc().loader拆出來英文部分 作為幣別英文名稱  換匯定存不進行拆分"
+            },
+            {
+              "rowKey": "5.1.9",
+              "dataType": "string",
+              "required": false,
+              "description": "期別",
+              "example": "\"period\":\"6\"",
+              "notes": "GetDawhoFixSettingFunc().loader  去掉英文部分和科目別，剩下的作為期別  換匯定存不進行拆分"
+            },
+            {
+              "rowKey": "5.1.10",
+              "dataType": "string",
+              "required": false,
+              "description": "科目別",
+              "example": "\"fixAPNo\":\"028\"",
+              "notes": "GetDawhoFixSettingFunc().loader 去掉英文部分，截取前三位作為科目別  換匯定存不進行拆分"
+            },
+            {
+              "rowKey": "5.1.11",
+              "dataType": "string",
+              "required": true,
+              "description": "是否為新資金活動",
+              "example": "\"isNewFunds\":\"Y\"",
+              "notes": "GetDawhoFixSettingFunc().IsNewFunds"
+            },
+            {
+              "rowKey": "5.1.12",
+              "dataType": "string",
+              "required": true,
+              "description": "活動同意書url",
+              "example": "\"activityURL\":\"Y\"",
+              "notes": "GetDawhoFixSettingFunc().activityURL"
+            },
+            {
+              "rowKey": "5.1.13",
+              "dataType": "string",
+              "required": false,
+              "description": "OBU法人(同意書)",
+              "example": "\"activityURL_1\":\"Y\"",
+              "notes": "GetDawhoFixSettingFunc().activityURL_1"
+            },
+            {
+              "rowKey": "5.1.14",
+              "dataType": "string",
+              "required": false,
+              "description": "0BU自然人(同意書)",
+              "example": "activityURL 2:\"Y\"",
+              "notes": "GetDawhoFixSettingFunc().activityURL_2"
+            },
+            {
+              "rowKey": "5.1.15",
+              "dataType": "string",
+              "required": false,
+              "description": "DBU法人(同意書)",
+              "example": "activityURL_3:\"Y\"",
+              "notes": "GetDawhoFixSettingFunc().activityURL_3"
+            },
+            {
+              "rowKey": "5.1.16",
+              "dataType": "string",
+              "required": false,
+              "description": "DBU自然人(同意書)",
+              "example": "activityURL_4:\"Y\"",
+              "notes": "GetDawhoFixSettingFunc().activityURL_4"
+            },
+            {
+              "rowKey": "5.1.17",
+              "dataType": "string",
+              "required": true,
+              "description": "定存限額",
+              "example": "\"transAmt\":\"\"",
+              "notes": "GetDawhoFixSettingFunc().transAmt"
+            },
+            {
+              "rowKey": "5.1.18",
+              "dataType": "string",
+              "required": true,
+              "description": "新資金最低限額",
+              "example": "\"newFundsLimit\":\"\"",
+              "notes": "GetDawhoFixSettingFunc().newFundsLimit"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "mockExamples": [
+    {
+      "scenario": "正常結果返回範例",
+      "requestPayload": {
+        "debitAcctCurr": "TWD",
+        "fixAPNo": "011",
+        "period": 3
+      },
+      "responsePayload": {
+        "isSuccess": true,
+        "responseCode": "0000",
+        "responseMessage": "成功",
+        "responseDT": "2026/05/18 14:35:22",
+        "responseData": {
+          "fixSettingList": [
+            {
+              "startDate": "2026-03-03",
+              "endDate": "2029-03-03",
+              "termVersion": "v2.1",
+              "activityMemo": "OBU法人(同意書):https://example.com/obu_corp.pdf\nOBU自然人:https://example.com/obu_ind.pdf;\nDBU法人:https://example.com/dbu_corp.pdf;\nDBU自然人:https://example.com/dbu_ind.pdf;",
+              "activityPage": "https://example.com/activity_page",
+              "loader": "CNY0286",
+              "currText": "人民幣",
+              "curr": "CNY",
+              "period": "6",
+              "fixAPNo": "028",
+              "isNewFunds": "Y",
+              "activityURL": "https://example.com/agreement.pdf",
+              "activityURL_1": "https://example.com/obu_corp.pdf",
+              "activityURL_2": "https://example.com/obu_ind.pdf",
+              "activityURL_3": "https://example.com/dbu_corp.pdf",
+              "activityURL_4": "https://example.com/dbu_ind.pdf"
+            },
+            {
+              "startDate": "2026-05-01",
+              "endDate": "2026-08-01",
+              "termVersion": "v1.0",
+              "activityMemo": "換匯定存專案活動說明",
+              "activityPage": "https://example.com/exchange_fix_page",
+              "loader": "EXCHAGEFIX",
+              "currText": "換匯定存",
+              "curr": "",
+              "period": null,
+              "fixAPNo": null,
+              "isNewFunds": "N",
+              "activityURL": "https://example.com/exchange_agreement.pdf",
+              "activityURL_1": null,
+              "activityURL_2": null,
+              "activityURL_3": null,
+              "activityURL_4": null
+            }
+          ]
+        }
+      }
+    },
+    {
+      "scenario": "連接數據庫查詢失敗",
+      "responsePayload": {
+        "isSuccess": false,
+        "responseCode": "9001",
+        "responseMessage": "系統繁忙,請稍後再試",
+        "responseDT": "2026/02/24 10:30:25",
+        "responseData": {}
+      }
+    },
+    {
+      "scenario": "查詢出來的列表為空",
+      "responsePayload": {
+        "isSuccess": false,
+        "responseCode": "9002",
+        "responseMessage": "查無資料！",
+        "responseDT": "2026/02/24 10:30:25",
+        "responseData": {}
+      }
+    },
+    {
+      "scenario": "未輸入必填請求參數",
+      "responsePayload": {
+        "isSuccess": false,
+        "responseCode": "9999",
+        "responseMessage": "請輸入幣別參數",
+        "responseDT": "2026/02/24 10:30:25",
+        "responseData": {}
+      }
+    }
+  ],
+  "backendApis": {
+    "CommonFunc": [
+      "GetDawhoFixSettingFunc()"
+    ]
+  },
+  "businessLogic": {
+    "steps": [
+      {
+        "step": 1,
+        "title": "撈取數據",
+        "details": "1.請求CommonFunc.GetDawhoFixSettingFunc()撈取數據"
+      },
+      {
+        "step": 2,
+        "title": "返回結果",
+        "details": "2.返回結果"
+      }
+    ],
+    "fieldMappings": [
+      {
+        "target": "startDate",
+        "source": "GetDawhoFixSettingFunc()",
+        "rule": "開始日期；結束日期；定存活動同意書版號；活動說明；活動詳情；設定檔的期別資料（格式：幣別+科目別+期別，換匯定存除外）\n換匯定存格式：EXCHAGEFIX；幣別中文；幣別；期別；科目別；是否為新資金活動；活動同意書url；OBU法人(同意書)；0BU自然人(同意書)；DBU法人(同意書)；DBU自然人(同意書)；定存限額；新資金最低限額",
+        "fields": [
+          {
+            "field": "startDate",
+            "source": "GetDawhoFixSettingFunc().StartDate",
+            "rule": "開始日期"
+          },
+          {
+            "field": "endDate",
+            "source": "GetDawhoFixSettingFunc().EndDate",
+            "rule": "結束日期"
+          },
+          {
+            "field": "termVersion",
+            "source": "GetDawhoFixSettingFunc().TermVersion",
+            "rule": "定存活動同意書版號"
+          },
+          {
+            "field": "activityMemo",
+            "source": "OBU法人(同意書):DB.ActivityURL_1\nOBU自然人:DB.ActivityURL_2;\nDBU法人:DB.ActivityURL_3;\nDBU自然人:DB.ActivityURL_4;",
+            "rule": "活動說明"
+          },
+          {
+            "field": "activityPage",
+            "source": "GetDawhoFixSettingFunc().ActivityPage",
+            "rule": "活動詳情"
+          },
+          {
+            "field": "loader",
+            "source": "GetDawhoFixSettingFunc().loader",
+            "rule": "設定檔的期別資料（格式：幣別+科目別+期別，換匯定存除外）\n換匯定存格式：EXCHAGEFIX"
+          },
+          {
+            "field": "currText",
+            "source": "GetDawhoFixSettingFunc",
+            "rule": "幣別中文"
+          },
+          {
+            "field": "curr",
+            "source": "GetDawhoFixSettingFunc().loader拆出來英文部分 作為幣別英文名稱  換匯定存不進行拆分",
+            "rule": "幣別"
+          },
+          {
+            "field": "period",
+            "source": "GetDawhoFixSettingFunc().loader",
+            "rule": "期別"
+          },
+          {
+            "field": "fixAPNo",
+            "source": "GetDawhoFixSettingFunc().loader",
+            "rule": "科目別"
+          },
+          {
+            "field": "isNewFunds",
+            "source": "GetDawhoFixSettingFunc().IsNewFunds",
+            "rule": "是否為新資金活動"
+          },
+          {
+            "field": "activityURL",
+            "source": "GetDawhoFixSettingFunc().activityURL",
+            "rule": "活動同意書url"
+          },
+          {
+            "field": "activityURL_1",
+            "source": "GetDawhoFixSettingFunc().activityURL_1",
+            "rule": "OBU法人(同意書)"
+          },
+          {
+            "field": "activityURL_2",
+            "source": "GetDawhoFixSettingFunc().activityURL_2",
+            "rule": "0BU自然人(同意書)"
+          },
+          {
+            "field": "activityURL 3",
+            "source": "GetDawhoFixSettingFunc().activityURL_3",
+            "rule": "DBU法人(同意書)"
+          },
+          {
+            "field": "activityURL_4",
+            "source": "GetDawhoFixSettingFunc().activityURL_4",
+            "rule": "DBU自然人(同意書)"
+          },
+          {
+            "field": "transAmt",
+            "source": "GetDawhoFixSettingFunc().transAmt",
+            "rule": "定存限額"
+          },
+          {
+            "field": "newFundsLimit",
+            "source": "GetDawhoFixSettingFunc().newFundsLimit",
+            "rule": "新資金最低限額"
+          }
+        ]
+      }
+    ],
+    "errorCodeRules": [
+      {
+        "code": "9001",
+        "scenario": "連接數據庫查詢失敗",
+        "message": "系統繁忙,請稍後再試"
+      },
+      {
+        "code": "9002",
+        "scenario": "查詢出來的列表為空",
+        "message": "查無資料！"
+      },
+      {
+        "code": "9999",
+        "scenario": "未輸入必填請求參數",
+        "message": "請輸入幣別參數"
+      }
+    ],
+    "runtimeDependencies": [
+      {
+        "id": "external_api_commonfunc_getdawhofixsettingfunc",
+        "type": "external_api",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "业务逻辑正文提到 CommonFunc->GetDawhoFixSettingFunc() 依赖。"
+      }
+    ],
+    "dataSources": [],
+    "sqlSpecs": [],
+    "legacyReferences": [],
+    "prohibitedShortcuts": [
+      "block_comment_header_substitution"
+    ]
+  },
+  "codeHandoff": {
+    "schemaVersion": "1.0.0",
+    "logicSummary": {
+      "stepCount": 2,
+      "queryContractCount": 0,
+      "mappingRuleCount": 18,
+      "legacyEvidenceCount": 0,
+      "dependencyHintCount": 1,
+      "constraintCount": 4,
+      "unresolvedCount": 0,
+      "primarySource": "businessLogic"
+    },
+    "logicFlow": [
+      {
+        "stepId": "step_1",
+        "title": "撈取數據",
+        "actionType": "process",
+        "inputs": [
+          "curr",
+          "fixAPNo",
+          "period"
+        ],
+        "outputs": [],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_2",
+        "title": "返回結果",
+        "actionType": "process",
+        "inputs": [
+          "curr",
+          "fixAPNo",
+          "period"
+        ],
+        "outputs": [],
+        "evidenceIds": []
+      }
+    ],
+    "legacyEvidence": [],
+    "queryContracts": [],
+    "mappingRules": [
+      {
+        "ruleId": "map_getdawhofixsettingfunc_startdate_startdate",
+        "sourceField": "GetDawhoFixSettingFunc().StartDate",
+        "targetField": "startDate",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "開始日期",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_getdawhofixsettingfunc_enddate_enddate",
+        "sourceField": "GetDawhoFixSettingFunc().EndDate",
+        "targetField": "endDate",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "結束日期",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_getdawhofixsettingfunc_termversion_termversion",
+        "sourceField": "GetDawhoFixSettingFunc().TermVersion",
+        "targetField": "termVersion",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "定存活動同意書版號",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_obu_db_activityurl_1obu_db_activityurl_2_dbu_db_activityurl_3_dbu_db_activityurl_4_activitymemo",
+        "sourceField": "OBU法人(同意書):DB.ActivityURL_1\nOBU自然人:DB.ActivityURL_2;\nDBU法人:DB.ActivityURL_3;\nDBU自然人:DB.ActivityURL_4;",
+        "targetField": "activityMemo",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "活動說明",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_getdawhofixsettingfunc_activitypage_activitypage",
+        "sourceField": "GetDawhoFixSettingFunc().ActivityPage",
+        "targetField": "activityPage",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "活動詳情",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_getdawhofixsettingfunc_loader_loader",
+        "sourceField": "GetDawhoFixSettingFunc().loader",
+        "targetField": "loader",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "設定檔的期別資料（格式：幣別+科目別+期別，換匯定存除外）\n換匯定存格式：EXCHAGEFIX",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_getdawhofixsettingfunc_currtext",
+        "sourceField": "GetDawhoFixSettingFunc",
+        "targetField": "currText",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "幣別中文",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_getdawhofixsettingfunc_loader_curr",
+        "sourceField": "GetDawhoFixSettingFunc().loader拆出來英文部分 作為幣別英文名稱  換匯定存不進行拆分",
+        "targetField": "curr",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "幣別",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_getdawhofixsettingfunc_loader_period",
+        "sourceField": "GetDawhoFixSettingFunc().loader",
+        "targetField": "period",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "期別",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_getdawhofixsettingfunc_loader_fixapno",
+        "sourceField": "GetDawhoFixSettingFunc().loader",
+        "targetField": "fixAPNo",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "科目別",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_getdawhofixsettingfunc_isnewfunds_isnewfunds",
+        "sourceField": "GetDawhoFixSettingFunc().IsNewFunds",
+        "targetField": "isNewFunds",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "是否為新資金活動",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_getdawhofixsettingfunc_activityurl_activityurl",
+        "sourceField": "GetDawhoFixSettingFunc().activityURL",
+        "targetField": "activityURL",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "活動同意書url",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_getdawhofixsettingfunc_activityurl_1_activityurl_1",
+        "sourceField": "GetDawhoFixSettingFunc().activityURL_1",
+        "targetField": "activityURL_1",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "OBU法人(同意書)",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_getdawhofixsettingfunc_activityurl_2_activityurl_2",
+        "sourceField": "GetDawhoFixSettingFunc().activityURL_2",
+        "targetField": "activityURL_2",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "0BU自然人(同意書)",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_getdawhofixsettingfunc_activityurl_3_activityurl3",
+        "sourceField": "GetDawhoFixSettingFunc().activityURL_3",
+        "targetField": "activityURL 3",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "DBU法人(同意書)",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_getdawhofixsettingfunc_activityurl_4_activityurl_4",
+        "sourceField": "GetDawhoFixSettingFunc().activityURL_4",
+        "targetField": "activityURL_4",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "DBU自然人(同意書)",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_getdawhofixsettingfunc_transamt_transamt",
+        "sourceField": "GetDawhoFixSettingFunc().transAmt",
+        "targetField": "transAmt",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "定存限額",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_getdawhofixsettingfunc_newfundslimit_newfundslimit",
+        "sourceField": "GetDawhoFixSettingFunc().newFundsLimit",
+        "targetField": "newFundsLimit",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "新資金最低限額",
+        "evidenceIds": []
+      }
+    ],
+    "dependencyHints": [
+      {
+        "dependencyType": "external_api",
+        "preferredAbstractions": [
+          "IApiRequestService"
+        ],
+        "purpose": "业务逻辑正文提到 CommonFunc->GetDawhoFixSettingFunc() 依赖。",
+        "evidenceIds": []
+      }
+    ],
+    "constraints": [
+      {
+        "constraintType": "prohibited_shortcut",
+        "rule": "block_comment_header_substitution",
+        "severity": "error",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "error_code_rule",
+        "rule": "9001 | 連接數據庫查詢失敗 | 系統繁忙,請稍後再試",
+        "severity": "warning",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "error_code_rule",
+        "rule": "9002 | 查詢出來的列表為空 | 查無資料！",
+        "severity": "warning",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "error_code_rule",
+        "rule": "9999 | 未輸入必填請求參數 | 請輸入幣別參數",
+        "severity": "warning",
+        "evidenceIds": []
+      }
+    ],
+    "unresolved": []
+  }
+}

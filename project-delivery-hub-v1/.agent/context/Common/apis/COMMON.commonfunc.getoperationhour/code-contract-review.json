@@ -1,0 +1,165 @@
+{
+  "schemaVersion": "4.1.0",
+  "skillName": "api-code-writer",
+  "manifestType": "code-contract-review",
+  "updatedAt": "2026-05-23T22:17:42+08:00",
+  "executionId": "Common",
+  "apiId": "COMMON.commonfunc.getoperationhour",
+  "status": "warnings",
+  "summary": {
+    "findingCount": 1,
+    "blockingCount": 0,
+    "warningCount": 1
+  },
+  "contractSnapshot": {
+    "requestFields": [],
+    "responseFields": [
+      {
+        "path": "isSuccess",
+        "dataType": "boolean",
+        "required": true,
+        "description": "API成功與否",
+        "notes": "true ; false"
+      },
+      {
+        "path": "responseCode",
+        "dataType": "string",
+        "required": true,
+        "description": "回應代碼",
+        "notes": "成功:0000其餘狀況為失敗"
+      },
+      {
+        "path": "responseMessage",
+        "dataType": "string",
+        "required": true,
+        "description": "回應訊息",
+        "notes": "失敗狀況下回傳錯誤訊息"
+      },
+      {
+        "path": "responseDT",
+        "dataType": "string",
+        "required": true,
+        "description": "系統回應時間",
+        "notes": "yyyy/MM/dd HH:mm:ss"
+      },
+      {
+        "path": "responseData",
+        "dataType": "json",
+        "required": true,
+        "description": "回應資料框",
+        "notes": ""
+      },
+      {
+        "path": "t24Tbsdy",
+        "dataType": "string",
+        "required": true,
+        "description": "T24 交易日",
+        "notes": "sRespJson.T24_TBSDY"
+      },
+      {
+        "path": "t24Nbsdy",
+        "dataType": "string",
+        "required": true,
+        "description": "T24 新交易日",
+        "notes": "sRespJson.t24 NBSDY"
+      },
+      {
+        "path": "t24Lbsdy",
+        "dataType": "string",
+        "required": true,
+        "description": "T24 前一个交易日",
+        "notes": "sRespJson.T24_LBSDY"
+      },
+      {
+        "path": "t24LLbsdy",
+        "dataType": "string",
+        "required": true,
+        "description": "T24 前两个交易日",
+        "notes": "sRespJson.T24_LLBSDY"
+      },
+      {
+        "path": "t24Mode",
+        "dataType": "string",
+        "required": true,
+        "description": "T24 系统模式",
+        "notes": "sRespJson.T24_MODE"
+      },
+      {
+        "path": "t24TbsdyCob",
+        "dataType": "string",
+        "required": true,
+        "description": "T24 营业日日终结账",
+        "notes": "sRespJson.T24_TBSDYCOB"
+      },
+      {
+        "path": "t24NbsdyCob",
+        "dataType": "string",
+        "required": true,
+        "description": "T24 新交易日结",
+        "notes": "sRespJson.T24_NBSDYCOB"
+      },
+      {
+        "path": "t24BR121Open",
+        "dataType": "string",
+        "required": true,
+        "description": "台北分行是否營業",
+        "notes": "sRespJson.T24_BR1210pen"
+      },
+      {
+        "path": "t24UpdTime",
+        "dataType": "string",
+        "required": true,
+        "description": "更新時間",
+        "notes": "sRespJson.T24_UpdTime"
+      },
+      {
+        "path": "fiscTbsdy",
+        "dataType": "string",
+        "required": true,
+        "description": "会计营业日",
+        "notes": "sRespJson.fisc_TBSDY"
+      },
+      {
+        "path": "fiscNbsdy",
+        "dataType": "string",
+        "required": true,
+        "description": "财务新交易日",
+        "notes": "sRespJson.fisc_NBSDY"
+      },
+      {
+        "path": "fiscLbsdy",
+        "dataType": "string",
+        "required": true,
+        "description": "",
+        "notes": "sRespJson.fisc_LBSDY"
+      },
+      {
+        "path": "fiscMode",
+        "dataType": "string",
+        "required": true,
+        "description": "财政会计",
+        "notes": "sRespJson.fisc_MODE"
+      },
+      {
+        "path": "rmMode",
+        "dataType": "string",
+        "required": true,
+        "description": "风险管理",
+        "notes": "sRespJson.rm_Mode"
+      }
+    ],
+    "responseDataIsCollection": false,
+    "responseItemFields": []
+  },
+  "findings": [
+    {
+      "severity": "warning",
+      "category": "method_signature_missing",
+      "file": "Sinopac.EnterpriseAPI/Controllers/CommonFuncController.cs",
+      "line": null,
+      "message": "找不到 GetOperationHourAsync 方法簽名，無法驗證 controller 與 spec 契約是否一致。",
+      "expected": "GetOperationHourAsync",
+      "actual": "not found"
+    }
+  ]
+}

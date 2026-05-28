@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "4.1.0",
+  "skillName": "api-sql-fixture-preparer",
+  "manifestType": "table-checks",
+  "updatedAt": "2026-05-23T19:42:06+08:00",
+  "executionId": "Common",
+  "apiId": "COMMON.commonfunc.genfnttranseq",
+  "dbTarget": "connection-name:Report",
+  "authorityRoot": "../../.agent/reference/global",
+  "tables": [
+    {
+      "tableRef": "MMA.dbo.usp_GetNewUserID",
+      "resolvedTableName": null,
+      "exists": false,
+      "rowCount": null,
+      "action": "create",
+      "blockReason": "missing_schema_authority",
+      "schemaSql": null,
+      "seedSql": null
+    },
+    {
+      "tableRef": "MMA.DBO.USP_GETNEWUSERID",
+      "resolvedTableName": null,
+      "exists": false,
+      "rowCount": null,
+      "action": "create",
+      "blockReason": "missing_schema_authority",
+      "schemaSql": null,
+      "seedSql": null
+    }
+  ]
+}

@@ -1,0 +1,641 @@
+{
+  "schemaVersion": "4.2.0",
+  "apiId": "COMMON.commonfunc.checkprelogindevicestatus",
+  "newAuthor": "Jimmy",
+  "functionCode": "Common",
+  "version": "1.0",
+  "apiCategory": "CommonFunc",
+  "apiName": "CheckPreLoginDeviceStatus",
+  "source": {
+    "tsdFile": "TSD.Common_封存TSD共用开发链路_v1.0_20260523.docx",
+    "workbookFile": "NEWDA_Method_DETAIL_ExchangeCommonFunc_20260522.xlsx",
+    "sheetNames": [
+      "CheckPreLoginDeviceStatusFunc"
+    ]
+  },
+  "request": [
+    {
+      "rowKey": "1",
+      "fieldName": "custId",
+      "dataType": "string",
+      "required": true,
+      "description": "當前用戶ID",
+      "example": "\"custId\":\"A123456789\"",
+      "notes": "來源Redis"
+    },
+    {
+      "rowKey": "2",
+      "fieldName": "uuid",
+      "dataType": "string",
+      "required": true,
+      "description": "裝置唯一標識"
+    },
+    {
+      "rowKey": "3",
+      "fieldName": "verifyType",
+      "dataType": "string",
+      "required": false,
+      "description": "驗證方式",
+      "example": "\"verifyType\":\"TOGO\""
+    }
+  ],
+  "response": [
+    {
+      "rowKey": "1",
+      "fieldName": "verifyResult",
+      "dataType": "int",
+      "required": true,
+      "description": "回傳 0  驗證通過\n回傳 1、檢查裝置近 90 天是否被4 名以上不同使用者綁定過\n回傳 2、檢查這台裝置是否已被其他 ID 綁定回傳 3、檢查此 ID 是否已綁定其他裝置",
+      "example": "\"verifyResult\":0"
+    }
+  ],
+  "mockExamples": [
+    {
+      "scenario": "驗證成功",
+      "requestPayload": {
+        "custId": "A123456789",
+        "uuid": ""
+      },
+      "responsePayload": {
+        "verifyResult": 1
+      }
+    }
+  ],
+  "backendApis": {
+    "DB": [
+      "DAWHO.dbo.DeviceBindingLog",
+      "DAWHO.DBO.DEVICEBINDINGLOG",
+      "DEVICEBINDINGLOG",
+      "MB_DEVICE_BIND_MULTIPLE_TIMES",
+      "DAWHO.DBO"
+    ]
+  },
+  "businessLogic": {
+    "steps": [
+      {
+        "step": 1,
+        "title": ":參數來源",
+        "details": "1.Redis取得 member\nthis.custId = member.CustId;\n客戶ID從Redis取得\nUUID 綁定的當前設備"
+      },
+      {
+        "step": 2,
+        "title": ":VerifyResult=1",
+        "details": "客戶註記=TOGO就不用檢查此邏輯\n-----------------------------\n檢測一機多戶\nSELECT COUNT(0) FROM DeviceBindingLog WHERE ACTIONTYPE IN\n('CARDLESS_ADD', 'VIDEO_CARDLESS_ADD', 'MID_CARDLESS_ADD', 'MID_CARDLESS_ADD_CARD',\n'MID_CARDLESS_ADD_SIM', 'MID_CARDLESS_ADD_TOGO')\nAND UUID=@UUID\nAND UserID<>@UserID\nAND ModifyDate>CONVERT(VARCHAR, DATEADD(DAY, -90, getdate()), 111)\n查詢個數大於4 則回傳 1 前端判斷提示需保存裝置綁定风险（防制洗錢中心）\nINSERT INTO MB_DEVICE_BIND_MULTIPLE_TIMES\n(\nCUSTID\n, BINDTIMESTAMP\n, TXTIMESTAMP\n, UDID\n, MPHONENAME\n, ITEMNO\n, SOURCE\n)\nSELECT\nUserID\n, ''\n, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss.sss\")\n, UUID\n, DeviceName\n, UserID + DateTime.Now.ToString(\"yyyyMMddHHmmss\")\n, DAWHO\nFROM DAWHO.dbo.DeviceBindingLog\nWHERE\nACTIONTYPE IN ('CARDLESS_ADD', 'VIDEO_CARDLESS_ADD', 'MID_CARDLESS_ADD', 'MID_CARDLESS_ADD_CARD',  'MID_CARDLESS_ADD_SIM', 'MID_CARDLESS_ADD_TOGO')\nAND UUID = @UUID\nAND UserID <> @UserID\nAND ModifyDate > CONVERT(VARCHAR, DATEADD(DAY, -90, getdate()), 111)\n@CUSTID 用戶ID\n@BINDTIMESTAMP \t硬编码空字串\n@TXTIMESTAMP DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss.sss\")\n@UDID 裝置UUID\n@MPHONENAME 裝置名称 DAWHO.dbo.DeviceBindingLog.DeviceName\n@ITEMNO CustId + DateTime.Now.ToString(\"yyyyMMddHHmmss\")\n@SOURCE 硬编码 \"DAWHO\""
+      },
+      {
+        "step": 3,
+        "title": ":VerifyResult=2",
+        "details": "排除當前用戶，查詢該裝置是否被其他用戶綁定\nSELECT COUNT(0) FROM DAWHO.dbo. DeviceBinding WHERE (UserID!=@CUSTID) AND (UUID=@UDID)\n查詢個數大於0 則回傳 2 前端判斷提示"
+      },
+      {
+        "step": 4,
+        "title": ":VerifyResult=3",
+        "details": "查詢該用戶是否綁定了其他設備\nSELECT COUNT0) FROM DAWHO.dbo. DeviceBinding WHERE (UserID=@CUSTID) AND (UUID!=@UDID)\n查詢個數大於0 則回傳 3 前端判斷提示"
+      },
+      {
+        "step": 5,
+        "title": ":VerifyResult=0",
+        "details": "以上三步都驗證通過"
+      },
+      {
+        "step": 5,
+        "title": ":組裝數據並回傳",
+        "details": "回傳驗證結果"
+      }
+    ],
+    "fieldMappings": [],
+    "errorCodeRules": [
+      {
+        "code": "9999",
+        "scenario": "未輸入必填請求參數",
+        "message": "請輸入{Request參數}！"
+      }
+    ],
+    "runtimeDependencies": [
+      {
+        "id": "current_customer_context",
+        "type": "service",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "Resolve keyId/custId from the current request context and Redis."
+      },
+      {
+        "id": "mma_sql_connection",
+        "type": "service",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "Execute authoritative SQL declared in the workbook for DAWHO.DBO."
+      },
+      {
+        "id": "sql_table_db_dawho_dbo",
+        "type": "sql_table",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "Excel 依赖声明提到 DB->DAWHO.DBO。"
+      },
+      {
+        "id": "sql_table_db_dawho_dbo_devicebindinglog",
+        "type": "sql_table",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "业务逻辑正文提到 DB->DAWHO.dbo.DeviceBindingLog 依赖。"
+      },
+      {
+        "id": "sql_table_db_devicebindinglog",
+        "type": "sql_table",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "Excel 依赖声明提到 DB->DEVICEBINDINGLOG。"
+      },
+      {
+        "id": "sql_table_db_mb_device_bind_multiple_times",
+        "type": "sql_table",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "Excel 依赖声明提到 DB->MB_DEVICE_BIND_MULTIPLE_TIMES。"
+      }
+    ],
+    "dataSources": [
+      {
+        "name": "DAWHO.DBO",
+        "type": "sql_table",
+        "authority": "backend_contract",
+        "required": true
+      },
+      {
+        "name": "DAWHO.DBO.DEVICEBINDINGLOG",
+        "type": "sql_table",
+        "authority": "backend_contract",
+        "required": true
+      },
+      {
+        "name": "DEVICEBINDINGLOG",
+        "type": "sql_table",
+        "authority": "backend_contract",
+        "required": true
+      },
+      {
+        "name": "MB_DEVICE_BIND_MULTIPLE_TIMES",
+        "type": "sql_table",
+        "authority": "backend_contract",
+        "required": true
+      }
+    ],
+    "sqlSpecs": [
+      {
+        "id": "2_verifyresult_1_90_4",
+        "title": "2:VerifyResult=1\n檢查裝置近 90 天是否被4 名以上不同使用者綁定過",
+        "authority": "backend_contract",
+        "required": true,
+        "dataSources": [
+          "DAWHO.DBO.DEVICEBINDINGLOG",
+          "DEVICEBINDINGLOG",
+          "MB_DEVICE_BIND_MULTIPLE_TIMES"
+        ],
+        "mustContain": [
+          "DAWHO.DBO.DEVICEBINDINGLOG",
+          "DEVICEBINDINGLOG",
+          "MB_DEVICE_BIND_MULTIPLE_TIMES",
+          "@UUID",
+          "@UserID",
+          "@CUSTID",
+          "@BINDTIMESTAMP",
+          "@TXTIMESTAMP",
+          "@UDID",
+          "@MPHONENAME",
+          "@ITEMNO",
+          "@SOURCE",
+          "SELECT",
+          "INSERT",
+          "FROM",
+          "WHERE"
+        ],
+        "queryText": "客戶註記=TOGO就不用檢查此邏輯\n-----------------------------\n檢測一機多戶\nSELECT COUNT(0) FROM DeviceBindingLog WHERE ACTIONTYPE IN\n('CARDLESS_ADD', 'VIDEO_CARDLESS_ADD', 'MID_CARDLESS_ADD', 'MID_CARDLESS_ADD_CARD',\n'MID_CARDLESS_ADD_SIM', 'MID_CARDLESS_ADD_TOGO')\nAND UUID=@UUID\nAND UserID<>@UserID\nAND ModifyDate>CONVERT(VARCHAR, DATEADD(DAY, -90, getdate()), 111)\n查詢個數大於4 則回傳 1 前端判斷提示需保存裝置綁定风险（防制洗錢中心）\nINSERT INTO MB_DEVICE_BIND_MULTIPLE_TIMES\n(\nCUSTID\n, BINDTIMESTAMP\n, TXTIMESTAMP\n, UDID\n, MPHONENAME\n, ITEMNO\n, SOURCE\n)\nSELECT\nUserID\n, ''\n, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss.sss\")\n, UUID\n, DeviceName\n, UserID + DateTime.Now.ToString(\"yyyyMMddHHmmss\")\n, DAWHO\nFROM DAWHO.dbo.DeviceBindingLog\nWHERE\nACTIONTYPE IN ('CARDLESS_ADD', 'VIDEO_CARDLESS_ADD', 'MID_CARDLESS_ADD', 'MID_CARDLESS_ADD_CARD',  'MID_CARDLESS_ADD_SIM', 'MID_CARDLESS_ADD_TOGO')\nAND UUID = @UUID\nAND UserID <> @UserID\nAND ModifyDate > CONVERT(VARCHAR, DATEADD(DAY, -90, getdate()), 111)\n@CUSTID 用戶ID\n@BINDTIMESTAMP \t硬编码空字串\n@TXTIMESTAMP DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss.sss\")\n@UDID 裝置UUID\n@MPHONENAME 裝置名称 DAWHO.dbo.DeviceBindingLog.DeviceName\n@ITEMNO CustId + DateTime.Now.ToString(\"yyyyMMddHHmmss\")\n@SOURCE 硬编码 \"DAWHO\"",
+        "referenceHints": []
+      },
+      {
+        "id": "3_verifyresult_2_id",
+        "title": "3:VerifyResult=2\n檢查這台裝置是否已被其他 ID 綁定",
+        "authority": "backend_contract",
+        "required": true,
+        "dataSources": [
+          "DAWHO.DBO"
+        ],
+        "mustContain": [
+          "DAWHO.DBO",
+          "@CUSTID",
+          "@UDID",
+          "SELECT",
+          "FROM",
+          "WHERE"
+        ],
+        "queryText": "排除當前用戶，查詢該裝置是否被其他用戶綁定\nSELECT COUNT(0) FROM DAWHO.dbo. DeviceBinding WHERE (UserID!=@CUSTID) AND (UUID=@UDID)\n查詢個數大於0 則回傳 2 前端判斷提示"
+      },
+      {
+        "id": "4_verifyresult_3_id",
+        "title": "4:VerifyResult=3\n檢查此 ID 是否已綁定其他裝置",
+        "authority": "backend_contract",
+        "required": true,
+        "dataSources": [
+          "DAWHO.DBO"
+        ],
+        "mustContain": [
+          "DAWHO.DBO",
+          "@CUSTID",
+          "@UDID",
+          "SELECT",
+          "FROM",
+          "WHERE"
+        ],
+        "queryText": "查詢該用戶是否綁定了其他設備\nSELECT COUNT0) FROM DAWHO.dbo. DeviceBinding WHERE (UserID=@CUSTID) AND (UUID!=@UDID)\n查詢個數大於0 則回傳 3 前端判斷提示"
+      }
+    ],
+    "legacyReferences": [],
+    "prohibitedShortcuts": [
+      "mock_response_payload",
+      "hardcoded_custid",
+      "block_comment_header_substitution"
+    ],
+    "referenceHints": []
+  },
+  "codeHandoff": {
+    "schemaVersion": "1.0.0",
+    "logicSummary": {
+      "stepCount": 6,
+      "queryContractCount": 3,
+      "mappingRuleCount": 0,
+      "legacyEvidenceCount": 2,
+      "dependencyHintCount": 12,
+      "constraintCount": 5,
+      "unresolvedCount": 2,
+      "primarySource": "businessLogic"
+    },
+    "logicFlow": [
+      {
+        "stepId": "step_1",
+        "title": ":參數來源",
+        "actionType": "process",
+        "inputs": [
+          "custId",
+          "uuid",
+          "verifyType"
+        ],
+        "outputs": [
+          "verifyResult"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_2",
+        "title": ":VerifyResult=1",
+        "actionType": "query",
+        "inputs": [
+          "custId",
+          "uuid",
+          "verifyType"
+        ],
+        "outputs": [
+          "verifyResult"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_3",
+        "title": ":VerifyResult=2",
+        "actionType": "query",
+        "inputs": [
+          "custId",
+          "uuid",
+          "verifyType"
+        ],
+        "outputs": [
+          "verifyResult"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_4",
+        "title": ":VerifyResult=3",
+        "actionType": "query",
+        "inputs": [
+          "custId",
+          "uuid",
+          "verifyType"
+        ],
+        "outputs": [
+          "verifyResult"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_5",
+        "title": ":VerifyResult=0",
+        "actionType": "validation",
+        "inputs": [
+          "custId",
+          "uuid",
+          "verifyType"
+        ],
+        "outputs": [
+          "verifyResult"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_5",
+        "title": ":組裝數據並回傳",
+        "actionType": "validation",
+        "inputs": [
+          "custId",
+          "uuid",
+          "verifyType"
+        ],
+        "outputs": [
+          "verifyResult"
+        ],
+        "evidenceIds": []
+      }
+    ],
+    "legacyEvidence": [
+      {
+        "evidenceId": "response_code.o_common.9999",
+        "kind": "responseCodeCatalog",
+        "origin": "feature_common/P240301Git/Sinopac.EnterpriseAPI/EnterpriseApiEntity/ResponseCodes/O_Common.resx",
+        "authority": "existing_code",
+        "symbols": [
+          "O_Common.Code_9999"
+        ],
+        "summary": "公共必填参数错误码 9999 = 請輸入{Request參數}！",
+        "snippet": "Code_9999: 請輸入{Request參數}！"
+      },
+      {
+        "evidenceId": "db_schema.mb_device_binding_qrcode_verify",
+        "kind": "dbSchemaReference",
+        "origin": "reference/global/raw/db-schema/MMA.xlsx",
+        "authority": "reference_imported",
+        "symbols": [
+          "MB_DEVICE_BINDING_QRCODE_VERIFY"
+        ],
+        "summary": "01 DB schema index exact match for MB_DEVICE_BINDING_QRCODE_VERIFY from MMA"
+      }
+    ],
+    "queryContracts": [
+      {
+        "contractId": "2_verifyresult_1_90_4",
+        "purpose": "2:VerifyResult=1\n檢查裝置近 90 天是否被4 名以上不同使用者綁定過",
+        "dataSources": [
+          "DAWHO.DBO.DEVICEBINDINGLOG",
+          "DEVICEBINDINGLOG",
+          "MB_DEVICE_BIND_MULTIPLE_TIMES"
+        ],
+        "mustContain": [
+          "DAWHO.DBO.DEVICEBINDINGLOG",
+          "DEVICEBINDINGLOG",
+          "MB_DEVICE_BIND_MULTIPLE_TIMES",
+          "@UUID",
+          "@UserID",
+          "@CUSTID",
+          "@BINDTIMESTAMP",
+          "@TXTIMESTAMP",
+          "@UDID",
+          "@MPHONENAME",
+          "@ITEMNO",
+          "@SOURCE",
+          "SELECT",
+          "INSERT",
+          "FROM",
+          "WHERE"
+        ],
+        "sqlText": "客戶註記=TOGO就不用檢查此邏輯\n-----------------------------\n檢測一機多戶\nSELECT COUNT(0) FROM DeviceBindingLog WHERE ACTIONTYPE IN\n('CARDLESS_ADD', 'VIDEO_CARDLESS_ADD', 'MID_CARDLESS_ADD', 'MID_CARDLESS_ADD_CARD',\n'MID_CARDLESS_ADD_SIM', 'MID_CARDLESS_ADD_TOGO')\nAND UUID=@UUID\nAND UserID<>@UserID\nAND ModifyDate>CONVERT(VARCHAR, DATEADD(DAY, -90, getdate()), 111)\n查詢個數大於4 則回傳 1 前端判斷提示需保存裝置綁定风险（防制洗錢中心）\nINSERT INTO MB_DEVICE_BIND_MULTIPLE_TIMES\n(\nCUSTID\n, BINDTIMESTAMP\n, TXTIMESTAMP\n, UDID\n, MPHONENAME\n, ITEMNO\n, SOURCE\n)\nSELECT\nUserID\n, ''\n, DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss.sss\")\n, UUID\n, DeviceName\n, UserID + DateTime.Now.ToString(\"yyyyMMddHHmmss\")\n, DAWHO\nFROM DAWHO.dbo.DeviceBindingLog\nWHERE\nACTIONTYPE IN ('CARDLESS_ADD', 'VIDEO_CARDLESS_ADD', 'MID_CARDLESS_ADD', 'MID_CARDLESS_ADD_CARD',  'MID_CARDLESS_ADD_SIM', 'MID_CARDLESS_ADD_TOGO')\nAND UUID = @UUID\nAND UserID <> @UserID\nAND ModifyDate > CONVERT(VARCHAR, DATEADD(DAY, -90, getdate()), 111)\n@CUSTID 用戶ID\n@BINDTIMESTAMP \t硬编码空字串\n@TXTIMESTAMP DateTime.Now.ToString(\"yyyy/MM/dd HH:mm:ss.sss\")\n@UDID 裝置UUID\n@MPHONENAME 裝置名称 DAWHO.dbo.DeviceBindingLog.DeviceName\n@ITEMNO CustId + DateTime.Now.ToString(\"yyyyMMddHHmmss\")\n@SOURCE 硬编码 \"DAWHO\"",
+        "parameterHints": [
+          "@UUID",
+          "@UserID",
+          "@CUSTID",
+          "@BINDTIMESTAMP",
+          "@TXTIMESTAMP",
+          "@UDID",
+          "@MPHONENAME",
+          "@ITEMNO",
+          "@SOURCE"
+        ],
+        "resultShape": [
+          "verifyResult"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "contractId": "3_verifyresult_2_id",
+        "purpose": "3:VerifyResult=2\n檢查這台裝置是否已被其他 ID 綁定",
+        "dataSources": [
+          "DAWHO.DBO"
+        ],
+        "mustContain": [
+          "DAWHO.DBO",
+          "@CUSTID",
+          "@UDID",
+          "SELECT",
+          "FROM",
+          "WHERE"
+        ],
+        "sqlText": "排除當前用戶，查詢該裝置是否被其他用戶綁定\nSELECT COUNT(0) FROM DAWHO.dbo. DeviceBinding WHERE (UserID!=@CUSTID) AND (UUID=@UDID)\n查詢個數大於0 則回傳 2 前端判斷提示",
+        "parameterHints": [
+          "@CUSTID",
+          "@UDID"
+        ],
+        "resultShape": [
+          "verifyResult"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "contractId": "4_verifyresult_3_id",
+        "purpose": "4:VerifyResult=3\n檢查此 ID 是否已綁定其他裝置",
+        "dataSources": [
+          "DAWHO.DBO"
+        ],
+        "mustContain": [
+          "DAWHO.DBO",
+          "@CUSTID",
+          "@UDID",
+          "SELECT",
+          "FROM",
+          "WHERE"
+        ],
+        "sqlText": "查詢該用戶是否綁定了其他設備\nSELECT COUNT0) FROM DAWHO.dbo. DeviceBinding WHERE (UserID=@CUSTID) AND (UUID!=@UDID)\n查詢個數大於0 則回傳 3 前端判斷提示",
+        "parameterHints": [
+          "@CUSTID",
+          "@UDID"
+        ],
+        "resultShape": [
+          "verifyResult"
+        ],
+        "evidenceIds": []
+      }
+    ],
+    "mappingRules": [],
+    "dependencyHints": [
+      {
+        "dependencyType": "service",
+        "preferredAbstractions": [
+          "ICurrentRuntimeContextAccessor",
+          "IRedisService"
+        ],
+        "purpose": "Resolve keyId/custId from the current request context and Redis.",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "service",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor"
+        ],
+        "purpose": "Execute authoritative SQL declared in the workbook for DAWHO.DBO.",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "sql_table",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor"
+        ],
+        "purpose": "Excel 依赖声明提到 DB->DAWHO.DBO。",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "sql_table",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor"
+        ],
+        "purpose": "业务逻辑正文提到 DB->DAWHO.dbo.DeviceBindingLog 依赖。",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "sql_table",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor"
+        ],
+        "purpose": "Excel 依赖声明提到 DB->DEVICEBINDINGLOG。",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "sql_table",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor"
+        ],
+        "purpose": "Excel 依赖声明提到 DB->MB_DEVICE_BIND_MULTIPLE_TIMES。",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "sql_table",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor"
+        ],
+        "purpose": "Read from DAWHO.DBO",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "sql_table",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor"
+        ],
+        "purpose": "Read from DAWHO.DBO.DEVICEBINDINGLOG",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "sql_table",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor"
+        ],
+        "purpose": "Read from DEVICEBINDINGLOG",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "sql_table",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor"
+        ],
+        "purpose": "Read from MB_DEVICE_BIND_MULTIPLE_TIMES",
+        "evidenceIds": []
+      }
+    ],
+    "constraints": [
+      {
+        "constraintType": "prohibited_shortcut",
+        "rule": "mock_response_payload",
+        "severity": "error",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "prohibited_shortcut",
+        "rule": "hardcoded_custid",
+        "severity": "error",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "prohibited_shortcut",
+        "rule": "block_comment_header_substitution",
+        "severity": "error",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "request_field_validation",
+        "field": "custId",
+        "validationLayer": "dto_attribute",
+        "validationType": "required",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸入{Request參數}！",
+        "customValidationAttributeNeeded": false,
+        "rule": "custId | dto_attribute | required | 9999 | 請輸入{Request參數}！",
+        "severity": "warning",
+        "evidenceIds": [
+          "response_code.o_common.9999"
+        ]
+      },
+      {
+        "constraintType": "request_field_validation",
+        "field": "uuid",
+        "validationLayer": "dto_attribute",
+        "validationType": "required",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸入{Request參數}！",
+        "customValidationAttributeNeeded": false,
+        "rule": "uuid | dto_attribute | required | 9999 | 請輸入{Request參數}！",
+        "severity": "warning",
+        "evidenceIds": [
+          "response_code.o_common.9999"
+        ]
+      }
+    ],
+    "unresolved": [
+      {
+        "topic": "dependency.db_mb_device_bind_multiple_timestodo_mma_dawho",
+        "reason": "业务逻辑正文提到依赖 DB->MB_DEVICE_BIND_MULTIPLE_TIMES todo:MMA和DAWHO都沒有找到這個表，請問它屬於哪個數據庫，但同一段存在 todo / 待确认语义，不能作为已确认实现或 fixture 需求。",
+        "blocking": true,
+        "blockedReason": "dependency contract unresolved",
+        "missingFacts": [
+          "DB->MB_DEVICE_BIND_MULTIPLE_TIMES todo:MMA和DAWHO都沒有找到這個表，請問它屬於哪個數據庫 是否仍需接线",
+          "该依赖的权威来源、调用条件与失败处理"
+        ],
+        "suggestedOwner": "spec",
+        "nextDecisionNeeded": "确认 DB->MB_DEVICE_BIND_MULTIPLE_TIMES todo:MMA和DAWHO都沒有找到這個表，請問它屬於哪個數據庫 是实现必需依赖、可忽略旧逻辑，还是仅作为历史备注。"
+      },
+      {
+        "topic": "dependency.db.dawho_dbo_devicebindinglog",
+        "reason": "业务逻辑正文提到 DB 表 DAWHO.DBO.DEVICEBINDINGLOG，但同一段存在 todo / 待确认语义，不能作为已确认 SQL fixture 需求。",
+        "blocking": true,
+        "blockedReason": "db dependency unresolved",
+        "missingFacts": [
+          "DAWHO.DBO.DEVICEBINDINGLOG 是否仍需读写",
+          "若需要，该表的权威 schema、读写条件与 seed 场景"
+        ],
+        "suggestedOwner": "spec",
+        "nextDecisionNeeded": "确认 DAWHO.DBO.DEVICEBINDINGLOG 是实现必需表、旧逻辑遗留表，还是无需接线。"
+      }
+    ]
+  },
+  "rawAppendix": {
+    "backendApiLines": [
+      "1.DB - >DAWHO.dbo. DeviceBinding",
+      "2.DB -> MMA.dbo.[MB_DEVICE_BINDING_QRCODE_VERIFY]  todo：未找到表的數據結構",
+      "4.DB ->MB_DEVICE_BIND_MULTIPLE_TIMES todo:MMA和DAWHO都沒有找到這個表，請問它屬於哪個數據庫"
+    ]
+  }
+}

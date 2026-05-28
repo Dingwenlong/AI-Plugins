@@ -1,0 +1,58 @@
+{
+  "schemaVersion": "4.1.0",
+  "manifestType": "api",
+  "executionId": "Common",
+  "apiId": "COMMON.commonfunc.checkamountlimit",
+  "apiCategory": "CommonFunc",
+  "apiName": "CheckAmountLimit",
+  "status": "blocked",
+  "phase": "waiting_spec",
+  "updatedAt": "2026-05-23T22:18:09+08:00",
+  "newAuthor": "Jimmy",
+  "specStatus": "blocked",
+  "specUpdatedAt": "2026-05-23T19:40:35+08:00",
+  "specBlockReason": "AI review gate found 5 blocking drift(s): codeHandoff.unresolved.0 (code_handoff_unresolved)",
+  "specSourceFingerprint": "sha256:32a2d4b167d9be6d59388e5ca3555c5f4e71aa5d865195dec46dc3cbb84832a7",
+  "specSource": {
+    "tsdFile": "TSD.Common_封存TSD共用开发链路_v1.0_20260523.docx",
+    "workbookFile": "NEWDA_Method_DETAIL_ExchangeCommonFunc_20260522.xlsx",
+    "sheetNames": [
+      "CheckAmountLimit買賣匯交易限額判斷"
+    ]
+  },
+  "specArtifacts": {
+    "apiSpec": null
+  },
+  "fixtureStatus": "waiting_spec",
+  "fixturePhase": "waiting_spec",
+  "fixtureUpdatedAt": "2026-05-23T19:47:00+08:00",
+  "fixtureBlockReason": "AI review gate found 5 blocking drift(s): codeHandoff.unresolved.0 (code_handoff_unresolved)",
+  "fixtureSourceFingerprint": "sha256:32a2d4b167d9be6d59388e5ca3555c5f4e71aa5d865195dec46dc3cbb84832a7",
+  "fixtureArtifacts": {
+    "dbFixtureReport": null,
+    "tableChecks": null,
+    "seedPlan": null,
+    "seedExecuted": null,
+    "seedManifest": null
+  },
+  "codeStatus": "waiting_spec",
+  "codePhase": "waiting_spec",
+  "codeUpdatedAt": "2026-05-23T22:18:09+08:00",
+  "codeBlockReason": "AI review gate found 5 blocking drift(s): codeHandoff.unresolved.0 (code_handoff_unresolved)",
+  "codeProjectRoot": ".",
+  "codeSolutionPath": "Sinopac.EnterpriseAPI.slnx",
+  "inputHashes": {
+    "upstreamManifest": "sha256:a2f2b9cc04fb6c33697f6a231999c3c292a59a7975678181abca53474cb78474",
+    "apiSpec": null
+  },
+  "modifiedFiles": [],
+  "validationChecks": [],
+  "validationResults": [],
+  "repoDriftFiles": [],
+  "codeArtifacts": {
+    "changePlan": null,
+    "implementationReport": null,
+    "diagnosisReport": null
+  },
+  "lastMessage": null
+}

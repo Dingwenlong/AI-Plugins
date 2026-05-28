@@ -66,7 +66,8 @@
         "system-design-v2.5-api-contract",
         "naming-and-field-kb-rules",
         "api-detail-workbook-rules",
-        "database-design-standard-v3-source-status"
+        "database-design-standard-v3-source-status",
+        "sequence-diagram-handoff-rules"
       ],
       "optionalRuleIds": [
         "field-kb-common",
@@ -129,6 +130,7 @@
         "p240301-v6.2-backoffice-authz",
         "p240301-v6.2-cache",
         "p240301-v6.2-common-style",
+        "p240301-v6.2-implementation-profile",
         "p240301-v6.2-config",
         "p240301-v6.2-data-access",
         "p240301-v6.2-frontstage-session",
@@ -143,7 +145,8 @@
     "unitTestReport": {
       "strict": true,
       "requiredRuleIds": [
-        "p240301-v6.2-test-handoff"
+        "p240301-v6.2-test-handoff",
+        "enterpriseapi-runtime-validation"
       ],
       "requiredAssets": [
         "utReportTemplate",
@@ -170,12 +173,12 @@
     {
       "ruleId": "naming-and-field-kb-rules",
       "category": "api-contract",
-      "title": "Naming And Field KB Rules",
+      "title": "命名与字段知识库规则",
       "path": "rules/api-contract/naming-and-field-kb-rules.md",
       "format": "md",
       "reviewStatus": "approved",
       "sourceFile": "naming-and-field-kb-rules.md",
-      "sourceHash": "sha256:b3bb4711b2b9ff1270a403bc8ffe7a8cdc8ab63cf92c162a0929c0c8ff369d20",
+      "sourceHash": "sha256:d77fe288d263fe8734440f7693abbd71492b1540e738eb7c55d77739de43cbaa",
       "sourceLocator": ""
     },
     {
@@ -483,7 +486,18 @@
       "format": "md",
       "reviewStatus": "approved",
       "sourceFile": "common-style.md",
-      "sourceHash": "sha256:94110b0ea534f30a2a9bd6fd56b26b392da77318e8931c8a58ce2f1830b90bb2",
+      "sourceHash": "sha256:bdd79632816bddfe74aef2bf819f909e07072044934323c16ec856c4893249c6",
+      "sourceLocator": ""
+    },
+    {
+      "ruleId": "p240301-v6.2-implementation-profile",
+      "category": "code-guidelines",
+      "title": "implementation-profile",
+      "path": "rules/code-guidelines/p240301-v6.2/rules/implementation-profile.md",
+      "format": "md",
+      "reviewStatus": "approved",
+      "sourceFile": "implementation-profile.md",
+      "sourceHash": "sha256:fa4e9a301c12dd7a2f4173421e2fec0eb2f7109495368252dd8a72e3eb0631a1",
       "sourceLocator": ""
     },
     {
@@ -505,7 +519,7 @@
       "format": "md",
       "reviewStatus": "approved",
       "sourceFile": "data-access.md",
-      "sourceHash": "sha256:0e62473de54f19d2bc52f55cde7bcfe9d9bb4a5130dde7517f739e7f8e576af0",
+      "sourceHash": "sha256:d5943f562a2adcf56afd0f5efe5043f8fdf5cd0d65cfafec6da431fca2637c85",
       "sourceLocator": ""
     },
     {
@@ -542,6 +556,17 @@
       "sourceLocator": ""
     },
     {
+      "ruleId": "enterpriseapi-runtime-validation",
+      "category": "ut-report",
+      "title": "EnterpriseAPI Runtime Validation Rules",
+      "path": "rules/ut-report/enterpriseapi-runtime-validation.md",
+      "format": "md",
+      "reviewStatus": "approved",
+      "sourceFile": "enterpriseapi-runtime-validation.md",
+      "sourceHash": "sha256:d3b689c443f3de4ac94eee472d8e8ee885c35c3125f2a1c8be81d2c5ccd97f94",
+      "sourceLocator": ""
+    },
+    {
       "ruleId": "p240301-v6.2-validation",
       "category": "code-guidelines",
       "title": "validation",
@@ -560,7 +585,7 @@
       "format": "md",
       "reviewStatus": "approved",
       "sourceFile": "Common.md",
-      "sourceHash": "sha256:02e234099b80a7fc83225f6fc4840adf5d3950a3f05621946086d99cc89be7a2",
+      "sourceHash": "sha256:40d03ad81606da5ddbda3c98187f7bb6280832d44ac9d86deb7708e278f29733",
       "sourceLocator": ""
     },
     {
@@ -571,7 +596,7 @@
       "format": "md",
       "reviewStatus": "approved",
       "sourceFile": "D.md",
-      "sourceHash": "sha256:420dc7b4893cdeda19ddc41a924188983dad7a9d6db972ec373543c75823ed8d",
+      "sourceHash": "sha256:a0113bae96e25f3fbe4f0e78b044e1a22c394eb8cae8a19d94a5e345f11fbc28",
       "sourceLocator": ""
     },
     {

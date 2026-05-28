@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "4.1.0",
+  "skillName": "api-sql-fixture-preparer",
+  "manifestType": "db-fixture-report",
+  "updatedAt": "2026-05-23T19:42:25+08:00",
+  "executionId": "Common",
+  "apiId": "COMMON.commonfunc.getdevicebinding",
+  "status": "blocked",
+  "phase": "inspection_blocked",
+  "executionMode": "prepare",
+  "dbTarget": "connection-name:Report",
+  "authorityRoot": "../../.agent/reference/global",
+  "sqlFixtureRequired": true,
+  "sourcesUsed": [
+    "backendApis"
+  ],
+  "tableRefs": [
+    "Dawho.DeviceBinding",
+    "MMA.User"
+  ],
+  "summary": {
+    "tableCount": 2,
+    "blockingTableCount": 1,
+    "queryTextCount": 0
+  },
+  "message": "COMMON.commonfunc.getdevicebinding fixture blocked: missing_schema_authority",
+  "findings": [
+    {
+      "tableRef": "Dawho.DeviceBinding",
+      "action": "seed",
+      "blockReason": null
+    },
+    {
+      "tableRef": "MMA.User",
+      "action": "create",
+      "blockReason": "missing_schema_authority"
+    }
+  ]
+}

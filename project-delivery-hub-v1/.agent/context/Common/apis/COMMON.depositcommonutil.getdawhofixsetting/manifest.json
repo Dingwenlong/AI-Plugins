@@ -1,0 +1,62 @@
+{
+  "schemaVersion": "4.1.0",
+  "manifestType": "api",
+  "executionId": "Common",
+  "apiId": "COMMON.depositcommonutil.getdawhofixsetting",
+  "apiCategory": "DepositCommonUtil",
+  "apiName": "GetDawhoFixSetting",
+  "status": "pending",
+  "phase": "planned",
+  "updatedAt": "2026-05-23T22:18:09+08:00",
+  "newAuthor": "Jimmy",
+  "specStatus": "done",
+  "specUpdatedAt": "2026-05-23T19:40:52+08:00",
+  "specBlockReason": null,
+  "specSourceFingerprint": "sha256:d0ff66942473fdcda499dfab47312222a61d1c89eb6f248c96abf08440dd0df5",
+  "specSource": {
+    "tsdFile": "TSD.Common_封存TSD共用开发链路_v1.0_20260523.docx",
+    "workbookFile": "NEWDA_API_DETAIL_DepositCommonUtil_20260522.xlsx",
+    "sheetNames": [
+      "GetDawhoFixSetting取得定存設定檔"
+    ]
+  },
+  "specArtifacts": {
+    "apiSpec": "../../../.agent/context/Common/apis/COMMON.depositcommonutil.getdawhofixsetting/Common_API_Spec.json"
+  },
+  "fixtureStatus": "skipped",
+  "fixturePhase": "no_sql",
+  "fixtureUpdatedAt": "2026-05-23T19:41:27+08:00",
+  "fixtureBlockReason": null,
+  "fixtureSourceFingerprint": "sha256:d0ff66942473fdcda499dfab47312222a61d1c89eb6f248c96abf08440dd0df5",
+  "fixtureArtifacts": {
+    "dbFixtureReport": "../../.agent/context/Common/apis/COMMON.depositcommonutil.getdawhofixsetting/db-fixture-report.json",
+    "tableChecks": "../../.agent/context/Common/apis/COMMON.depositcommonutil.getdawhofixsetting/table-checks.json",
+    "seedPlan": null,
+    "seedExecuted": null,
+    "seedManifest": null
+  },
+  "codeStatus": "pending",
+  "codePhase": "planned",
+  "codeUpdatedAt": "2026-05-23T22:18:09+08:00",
+  "codeBlockReason": null,
+  "codeProjectRoot": ".",
+  "codeSolutionPath": "Sinopac.EnterpriseAPI.slnx",
+  "inputHashes": {
+    "upstreamManifest": "sha256:64b7102b91348a88d9cf64f4d396a0b51f02782525436af4162e1c89a45fea5b",
+    "apiSpec": "sha256:123e4c2cb645e98c725bf1cde8f87775ea8e55ce4b53aa7a8abea7bddadc0a7f"
+  },
+  "modifiedFiles": [],
+  "validationChecks": [
+    "dotnet build \"Sinopac.EnterpriseAPI/Sinopac.EnterpriseAPI.csproj\" -m:1",
+    "dotnet test \"Test/EnterpriseApi.Unit/EnterpriseApi.Unit.csproj\" -m:1",
+    "dotnet test \"Test/EnterpriseApi.Integration/EnterpriseApi.Integration.csproj\" -m:1"
+  ],
+  "validationResults": [],
+  "repoDriftFiles": [],
+  "codeArtifacts": {
+    "changePlan": "../../../.agent/context/Common/apis/COMMON.depositcommonutil.getdawhofixsetting/change-plan.json",
+    "implementationReport": null,
+    "diagnosisReport": null
+  },
+  "lastMessage": "COMMON.depositcommonutil.getdawhofixsetting change-plan generated for EnterpriseApiBusiness/DepositCommonUtil/DepositCommonUtilService.GetDawhoFixSetting.cs; waiting for AI-authored code changes."
+}

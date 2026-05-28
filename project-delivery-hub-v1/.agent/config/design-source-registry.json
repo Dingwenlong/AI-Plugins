@@ -1,11 +1,12 @@
 {
   "version": 2,
   "directories": {
-    "prd": "D:\\Devs\\<PROJECT_DOCS>\\branches\\01系統分析\\1-1 系統分析書\\2_PRD5.x",
-    "tsdApiSpec": "D:\\Devs\\<PROJECT_DOCS>\\branches\\02系統設計\\2-1系統設計書\\v1.x",
-    "common": "D:\\Devs\\<PROJECT_DOCS>\\branches\\02系統設計\\2-1系統設計書\\TSD共用相關",
-    "customerItSpec": "D:\\Devs\\<PROJECT_DOCS>\\branches\\01系統分析\\1-8客戶提供資料\\06 IT API Doc",
-    "legacyProject": "D:\\Devs\\<PROJECT_DOCS>\\branches\\01系統分析\\1-8客戶提供資料\\03 舊大戶代碼相關\\既有大戶程式_20260311"
+    "prd": "D:\\Devs\\NEWDAWHO\\P240301\\branches\\01系統分析\\1-1 系統分析書\\2_PRD5.x",
+    "tsdApiSpec": "D:\\Devs\\NEWDAWHO\\P240301\\branches\\02系統設計\\2-1系統設計書\\v1.x",
+    "sequenceDiagram": "D:\\Devs\\NEWDAWHO\\P240301\\branches\\02系統設計\\2-1系統設計書\\output\\sequence_diagram",
+    "common": "D:\\Devs\\NEWDAWHO\\P240301\\branches\\02系統設計\\2-1系統設計書\\TSD共用相關",
+    "customerItSpec": "D:\\Devs\\NEWDAWHO\\P240301\\branches\\01系統分析\\1-8客戶提供資料\\06 IT API Doc",
+    "legacyProject": "D:\\Devs\\NEWDAWHO\\P240301\\branches\\01系統分析\\1-8客戶提供資料\\03 舊大戶代碼相關\\既有大戶程式_20260311"
   },
   "functions": {
     "D.001 D.002": {

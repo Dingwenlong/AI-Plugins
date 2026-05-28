@@ -1,0 +1,58 @@
+{
+  "schemaVersion": "4.1.0",
+  "manifestType": "api",
+  "executionId": "Common",
+  "apiId": "COMMON.commonfunc.getcustidformat",
+  "apiCategory": "CommonFunc",
+  "apiName": "GetCustIDFormat",
+  "status": "blocked",
+  "phase": "blocked",
+  "updatedAt": "2026-05-23T22:18:09+08:00",
+  "newAuthor": "Jimmy",
+  "specStatus": "done",
+  "specUpdatedAt": "2026-05-23T19:23:02+08:00",
+  "specBlockReason": null,
+  "specSourceFingerprint": "sha256:7ba2f8048feede419a3b99080e26f6543b5be5464152430381eb2991fe751a4b",
+  "specSource": {
+    "tsdFile": "TSD.Common_封存TSD共用开发链路_v1.0_20260523.docx",
+    "workbookFile": "NEWDA_Method_DETAIL_ExchangeCommonFunc_20260522.xlsx",
+    "sheetNames": [
+      "GetCustIDFormat 針對CustId做正規化"
+    ]
+  },
+  "specArtifacts": {
+    "apiSpec": "../../../.agent/context/Common/apis/COMMON.commonfunc.getcustidformat/Common_API_Spec.json"
+  },
+  "fixtureStatus": "done",
+  "fixturePhase": "ready",
+  "fixtureUpdatedAt": "2026-05-23T19:47:00+08:00",
+  "fixtureBlockReason": null,
+  "fixtureSourceFingerprint": "sha256:7ba2f8048feede419a3b99080e26f6543b5be5464152430381eb2991fe751a4b",
+  "fixtureArtifacts": {
+    "dbFixtureReport": "../../.agent/context/Common/apis/COMMON.commonfunc.getcustidformat/db-fixture-report.json",
+    "tableChecks": "../../.agent/context/Common/apis/COMMON.commonfunc.getcustidformat/table-checks.json",
+    "seedPlan": null,
+    "seedExecuted": null,
+    "seedManifest": null
+  },
+  "codeStatus": "blocked",
+  "codePhase": "blocked",
+  "codeUpdatedAt": "2026-05-23T22:18:09+08:00",
+  "codeBlockReason": "Business logic handoff is missing required query contracts for SQL-oriented dependencies.",
+  "codeProjectRoot": ".",
+  "codeSolutionPath": "Sinopac.EnterpriseAPI.slnx",
+  "inputHashes": {
+    "upstreamManifest": "sha256:616f00bd72e01ddf7cd3f6225857fec67a08a67040be655abf6a411245b5e811",
+    "apiSpec": "sha256:b60583c2db771ff92c748f97387acd49e11ce6d347443609e19bc78facdc897f"
+  },
+  "modifiedFiles": [],
+  "validationChecks": [],
+  "validationResults": [],
+  "repoDriftFiles": [],
+  "codeArtifacts": {
+    "changePlan": null,
+    "implementationReport": "../../../.agent/context/Common/apis/COMMON.commonfunc.getcustidformat/implementation-report.md",
+    "diagnosisReport": "../../../.agent/context/Common/apis/COMMON.commonfunc.getcustidformat/diagnosis-report.json"
+  },
+  "lastMessage": "COMMON.commonfunc.getcustidformat blocked: Business logic handoff is missing required query contracts for SQL-oriented dependencies."
+}

@@ -2,6 +2,15 @@
 
 ## CommonUtil - GetCENCurr / CommonFunc - GetCENCurrFunc
 
+### AB 表資料來源口徑
+
+- AB 表是本專案對「主庫 + 本地 SQLite 快取表」的設計稱呼，不是兩張同等來源主表：
+  - A 表：主資料庫中的權威來源表，例如幣別資料來源 `J_CURR`。
+  - B 表：本地 SQLite 快取表，表結構與 A 表一致，用於承接基本不更新但取用非常頻繁的資料讀取。
+- 適用條件：資料低頻異動、高頻查詢，且允許由同步/初始化機制把 A 表資料同步到 B 表。
+- API Detail / 功能梳理描述此類資料來源時，應寫「優先讀取本地 SQLite B 表以降低主庫壓力，B 表未初始化、查無資料或同步異常時再回源 A 表；A/B 表結構一致」。不得把此口徑誤寫成 Redis cache，除非另有明確設計證據。
+- `CommonUtil.GetCENCurr` / `CommonFunc.GetCENCurrFunc` 幣別資料採 AB 表口徑：A 表為主庫 `J_CURR`，B 表為本地 SQLite 同結構幣別資料表。
+
 - `currEName`
   - PRD 語意：幣別代碼/英文幣別名稱，例如 TWD、USD。
   - Evidence：`CommonFunc.GetCENCurrFunc` response；來源 J_CURR.CURRENAME。
@@ -54,17 +63,17 @@
 
 - `currencyCodeArray`
   - PRD 語意：幣別代碼排序清單。
-  - Evidence：`CommonUtil.EditCommonCurrency` request、`CommonFunc.EditCommonCurrencyFunc` request。
+  - Evidence：`CommonUtil.EditCommonCurrency` request、`ExchangeCommonFunc.EditCommonCurrency` request。
   - Decision：取代舊 `currENameArray`；寫入既有 DB JSON 時仍可映射為來源欄位 `CURRENAME`。
 
 ## 命名分層決策
 
 | 層級 | API / Method | 對外欄位命名 | Source / DB 說明 |
 | --- | --- | --- | --- |
-| 內部幣別字典方法 | `CommonFunc.GetCENCurrFunc` | 保留 `currEName` / `currCName` / `currId` / `cenCurrList` / `flag008` | 直接貼合 `J_CURR.CURRENAME` / `J_CURR.CURRCNAME` / `J_CURR.CURRID` / `J_CURR.FLAG008`。 |
-| 對外幣別字典 API | `CommonUtil.GetCENCurr` | 使用 `currencyCode` / `currencyName` / `currencyId` / `currencyList` / `account008StatusCode` | 備註中說明映射至 CommonFunc 與 J_CURR 來源欄位。 |
+| 內部幣別字典方法 | `CommonFunc.GetCENCurrFunc` | 保留 `currEName` / `currCName` / `currId` / `cenCurrList` / `flag008` | 欄位貼合 `J_CURR.CURRENAME` / `J_CURR.CURRCNAME` / `J_CURR.CURRID` / `J_CURR.FLAG008`；讀取口徑為 AB 表，優先讀本地 SQLite B 表，來源 A 表為主庫 `J_CURR`。 |
+| 對外幣別字典 API | `CommonUtil.GetCENCurr` | 使用 `currencyCode` / `currencyName` / `currencyId` / `currencyList` / `account008StatusCode` | 備註中說明映射至 CommonFunc 與 J_CURR 來源欄位；幣別資料來源採 AB 表口徑。 |
 | 共用業務接口 | `CommonUtil.GetCommonCurrency`、`CommonUtil.EditCommonCurrency`、`CommonUtil.GetCurrencyRateDetail` | 使用 `currencyCode` / `currencyName` / `currencyCodeArray` | 可在備註中說明來源映射至 `CURRENAME` / `CURRCNAME`。 |
-| 共用業務方法 | `ExchangeCommonFunc.GetCommonCurrency`、`CommonFunc.EditCommonCurrencyFunc`、`CommonFunc.GetTransDebitCurrency` | 使用 `currencyCode` / `currencyName` / `currencyCodeArray` | DB 儲存結構若仍為 `CURRENAME`，只作來源/落庫說明；常用幣別優先取 Redis，未命中再回源 `CommonCurrencyList`。 |
+| 共用業務方法 | `ExchangeCommonFunc.GetCommonCurrency`、`ExchangeCommonFunc.EditCommonCurrency`、`CommonFunc.GetTransDebitCurrency` | 使用 `currencyCode` / `currencyName` / `currencyCodeArray` | DB 儲存結構若仍為 `CURRENAME`，只作來源/落庫說明；常用幣別優先取 Redis，未命中再回源 `CommonCurrencyList`；舊 `EditCommonCurrencyFunc` 僅作歷史名稱，不再寫入新 API Detail 的 BackendAPI。 |
 | 業務 API | Deposit / Exchange / Transfer 等功能 API | 使用 `currencyCode` / `currencyName` | 不使用 `currEName` / `currCName` 作新系統欄位。 |
 
 ## Alias / 遷移紀錄

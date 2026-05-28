@@ -1,11 +1,11 @@
 ---
-name: 企业微信智能表格异动记录器
-description: 将 Common/API/配置异动记录写入企业微信文档智能表格 WebHook。用于读取本地异动清单 Excel 的表头与示例写法，按项目 .agent 私有配置选择智能表格 target key，校验 WebHook、json 请求格式、user_id，生成 add_records 或 update_records payload，并防止未配置或误用他人配置。
+name: 【运营同步】企业微信智能表格异动记录器
+description: 将 Common/API/配置异动记录写入企业微信文档智能表格 WebHook。用于按 `records-json` 生成 add_records 或 update_records payload，可只读参考本地异动清单 Excel 的表头与示例写法，并按项目 .agent 私有配置选择 target key、校验 WebHook、json 请求格式与 user_id，防止未配置或误用他人配置。
 ---
 
-# 企业微信智能表格异动记录写入
+# 【运营同步】企业微信智能表格异动记录器
 
-用于把本地异动清单 Excel 的既有格式转换为企业微信文档智能表格 WebHook payload，并提交新增或更新记录。
+用于把结构化 `records-json` 转换为企业微信文档智能表格 WebHook payload，并提交新增或更新记录。本地异动清单 Excel 只作为表头、字段写法和历史记录风格的证据；脚本不会从 Excel 自动抽取待提交记录。
 
 ## 必要配置
 
@@ -30,18 +30,19 @@ description: 将 Common/API/配置异动记录写入企业微信文档智能表�
 
 ## 工作流
 
-1. 读取附件 Excel 第一行表头和已有数据，确认字段写法。
-2. 读取 `<workspaceRoot>\.agent\config\wedoc-smartsheet-targets.json`。
-3. 选择 target：
+1. 若用户提供 Excel，先只读查看第一行表头和已有数据，确认字段写法；不要把 Excel 当成脚本的记录来源。
+2. 将本次要新增/更新的记录整理成 `records-json`。若用户只给 Excel，必须先由人工或表格工具抽取成 JSON，再调用脚本。
+3. 读取 `<workspaceRoot>\.agent\config\wedoc-smartsheet-targets.json`。
+4. 选择 target：
    - 用户明确说 key 时，使用 `--target-key`。
    - 用户描述目标时，使用 `--target-hint` 依据 `key/displayName/description/keywords` 匹配。
    - 只有一个 target 时可自动使用。
    - 多个 target 无法唯一判断时，列出 key 和 displayName，请用户选择；不要猜测发送。
-4. 校验 target：
+5. 校验 target：
    - WebHook 必须是企业微信智能表格 WebHook，且不能是占位值。
    - `userId` 或 `userText` 必须至少有一个存在且不能是占位值。
    - `requestFormat.schema` 与 `requestFormat.fieldMap` 必须完整。
-5. 按既有清单风格整理记录：
+6. 按既有清单风格整理记录：
    - `備註` 写变更类型，例如 `變更公共方法`、`新追加公共方法`、`增加配置項`。
    - `調整內容` 用编号逐条写清楚，保留换行。
    - `調整日期` 转为北京时间当天 00:00:00 的毫秒时间戳字符串。
@@ -49,16 +50,16 @@ description: 将 Common/API/配置异动记录写入企业微信文档智能表�
    - 若配置的是 `userText`，使用姓名/别名模式：`["丁文龙(Jimmy)"]`，不要把显示名塞进 `user_id`。
    - `所屬類型` 写 `CommonUtil` / `CommonFunc` / `appsetting` 等。
    - `調整接口` 写接口或配置名称。
-6. 调用 WebHook 后检查 `errcode`：
+7. 调用 WebHook 后检查 `errcode`：
    - `0` 表示成功，记录返回的 `record_id`，并追加写入 `<workspaceRoot>\.agent\wedoc-smartsheet-receipts\<targetKey>.jsonl`。
    - 非 0 时回报错误码和 errmsg，不重复新增。
-7. 后续要更新记录时，先用 `--list-receipts` 查回当初新增时的 `record_id`，再调用 `update_records`。
+8. 后续要更新记录时，先用 `--list-receipts` 查回当初新增时的 `record_id`，再调用 `update_records`。
 
 ## 脚本
 
 使用 `scripts/send_wedoc_change_records.py` 生成或提交 payload。以下路径请按实际插件安装目录替换。
 
-新增记录：
+新增记录。`--records-json` 是待提交记录来源，`--excel` 只是可选证据路径：
 
 ```powershell
 python "<pluginRoot>\skills\wedoc-smartsheet-change-recorder\scripts\send_wedoc_change_records.py" `
@@ -136,6 +137,19 @@ python "<pluginRoot>\skills\wedoc-smartsheet-change-recorder\scripts\send_wedoc_
   }
 ]
 ```
+
+## records-json 与 Excel 边界
+
+- `--records-json` 必须是 JSON array，元素使用标准键 `note/content/type/api`，也可使用既有中文列名 `備註/調整內容/所屬類型/調整接口`。
+- `--excel` 只检查文件存在并作为证据记录在操作说明中；脚本不会读取、解析或提交 Excel 行。
+- 新增记录时没有 `--records-json` 必须阻塞，即使提供了 `--excel`。
+- dry-run 会输出 payload 且不调用 WebHook、不写回执；正式新增成功后才写 `<workspaceRoot>\.agent\wedoc-smartsheet-receipts\<targetKey>.jsonl`。
+
+## 资源
+
+- `agents/openai.yaml`
+- `scripts/send_wedoc_change_records.py`
+- `tests/run_regressions.py`
 
 ## 注意
 

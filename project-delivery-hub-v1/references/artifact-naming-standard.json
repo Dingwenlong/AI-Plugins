@@ -1,7 +1,7 @@
 {
   "schemaVersion": "1.0.0",
   "standardId": "project-delivery-hub-artifact-naming",
-  "updatedAt": "2026-05-23",
+  "updatedAt": "2026-05-27",
   "mode": "standard-only",
   "summary": "Artifact naming standard for project-delivery-hub-v1. This file records proposed names only; it does not authorize automatic migration by itself.",
   "rules": {
@@ -39,6 +39,66 @@
       "proposedPattern": ".agent/functions/<functionCode>/analysis/00-功能设计梳理_<functionCode>_<yyyyMMdd>.md",
       "action": "rename_later",
       "reason": "Human-readable design analysis belongs to the pre-development design handoff stage."
+    },
+    {
+      "id": "00-design-leader-change-plan",
+      "stage": "00",
+      "ownerSkill": "api-detail-tsd-sync",
+      "currentPattern": ".agent/functions/<functionCode>/orchestration/design-change-plan.json",
+      "currentRegex": "^functions/[^/]+/orchestration/design-change-plan\\.json$",
+      "proposedPattern": ".agent/functions/<functionCode>/orchestration/design-change-plan.json",
+      "action": "keep",
+      "reason": "Design Leader uses this stable plan to coordinate multi-file TSD/API Detail/Common/Response Code edits before stage 02."
+    },
+    {
+      "id": "00-design-leader-file-claims",
+      "stage": "00",
+      "ownerSkill": "api-detail-tsd-sync",
+      "currentPattern": ".agent/functions/<functionCode>/orchestration/file-claims.json",
+      "currentRegex": "^functions/[^/]+/orchestration/file-claims\\.json$",
+      "proposedPattern": ".agent/functions/<functionCode>/orchestration/file-claims.json",
+      "action": "keep",
+      "reason": "Design-stage file claims keep TSD, API Detail, Common and Response Code worker writes non-overlapping."
+    },
+    {
+      "id": "00-office-edit-plan",
+      "stage": "00",
+      "ownerSkill": "office-deliverable-editor",
+      "currentPattern": ".agent/functions/<functionCode>/orchestration/office-edit-plan.json",
+      "currentRegex": "^functions/[^/]+/orchestration/office-edit-plan\\.json$",
+      "proposedPattern": ".agent/functions/<functionCode>/orchestration/office-edit-plan.json",
+      "action": "keep",
+      "reason": "Office edit plans describe exact Word/Excel physical write operations after Design Leader or format-checker decisions."
+    },
+    {
+      "id": "00-office-edit-results",
+      "stage": "00",
+      "ownerSkill": "office-deliverable-editor",
+      "currentPattern": ".agent/functions/<functionCode>/orchestration/office-edit-results.json",
+      "currentRegex": "^functions/[^/]+/orchestration/office-edit-results\\.json$",
+      "proposedPattern": ".agent/functions/<functionCode>/orchestration/office-edit-results.json",
+      "action": "keep",
+      "reason": "Office editor results record modifiedFiles, validation commands, blockers and risks when a leader persists the returned result."
+    },
+    {
+      "id": "00-design-leader-worker-results",
+      "stage": "00",
+      "ownerSkill": "api-detail-tsd-sync",
+      "currentPattern": ".agent/functions/<functionCode>/orchestration/worker-results.json",
+      "currentRegex": "^functions/[^/]+/orchestration/worker-results\\.json$",
+      "proposedPattern": ".agent/functions/<functionCode>/orchestration/worker-results.json",
+      "action": "keep",
+      "reason": "Leader collects worker modifiedFiles, validation, risks and blockers before updating shared design state."
+    },
+    {
+      "id": "00-design-leader-final-report",
+      "stage": "00",
+      "ownerSkill": "api-detail-tsd-sync",
+      "currentPattern": ".agent/functions/<functionCode>/orchestration/final-design-fix-report.json",
+      "currentRegex": "^functions/[^/]+/orchestration/final-design-fix-report\\.json$",
+      "proposedPattern": ".agent/functions/<functionCode>/orchestration/final-design-fix-report.json",
+      "action": "keep",
+      "reason": "Design Leader final report records feedback/new-demand fix outcome and handoff readiness before 02."
     },
     {
       "id": "01-reference-catalog",
@@ -89,6 +149,46 @@
       "proposedPattern": ".agent/context/<functionCode>/chain-api-checklist.json",
       "action": "rename_later",
       "reason": "The API checklist is cross-stage tracking rather than a single stage output."
+    },
+    {
+      "id": "chain-orchestration-leader-run",
+      "stage": "chain",
+      "ownerSkill": "multi-api-leader",
+      "currentPattern": ".agent/context/<functionCode>/orchestration/leader-run.json",
+      "currentRegex": "^context/[^/]+/orchestration/leader-run\\.json$",
+      "proposedPattern": ".agent/context/<functionCode>/orchestration/leader-run.json",
+      "action": "keep",
+      "reason": "Leader run state is a stable orchestration artifact for explicit multi-API delivery."
+    },
+    {
+      "id": "chain-orchestration-api-workgroups",
+      "stage": "chain",
+      "ownerSkill": "multi-api-leader",
+      "currentPattern": ".agent/context/<functionCode>/orchestration/api-workgroups.json",
+      "currentRegex": "^context/[^/]+/orchestration/api-workgroups\\.json$",
+      "proposedPattern": ".agent/context/<functionCode>/orchestration/api-workgroups.json",
+      "action": "keep",
+      "reason": "API workgroup state records conflict grouping and is intentionally stable."
+    },
+    {
+      "id": "chain-orchestration-file-claims",
+      "stage": "chain",
+      "ownerSkill": "multi-api-leader",
+      "currentPattern": ".agent/context/<functionCode>/orchestration/file-claims.json",
+      "currentRegex": "^context/[^/]+/orchestration/file-claims\\.json$",
+      "proposedPattern": ".agent/context/<functionCode>/orchestration/file-claims.json",
+      "action": "keep",
+      "reason": "File claim leases are required to keep worker writes non-overlapping."
+    },
+    {
+      "id": "chain-orchestration-final-assessment",
+      "stage": "chain",
+      "ownerSkill": "multi-api-leader",
+      "currentPattern": ".agent/context/<functionCode>/orchestration/final-assessment.json",
+      "currentRegex": "^context/[^/]+/orchestration/final-assessment\\.json$",
+      "proposedPattern": ".agent/context/<functionCode>/orchestration/final-assessment.json",
+      "action": "keep",
+      "reason": "Final assessment is the explicit multi-API leader gate output."
     },
     {
       "id": "chain-api-manifest",
@@ -249,6 +349,16 @@
       "proposedPattern": ".agent/context/<functionCode>/04-code-contract-review.json",
       "action": "rename_later",
       "reason": "Code contract review belongs to stage 04."
+    },
+    {
+      "id": "04-code-style-review",
+      "stage": "04",
+      "ownerSkill": "code-style-reviewer",
+      "currentPattern": ".agent/context/<functionCode>/code-style-review.json",
+      "currentRegex": "^context/[^/]+/code-style-review\\.json$",
+      "proposedPattern": ".agent/context/<functionCode>/04-code-style-review.json",
+      "action": "rename_later",
+      "reason": "Code style review belongs to stage 04 and locates current code guideline drift in existing source code."
     },
     {
       "id": "04-review-notes",

@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "4.1.0",
+  "skillName": "api-sql-fixture-preparer",
+  "manifestType": "db-fixture-report",
+  "updatedAt": "2026-05-23T19:41:27+08:00",
+  "executionId": "Common",
+  "apiId": "COMMON.commonutil.editcommoncurrency",
+  "status": "blocked",
+  "phase": "inspection_blocked",
+  "executionMode": "prepare",
+  "dbTarget": "connection-name:Report",
+  "authorityRoot": "../../.agent/reference/global",
+  "sqlFixtureRequired": true,
+  "sourcesUsed": [
+    "backendApis"
+  ],
+  "tableRefs": [
+    "DaWho.dbo.CommonCurrencyList",
+    "DAWHO.DBO.COMMONCURRENCYLIST"
+  ],
+  "summary": {
+    "tableCount": 2,
+    "blockingTableCount": 2,
+    "queryTextCount": 0
+  },
+  "message": "COMMON.commonutil.editcommoncurrency fixture blocked: missing_schema_authority",
+  "findings": [
+    {
+      "tableRef": "DaWho.dbo.CommonCurrencyList",
+      "action": "create",
+      "blockReason": "missing_schema_authority"
+    },
+    {
+      "tableRef": "DAWHO.DBO.COMMONCURRENCYLIST",
+      "action": "create",
+      "blockReason": "missing_schema_authority"
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "schemaVersion": "4.1.0",
+  "manifestType": "api",
+  "executionId": "Common",
+  "apiId": "COMMON.commonfunc.getrateenquiry",
+  "apiCategory": "CommonFunc",
+  "apiName": "GetRateEnquiry",
+  "status": "blocked",
+  "phase": "blocked",
+  "updatedAt": "2026-05-23T22:18:09+08:00",
+  "newAuthor": "Jimmy",
+  "specStatus": "done",
+  "specUpdatedAt": "2026-05-23T17:54:35+08:00",
+  "specBlockReason": null,
+  "specSourceFingerprint": "sha256:31fe4e15c7d9e0bd709e0384ed46a95298dec7d0c34bbe02a409c5a2c1b5aa24",
+  "specSource": {
+    "tsdFile": "TSD.Common_封存TSD共用开发链路_v1.0_20260523.docx",
+    "workbookFile": "NEWDA_Method_DETAIL_ExchangeCommonFunc_20260522.xlsx",
+    "sheetNames": [
+      "GetRateEnquiryFunc 取匯率詢價"
+    ]
+  },
+  "specArtifacts": {
+    "apiSpec": "../../../.agent/context/Common/apis/COMMON.commonfunc.getrateenquiry/Common_API_Spec.json"
+  },
+  "fixtureStatus": "skipped",
+  "fixturePhase": "no_sql",
+  "fixtureUpdatedAt": "2026-05-23T18:03:41+08:00",
+  "fixtureBlockReason": null,
+  "fixtureSourceFingerprint": "sha256:31fe4e15c7d9e0bd709e0384ed46a95298dec7d0c34bbe02a409c5a2c1b5aa24",
+  "fixtureArtifacts": {
+    "dbFixtureReport": "../../.agent/context/Common/apis/COMMON.commonfunc.getrateenquiry/db-fixture-report.json",
+    "tableChecks": "../../.agent/context/Common/apis/COMMON.commonfunc.getrateenquiry/table-checks.json",
+    "seedPlan": null,
+    "seedExecuted": null,
+    "seedManifest": null
+  },
+  "codeStatus": "blocked",
+  "codePhase": "blocked",
+  "codeUpdatedAt": "2026-05-23T22:18:09+08:00",
+  "codeBlockReason": "V6.2 dev-guideline selection blocked: API 同時命中前台與中後台線索，需由 spec/handoff 補明確調用者或使用場景。; frontstage-session: 命中特定前台/中後台規範，但 API 使用者或入口方向證據不足。",
+  "codeProjectRoot": ".",
+  "codeSolutionPath": "Sinopac.EnterpriseAPI.slnx",
+  "inputHashes": {
+    "upstreamManifest": "sha256:2a6efbb928c09ab0c92d53145db33d9e2e6c9afc6450edb86fc1b7fbf1baa0b1",
+    "apiSpec": "sha256:24a037d13539948fc24ab8e20eea316627537cf8c5c8662698b601449b4b6d24"
+  },
+  "modifiedFiles": [],
+  "validationChecks": [
+    "dotnet build \"Sinopac.EnterpriseAPI/Sinopac.EnterpriseAPI.csproj\" -m:1",
+    "dotnet test \"Test/EnterpriseApi.Unit/EnterpriseApi.Unit.csproj\" -m:1",
+    "dotnet test \"Test/EnterpriseApi.Integration/EnterpriseApi.Integration.csproj\" -m:1"
+  ],
+  "validationResults": [],
+  "repoDriftFiles": [],
+  "codeArtifacts": {
+    "changePlan": "../../../.agent/context/Common/apis/COMMON.commonfunc.getrateenquiry/change-plan.json",
+    "implementationReport": "../../../.agent/context/Common/apis/COMMON.commonfunc.getrateenquiry/implementation-report.md",
+    "diagnosisReport": "../../../.agent/context/Common/apis/COMMON.commonfunc.getrateenquiry/diagnosis-report.json"
+  },
+  "lastMessage": "COMMON.commonfunc.getrateenquiry blocked: V6.2 dev-guideline selection blocked: API 同時命中前台與中後台線索，需由 spec/handoff 補明確調用者或使用場景。; frontstage-session: 命中特定前台/中後台規範，但 API 使用者或入口方向證據不足。"
+}

@@ -1,0 +1,58 @@
+{
+  "schemaVersion": "4.1.0",
+  "manifestType": "api",
+  "executionId": "Common",
+  "apiId": "COMMON.commonfunc.genfnttranseq",
+  "apiCategory": "CommonFunc",
+  "apiName": "GenFntTranSeq",
+  "status": "pending",
+  "phase": "pending",
+  "updatedAt": "2026-05-23T22:18:09+08:00",
+  "newAuthor": "Jimmy",
+  "specStatus": "done",
+  "specUpdatedAt": "2026-05-23T17:50:37+08:00",
+  "specBlockReason": null,
+  "specSourceFingerprint": "sha256:f4d7a324564e897f84dbfe6ca4f9ec93211c8df47240f1004d9f56c93b2c9761",
+  "specSource": {
+    "tsdFile": "TSD.Common_封存TSD共用开发链路_v1.0_20260523.docx",
+    "workbookFile": "NEWDA_Method_DETAIL_ExchangeCommonFunc_20260522.xlsx",
+    "sheetNames": [
+      "GenFntTranSeq 產生交易序號"
+    ]
+  },
+  "specArtifacts": {
+    "apiSpec": "../../../.agent/context/Common/apis/COMMON.commonfunc.genfnttranseq/Common_API_Spec.json"
+  },
+  "fixtureStatus": "blocked",
+  "fixturePhase": "inspection_blocked",
+  "fixtureUpdatedAt": "2026-05-23T19:42:06+08:00",
+  "fixtureBlockReason": "missing_schema_authority",
+  "fixtureSourceFingerprint": "sha256:f4d7a324564e897f84dbfe6ca4f9ec93211c8df47240f1004d9f56c93b2c9761",
+  "fixtureArtifacts": {
+    "dbFixtureReport": "../../.agent/context/Common/apis/COMMON.commonfunc.genfnttranseq/db-fixture-report.json",
+    "tableChecks": "../../.agent/context/Common/apis/COMMON.commonfunc.genfnttranseq/table-checks.json",
+    "seedPlan": null,
+    "seedExecuted": null,
+    "seedManifest": null
+  },
+  "codeStatus": "pending",
+  "codePhase": "pending",
+  "codeUpdatedAt": "2026-05-23T22:18:09+08:00",
+  "codeBlockReason": null,
+  "codeProjectRoot": ".",
+  "codeSolutionPath": "Sinopac.EnterpriseAPI.slnx",
+  "inputHashes": {
+    "upstreamManifest": "sha256:f35becd7b7928e4ced19c96f6fb1aadb7992cee772ef679391d0e5c1f4f69d05",
+    "apiSpec": "sha256:3582e77765f525233b9636c100a408ab67cf1378a81e9faec42cc4e7d765af84"
+  },
+  "modifiedFiles": [],
+  "validationChecks": [],
+  "validationResults": [],
+  "repoDriftFiles": [],
+  "codeArtifacts": {
+    "changePlan": null,
+    "implementationReport": null,
+    "diagnosisReport": null
+  },
+  "lastMessage": null
+}

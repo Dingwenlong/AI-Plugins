@@ -1,0 +1,393 @@
+{
+  "schemaVersion": "4.2.0",
+  "apiId": "COMMON.commonfunc.getcustidformat",
+  "newAuthor": "Jimmy",
+  "functionCode": "Common",
+  "version": "1.0",
+  "apiCategory": "CommonFunc",
+  "apiName": "GetCustIDFormat",
+  "source": {
+    "tsdFile": "TSD.Common_封存TSD共用开发链路_v1.0_20260523.docx",
+    "workbookFile": "NEWDA_Method_DETAIL_ExchangeCommonFunc_20260522.xlsx",
+    "sheetNames": [
+      "GetCustIDFormat 針對CustId做正規化"
+    ]
+  },
+  "request": [
+    {
+      "rowKey": "1",
+      "fieldName": "custId",
+      "dataType": "string",
+      "required": false,
+      "description": "用戶id",
+      "example": "\"custId\":\"A9974787284\""
+    }
+  ],
+  "response": [
+    {
+      "rowKey": "1",
+      "fieldName": "isSuccess",
+      "dataType": "boolean",
+      "required": true,
+      "description": "API成功與否",
+      "example": "true",
+      "notes": "true ; false"
+    },
+    {
+      "rowKey": "2",
+      "fieldName": "responseCode",
+      "dataType": "string",
+      "required": true,
+      "description": "回應代碼",
+      "example": "0000",
+      "notes": "成功:0000其餘狀況為失敗"
+    },
+    {
+      "rowKey": "3",
+      "fieldName": "responseMessage",
+      "dataType": "string",
+      "required": true,
+      "description": "回應訊息",
+      "notes": "失敗狀況下回傳錯誤訊息"
+    },
+    {
+      "rowKey": "4",
+      "fieldName": "responseDT",
+      "dataType": "string",
+      "required": true,
+      "description": "系統回應時間",
+      "notes": "yyyy/MM/dd HH:mm:ss"
+    },
+    {
+      "rowKey": "5",
+      "fieldName": "responseData",
+      "dataType": "json",
+      "required": true,
+      "description": "回應資料框",
+      "example": "\"responseData\": {}",
+      "properties": [
+        {
+          "rowKey": "5.01",
+          "fieldName": "custIdFormat",
+          "dataType": "string",
+          "required": true,
+          "description": "正規化的custID",
+          "example": "\"custIdFormat\": \"F9388920948\""
+        }
+      ]
+    }
+  ],
+  "mockExamples": [
+    {
+      "scenario": "正向情境",
+      "responsePayload": {
+        "isSuccess": true,
+        "responseCode": "0000",
+        "responseMessage": "執行成功",
+        "responseDT": "2026/02/24 15:59:24",
+        "responseData": {
+          "custIdFormat": "F9388920948"
+        }
+      }
+    },
+    {
+      "scenario": "未輸入必填請求參數",
+      "responsePayload": {
+        "isSuccess": false,
+        "responseCode": "9999",
+        "responseMessage": "custId不能為空",
+        "responseDT": "2026/02/24 10:30:25",
+        "responseData": {}
+      }
+    },
+    {
+      "scenario": "請求失敗",
+      "responsePayload": {
+        "isSuccess": false,
+        "responseCode": "9001",
+        "responseMessage": "系統繁忙,請稍後再試！",
+        "responseDT": "2026/02/24 10:30:25",
+        "responseData": {}
+      }
+    }
+  ],
+  "backendApis": {
+    "DB": [
+      "MMA.dbo.USER_FOREIGNER_LIST",
+      "MMA.DBO.USER_FOREIGNER_LIST"
+    ],
+    "CommonFunc": [
+      "GetUserForeignerList();獲取外籍人士的T_MNEMONIC",
+      "GetUserForeignerList()"
+    ]
+  },
+  "businessLogic": {
+    "steps": [
+      {
+        "step": 1,
+        "title": "初始化參數",
+        "details": "1.如果參數沒有傳custId，需要從框架內獲取custId\n2.定義 postFix = \"0\";身分標記\n3.定義 originalPostFix = null;\n4. Regex regEx = new Regex(@\"^[A-Z][1289]\\d{8}$\"); //驗證custId"
+      },
+      {
+        "step": 2,
+        "title": "處理邏輯",
+        "details": "1. custId = custId.ToUpper().Trim();將custId轉大寫\n2.如果custId的長度等於11位\noriginalPostFix = custId.Substring(10, 1);\ncustId = custId.Substring(0, 10).Trim();\nif (custId.Length == 8)\n{\noriginalPostFix = \"  \" + originalPostFix;\n}\n2.如果custId的長度等於9\n直接回傳custId\n3.如果(custId.Length != 8 && custId.Length != 10) 直接回傳null\n4.判斷custId 是否為OBU開頭，如果符合條件postFix賦值為0\nif (Regex.IsMatch(custId, @\"^OBU\\d{5}$\"))\n{\npostFix = \"  0\";\n}\n5.判斷custId是否符合台灣身分證號格式，如果符合執行驗證方法，如果驗證未通過回傳null；如果通過驗證 postFix = \"0\";\nif (Regex.IsMatch(custId, @\"^[A-Z][1-2]\\d{8}$\"))\n{\nif（custId.Length==10並且符合regEx驗證規則）\n{ postFix = \"0\";}\nelse {回傳null；}\n}\n6.判斷custId是否符合2 個大寫英文字母 + 8 個任意數字（0-9），符合條件給postFix賦值\nif (Regex.IsMatch(custId, @\"^[A-Z]{2}\\d{8}$\"))\n{postFix = GetUserForeignerList(custId + \"8\") == string.Empty ? \"0\" :\"8\";}\n7.如果符 (Regex.IsMatch(custId, @\"^\\d{8}[A-Z]{2}$\")),postFix進行賦值\npostFix = GetUserForeignerList(custId + \"8\") == string.Empty ? \"0\" :\"8\";\n8.如果符合(Regex.IsMatch(custId, @\"^[A-Z][89]\\d{8}$\"))\n{\nif（custId.Length==10並且符合regEx驗證規則）\n{ postFix = \"0\";}\nelse {回傳null；}\npostFix = GetUserForeignerList(custId + \"8\") == string.Empty ? \"0\" : \"8\";\n}\n9.如果符合(Regex.IsMatch(custId, @\"^\\d{8}$\") ||  Regex.IsMatch(custId, @\"^[A-Z]{4}\\d{4}$\"))\n{\npostFix = \"  0\";\n}"
+      },
+      {
+        "step": 2,
+        "title": "1.IsValidId驗證",
+        "details": "1.如果custId.Length==10並且符合regEx驗證規則"
+      },
+      {
+        "step": 3,
+        "title": "組合參數",
+        "details": "1.如果originalPostFix!=null,進行賦值 postFix = originalPostFix;\n2.custIDFormat=custId + postFix;"
+      },
+      {
+        "step": 4,
+        "title": "回傳執行結果",
+        "details": "回傳正規化的custId"
+      }
+    ],
+    "fieldMappings": [
+      {
+        "target": "custIdFormat",
+        "source": "",
+        "rule": "正規化的custID",
+        "fields": [
+          {
+            "field": "custIdFormat",
+            "source": "",
+            "rule": "正規化的custID"
+          }
+        ]
+      }
+    ],
+    "errorCodeRules": [
+      {
+        "code": "9999",
+        "scenario": "未輸入必填請求參數",
+        "message": "custId不能為空"
+      },
+      {
+        "code": "9001",
+        "scenario": "請求失敗",
+        "message": "系統繁忙,請稍後再試！"
+      }
+    ],
+    "runtimeDependencies": [
+      {
+        "id": "external_api_commonfunc_getuserforeignerlist",
+        "type": "external_api",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "业务逻辑正文提到 CommonFunc->GetUserForeignerList() 依赖。"
+      },
+      {
+        "id": "external_api_commonfunc_getuserforeignerlist_t_mnemonic",
+        "type": "external_api",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "Excel 依赖声明提到 CommonFunc->GetUserForeignerList();獲取外籍人士的T_MNEMONIC。"
+      },
+      {
+        "id": "mma_sql_connection",
+        "type": "service",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "Execute authoritative SQL declared in the workbook for MMA.DBO.USER_FOREIGNER_LIST."
+      },
+      {
+        "id": "sql_table_db_mma_dbo_user_foreigner_list",
+        "type": "sql_table",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "业务逻辑正文提到 DB->MMA.dbo.USER_FOREIGNER_LIST 依赖。"
+      }
+    ],
+    "dataSources": [
+      {
+        "name": "MMA.DBO.USER_FOREIGNER_LIST",
+        "type": "sql_table",
+        "authority": "backend_contract",
+        "required": true
+      }
+    ],
+    "sqlSpecs": [],
+    "legacyReferences": [],
+    "prohibitedShortcuts": [
+      "block_comment_header_substitution"
+    ],
+    "referenceHints": [
+      {
+        "id": "db.user-foreigner-list.mma",
+        "category": "db_schema",
+        "matchSource": "sql_keyword",
+        "matchKey": "USER_FOREIGNER_LIST",
+        "title": "MMA",
+        "relativePath": "reference/global/raw/db-schema/MMA.xlsx",
+        "locator": {
+          "sheetName": "483"
+        },
+        "reason": "命中 SQL 表 USER_FOREIGNER_LIST，可读取数据库参考资料",
+        "authority": "reference_imported"
+      }
+    ]
+  },
+  "codeHandoff": {
+    "schemaVersion": "1.0.0",
+    "logicSummary": {
+      "stepCount": 5,
+      "queryContractCount": 0,
+      "mappingRuleCount": 0,
+      "legacyEvidenceCount": 0,
+      "dependencyHintCount": 5,
+      "constraintCount": 3,
+      "unresolvedCount": 0,
+      "primarySource": "businessLogic"
+    },
+    "logicFlow": [
+      {
+        "stepId": "step_1",
+        "title": "初始化參數",
+        "actionType": "validation",
+        "inputs": [
+          "custId"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_2",
+        "title": "處理邏輯",
+        "actionType": "mapping",
+        "inputs": [
+          "custId"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_2",
+        "title": "1.IsValidId驗證",
+        "actionType": "validation",
+        "inputs": [
+          "custId"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_3",
+        "title": "組合參數",
+        "actionType": "process",
+        "inputs": [
+          "custId"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_4",
+        "title": "回傳執行結果",
+        "actionType": "return",
+        "inputs": [
+          "custId"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      }
+    ],
+    "legacyEvidence": [],
+    "queryContracts": [],
+    "mappingRules": [],
+    "dependencyHints": [
+      {
+        "dependencyType": "external_api",
+        "preferredAbstractions": [
+          "IApiRequestService"
+        ],
+        "purpose": "业务逻辑正文提到 CommonFunc->GetUserForeignerList() 依赖。",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "external_api",
+        "preferredAbstractions": [
+          "IApiRequestService"
+        ],
+        "purpose": "Excel 依赖声明提到 CommonFunc->GetUserForeignerList();獲取外籍人士的T_MNEMONIC。",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "service",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor"
+        ],
+        "purpose": "Execute authoritative SQL declared in the workbook for MMA.DBO.USER_FOREIGNER_LIST.",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "sql_table",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor"
+        ],
+        "purpose": "业务逻辑正文提到 DB->MMA.dbo.USER_FOREIGNER_LIST 依赖。",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "sql_table",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor"
+        ],
+        "purpose": "Read from MMA.DBO.USER_FOREIGNER_LIST",
+        "evidenceIds": []
+      }
+    ],
+    "constraints": [
+      {
+        "constraintType": "prohibited_shortcut",
+        "rule": "block_comment_header_substitution",
+        "severity": "error",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "error_code_rule",
+        "rule": "9999 | 未輸入必填請求參數 | custId不能為空",
+        "severity": "warning",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "error_code_rule",
+        "rule": "9001 | 請求失敗 | 系統繁忙,請稍後再試！",
+        "severity": "warning",
+        "evidenceIds": []
+      }
+    ],
+    "unresolved": []
+  }
+}

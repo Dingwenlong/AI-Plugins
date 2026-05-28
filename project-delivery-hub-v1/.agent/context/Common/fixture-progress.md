@@ -1,0 +1,70 @@
+- [2026-05-23T17:55:53+08:00] COMMON.commonutil.checkprelogindevicestatus fixture skipped: no SQL dependency.
+- [2026-05-23T17:55:54+08:00] COMMON.commonutil.deldevicebinding fixture skipped: no SQL dependency.
+- [2026-05-23T17:56:07+08:00] COMMON.commonutil.editcommoncurrency fixture blocked: missing_schema_authority
+- [2026-05-23T17:56:08+08:00] COMMON.commonutil.getdevicebinding fixture skipped: no SQL dependency.
+- [2026-05-23T17:56:08+08:00] COMMON.depositcommonutil.getdawhofixsetting fixture skipped: no SQL dependency.
+- [2026-05-23T17:56:17+08:00] COMMON.commonfunc.addiristransactionrecord fixture blocked: missing_schema_authority
+- [2026-05-23T18:03:25+08:00] COMMON.commonfunc.deldevicebinding fixture blocked: sqlcmd_failed
+- [2026-05-23T18:03:29+08:00] COMMON.commonfunc.genfnttranseq fixture blocked: missing_schema_authority
+- [2026-05-23T18:03:29+08:00] COMMON.commonfunc.genfnttranseq fixture blocked: fixture_tool_error
+- [2026-05-23T18:03:30+08:00] COMMON.commonfunc.getaccountlistbytranscode fixture skipped: no SQL dependency.
+- [2026-05-23T18:03:32+08:00] COMMON.commonfunc.getcencurr fixture prepared; apply can continue.
+- [2026-05-23T18:03:32+08:00] COMMON.commonfunc.getcencurr fixture blocked: fixture_tool_error
+- [2026-05-23T18:03:33+08:00] COMMON.commonfunc.getcustidformat fixture prepared; apply can continue.
+- [2026-05-23T18:03:33+08:00] COMMON.commonfunc.getcustidformat fixture blocked: fixture_tool_error
+- [2026-05-23T18:03:37+08:00] COMMON.commonfunc.getdevicebinding fixture blocked: seed_file_missing, missing_schema_authority
+- [2026-05-23T18:03:37+08:00] COMMON.commonfunc.getdevicebinding fixture blocked: fixture_tool_error
+- [2026-05-23T18:03:39+08:00] COMMON.commonfunc.getfrontcontentparamfile fixture blocked: missing_schema_authority
+- [2026-05-23T18:03:39+08:00] COMMON.commonfunc.getfrontcontentparamfile fixture blocked: fixture_tool_error
+- [2026-05-23T18:03:40+08:00] COMMON.commonfunc.getic0001 fixture skipped: no SQL dependency.
+- [2026-05-23T18:03:40+08:00] COMMON.commonfunc.getoperationhour fixture blocked: sqlcmd_failed
+- [2026-05-23T18:03:41+08:00] COMMON.commonfunc.getrateenquiry fixture skipped: no SQL dependency.
+- [2026-05-23T18:03:41+08:00] COMMON.commonfunc.isintradedate fixture blocked: sqlcmd_failed
+- [2026-05-23T18:03:48+08:00] COMMON.depositcommonfunc.getdawhofixsetting fixture blocked: missing_schema_authority
+- [2026-05-23T18:03:48+08:00] COMMON.depositcommonfunc.getdawhofixsetting fixture blocked: fixture_tool_error
+- [2026-05-23T18:04:05+08:00] COMMON.exchangecommonfunc.editcommoncurrency fixture blocked: missing_schema_authority
+- [2026-05-23T18:04:05+08:00] COMMON.exchangecommonfunc.editcommoncurrency fixture blocked: fixture_tool_error
+- [2026-05-23T18:04:06+08:00] COMMON.exchangecommonfunc.getbillboardrate fixture blocked: sqlcmd_failed
+- [2026-05-23T18:04:20+08:00] COMMON.exchangecommonfunc.getcommoncurrency fixture blocked: missing_schema_authority
+- [2026-05-23T18:04:20+08:00] COMMON.exchangecommonfunc.getcommoncurrency fixture blocked: fixture_tool_error
+- [2026-05-23T18:04:21+08:00] COMMON.exchangecommonfunc.getdawhorate fixture blocked: sqlcmd_failed
+- [2026-05-23T18:04:25+08:00] COMMON.exchangecommonfunc.gethistbillboardrate fixture blocked: missing_schema_authority
+- [2026-05-23T18:04:25+08:00] COMMON.exchangecommonfunc.gethistbillboardrate fixture blocked: fixture_tool_error
+- [2026-05-23T18:04:47+08:00] COMMON.commonfunc.getcustidformat fixture prepared; apply can continue.
+- [2026-05-23T18:04:49+08:00] COMMON.commonfunc.getcencurr fixture prepared; apply can continue.
+- [2026-05-23T18:05:04+08:00] COMMON.commonfunc.getcustidformat fixture done.
+- [2026-05-23T18:05:06+08:00] COMMON.commonfunc.getcencurr fixture done.
+- [2026-05-23T18:05:37+08:00] COMMON.commonfunc.genfnttranseq fixture blocked: missing_schema_authority
+- [2026-05-23T18:05:38+08:00] COMMON.commonfunc.getcustidformat fixture prepared; apply can continue.
+- [2026-05-23T18:05:39+08:00] COMMON.commonfunc.getcustidformat fixture done.
+- [2026-05-23T18:05:41+08:00] COMMON.commonfunc.getdevicebinding fixture blocked: seed_file_missing, missing_schema_authority
+- [2026-05-23T18:05:43+08:00] COMMON.commonfunc.getfrontcontentparamfile fixture blocked: missing_schema_authority
+- [2026-05-23T18:05:44+08:00] COMMON.depositcommonfunc.getdawhofixsetting fixture blocked: missing_schema_authority
+- [2026-05-23T18:05:49+08:00] COMMON.exchangecommonfunc.editcommoncurrency fixture blocked: missing_schema_authority
+- [2026-05-23T18:05:53+08:00] COMMON.exchangecommonfunc.getcommoncurrency fixture blocked: missing_schema_authority
+- [2026-05-23T18:05:55+08:00] COMMON.exchangecommonfunc.gethistbillboardrate fixture blocked: missing_schema_authority
+- [2026-05-23T19:30:27+08:00] COMMON.commonfunc.getdevicebinding fixture blocked: missing_schema_authority
+- [2026-05-23T19:41:27+08:00] COMMON.commonutil.editcommoncurrency fixture blocked: missing_schema_authority
+- [2026-05-23T19:41:27+08:00] COMMON.depositcommonutil.getdawhofixsetting fixture skipped: no SQL dependency.
+- [2026-05-23T19:41:34+08:00] COMMON.commonfunc.addiristransactionrecord fixture prepared; apply can continue.
+- [2026-05-23T19:41:34+08:00] COMMON.commonfunc.checkaccount fixture skipped: no SQL dependency.
+- [2026-05-23T19:41:35+08:00] COMMON.commonfunc.checkforeignercustid fixture skipped: no SQL dependency.
+- [2026-05-23T19:41:55+08:00] COMMON.commonfunc.deldevicebinding fixture blocked: missing_schema_authority
+- [2026-05-23T19:42:06+08:00] COMMON.commonfunc.genfnttranseq fixture blocked: missing_schema_authority
+- [2026-05-23T19:42:13+08:00] COMMON.commonfunc.getcencurr fixture prepared; apply can continue.
+- [2026-05-23T19:42:19+08:00] COMMON.commonfunc.getcustidformat fixture prepared; apply can continue.
+- [2026-05-23T19:42:25+08:00] COMMON.commonfunc.getdevicebinding fixture blocked: missing_schema_authority
+- [2026-05-23T19:42:30+08:00] COMMON.commonfunc.getfrontcontentparamfile fixture blocked: missing_schema_authority
+- [2026-05-23T19:42:31+08:00] COMMON.commonfunc.getic0001 fixture skipped: no SQL dependency.
+- [2026-05-23T19:42:38+08:00] COMMON.commonfunc.getoperationhour fixture prepared; apply can continue.
+- [2026-05-23T19:42:39+08:00] COMMON.commonfunc.getvirtualacctprefix fixture skipped: no SQL dependency.
+- [2026-05-23T19:42:39+08:00] COMMON.commonfunc.isintradedate fixture skipped: no SQL dependency.
+- [2026-05-23T19:42:41+08:00] COMMON.commonfunc.showacctlist fixture skipped: no SQL dependency.
+- [2026-05-23T19:42:51+08:00] COMMON.depositcommonfunc.getdawhofixsetting fixture blocked: missing_schema_authority
+- [2026-05-23T19:43:13+08:00] COMMON.exchangecommonfunc.editcommoncurrency fixture blocked: missing_schema_authority
+- [2026-05-23T19:43:29+08:00] COMMON.exchangecommonfunc.getcommoncurrency fixture blocked: missing_schema_authority
+- [2026-05-23T19:43:41+08:00] COMMON.exchangecommonfunc.gethistbillboardrate fixture blocked: missing_schema_authority
+- [2026-05-23T19:45:13+08:00] COMMON.commonfunc.checkvip fixture skipped: no SQL dependency.
+- [2026-05-23T19:45:18+08:00] COMMON.exchangecommonfunc.getbillboardrate fixture blocked: missing_schema_authority
+- [2026-05-23T19:45:24+08:00] COMMON.exchangecommonfunc.getdawhorate fixture blocked: missing_schema_authority
+- [2026-05-23T19:45:43+08:00] COMMON.commonfunc.checkvip fixture blocked: missing_schema_authority

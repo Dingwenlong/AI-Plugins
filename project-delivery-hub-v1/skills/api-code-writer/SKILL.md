@@ -1,9 +1,9 @@
 ---
-name: API 业务代码写入器
+name: 【开发落地】API 业务代码写入器
 description: 把已完成的 API Spec 落成 .NET 业务代码。第 04 步：在已绑定唯一 `.sln` 的工作区读取共享 `.agent/context/{functionCode}/`、`*_API_Spec.json` 与 `codeHandoff`，实现 Controller / Service / Entity 等业务代码并交接测试计划；不生成 UnitTest / IntegrationTest 测试源码。关键词：Controller、Service、Entity、change-plan、codeStatus。
 ---
 
-# 04 API 业务代码写入器
+# 【开发落地】API 业务代码写入器
 
 使用这个第 04 步技能在目标项目的 `.agent/context` 下恢复或推进业务代码写入链路。脚本会先读取共享的 `execution-state.json`、`api-checklist.json` 与 API 级 `manifest.json`，只更新 `code*` 字段并保留 `spec*` 状态。读取 `*_API_Spec.json` 时，优先消费结构化 `codeHandoff`；若旧 spec 尚未升级，则会从 `businessLogic` 临时合成兼容 handoff。若 API 目录下存在 `review-notes.json`，也必须一并读取，并将评审意见转换成 `change-plan.json.analysis` 可执行约束；若缺少 `review-notes.json` 但 `.agent/Common/project-hard-constraints.json` 存在，`prepare` 必须即时按当前 API 条件合成 fallback review 约束。推荐链路是先 01，再 02，再 03（如需），再 04，最后 05（如需）。
 
@@ -16,18 +16,20 @@ description: 把已完成的 API Spec 落成 .NET 业务代码。第 04 步：�
 正式第 04 步 `prepare` 前，必须先解析 `apiCodeWriter` 规则包：
 
 ```powershell
-python "C:\Users\<username>\plugins\project-delivery-hub-v1\references\resolve_project_rule_pack.py" `
+python "<pluginRoot>\references\resolve_project_rule_pack.py" `
   --pack apiCodeWriter `
   --workspace-key "<workspaceKey>"
 ```
 
 若用户明确给出规则库，改传 `--rules-root "<rulesRoot>"`。脚本输出的开发规范规则是生成 `change-plan.json` 前的硬输入；`status=blocked` 时，`prepare` 必须写入 `change-plan.json.analysis.devGuidelineGaps` / `unresolvedLogic` 并停止进入正式落码，不得凭第 01 步 reference、插件内旧 reference 或记忆补齐专案规范。
 
-第 04 步的职责边界固定为：只实现或修改业务运行代码，并把测试情景、`unitTestTargetFiles`、`integrationTestTargetFiles`、SQL fixture 需求与 Service runtime validation 计划写入 `change-plan.json.analysis.testCodeHandoff` / handoff artifact。**不得新增、改写或补齐 UnitTest / IntegrationTest / Service runtime validation 测试源码**；这些测试代码统一由第 05 步 [$docx-unittest-report](C:/Users/<username>/plugins/project-delivery-hub-v1/skills/docx-unittest-report/SKILL.md) 生成、维护、执行并纳入 UT 测报。
+`scripts/write_api_code.py` 与 `scripts/materialize_review_notes.py` 依赖 Python `jsonschema` 进行 schema 校验。运行时若缺少该依赖，脚本会先以 dependency preflight 失败并提示安装方式；不得绕过 schema 校验继续写状态。
+
+第 04 步的职责边界固定为：只实现或修改业务运行代码，并把测试情景、`unitTestTargetFiles`、`integrationTestTargetFiles`、SQL fixture 需求与 Service runtime validation 计划写入 `change-plan.json.analysis.testCodeHandoff` / handoff artifact。**不得新增、改写或补齐 UnitTest / IntegrationTest / Service runtime validation 测试源码**；这些测试代码统一由第 05 步 `skills/docx-unittest-report/SKILL.md` 生成、维护、执行并纳入 UT 测报。
 
 这个技能不绑定固定前置步骤名称。只要共享 `.agent/context` 中已经存在可消费的 `spec*` 状态、`manifest.json` 与 `*_API_Spec.json`，就可以直接进入 code writer；不要求调用者必须先显式经过某个特定命名的上游 workflow / skill。
 
-进入 code writer 前不强制先执行 [$api-sql-fixture-preparer](C:/Users/<username>/plugins/project-delivery-hub-v1/skills/api-sql-fixture-preparer/SKILL.md)。默认允许先跑 `prepare` 产出 `change-plan.json` 并开始 AI 改码；若目标 API 后续验证依赖 SQL fixture，再于 `apply` 前补执行 fixture。若 `apply` 时 `fixtureStatus` 仍非 `done|skipped`，则应回报 `waiting_fixture`，提示先补 fixture。
+进入 code writer 前不强制先执行 `skills/api-sql-fixture-preparer/SKILL.md`。默认允许先跑 `prepare` 产出 `change-plan.json` 并开始 AI 改码；若目标 API 后续验证依赖 SQL fixture，再于 `apply` 前补执行 fixture。若 `apply` 时 `fixtureStatus` 仍非 `done|skipped`，则应回报 `waiting_fixture`，提示先补 fixture。
 
 `prepare` 内建承担 precheck 的职责：会直接解析目标仓库框架槽位、模块落点、依赖、风险与验证命令，并生成 `change-plan.json`。因此这一步不依赖 `workflow-develop-precheck` 或其它外部 precheck skill。
 
@@ -57,7 +59,7 @@ python "C:\Users\<username>\plugins\project-delivery-hub-v1\references\resolve_p
 2. 默认读取集中 `.agent/context/execution-batch.json`；未配置集中 `.agent` 时回退 `<project-root>/.agent/context/execution-batch.json`
 3. 默认落到 `.agent/context/<functionCode>/`
 4. 读取 `change-plan.json` 后，AI 必须直接在目标仓库修改真实业务代码；脚本只负责 prepare/apply 编排，不代写 Controller / Service，也不写测试源码
-5. 若目标 API 依赖 SQL fixture，且尚未执行或结果未达 `done|skipped`，则在 `apply` 前补执行 [$api-sql-fixture-preparer](C:/Users/<username>/plugins/project-delivery-hub-v1/skills/api-sql-fixture-preparer/SKILL.md)
+5. 若目标 API 依赖 SQL fixture，且尚未执行或结果未达 `done|skipped`，则在 `apply` 前补执行 `skills/api-sql-fixture-preparer/SKILL.md`
 6. 代码改完后，再调用 `scripts/write_api_code.py --execution-mode apply`
 7. 若未指定 `--api-id`，一次只推进一支 `specStatus=done` 且 `codeStatus` eligible 的 API；`prepare` 不以 `fixtureStatus` 作为入口门槛
 8. 每次运行结束后，必须读取共享 `execution-state.json` 与 `api-checklist.json` 向用户汇报结果
@@ -71,6 +73,14 @@ python "C:\Users\<username>\plugins\project-delivery-hub-v1\references\resolve_p
    - `BusinessLogicLayout/EnterpriseApi/EnterpriseApiBusiness/<Module>/<Module>Service.<ApiName>.cs`
    - `BusinessLogicLayout/EnterpriseApi/EnterpriseApiEntity/<Module>/...Info.cs`
    - 测试目标文件仅写入 `testCodeHandoff` / `change-plan.json.analysis.unitTestTargetFiles` / `change-plan.json.analysis.integrationTestTargetFiles`，例如 `Test/UnitTesting/...` 与 `Test/IntegrationTesting/...`；不得由第 04 步创建或修改
+13. NEWDAWHO 当前 `P240301Git` 布局下，若 `apiCategory=CommonFunc` 且存在 `Libray/Sinopac.CommonFunc/Sinopac.CommonFunc.csproj`，必须强制使用 CommonFunc 类库落点：
+   - `Libray/Sinopac.CommonFunc/IFuncService/ICommonFuncService.cs`
+   - `Libray/Sinopac.CommonFunc/FuncService/CommonFuncService.cs`
+   - `Libray/Sinopac.CommonFunc/FuncService/CommonFuncService.<ApiName>.cs`
+   - `Libray/Sinopac.CommonFunc/Dto/<ApiName>Info.cs`
+   - `Libray/Sinopac.CommonFunc/ResponseCodes/O_Common.resx`
+   - `controllerFile` 必须为空，`codeTargetFiles` 不得包含 `CommonFuncController`，也不得再落到 `EnterpriseApiBusiness/CommonFunc`
+14. `CommonUtil` 仍保留 EnterpriseAPI Controller / Service 结构；第 04 步只允许为了编译引用 CommonFunc DTO / interface 调整 namespace，不得把 CommonUtil 搬入 `Sinopac.CommonFunc`
 10. 先复用共享抽象，再补模块代码：若仓库已有 `CommonStatic`、共用 helper、response factory、header 解析器、错误码封装或 SQL executor 包装，不得在单个 service 内重复新增同类 helper
 11. 对 `TransactionResult<T>` 封装，优先复用公共 factory；不得在每个 service 内重复创建 `BuildSuccess` / `BuildFailure` 之类的局部方法，除非该 helper 明确包含模块专属业务语义
 12. 不得为单支 API 落码便利而预支公共抽象；只有仓库已存在同类模式，或至少 2 个 API / 模块会明确复用时，才允许新增 `CommonStatic` 级 SQL executor、response helper 或其它基础设施包装
@@ -193,7 +203,7 @@ Windows / .NET 工作区若遇到 `obj/refint/*.dll`、`bin/*.dll`、`GenerateDe
 
 ```powershell
 powershell -ExecutionPolicy Bypass `
-  -File "C:\Users\<username>\plugins\project-delivery-hub-v1\skills\api-code-writer\scripts\dotnet-stable-verify.ps1" `
+  -File "<pluginRoot>\skills\api-code-writer\scripts\dotnet-stable-verify.ps1" `
   -ProjectRoot "D:\Repo\Project" `
   -KillDotnet `
   -Command @(
@@ -245,12 +255,13 @@ powershell -ExecutionPolicy Bypass `
 - 必须同时读取并保留共享 `manifest.json` / `api-checklist.json` / `execution-state.json` 中的 `fixture*` 字段；不得在回写 code 状态时覆盖或清空 SQL fixture 状态
 - 只更新共享 `execution-state.json`、`api-checklist.json`、`manifest.json` 的 `code*` 字段和顶层聚合字段
 - code writer 不绑定固定前置步骤名称；只要共享 `.agent/context` 产物齐备即可进入
-- 进入 code writer 前不强制先执行 [`api-sql-fixture-preparer`](C:/Users/<username>/plugins/project-delivery-hub-v1/skills/api-sql-fixture-preparer/SKILL.md)
+- 进入 code writer 前不强制先执行 `skills/api-sql-fixture-preparer/SKILL.md`
 - 若目标 API 在 `apply` 时的 `fixtureStatus` 仍非 `done|skipped`，则应回报 `waiting_fixture`，提示先补执行 fixture
 - `codeHandoff` 优先级高于旧 `businessLogic`，本地相似文件只能补实现风格，不能替代 handoff 缺失的原业务逻辑
 - `EnterpriseAPI` 控制器固定保留 `[ApiVersion]` 与版本路由，不写 `[ApiController]`
 - `EnterpriseAPI` 新增 `Controller` / `Service` 默认使用主构造函数；除非框架版本、partial 结构或既有模块风格明确不允许
 - `EnterpriseAPI` 的服务实现文件默认使用模块文件夹布局，例如 `BusinessLogicLayout/EnterpriseApi/EnterpriseApiBusiness/Setting/SettingService.cs`
+- NEWDAWHO `CommonFunc` 是共享类库，不生成、不规划 `CommonFuncController`；接口固定在 `IFuncService`，实现固定在 `FuncService`，DTO 与 response resource 分别固定在 `Dto` / `ResponseCodes`
 - `EnterpriseAPI` 返回值固定使用 `TransactionResult<T>`
 - 发现 `AddBusinessScoped()` 已存在时，不把修改 `Program.cs` / `ProgramExtensions.cs` 当成常规步骤
 - `change-plan.json.analysis` 必须写明 `frameworkProfile`、`moduleName`、`controllerFile`、`interfaceFile`、`serviceFiles`、`entityFiles`、`codeTargetFiles`、`unitTestTargetFiles`、`integrationTestTargetFiles`、`testCodeHandoff`、`creationMode`，以及 `logicSourcesUsed`、`queryContractsSelected`、`mappingRulesSelected`、`legacyEvidenceUsed`、`constraintsApplied`、`unresolvedLogic`。`unitTestTargetFiles` / `integrationTestTargetFiles` / 汇总型 `testTargetFiles` 只用于第 05 步测试代码 handoff，不代表第 04 步可写入测试源码。
@@ -270,10 +281,16 @@ powershell -ExecutionPolicy Bypass `
 - 默认验证策略：显式 `validation-check` 优先；未提供时 `EnterpriseAPI` 固定执行 API build，并可运行仓库既有 unit test / integration test 作为回归验证；第 04 步不得为了通过验证而新增或修改测试源码。默认 API build、unit test、integration test 都必须使用 `-m:1` 降低 MSBuild 并行度，测试项目默认正常 build/test，不使用 `--no-build` 依赖既有 DLL
 - Windows 下显式 `validation-check` 必须在命令字符串内部使用双引号包住含空格路径，例如 `dotnet build "D:\Repo\App.csproj"`；不要把 PowerShell 单引号路径直接塞进 `validation-check`
 - Windows 下手工验证或显式验证若需要固定清理常驻进程，优先调用 `scripts/dotnet-stable-verify.ps1`；需要强制清理 `dotnet` 进程时显式传入 `-KillDotnet`
+- 新增或修改 C# 源码时默认使用 file-scoped namespace；修改既有业务文件时，除非文件结构不允许，应一并从 block-scoped namespace 收敛为 file-scoped namespace。
 - AI 交付前必须清理未使用的 `using`；若编译器或 IDE 可直接判定为未使用，则不得保留在最终代码中
-- 匿名对象初始化若属性名可由成员访问尾段自然推导，默认使用 `new { ctx.CustId, ctx.Ip }` 这类简写；只有在需要改名或避免歧义时才显式写成 `CustId = ctx.CustId`
+- 对象建立默认使用简化写法；目标型别可由声明、赋值、回传型别、集合初始化或参数位置明确推导时，使用 `new()`，只有存在可读性、重载解析或类型推断风险时保留完整型别。匿名对象初始化若属性名可由成员访问尾段自然推导，默认使用 `new { ctx.CustId, ctx.Ip }` 这类简写；只有在需要改名或避免歧义时才显式写成 `CustId = ctx.CustId`
+- 集合或数组初始化在目标型别明确时优先使用 C# collection expression，例如 `[]` / `[item1, item2]`；只有型别推断、重载解析、可读性或框架兼容性有风险时，才保留 `new[] { ... }`、`new T[] { ... }` 或 `new List<T> { ... }`
 - 私有方法拆分必须服务于复用、独立业务语义或多分支可读性；对于只在单一方法中调用一次的轻量格式转换、字典映射或单字段包装，默认保留在当前方法内，不要为了“结构化”而额外拆方法
-- 对 Service / helper 中承载业务语义的显式控制流程区块，`if` / `else if` / `foreach` / `for` / `while` / `switch` / 有业务语义的 `case` 前方都必须补一句注释；注释要说明这个判断、迭代或分派在做什么，以及为什么要在这里短路、跳过、汇总、映射或分流，不能只对 `if` 补注释而让 `foreach`、`switch` 裸露
+- 代码行间说明按用途加标签：`// [業務]：` 用于 PRD/TSD/API Detail / 旧系统继承下来的业务规则、业务判断与业务限制；`// [意圖]：` 用于说明查询顺序、异常降级、兼容旧资料、避免重复调用、避免空值误判等代码意图。标签注释优先放在相关代码块前，不做逐行复述
+- 防呆 `if` 与 defensive branch 也必须在前一行加标签注释；业务限制用 `// [業務]：`，空值保护、状态防误判、部分更新防护用 `// [意圖]：`
+- 访问外部状态或服务的 `await` 前必须加即时 `// [意圖]：` 注释，范围包含 DB 查询/写入、交易建立/提交/回滚、登入上下文、CommonFunc / 外部 API / Redis / cache、文件与网络访问
+- 对 Service / helper 中承载业务语义的显式控制流程区块，`if` / `else if` / `foreach` / `for` / `while` / `switch` / 有业务语义的 `case` 前方都必须补一句标签注释；注释要说明这个判断、迭代或分派在做什么，以及为什么要在这里短路、跳过、汇总、映射或分流，不能只对 `if` 补注释而让 `foreach`、`switch` 裸露
+- `switch` 不按条件数量硬套；只有同一判断维度、状态枚举或明确 pattern matching 时才使用，像交易日这类多字段业务判断默认保留 `if` / `else if`
 - 私有方法默认必须补齐显式说明，至少让维护者一眼看懂「这个方法负责什么」与「何时会被调用」；优先使用 XML 注释，若仓库该位置不适合 XML，则至少在方法前补一行职责说明注释。只有简单到无需解释的单行 getter / setter / 纯转发方法才可省略
 - 对公开方法、接口实现方法与控制器动作，默认写与当前职责一致的显式 XML 注释；不要用 `inheritdoc` 充当占位，除非上游接口本身已经提供完整且完全适配当前语义的注释
 - `return` 前默认留一空行；特别是在 `if` / `catch` / 主要成功路径中，避免日志、赋值或其它语句与 `return` 紧贴在一起
@@ -321,10 +338,13 @@ powershell -ExecutionPolicy Bypass `
 
 ## 资源
 
+- `agents/openai.yaml`
 - `scripts/runtime.py`
 - `scripts/state_io.py`
 - `scripts/handoff_analysis.py`
 - `scripts/framework_plan.py`
+- `scripts/chain_workspace.py`
+- `scripts/project_rules.py`
 - `scripts/dev_guidelines.py`
 - `scripts/convert_dev_guidelines.py`
 - `scripts/validation_runner.py`
@@ -340,3 +360,13 @@ powershell -ExecutionPolicy Bypass `
 - 专案规则库 `rules/code-guidelines/**`
 - 技能内 `references/dev-guidelines/**` 仅保留历史回归 fixture；运行时不得作为 active 开发规范来源
 - `tests/run_regressions.py`
+
+## Leader Mode
+
+当由 `multi-api-leader` 显式编排时：
+
+- leader 必须先按 `--api-id` 串行 prepare 全部 API，生成每个 API 的 `change-plan.json`。
+- prepare 完成后运行 `skills/multi-api-leader/scripts/orchestrate_multi_api.py --mode plan`，根据 planned files 生成 `api-workgroups.json` 与 `file-claims.json`。
+- 文件目标重叠的 API 必须进入同一 workGroup，由同一 worker 串行处理；无重叠 workGroup 才能并行。
+- worker 只能修改 `file-claims.json` 分配给自己的代码文件，不能写 `.agent/context`，不能生成 UnitTest/IntegrationTest 测试源码。
+- worker 返回的 `modifiedFiles` 必须由 leader 校验无越权后，leader 再串行 apply/验证并写回 `codeStatus`、`testCodeHandoff` 与相关共享状态。

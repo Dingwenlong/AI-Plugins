@@ -14,8 +14,8 @@ from chain_workspace import resolve_chain_workspace, write_workspace_snapshot
 STATE_SCHEMA_VERSION = "4.1.0"
 BATCH_SCHEMA_VERSION = "1.0.0"
 SKILL_NAME = "api-sql-fixture-preparer"
-UPSTREAM_API_SPEC_SCHEMA_VERSION = "4.2.0"
-COMPATIBLE_UPSTREAM_API_SPEC_SCHEMA_VERSIONS = {"4.1.0", "4.2.0"}
+UPSTREAM_API_SPEC_SCHEMA_VERSION = "4.3.0"
+COMPATIBLE_UPSTREAM_API_SPEC_SCHEMA_VERSIONS = {"4.1.0", "4.2.0", "4.3.0"}
 
 
 @dataclass(frozen=True)

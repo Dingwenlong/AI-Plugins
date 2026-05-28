@@ -18,11 +18,24 @@ from pathlib import Path
 from typing import Any, Iterable
 from zipfile import BadZipFile, ZipFile
 
-from docx import Document
-from docx.opc.exceptions import PackageNotFoundError
-from jsonschema import Draft202012Validator
-from openpyxl import load_workbook
-from openpyxl.worksheet.worksheet import Worksheet
+try:
+    from docx import Document
+    from docx.opc.exceptions import PackageNotFoundError
+    from jsonschema import Draft202012Validator
+    from openpyxl import load_workbook
+    from openpyxl.worksheet.worksheet import Worksheet
+except ImportError as exc:
+    missing_module = (getattr(exc, "name", "") or "").split(".", 1)[0]
+    package_name = {
+        "docx": "python-docx",
+        "jsonschema": "jsonschema",
+        "openpyxl": "openpyxl",
+    }.get(missing_module, missing_module or "required package")
+    raise SystemExit(
+        "api-spec-writer 缺少 Python 依赖："
+        f"{package_name}。请在当前解释器安装后重试，例如："
+        f"python -m pip install {package_name}"
+    ) from exc
 
 from reference_support import (
     format_reference_locator,
@@ -38,6 +51,7 @@ from reference_support import (
     slugify as reference_slugify,
 )
 from chain_workspace import update_chain_status
+from sequence_diagrams import build_sequence_context
 from runtime import (
     API_SPEC_SCHEMA_VERSION,
     BATCH_SCHEMA_VERSION,
@@ -185,7 +199,7 @@ def parse_args() -> argparse.Namespace:
     reject_unsupported_legacy_flags(sys.argv[1:])
     parser = ZhArgumentParser(description="初始化或恢复 api-spec-writer 执行面，并逐 API 生成规格交接产物。")
     parser.add_argument("-h", "--help", action="help", help="显示此帮助并退出")
-    parser.add_argument("docx_ref", nargs="?", default=None, help="兼容输入：DOCX 路径、精确文件名，或 `.agent/TSD` 下的唯一部分文件名。默认仍要求先有 development-handoff.json。")
+    parser.add_argument("docx_ref", nargs="?", default=None, help="DOCX 路径、精确文件名，或 `.agent/TSD` 下的唯一部分文件名。若没有 development-handoff.json，默认可直接消费此输入。")
     parser.add_argument("--project-root", required=True)
     parser.add_argument("--agent-dir", default=".agent")
     parser.add_argument("--agent-root", default=None, help="集中式 .agent 根目录；优先级高于 --agent-dir。")
@@ -194,11 +208,22 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--rules-root", help="专案规则库根目录；优先级高于环境变量与 workspace 配置。")
     parser.add_argument("--context-root", default=None)
     parser.add_argument("--design-handoff", default=None, help="梳理技能生成的 development-handoff.json；可跳过第 01 步。")
-    parser.add_argument("--allow-legacy-input", action="store_true", help="兼容旧流程：允许没有梳理 handoff 时直接消费 docx_ref / execution-batch。默认不启用。")
+    parser.add_argument("--allow-legacy-input", action="store_true", help="兼容旧调用参数；缺少 development-handoff.json 时默认也允许直接消费 docx_ref / execution-batch。")
     parser.add_argument("--api-id", default=None)
     parser.add_argument("--function-code", default=None)
+    parser.add_argument("--sequence-root", default=None, help="時序圖根目錄臨時覆蓋；未傳時讀取 `.agent/functions/<functionCode>/analysis/sequence-diagrams` 與 design-source-registry。")
     parser.add_argument("--new-author", default=None)
     return parser.parse_args()
+
+
+def resolve_optional_path(value: str | None, *, base: Path) -> Path | None:
+    text = clean_text(value)
+    if not text:
+        return None
+    path = Path(text).expanduser()
+    if not path.is_absolute():
+        path = base / path
+    return path.resolve()
 
 
 def normalize_batch_docx_ref(project_root: Path, docx_path: Path) -> str:
@@ -264,6 +289,98 @@ def select_handoff_file(agent_dir: Path, payload: dict[str, Any], *kinds: str) -
     return None
 
 
+def select_handoff_analysis_artifact(agent_dir: Path, payload: dict[str, Any], *, kind: str, fmt: str) -> Path | None:
+    wanted_kind = clean_text(kind).casefold()
+    wanted_format = clean_text(fmt).casefold()
+    for item in list(payload.get("analysisArtifacts") or []):
+        if not isinstance(item, dict):
+            continue
+        if clean_text(item.get("kind")).casefold() != wanted_kind:
+            continue
+        if clean_text(item.get("format")).casefold() != wanted_format:
+            continue
+        for key in ("copiedRelativePath", "relativePath", "path", "sourcePath"):
+            path = resolve_handoff_relative_path(agent_dir, item.get(key))
+            if path is not None:
+                return path
+    return None
+
+
+def load_it_spec_diff_matrix_items(agent_dir: Path, function_code: str | None) -> list[dict[str, Any]]:
+    if not function_code:
+        return []
+    handoff_path = resolve_design_handoff_path(agent_dir, None, function_code)
+    handoff_payload = load_design_handoff(handoff_path)
+    if handoff_payload is None:
+        return []
+    matrix_path = select_handoff_analysis_artifact(
+        agent_dir,
+        handoff_payload,
+        kind="it-spec-diff-matrix",
+        fmt="json",
+    )
+    if matrix_path is None or not matrix_path.exists():
+        return []
+    payload = load_json(matrix_path)
+    if not isinstance(payload, dict):
+        return []
+    return [item for item in list(payload.get("items") or []) if isinstance(item, dict)]
+
+
+def diff_item_to_legacy_evidence(item: dict[str, Any]) -> dict[str, Any] | None:
+    item_id = clean_text(item.get("id"))
+    if not item_id:
+        return None
+    area = clean_text(item.get("area")) or item_id
+    customer = clean_text(item.get("customerSpecEvidence"))
+    current = clean_text(item.get("currentDesignEvidence"))
+    decision = clean_text(item.get("decision"))
+    reason = clean_text(item.get("decisionReason"))
+    snippet = f"Customer IT SPEC: {customer}\nCurrent design: {current}\nDecision: {decision} - {reason}"
+    return {
+        "evidenceId": f"it_spec_diff.{item_id}",
+        "kind": "customerItSpecDiff",
+        "origin": area,
+        "authority": "customer_it_spec_diff_matrix",
+        "symbols": extract_symbol_candidates(snippet),
+        "summary": f"{area}: {decision or 'decision missing'}",
+        "snippet": snippet,
+    }
+
+
+def diff_item_to_unresolved(item: dict[str, Any]) -> dict[str, Any] | None:
+    item_id = clean_text(item.get("id"))
+    readiness_impact = clean_text(item.get("readinessImpact")).casefold()
+    decision = clean_text(item.get("decision")).casefold()
+    if readiness_impact != "blocking" and decision not in {"needs-customer-confirmation", "unresolved", "todo", "pending"}:
+        return None
+    reason = clean_text(item.get("decisionReason")) or clean_text(item.get("followUp")) or "Customer IT SPEC difference needs a decision."
+    blocking = readiness_impact == "blocking"
+    payload = {
+        "topic": f"it_spec_diff.{item_id or 'unresolved'}",
+        "reason": reason,
+        "blocking": blocking,
+        "suggestedOwner": "SA/API design",
+        "nextDecisionNeeded": clean_text(item.get("followUp")) or "裁决 Customer IT SPEC 与现行 TSD/API Detail 的差异。",
+    }
+    if blocking:
+        payload["blockedReason"] = "Customer IT SPEC 差异矩阵存在未裁决或阻塞项"
+    return payload
+
+
+def build_it_spec_diff_code_handoff(agent_dir: Path, function_code: str | None) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    legacy_evidence: list[dict[str, Any]] = []
+    unresolved: list[dict[str, Any]] = []
+    for item in load_it_spec_diff_matrix_items(agent_dir, function_code):
+        evidence = diff_item_to_legacy_evidence(item)
+        if evidence is not None:
+            legacy_evidence.append(evidence)
+        unresolved_item = diff_item_to_unresolved(item)
+        if unresolved_item is not None:
+            unresolved.append(unresolved_item)
+    return legacy_evidence, unresolved
+
+
 def infer_requested_function_code(
     *,
     requested_function_code: str | None,
@@ -285,12 +402,12 @@ def missing_handoff_message(agent_dir: Path, function_code: str | None) -> str:
     if function_code:
         expected = agent_dir / "functions" / function_code / "handoff" / "development-handoff.json"
         return (
-            "02 未找到梳理产物 development-handoff.json，不能直接回退到 01 或 legacy TSD。"
-            f"请先运行 `专案需求接口设计梳理`，并执行 materialize_design_handoff.py 生成：{expected.as_posix()}"
+            "02 未找到 development-handoff.json；本轮将改用直接输入或 execution-batch 作为规格来源。"
+            f"建议后续补齐设计梳理交接：{expected.as_posix()}"
         )
     return (
-        "02 未找到可用的梳理产物，也无法确定功能编号。"
-        "请先提供 --function-code，或先运行 `专案需求接口设计梳理` 生成 `.agent/functions/<functionCode>/handoff/development-handoff.json`。"
+        "02 未找到可用的设计交接产物，也无法确定功能编号。"
+        "请提供 --function-code 或明确的 docx_ref；设计梳理交接现在是推荐项，不是硬性前置。"
     )
 
 
@@ -343,9 +460,6 @@ def resolve_batch_target(
         if not function_code:
             raise SkillError(f"无法从 development-handoff.json 或 TSD 文件名提取功能编号：{docx_path.name}", status="blocked")
         return docx_path, function_code, batch_payload, selected_item, batch_file
-
-    if not allow_legacy_input:
-        raise SkillError(missing_handoff_message(agent_dir, inferred_function_code), status="blocked")
 
     if docx_ref:
         docx_path = resolve_docx_path(project_root, agent_dir, docx_ref)
@@ -544,11 +658,13 @@ def build_api_source(
     *,
     workbook_path: Path | None,
     sheet_names: list[str] | None,
+    sequence_diagrams: list[dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
     return {
         "tsdFile": context.docx_path.name,
         "workbookFile": workbook_path.name if workbook_path else None,
         "sheetNames": list(sheet_names or []),
+        "sequenceDiagrams": list(sequence_diagrams or []),
     }
 
 
@@ -1016,6 +1132,7 @@ def build_context(args: argparse.Namespace) -> ExecutionContext:
         execution_id=execution_id,
         function_code=function_code,
         new_author=new_author,
+        sequence_root=resolve_optional_path(args.sequence_root, base=project_root),
     )
     return context
 
@@ -3043,6 +3160,7 @@ def build_code_handoff(
     response_fields: list[dict[str, object]],
     business_logic_payload: dict[str, object],
     additional_unresolved: list[dict[str, Any]] | None = None,
+    additional_constraints: list[dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
     business_steps = [step for step in list(business_logic_payload.get("steps") or []) if isinstance(step, dict)]
     field_mappings = [mapping for mapping in list(business_logic_payload.get("fieldMappings") or []) if isinstance(mapping, dict)]
@@ -3090,6 +3208,14 @@ def build_code_handoff(
         business_logic_payload=business_logic_payload,
     )
     for evidence in project_legacy_evidence:
+        evidence_id = clean_text(evidence.get("evidenceId"))
+        if not evidence_id or evidence_id in evidence_ids:
+            continue
+        legacy_evidence.append(evidence)
+        evidence_ids.add(evidence_id)
+
+    it_spec_legacy_evidence, it_spec_unresolved = build_it_spec_diff_code_handoff(agent_dir, function_code)
+    for evidence in it_spec_legacy_evidence:
         evidence_id = clean_text(evidence.get("evidenceId"))
         if not evidence_id or evidence_id in evidence_ids:
             continue
@@ -3226,7 +3352,7 @@ def build_code_handoff(
                 "dependencyType": clean_text(dependency.get("type")) or dependency_id or "dependency",
                 "preferredAbstractions": preferred,
                 "purpose": clean_text(dependency.get("description")) or dependency_id or "dependency",
-                "evidenceIds": [],
+                "evidenceIds": [clean_text(value) for value in list(dependency.get("evidenceIds") or []) if clean_text(value)],
             }
         )
     for source in data_sources:
@@ -3280,6 +3406,7 @@ def build_code_handoff(
     )
     constraints.extend(validation_constraints)
     constraints.extend(project_constraints)
+    constraints.extend(item for item in list(additional_constraints or []) if isinstance(item, dict))
 
     unresolved: list[dict[str, Any]] = list(validation_unresolved)
     unresolved.extend(
@@ -3291,6 +3418,7 @@ def build_code_handoff(
         )
     )
     unresolved.extend(project_unresolved)
+    unresolved.extend(it_spec_unresolved)
     unresolved.extend(item for item in list(additional_unresolved or []) if isinstance(item, dict))
     if any(("舊代碼" in clean_text(step.get("title")) or "legacy" in clean_text(step.get("title")).casefold()) for step in business_steps) and not legacy_evidence:
         unresolved.append(
@@ -3303,11 +3431,17 @@ def build_code_handoff(
 
     logic_flow: list[dict[str, Any]] = []
     legacy_evidence_ids = [entry["evidenceId"] for entry in legacy_evidence]
+    sequence_evidence_ids = [entry["evidenceId"] for entry in legacy_evidence if clean_text(entry.get("kind")) == "sequenceDiagram"]
     request_preview = request_paths[:4]
     response_preview = response_paths[:4]
     for index, step in enumerate(business_steps, start=1):
         title = clean_text(step.get("title")) or f"step-{index}"
         details = clean_text(step.get("details"))
+        step_evidence_ids = [clean_text(value) for value in list(step.get("evidenceIds") or []) if clean_text(value)]
+        if not step_evidence_ids and ("舊代碼" in title or "legacy" in title.casefold()):
+            step_evidence_ids = legacy_evidence_ids
+        if not step_evidence_ids and any(marker in title.casefold() or marker in details.casefold() for marker in ("时序图", "時序圖", "循序圖", "sequence")):
+            step_evidence_ids = sequence_evidence_ids
         logic_flow.append(
             {
                 "stepId": f"step_{clean_text(step.get('step')) or index}",
@@ -3315,7 +3449,7 @@ def build_code_handoff(
                 "actionType": guess_logic_action_type(title, details),
                 "inputs": request_preview,
                 "outputs": response_preview,
-                "evidenceIds": legacy_evidence_ids if ("舊代碼" in title or "legacy" in title.casefold()) else [],
+                "evidenceIds": step_evidence_ids,
             }
         )
 
@@ -3329,7 +3463,7 @@ def build_code_handoff(
             "dependencyHintCount": len(dependency_hints),
             "constraintCount": len(constraints),
             "unresolvedCount": len(unresolved),
-            "primarySource": "businessLogic",
+            "primarySource": "businessLogic+sequenceDiagram" if sequence_evidence_ids else "businessLogic",
         },
         "logicFlow": logic_flow,
         "legacyEvidence": legacy_evidence,
@@ -3996,6 +4130,76 @@ def run_spec_review_gate(
     return api_spec
 
 
+def collect_known_response_codes(
+    *,
+    mock_examples: list[dict[str, object]],
+    error_code_rules: list[dict[str, object]],
+) -> list[str]:
+    codes: list[str] = []
+
+    def remember(value: object) -> None:
+        text = clean_text(value)
+        if text and text not in codes:
+            codes.append(text)
+
+    for rule in error_code_rules:
+        remember(rule.get("code"))
+    for example in mock_examples:
+        response_payload = example.get("responsePayload")
+        if isinstance(response_payload, dict):
+            remember(response_payload.get("responseCode"))
+        remember(example.get("responseCode"))
+    return codes
+
+
+def apply_sequence_diagram_context(
+    context: ExecutionContext,
+    *,
+    entry: ApiEntry,
+    business_logic_payload: dict[str, object],
+    raw_appendix: dict[str, object] | None,
+    request_fields: list[dict[str, object]],
+    response_fields: list[dict[str, object]],
+    mock_examples: list[dict[str, object]],
+) -> tuple[dict[str, object] | None, list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]]]:
+    known_response_codes = collect_known_response_codes(
+        mock_examples=mock_examples,
+        error_code_rules=[rule for rule in list(business_logic_payload.get("errorCodeRules") or []) if isinstance(rule, dict)],
+    )
+    sequence_context = build_sequence_context(
+        agent_dir=context.agent_dir,
+        function_code=context.function_code,
+        api_name=entry.name,
+        request_fields=[field for field in request_fields if isinstance(field, dict)],
+        response_fields=[field for field in response_fields if isinstance(field, dict)],
+        known_response_codes=known_response_codes,
+        sequence_root=context.sequence_root,
+    )
+    raw_payload = dict(raw_appendix or {})
+    other_notes = list(raw_payload.get("otherNotes") or [])
+    other_notes.extend(sequence_context["notes"])
+    if other_notes:
+        raw_payload["otherNotes"] = other_notes
+    if sequence_context["extracts"]:
+        raw_payload["sequenceDiagramExtracts"] = sequence_context["extracts"]
+
+    for key, sequence_key in (
+        ("steps", "steps"),
+        ("legacyReferences", "legacyReferences"),
+        ("runtimeDependencies", "runtimeDependencies"),
+    ):
+        values = list(business_logic_payload.get(key) or [])
+        values.extend(sequence_context[sequence_key])
+        business_logic_payload[key] = values
+
+    return (
+        compact_raw_appendix(raw_payload),
+        sequence_context["sourceEntries"],
+        sequence_context["unresolved"],
+        sequence_context["constraints"],
+    )
+
+
 def build_indirect_common_util_payload_parts(
     context: ExecutionContext,
     *,
@@ -4066,7 +4270,16 @@ def build_indirect_common_util_payload_parts(
         backend_apis=extracted_sections["backendApis"],
         raw_appendix=raw_appendix,
     )
-    source = build_api_source(context, workbook_path=workbook_path, sheet_names=sheet_names)
+    raw_appendix, sequence_sources, sequence_unresolved, sequence_constraints = apply_sequence_diagram_context(
+        context,
+        entry=entry,
+        business_logic_payload=business_logic_payload,
+        raw_appendix=raw_appendix,
+        request_fields=[],
+        response_fields=response_fields,
+        mock_examples=[],
+    )
+    source = build_api_source(context, workbook_path=workbook_path, sheet_names=sheet_names, sequence_diagrams=sequence_sources)
     api_spec = build_api_spec_payload(
         context=context,
         api_id=api_id,
@@ -4079,7 +4292,9 @@ def build_indirect_common_util_payload_parts(
         mock_examples=[],
         backend_apis=extracted_sections["backendApis"],
         raw_appendix=raw_appendix,
-        additional_unresolved=visual_unresolved + list(full_business_logic.get("dependencyUnresolved", [])),
+        additional_unresolved=visual_unresolved + list(full_business_logic.get("dependencyUnresolved", [])) + sequence_unresolved,
+        additional_constraints=sequence_constraints,
+        sequence_diagrams=sequence_sources,
     )
     api_spec = run_spec_review_gate(
         context=context,
@@ -4104,7 +4319,8 @@ def build_indirect_common_util_payload_parts(
             backend_apis=extracted_sections["backendApis"],
             business_logic_payload=business_logic_payload,
             raw_appendix=raw_appendix,
-            additional_unresolved=visual_unresolved + list(full_business_logic.get("dependencyUnresolved", [])),
+            additional_unresolved=visual_unresolved + list(full_business_logic.get("dependencyUnresolved", [])) + sequence_unresolved,
+            additional_constraints=sequence_constraints,
         ),
     }
 
@@ -4123,6 +4339,8 @@ def build_api_spec_payload(
     backend_apis: dict[str, list[str]],
     raw_appendix: dict[str, object] | None,
     additional_unresolved: list[dict[str, Any]] | None = None,
+    additional_constraints: list[dict[str, Any]] | None = None,
+    sequence_diagrams: list[dict[str, Any]] | None = None,
 ) -> dict[str, object]:
     version = normalize_display_version(extract_version_token_from_tsd_path(context.docx_path))
     code_handoff = build_code_handoff(
@@ -4135,6 +4353,7 @@ def build_api_spec_payload(
         response_fields=response_fields,
         business_logic_payload=business_logic_payload,
         additional_unresolved=additional_unresolved,
+        additional_constraints=additional_constraints,
     )
     payload = {
         "schemaVersion": API_SPEC_SCHEMA_VERSION,
@@ -4148,6 +4367,7 @@ def build_api_spec_payload(
             "tsdFile": context.docx_path.name,
             "workbookFile": workbook_path.name,
             "sheetNames": sheet_names,
+            "sequenceDiagrams": list(sequence_diagrams or []),
         },
         "request": request_fields,
         "response": response_fields,
@@ -4174,6 +4394,7 @@ def build_source_fingerprint(
     business_logic_payload: dict[str, Any],
     raw_appendix: dict[str, object] | None,
     additional_unresolved: list[dict[str, Any]] | None = None,
+    additional_constraints: list[dict[str, Any]] | None = None,
 ) -> str:
     return stable_payload_hash(
         {
@@ -4182,6 +4403,7 @@ def build_source_fingerprint(
             "tsdFile": source.get("tsdFile"),
             "workbookFile": source.get("workbookFile"),
             "sheetNames": source.get("sheetNames") or [],
+            "sequenceDiagrams": source.get("sequenceDiagrams") or [],
             "request": request_fields,
             "response": response_fields,
             "mockExamples": mock_examples,
@@ -4197,6 +4419,7 @@ def build_source_fingerprint(
                 response_fields=response_fields,
                 business_logic_payload=business_logic_payload,
                 additional_unresolved=additional_unresolved,
+                additional_constraints=additional_constraints,
             ),
             "rawAppendix": raw_appendix or {},
         }
@@ -4477,6 +4700,7 @@ def build_manifest(context: ExecutionContext, item: dict[str, Any]) -> dict[str,
             "tsdFile": source.get("tsdFile"),
             "workbookFile": source.get("workbookFile"),
             "sheetNames": source.get("sheetNames") or [],
+            "sequenceDiagrams": source.get("sequenceDiagrams") or [],
         },
         "specArtifacts": {
             "apiSpec": normalize_persisted_path(api_spec_path, project_root=context.project_root) if api_spec_path else None,
@@ -4579,7 +4803,16 @@ def build_api_payload_parts(
         backend_apis=sections["backendApis"],
         raw_appendix=sections["rawAppendix"],
     )
-    source = build_api_source(context, workbook_path=workbook_path, sheet_names=sheet_names)
+    sections["rawAppendix"], sequence_sources, sequence_unresolved, sequence_constraints = apply_sequence_diagram_context(
+        context,
+        entry=entry,
+        business_logic_payload=business_logic_payload,
+        raw_appendix=sections["rawAppendix"],
+        request_fields=sections["request"],
+        response_fields=sections["response"],
+        mock_examples=sections["mockExamples"],
+    )
+    source = build_api_source(context, workbook_path=workbook_path, sheet_names=sheet_names, sequence_diagrams=sequence_sources)
     api_spec = build_api_spec_payload(
         context=context,
         api_id=api_id,
@@ -4592,7 +4825,9 @@ def build_api_payload_parts(
         mock_examples=sections["mockExamples"],
         backend_apis=sections["backendApis"],
         raw_appendix=sections["rawAppendix"],
-        additional_unresolved=visual_unresolved + list(business_logic.get("dependencyUnresolved", [])),
+        additional_unresolved=visual_unresolved + list(business_logic.get("dependencyUnresolved", [])) + sequence_unresolved,
+        additional_constraints=sequence_constraints,
+        sequence_diagrams=sequence_sources,
     )
     api_spec = run_spec_review_gate(
         context=context,
@@ -4617,7 +4852,8 @@ def build_api_payload_parts(
             backend_apis=sections["backendApis"],
             business_logic_payload=business_logic_payload,
             raw_appendix=sections["rawAppendix"],
-            additional_unresolved=visual_unresolved + list(business_logic.get("dependencyUnresolved", [])),
+            additional_unresolved=visual_unresolved + list(business_logic.get("dependencyUnresolved", [])) + sequence_unresolved,
+            additional_constraints=sequence_constraints,
         ),
     }
 

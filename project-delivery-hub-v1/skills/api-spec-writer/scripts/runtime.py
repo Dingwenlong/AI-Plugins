@@ -12,8 +12,8 @@ from typing import Any
 from chain_workspace import resolve_chain_workspace, write_workspace_snapshot
 
 
-STATE_SCHEMA_VERSION = "4.1.0"
-API_SPEC_SCHEMA_VERSION = "4.2.0"
+STATE_SCHEMA_VERSION = "4.2.0"
+API_SPEC_SCHEMA_VERSION = "4.3.0"
 BATCH_SCHEMA_VERSION = "1.0.0"
 SKILL_NAME = "api-spec-writer"
 ROOT_DIR = Path(__file__).resolve().parents[1]
@@ -58,6 +58,7 @@ class ExecutionContext:
     execution_id: str
     function_code: str | None
     new_author: str | None
+    sequence_root: Path | None = None
 
     @property
     def paths(self) -> ExecutionPaths:

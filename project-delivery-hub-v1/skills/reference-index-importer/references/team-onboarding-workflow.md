@@ -31,24 +31,24 @@
 如果技能是别人直接打包给你，确保它们已经放进：
 
 ```text
-<CODEX_HOME>\skills\
+<pluginRoot>\skills\
 ```
 
 常见位置示例：
 
 ```text
-C:\Users\<用户名>\.codex\skills\
+<pluginRoot>\skills\
 ```
 
 安装完成后，应该至少能看到：
 
-- `<CODEX_HOME>\skills\api-detail-tsd-sync\SKILL.md`
-- `<CODEX_HOME>\skills\reference-index-importer\SKILL.md`
-- `<CODEX_HOME>\skills\api-spec-writer\SKILL.md`
-- `<CODEX_HOME>\skills\api-sql-fixture-preparer\SKILL.md`
-- `<CODEX_HOME>\skills\api-code-writer\SKILL.md`
-- `<CODEX_HOME>\skills\docx-unittest-report\SKILL.md`
-- `<CODEX_HOME>\skills\project-rule-analyzer\SKILL.md`
+- `<pluginRoot>\skills\api-detail-tsd-sync\SKILL.md`
+- `<pluginRoot>\skills\reference-index-importer\SKILL.md`
+- `<pluginRoot>\skills\api-spec-writer\SKILL.md`
+- `<pluginRoot>\skills\api-sql-fixture-preparer\SKILL.md`
+- `<pluginRoot>\skills\api-code-writer\SKILL.md`
+- `<pluginRoot>\skills\docx-unittest-report\SKILL.md`
+- `<pluginRoot>\skills\project-rule-analyzer\SKILL.md`
 
 推荐顺序是：`专案需求接口设计梳理 -> 可选 01 -> 02 -> 03 Optional -> 专案规则分析器(code-guidelines) -> 04 -> 05 Optional`
 
@@ -122,7 +122,7 @@ C:\Users\<用户名>\.codex\skills\
 对话模板：
 
 ```text
-[$api-detail-tsd-sync](<CODEX_HOME>\skills\api-detail-tsd-sync\SKILL.md)
+[$api-detail-tsd-sync](<pluginRoot>\skills\api-detail-tsd-sync\SKILL.md)
 请梳理 <FUNCTION_CODE> 功能设计，并在可进入开发时物化 handoff
 project-root: <PROJECT_ROOT>
 workspace-key: <WORKSPACE_KEY>
@@ -146,7 +146,7 @@ workspace-key: <WORKSPACE_KEY>
 对话模板：
 
 ```text
-[$reference-index-importer](<CODEX_HOME>\skills\reference-index-importer\SKILL.md)
+[$reference-index-importer](<pluginRoot>\skills\reference-index-importer\SKILL.md)
 请重建集中 .agent\reference\global
 project-root: <PROJECT_ROOT>
 external-api-dir: <EXTERNAL_API_DIR>
@@ -171,13 +171,13 @@ db-schema-dir: <DB_SCHEMA_DIR>
 对话模板：
 
 ```text
-[$api-spec-writer](<CODEX_HOME>\skills\api-spec-writer\SKILL.md) <FUNCTION_CODE>
+[$api-spec-writer](<pluginRoot>\skills\api-spec-writer\SKILL.md) <FUNCTION_CODE>
 ```
 
 示例：
 
 ```text
-[$api-spec-writer](C:\Users\<username>\plugins\project-delivery-hub-v1\skills\api-spec-writer\SKILL.md) D.006
+[$api-spec-writer](<pluginRoot>\skills\api-spec-writer\SKILL.md) D.006
 ```
 
 这一步 AI 会做的事：
@@ -208,7 +208,7 @@ db-schema-dir: <DB_SCHEMA_DIR>
 如果当前 API 需要本地或测试库中的 SQL fixture，先补跑这一步：
 
 ```text
-[$api-sql-fixture-preparer](<CODEX_HOME>\skills\api-sql-fixture-preparer\SKILL.md) <FUNCTION_CODE>
+[$api-sql-fixture-preparer](<pluginRoot>\skills\api-sql-fixture-preparer\SKILL.md) <FUNCTION_CODE>
 ```
 
 这一步的目标是：
@@ -226,13 +226,13 @@ db-schema-dir: <DB_SCHEMA_DIR>
 对话模板：
 
 ```text
-[$api-code-writer](<CODEX_HOME>\skills\api-code-writer\SKILL.md) <FUNCTION_CODE>
+[$api-code-writer](<pluginRoot>\skills\api-code-writer\SKILL.md) <FUNCTION_CODE>
 ```
 
 示例：
 
 ```text
-[$api-code-writer](C:\Users\<username>\plugins\project-delivery-hub-v1\skills\api-code-writer\SKILL.md) D.006
+[$api-code-writer](<pluginRoot>\skills\api-code-writer\SKILL.md) D.006
 ```
 
 这一步 AI 会做的事：
@@ -265,13 +265,13 @@ db-schema-dir: <DB_SCHEMA_DIR>
 对话模板：
 
 ```text
-[$docx-unittest-report](<CODEX_HOME>\skills\docx-unittest-report\SKILL.md) <UT_REPORT_DOCX>
+[$docx-unittest-report](<pluginRoot>\skills\docx-unittest-report\SKILL.md) <UT_REPORT_DOCX>
 ```
 
 示例：
 
 ```text
-[$docx-unittest-report](C:\Users\<username>\plugins\project-delivery-hub-v1\skills\docx-unittest-report\SKILL.md) D:\Repo\Project\docs\D.006_UT_Report.docx
+[$docx-unittest-report](<pluginRoot>\skills\docx-unittest-report\SKILL.md) D:\Repo\Project\docs\D.006_UT_Report.docx
 ```
 
 ## 12. 一句话版本

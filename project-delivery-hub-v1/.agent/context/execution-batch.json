@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "1.0.0",
+  "activeFunctionCode": "Common",
+  "items": [
+    {
+      "functionCode": "Common",
+      "docxRef": "../../.agent/functions/Common/inputs/tsd/TSD.Common_封存TSD共用开发链路_v1.0_20260523.docx",
+      "order": 1
+    }
+  ],
+  "updatedAt": "2026-05-23T22:18:13+08:00",
+  "updatedBy": "api-code-writer"
+}

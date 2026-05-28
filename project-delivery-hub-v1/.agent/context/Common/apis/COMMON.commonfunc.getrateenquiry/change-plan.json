@@ -1,0 +1,1978 @@
+{
+  "schemaVersion": "4.1.0",
+  "skillName": "api-code-writer",
+  "manifestType": "change-plan",
+  "status": "blocked",
+  "updatedAt": "2026-05-23T18:10:27+08:00",
+  "executionId": "Common",
+  "apiId": "COMMON.commonfunc.getrateenquiry",
+  "projectRoot": ".",
+  "solutionPath": "Sinopac.EnterpriseAPI/Sinopac.EnterpriseAPI.slnx",
+  "upstream": {
+    "manifest": "../../.agent/context/Common/apis/COMMON.commonfunc.getrateenquiry/manifest.json",
+    "apiSpec": "../../.agent/context/Common/apis/COMMON.commonfunc.getrateenquiry/Common_API_Spec.json",
+    "sourceFingerprint": "sha256:31fe4e15c7d9e0bd709e0384ed46a95298dec7d0c34bbe02a409c5a2c1b5aa24",
+    "source": {
+      "tsdFile": "TSD.Common_封存TSD共用开发链路_v1.0_20260523.docx",
+      "workbookFile": "NEWDA_Method_DETAIL_ExchangeCommonFunc_20260522.xlsx",
+      "sheetNames": [
+        "GetRateEnquiryFunc 取匯率詢價"
+      ]
+    }
+  },
+  "sourceCandidates": [
+    "Libray/Sinopac.CommonFunc/IFuncService/ICommonFuncService.cs",
+    "Libray/Sinopac.CommonFunc/FuncService/CommonFuncService.cs",
+    "Libray/Sinopac.CommonFunc/FuncService/CommonFuncService.GetRateEnquiry.cs",
+    "Libray/Sinopac.CommonFunc/Dto/GetRateEnquiryInfo.cs"
+  ],
+  "repoDriftDetected": false,
+  "repoDriftFiles": [],
+  "beforeHashes": {
+    "Libray/Sinopac.CommonFunc/IFuncService/ICommonFuncService.cs": "sha256:4027a6c84328177b3b56cb62bc65883570a4e1b5eeea2fb731b356ad7f2f3ba4",
+    "Libray/Sinopac.CommonFunc/FuncService/CommonFuncService.cs": "sha256:f7daae54af90a4370b14980a4b46beed5468f50c4f12710333a9b021dd647f93",
+    "Libray/Sinopac.CommonFunc/FuncService/CommonFuncService.GetRateEnquiry.cs": null,
+    "Libray/Sinopac.CommonFunc/Dto/GetRateEnquiryInfo.cs": null
+  },
+  "analysis": {
+    "frameworkProfile": "enterpriseapi",
+    "guidelineAuthority": "新大戶框架説明 V2.0 20260203.docx",
+    "repoRoot": "Sinopac.EnterpriseAPI",
+    "moduleName": "CommonFunc",
+    "controllerFile": null,
+    "interfaceFile": "Libray/Sinopac.CommonFunc/IFuncService/ICommonFuncService.cs",
+    "serviceFiles": [
+      "Libray/Sinopac.CommonFunc/FuncService/CommonFuncService.cs",
+      "Libray/Sinopac.CommonFunc/FuncService/CommonFuncService.GetRateEnquiry.cs"
+    ],
+    "entityFiles": [
+      "Libray/Sinopac.CommonFunc/Dto/GetRateEnquiryInfo.cs"
+    ],
+    "codeTargetFiles": [
+      "Libray/Sinopac.CommonFunc/IFuncService/ICommonFuncService.cs",
+      "Libray/Sinopac.CommonFunc/FuncService/CommonFuncService.GetRateEnquiry.cs",
+      "Libray/Sinopac.CommonFunc/FuncService/CommonFuncService.cs",
+      "Libray/Sinopac.CommonFunc/Dto/GetRateEnquiryInfo.cs"
+    ],
+    "unitTestTargetFiles": [],
+    "integrationTestTargetFiles": [],
+    "testTargetFiles": [],
+    "testCodeHandoff": {
+      "ownerStep": "05 docx-unittest-report",
+      "writerPolicy": "handoff_only",
+      "unitTestTargetFiles": [],
+      "integrationTestTargetFiles": [],
+      "note": "Step 04 records test targets and scenarios only; UnitTest, IntegrationTest, and service runtime validation source code belong to step 05."
+    },
+    "creationMode": "extend_partial",
+    "registrationStrategy": "manual_registration_review",
+    "targetFile": "Libray/Sinopac.CommonFunc/FuncService/CommonFuncService.GetRateEnquiry.cs",
+    "targetClass": "CommonFuncService",
+    "targetMethod": "GetRateEnquiryAsync",
+    "action": "ai_orchestrated_implementation",
+    "requestFields": [
+      {
+        "path": "strNote",
+        "dataType": "string",
+        "required": false,
+        "description": "即期記號 1.即期 2.現鈔",
+        "notes": ""
+      },
+      {
+        "path": "debitCurrency",
+        "dataType": "string",
+        "required": true,
+        "description": "扣款幣別",
+        "notes": ""
+      },
+      {
+        "path": "payeeCurrency",
+        "dataType": "string",
+        "required": true,
+        "description": "收款幣別",
+        "notes": ""
+      },
+      {
+        "path": "decPayeeAmount",
+        "dataType": "decimal",
+        "required": true,
+        "description": "收款金額",
+        "notes": ""
+      },
+      {
+        "path": "decDebitAmount",
+        "dataType": "decimal",
+        "required": true,
+        "description": "扣款金額",
+        "notes": ""
+      },
+      {
+        "path": "specode",
+        "dataType": "string",
+        "required": true,
+        "description": "是否取得專案身分",
+        "notes": ""
+      },
+      {
+        "path": "checkVIP",
+        "dataType": "boolean",
+        "required": true,
+        "description": "是否檢查VIP身分",
+        "notes": ""
+      }
+    ],
+    "responseFields": [
+      {
+        "path": "isSuccess",
+        "dataType": "boolean",
+        "required": true,
+        "description": "API成功與否",
+        "notes": "true ; false"
+      },
+      {
+        "path": "responseCode",
+        "dataType": "string",
+        "required": true,
+        "description": "回應代碼",
+        "notes": "成功:0000其餘狀況為失敗"
+      },
+      {
+        "path": "responseMessage",
+        "dataType": "string",
+        "required": true,
+        "description": "回應訊息",
+        "notes": "失敗狀況下回傳錯誤訊息"
+      },
+      {
+        "path": "responseDT",
+        "dataType": "string",
+        "required": true,
+        "description": "系統回應時間",
+        "notes": "yyyy/MM/dd HH:mm:ss"
+      },
+      {
+        "path": "responseData",
+        "dataType": "json",
+        "required": true,
+        "description": "回應資料框",
+        "notes": ""
+      },
+      {
+        "path": "responseData.etsRequest",
+        "dataType": "list",
+        "required": true,
+        "description": "詢價回傳數據",
+        "notes": ""
+      },
+      {
+        "path": "responseData.etsRequest[].spotXML",
+        "dataType": "string",
+        "required": true,
+        "description": "ETSRequest的xml格式",
+        "notes": "http://ETSWeb.bsp:886/RequestSpotDs.SerialXML"
+      },
+      {
+        "path": "responseData.etsRequest[].serialNo",
+        "dataType": "string",
+        "required": true,
+        "description": "敲價序號",
+        "notes": "http://ETSWeb.bsp:886/RequestSpotDs.SerialNo"
+      },
+      {
+        "path": "responseData.etsRequest[].transAmt",
+        "dataType": "string",
+        "required": true,
+        "description": "交易金額",
+        "notes": "我要用金額.Length > 0,值為我要用金額,否則為換成金額"
+      },
+      {
+        "path": "responseData.etsRequest[].etsTime",
+        "dataType": "string",
+        "required": true,
+        "description": "當前時間",
+        "notes": "DateTime.Now.ToString()"
+      },
+      {
+        "path": "responseData.etsRequest[].listRate",
+        "dataType": "string",
+        "required": true,
+        "description": "牌告匯率",
+        "notes": "http://ETSWeb.bsp:886/RequestSpotDs.ListRate"
+      },
+      {
+        "path": "responseData.etsRequest[].doneRate",
+        "dataType": "string",
+        "required": true,
+        "description": "承作匯率",
+        "notes": "http://ETSWeb.bsp:886/RequestSpotDs.DoneRate"
+      },
+      {
+        "path": "responseData.etsRequest[].costRate",
+        "dataType": "string",
+        "required": true,
+        "description": "成本匯率",
+        "notes": "http://ETSWeb.bsp:886/RequestSpotDs.CostRate"
+      },
+      {
+        "path": "responseData.etsRequest[].deductionAmt",
+        "dataType": "string",
+        "required": true,
+        "description": "實際扣帳金額",
+        "notes": "http://ETSWeb.bsp:886/RequestSpotDs.BuyAmount"
+      },
+      {
+        "path": "responseData.etsRequest[].payeeAmt",
+        "dataType": "string",
+        "required": true,
+        "description": "實際入帳金額",
+        "notes": "http://ETSWeb.bsp:886/RequestSpotDs.SellAmount"
+      },
+      {
+        "path": "responseData.etsRequest[].equvBaseAmount",
+        "dataType": "string",
+        "required": true,
+        "description": "等值臺幣",
+        "notes": "http://ETSWeb.bsp:886/RequestSpotDs.EquvBaseAmount"
+      },
+      {
+        "path": "responseData.etsRequest[].equvUsdAmount",
+        "dataType": "string",
+        "required": true,
+        "description": "等值美元",
+        "notes": "http://ETSWeb.bsp:886/RequestSpotDs.EquvUsdAmount"
+      },
+      {
+        "path": "responseData.etsRequest[].pageDeductionCurrEName",
+        "dataType": "string",
+        "required": true,
+        "description": "交易幣別",
+        "notes": "我要用金額.Length > 0,值為我要用幣別,否則為換成幣別"
+      },
+      {
+        "path": "responseData.etsRequest[].rateQueryXmlFlag",
+        "dataType": "string",
+        "required": true,
+        "description": "敲價系統是否正常標記",
+        "notes": "敲價系統正常回復則為 1 ,否則為0"
+      },
+      {
+        "path": "responseData.etsRequest[].cnValue",
+        "dataType": "string",
+        "required": false,
+        "description": "人民幣幣別",
+        "notes": "當換成或者我要用幣別為人民幣的時候會使用民幣一律回CNY,我要用和換成金額都會被重置為CNY,CNValue不變"
+      },
+      {
+        "path": "responseData.etsRequest[].cnValueName",
+        "dataType": "string",
+        "required": false,
+        "description": "人民幣幣別",
+        "notes": ""
+      },
+      {
+        "path": "responseData.showListRate",
+        "dataType": "string",
+        "required": true,
+        "description": "是否展示牌告匯率",
+        "notes": "若扣款幣別=兌換幣別，則牌告匯率不用顯示 Flase / True"
+      },
+      {
+        "path": "responseData.etsTime",
+        "dataType": "string",
+        "required": true,
+        "description": "當前時間",
+        "notes": "DateTime.Now.ToString()"
+      },
+      {
+        "path": "responseData.listRate",
+        "dataType": "string",
+        "required": true,
+        "description": "牌告匯率",
+        "notes": "http://ETSWeb.bsp:886/RequestSpotDs.ListRate"
+      },
+      {
+        "path": "responseData.doneRate",
+        "dataType": "string",
+        "required": true,
+        "description": "承作匯率",
+        "notes": "http://ETSWeb.bsp:886/RequestSpotDs.DoneRate"
+      },
+      {
+        "path": "responseData.deductionAmt",
+        "dataType": "string",
+        "required": true,
+        "description": "實際扣帳金額",
+        "notes": "http://ETSWeb.bsp:886/RequestSpotDs.BuyAmount"
+      },
+      {
+        "path": "responseData.payeeAmt",
+        "dataType": "string",
+        "required": true,
+        "description": "實際入帳金額",
+        "notes": "http://ETSWeb.bsp:886/RequestSpotDs.SellAmount"
+      },
+      {
+        "path": "responseData.txPair",
+        "dataType": "string",
+        "required": true,
+        "description": "交易對",
+        "notes": "http://ETSWeb.bsp:886/RequestSpotDs.TxPair"
+      }
+    ],
+    "businessSteps": [
+      {
+        "step": 1,
+        "title": ": 初始化區塊",
+        "details": "1.定義strXmp=\"\";//1.一般客戶 2.行員\n2.從Redis中取得custId、isStaff、isOBUCustomer，如果isStaff=true： strXmp = \"2\";"
+      },
+      {
+        "step": 2,
+        "title": "判斷客戶身分",
+        "details": "1.如果checkVIP=true：\n調用CommonFunc.CheckVIP,取得客戶身分,將CommonFunc.CheckVIP.vipType 賦值給strXmp;\n2.如果checkVIP=false：strXmp=\"1\""
+      },
+      {
+        "step": 3,
+        "title": "扣款和收款幣別相同",
+        "details": "1.若扣款/收款幣別相同，直接視為「不需換匯」 => 匯率=1，不敲價"
+      },
+      {
+        "step": 4,
+        "title": "若轉出幣別 !== 轉入幣別→用敲價",
+        "details": "1. 定義\n客戶轉出帳號：  string strRBrNo = debitCurrency.Substring(0, 3);\n來源代號：  string intSource=8;固定值\n輸入單位代碼(敲價行)(或分行碼)；固定值:769 ：string  strBrNo=769\n是否OBU：  string strBU = isOBUCustomer ? \"O\" : \"D\";\n2.調用fntTranSeq=CommonFunc.GenFntTranSeq()取得交易序號\n2.調用ETSService.RequestSpotDs(intSource, strBrNo, strRBrNo, debitCurrency, payeeCurrency, decDebitAmount, decPayeeAmount, strXmp, strNote, strBU, custId, fntTranSeq);"
+      },
+      {
+        "step": 5,
+        "title": "ETS 回覆解析",
+        "details": "1.成功: 填寫承作匯率(DoneRate)、牌價(ListRate)、成本匯率(CostRate)、中價匯率(MidlRate)、實際扣款金額(BuyAmount)、收款金額(SellAmount)、等值臺幣/美元(EquvBaseAmount, EquvUsdAmount)等\n2.失敗根據錯誤碼回傳錯誤提示:\nswitch (XMLRetCode)\n{\ncase \"-101\":\nmessage = \"目前無法取得折臺幣金額，請稍後再試。\";\nbreak;\ncase \"-103\":\nmessage = \"金額不符規定！\";\nbreak;\ncase \"-104\":\nmessage = \"金額不符規定！\";\nbreak;\ncase \"-105\":\nmessage = \"金額不符規定！\";\nbreak;\ncase \"-106\":\nmessage = \"金額不符規定！\";\nbreak;\ncase \"-108\":\nmessage = \"金額超過匯率優惠等值參萬美元上限!如有任何問題，請洽本行24小時客服專線(02-2505-9999)\";\nbreak;\ncase \"-121\":\nmessage = \"交易失敗[-121]!不提供匯率報價，如有任何問題，請洽本行24小時客服專線(02-2505-9999)\";\nbreak;\ncase \"-122\":\nmessage = \"交易失敗[-122]!不提供匯率報價，如有任何問題，請洽本行24小時客服專線(02-2505-9999)\";\nbreak;\ncase \"-123\":\nmessage = \"交易失敗[-123]!不提供匯率報價，如有任何問題，請洽本行24小時客服專線(02-2505-9999)\";\nbreak;\ncase \"-125\":\nmessage = \"交易失敗[-125]!暫停匯率報價，如有任何問題，請洽本行24小時客服專線(02-2505-9999)\";\nbreak;\ncase \"-126\":\nmessage = \"交易失敗[-126]!暫停匯率報價，如有任何問題，請洽本行24小時客服專線(02-2505-9999)\";\nbreak;\ncase \"-127\":\nmessage = \"交易失敗[-127]!暫停匯率報價，如有任何問題，請洽本行24小時客服專線(02-2505-9999)\";\nbreak;\ncase \"-128\":\nmessage = \"交易失敗[-128]!暫停匯率報價，如有任何問題，請洽本行24小時客服專線(02-2505-9999)\";\nbreak;\ncase \"-129\":\nmessage = \"交易失敗[-129]!暫停匯率報價，如有任何問題，請洽本行24小時客服專線(02-2505-9999)\";\nbreak;\ncase \"-159\":\nmessage = \"金額上限請勿超過等值人民幣2萬元。\";\nbreak;\ncase \"-361\":\ncase \"-362\":\nmessage = \"新臺幣結匯金額單筆/累計上限請勿超過(含)等值美金100萬元，請臨櫃辦理。\";\nbreak;\ncase \"-363\":\ncase \"-364\":\nmessage = \"新臺幣結匯金額單筆/累計上限請勿超過(含)等值美金50萬元，請臨櫃辦理。\";\nbreak;\ncase \"-1\"://20100316 by howard :當敲價系統錯誤時，回傳-1給前端\nmessage = \"系統忙線中請稍後再試(-1)，如有任何問題，請洽本行24小時客服專線(02-2505-9999)\";\nbreak;\ncase \"ERRAMT\":\nmessage = \"金額輸入錯誤，金額下限請勿低於等值新臺幣100元，金額上限請勿超過(含)等值新臺幣50萬元。\";\nbreak;\ncase \"CNYERRAMT\":\nmessage = \"金額輸入錯誤，金額下限請勿低於等值新臺幣100元，金額上限請勿超過等值人民幣2萬元。\";\nbreak;\ncase \"CNYERRAMT_MAX\":\nmessage = \"金額上限請勿超過等值人民幣2萬元。\";\nbreak;\ncase \"ERRAMT_PreForeign_Cash\":\nmessage = \"金額輸入錯誤，金額上限請勿輸入超過(含)等值新臺幣50萬元。\";\nbreak;\ncase \"CNYERRAMT_PreForeign_Cash\":\nmessage = \"金額輸入錯誤，金額上限請勿輸入超過(含)等值人民幣2萬元。\";\nbreak;\ncase \"ERRAMTNEW\":\nmessage = \"金額輸入錯誤，金額下限請勿低於等值新臺幣100元，金額上限請勿超過(含)等值新臺幣200萬元。\";\nbreak;\ncase \"ERRAMTBUSINESS_TIME_NONEICS\":\nmessage = \"無有效憑證提醒！您尚未申請軟體憑證，僅限辦理新臺幣50萬元(不含)以下換匯交易。\";\nbreak;\ncase \"ERRAMTNEW2\":\nmessage = \"金額輸入錯誤，金額下限請勿低於等值新臺幣100元，金額上限請勿超過(含)等值美金50萬元。\";\nbreak;\ncase \"ERRAMT_MIN\":\nmessage = \"金額輸入錯誤，金額下限請勿低於等值新臺幣100元。\";\nbreak;\ncase \"ERROURCURREXFIX\":\nmessage = \"單筆詢價金額不得逾USD499,999。\";\nbreak;\ncase \"NOSINOPACICS\":\nmessage = \"提醒！您尚未安裝元件，僅限新臺幣50萬元(含)以下換匯交易\\n請先準備好自然人憑證與安裝元件\";\nbreak;\ncase \"NOSINOPACICSNEW\":\nmessage = \"提醒！請先準備好自然人憑證安裝元件，以利後續新臺幣50萬元以上換匯交易。\";\nbreak;\ncase \"-161\":\nmessage = \"單筆詢價金額不得逾USD499,999。\";\nbreak;\ndefault:\nmessage = \"目前無法取得折臺幣金額，請稍後再試。\";\nbreak;\n}"
+      },
+      {
+        "step": 6,
+        "title": "組合Response回傳",
+        "details": "1.將資料存入redis：Ent_Com_RateEnquiry_ETSRequestr\n2.將strXmp存入Ent_Com_VipFlag_Flag"
+      }
+    ],
+    "fieldMappings": [
+      {
+        "target": "etsRequest",
+        "source": "http",
+        "rule": "詢價回傳數據",
+        "fields": [
+          {
+            "field": "spotXML",
+            "source": "http",
+            "rule": "ETSRequest的xml格式"
+          },
+          {
+            "field": "serialNo",
+            "source": "http",
+            "rule": "敲價序號"
+          },
+          {
+            "field": "transAmt",
+            "source": "我要用金額.Length > 0,值為我要用金額,否則為換成金額",
+            "rule": "交易金額"
+          },
+          {
+            "field": "etsTime",
+            "source": "DateTime.Now.ToString()",
+            "rule": "當前時間"
+          },
+          {
+            "field": "listRate",
+            "source": "http",
+            "rule": "牌告匯率"
+          },
+          {
+            "field": "doneRate",
+            "source": "http",
+            "rule": "承作匯率"
+          },
+          {
+            "field": "costRate",
+            "source": "http",
+            "rule": "成本匯率"
+          },
+          {
+            "field": "deductionAmt",
+            "source": "http",
+            "rule": "實際扣帳金額"
+          },
+          {
+            "field": "payeeAmt",
+            "source": "http",
+            "rule": "實際入帳金額"
+          },
+          {
+            "field": "equvBaseAmount",
+            "source": "http",
+            "rule": "等值臺幣"
+          },
+          {
+            "field": "equvUsdAmount",
+            "source": "http",
+            "rule": "等值美元"
+          },
+          {
+            "field": "pageDeductionCurrEName",
+            "source": "我要用金額.Length > 0,值為我要用幣別,否則為換成幣別",
+            "rule": "交易幣別"
+          },
+          {
+            "field": "rateQueryXmlFlag",
+            "source": "敲價系統正常回復則為 1 ,否則為0",
+            "rule": "敲價系統是否正常標記"
+          },
+          {
+            "field": "cnValue",
+            "source": "當換成或者我要用幣別為人民幣的時候會使用民幣一律回CNY,我要用和換成金額都會被重置為CNY,CNValue不變",
+            "rule": "人民幣幣別"
+          },
+          {
+            "field": "cnValueName",
+            "source": "",
+            "rule": "人民幣幣別"
+          }
+        ]
+      },
+      {
+        "target": "showListRate",
+        "source": "若扣款幣別=兌換幣別，則牌告匯率不用顯示 Flase / True",
+        "rule": "是否展示牌告匯率",
+        "fields": [
+          {
+            "field": "showListRate",
+            "source": "若扣款幣別=兌換幣別，則牌告匯率不用顯示 Flase / True",
+            "rule": "是否展示牌告匯率"
+          }
+        ]
+      },
+      {
+        "target": "etsTime",
+        "source": "DateTime.Now.ToString()",
+        "rule": "當前時間",
+        "fields": [
+          {
+            "field": "etsTime",
+            "source": "DateTime.Now.ToString()",
+            "rule": "當前時間"
+          }
+        ]
+      },
+      {
+        "target": "listRate / doneRate",
+        "source": "http",
+        "rule": "牌告匯率；承作匯率",
+        "fields": [
+          {
+            "field": "listRate",
+            "source": "http",
+            "rule": "牌告匯率"
+          },
+          {
+            "field": "doneRate",
+            "source": "http",
+            "rule": "承作匯率"
+          }
+        ]
+      },
+      {
+        "target": "deductionAmt / payeeAmt",
+        "source": "http",
+        "rule": "實際扣帳金額；實際入帳金額",
+        "fields": [
+          {
+            "field": "deductionAmt",
+            "source": "http",
+            "rule": "實際扣帳金額"
+          },
+          {
+            "field": "payeeAmt",
+            "source": "http",
+            "rule": "實際入帳金額"
+          }
+        ]
+      },
+      {
+        "target": "txPair",
+        "source": "http",
+        "rule": "交易對",
+        "fields": [
+          {
+            "field": "txPair",
+            "source": "http",
+            "rule": "交易對"
+          }
+        ]
+      }
+    ],
+    "errorCodes": [
+      {
+        "code": "9001",
+        "scenario": "連接數據庫失敗,外匯敲價系統失敗",
+        "message": "系統繁忙,請稍後再試！"
+      },
+      {
+        "code": "9000",
+        "scenario": "詢價請求回傳錯誤碼",
+        "message": "自定義錯誤訊息"
+      },
+      {
+        "code": "0404",
+        "scenario": "報價超時",
+        "message": "報價逾時，請重新取得匯率"
+      },
+      {
+        "code": "9999",
+        "scenario": "未輸入必填請求參數",
+        "message": "請輸入{Request參數}！"
+      }
+    ],
+    "runtimeDependencies": [
+      {
+        "id": "current_customer_context",
+        "type": "service",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "Resolve keyId/custId from the current request context and Redis."
+      },
+      {
+        "id": "external_api_commonfunc_checkvip",
+        "type": "external_api",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "业务逻辑正文提到 CommonFunc->CheckVIP() 依赖。"
+      },
+      {
+        "id": "external_api_commonfunc_genfnttranseq",
+        "type": "external_api",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "业务逻辑正文提到 CommonFunc->GenFntTranSeq() 依赖。"
+      },
+      {
+        "id": "external_api_etsservice_requestspotds",
+        "type": "external_api",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "Excel 依赖声明提到 ETSService->RequestSpotDs。"
+      }
+    ],
+    "referenceHints": [],
+    "backendApis": [
+      "CommonFunc -> CheckVIP()",
+      "CommonFunc -> GenFntTranSeq()",
+      "ETSService -> RequestSpotDs"
+    ],
+    "mockExamples": [
+      {
+        "scenario": "正向情境",
+        "requestPayload": {
+          "strNote": 2,
+          "debitCurrency": "TWD",
+          "payeeCurrency": "USD",
+          "decPayeeAmount": 1500,
+          "decDebitAmount": 500,
+          "specode": "N"
+        },
+        "responsePayload": {
+          "isSuccess": true,
+          "responseCode": "0000",
+          "responseMessage": "",
+          "responseDT": "20241231123045",
+          "responseData": {
+            "etsRequest": [
+              {
+                "spotXML": "<ETSRequest><Rate>28.75</Rate></ETSRequest>",
+                "serialNo": "186451",
+                "transAmt": "1000000",
+                "etsTime": "20241231",
+                "listRate": "28.85",
+                "doneRate": "28.75",
+                "costRate": "28.75",
+                "deductionAmt": "1000000",
+                "payeeAmt": "17500",
+                "equvBaseAmount": "1000000",
+                "equvUsdAmount": "17500",
+                "pageDeductionCurrEName": "TWD",
+                "rateQueryXmlFlag": "1",
+                "cnValue": "CNY",
+                "cnValueName": "人民幣"
+              }
+            ],
+            "showListRate": "True",
+            "etsTime": "20241231",
+            "listRate": "28.85",
+            "doneRate": "28.75",
+            "deductionAmt": "1939",
+            "payeeAmt": "USD"
+          }
+        }
+      },
+      {
+        "scenario": "連接數據庫失敗,外匯敲價系統失敗",
+        "responsePayload": {
+          "isSuccess": false,
+          "responseCode": "9001",
+          "responseMessage": "系統繁忙,請稍後再試！",
+          "responseDT": "2026/02/24 10:30:25",
+          "responseData": {}
+        }
+      },
+      {
+        "scenario": "詢價請求回傳錯誤碼",
+        "responsePayload": {
+          "isSuccess": false,
+          "responseCode": "9000",
+          "responseMessage": "自定義錯誤訊息",
+          "responseDT": "2026/02/24 10:30:25",
+          "responseData": {}
+        }
+      },
+      {
+        "scenario": "報價超時",
+        "responsePayload": {
+          "isSuccess": false,
+          "responseCode": "0404",
+          "responseMessage": "報價逾時，請重新取得匯率",
+          "responseDT": "2026/02/24 10:30:25",
+          "responseData": {}
+        }
+      },
+      {
+        "scenario": "未輸入必填請求參數",
+        "responsePayload": {
+          "isSuccess": false,
+          "responseCode": "9999",
+          "responseMessage": "請輸入{Request參數}！",
+          "responseDT": "2026/02/24 10:30:25",
+          "responseData": {}
+        }
+      }
+    ],
+    "handoffSource": "codeHandoff",
+    "logicSummary": {
+      "stepCount": 6,
+      "queryContractCount": 0,
+      "mappingRuleCount": 22,
+      "legacyEvidenceCount": 0,
+      "dependencyHintCount": 4,
+      "constraintCount": 11,
+      "unresolvedCount": 0,
+      "primarySource": "businessLogic"
+    },
+    "logicFlow": [
+      {
+        "stepId": "step_1",
+        "title": ": 初始化區塊",
+        "actionType": "process",
+        "inputs": [
+          "strNote",
+          "debitCurrency",
+          "payeeCurrency",
+          "decPayeeAmount"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_2",
+        "title": "判斷客戶身分",
+        "actionType": "validation",
+        "inputs": [
+          "strNote",
+          "debitCurrency",
+          "payeeCurrency",
+          "decPayeeAmount"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_3",
+        "title": "扣款和收款幣別相同",
+        "actionType": "process",
+        "inputs": [
+          "strNote",
+          "debitCurrency",
+          "payeeCurrency",
+          "decPayeeAmount"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_4",
+        "title": "若轉出幣別 !== 轉入幣別→用敲價",
+        "actionType": "mapping",
+        "inputs": [
+          "strNote",
+          "debitCurrency",
+          "payeeCurrency",
+          "decPayeeAmount"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_5",
+        "title": "ETS 回覆解析",
+        "actionType": "return",
+        "inputs": [
+          "strNote",
+          "debitCurrency",
+          "payeeCurrency",
+          "decPayeeAmount"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_6",
+        "title": "組合Response回傳",
+        "actionType": "return",
+        "inputs": [
+          "strNote",
+          "debitCurrency",
+          "payeeCurrency",
+          "decPayeeAmount"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      }
+    ],
+    "audienceProfile": {
+      "scope": "unknown",
+      "confidence": "low",
+      "scores": {
+        "frontstage": 4,
+        "midBackoffice": 5,
+        "shared": 9
+      },
+      "evidence": [
+        {
+          "scope": "frontstage",
+          "keyword": "customer",
+          "weight": 1
+        },
+        {
+          "scope": "frontstage",
+          "keyword": "cust",
+          "weight": 1
+        },
+        {
+          "scope": "frontstage",
+          "keyword": "客戶",
+          "weight": 1
+        },
+        {
+          "scope": "frontstage",
+          "keyword": "redis",
+          "weight": 1
+        },
+        {
+          "scope": "midBackoffice",
+          "keyword": "staff",
+          "weight": 2
+        },
+        {
+          "scope": "midBackoffice",
+          "keyword": "行員",
+          "weight": 3
+        },
+        {
+          "scope": "shared",
+          "keyword": "common",
+          "weight": 2
+        },
+        {
+          "scope": "shared",
+          "keyword": "commonfunc",
+          "weight": 3
+        },
+        {
+          "scope": "shared",
+          "keyword": "framework",
+          "weight": 1
+        },
+        {
+          "scope": "shared",
+          "keyword": "共用",
+          "weight": 3
+        }
+      ],
+      "unresolved": [
+        {
+          "gapType": "audience_profile_ambiguous",
+          "severity": "error",
+          "blocking": true,
+          "message": "API 同時命中前台與中後台線索，需由 spec/handoff 補明確調用者或使用場景。"
+        }
+      ]
+    },
+    "devGuidelineProfile": {
+      "sourceName": "P240301 永豐商銀新大戶程式開發規範",
+      "version": "6.2",
+      "catalogPath": "rules/code-guidelines/p240301-v6.2/catalog.json",
+      "rulesRoot": "D:/Devs/NEWDAWHO/.agent/project-rules/NEWDAWHO",
+      "sourceStatus": "converted_reference_required"
+    },
+    "devGuidelineRulesSelected": [
+      {
+        "ruleId": "common-style",
+        "title": "共同落碼風格與可維護性",
+        "category": "common-style",
+        "direction": "production-code",
+        "ruleType": "style_only",
+        "audienceScopes": [
+          "frontstage",
+          "midBackoffice",
+          "shared",
+          "unknown"
+        ],
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/common-style.md",
+        "action": "load_on_demand"
+      },
+      {
+        "ruleId": "data-access",
+        "title": "DB / SQL / 資料檢索規範",
+        "category": "data-access",
+        "direction": "production-code",
+        "ruleType": "blocking_gap",
+        "audienceScopes": [
+          "frontstage",
+          "midBackoffice",
+          "shared",
+          "unknown"
+        ],
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/data-access.md",
+        "action": "select_and_check_gaps"
+      },
+      {
+        "ruleId": "cache",
+        "title": "快取 / Redis / 事實來源規範",
+        "category": "cache",
+        "direction": "production-code",
+        "ruleType": "blocking_gap",
+        "audienceScopes": [
+          "frontstage",
+          "midBackoffice",
+          "shared",
+          "unknown"
+        ],
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/cache.md",
+        "action": "select_and_check_gaps"
+      },
+      {
+        "ruleId": "validation",
+        "title": "Request DTO 驗證與錯誤映射規範",
+        "category": "validation",
+        "direction": "production-code",
+        "ruleType": "blocking_gap",
+        "audienceScopes": [
+          "frontstage",
+          "midBackoffice",
+          "shared",
+          "unknown"
+        ],
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/validation.md",
+        "action": "select_and_check_gaps"
+      },
+      {
+        "ruleId": "config",
+        "title": "AppSettings / 外部服務設定規範",
+        "category": "config",
+        "direction": "production-code",
+        "ruleType": "blocking_gap",
+        "audienceScopes": [
+          "frontstage",
+          "midBackoffice",
+          "shared",
+          "unknown"
+        ],
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/config.md",
+        "action": "select_and_check_gaps"
+      },
+      {
+        "ruleId": "logging-exception",
+        "title": "Log / Exception / 失敗處理規範",
+        "category": "logging-exception",
+        "direction": "production-code",
+        "ruleType": "style_only",
+        "audienceScopes": [
+          "frontstage",
+          "midBackoffice",
+          "shared",
+          "unknown"
+        ],
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/logging-exception.md",
+        "action": "load_on_demand"
+      },
+      {
+        "ruleId": "test-handoff",
+        "title": "第 05 步測試交接規範",
+        "category": "test-handoff",
+        "direction": "handoff-only",
+        "ruleType": "handoff_only",
+        "audienceScopes": [
+          "frontstage",
+          "midBackoffice",
+          "shared",
+          "unknown"
+        ],
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/test-handoff.md",
+        "action": "handoff_only"
+      }
+    ],
+    "devGuidelineLoadHints": [
+      {
+        "ruleId": "common-style",
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/common-style.md",
+        "reason": "Every API implementation needs only the lightweight shared coding conventions."
+      },
+      {
+        "ruleId": "data-access",
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/data-access.md",
+        "reason": "Load only when the API has queryContracts, SQL dependencies, DB backend APIs, or table evidence."
+      },
+      {
+        "ruleId": "cache",
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/cache.md",
+        "reason": "Load only when Redis, cache, TTL, session cache, or stale-read risk appears in the handoff."
+      },
+      {
+        "ruleId": "validation",
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/validation.md",
+        "reason": "Load only when request fields, required fields, custom validation, or validation response mapping is relevant."
+      },
+      {
+        "ruleId": "config",
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/config.md",
+        "reason": "Load only for appsettings, external endpoint, third-party service, or environment config changes."
+      },
+      {
+        "ruleId": "logging-exception",
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/logging-exception.md",
+        "reason": "Load only when the API touches exception handling, logging, or failure disposition."
+      },
+      {
+        "ruleId": "test-handoff",
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/test-handoff.md",
+        "reason": "Load only to describe step-05 UnitTest / IntegrationTest / runtime validation handoff; step 04 must not write test source."
+      }
+    ],
+    "devGuidelineGaps": [
+      {
+        "gapType": "audience_profile_ambiguous",
+        "severity": "error",
+        "blocking": true,
+        "message": "API 同時命中前台與中後台線索，需由 spec/handoff 補明確調用者或使用場景。"
+      },
+      {
+        "gapType": "audience_profile_required",
+        "ruleId": "frontstage-session",
+        "severity": "error",
+        "blocking": true,
+        "message": "命中特定前台/中後台規範，但 API 使用者或入口方向證據不足。",
+        "missingEvidence": [
+          "caller channel",
+          "frontstage/backoffice scope",
+          "route or TSD audience"
+        ]
+      }
+    ],
+    "logicSourcesUsed": [
+      "codeHandoff",
+      "mappingRules",
+      "dependencyHints",
+      "constraints",
+      "mockExamples"
+    ],
+    "queryContractsSelected": [],
+    "mappingRulesSelected": [
+      {
+        "ruleId": "map_http_spotxml",
+        "sourceField": "http",
+        "targetField": "spotXML",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "ETSRequest的xml格式",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_http_serialno",
+        "sourceField": "http",
+        "targetField": "serialNo",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "敲價序號",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_length_0_transamt",
+        "sourceField": "我要用金額.Length > 0,值為我要用金額,否則為換成金額",
+        "targetField": "transAmt",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "交易金額",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_datetime_now_tostring_etstime",
+        "sourceField": "DateTime.Now.ToString()",
+        "targetField": "etsTime",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "當前時間",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_http_listrate",
+        "sourceField": "http",
+        "targetField": "listRate",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "牌告匯率",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_http_donerate",
+        "sourceField": "http",
+        "targetField": "doneRate",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "承作匯率",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_http_costrate",
+        "sourceField": "http",
+        "targetField": "costRate",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "成本匯率",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_http_deductionamt",
+        "sourceField": "http",
+        "targetField": "deductionAmt",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "實際扣帳金額",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_http_payeeamt",
+        "sourceField": "http",
+        "targetField": "payeeAmt",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "實際入帳金額",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_http_equvbaseamount",
+        "sourceField": "http",
+        "targetField": "equvBaseAmount",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "等值臺幣",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_http_equvusdamount",
+        "sourceField": "http",
+        "targetField": "equvUsdAmount",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "等值美元",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_length_0_pagedeductioncurrename",
+        "sourceField": "我要用金額.Length > 0,值為我要用幣別,否則為換成幣別",
+        "targetField": "pageDeductionCurrEName",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "交易幣別",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_1_0_ratequeryxmlflag",
+        "sourceField": "敲價系統正常回復則為 1 ,否則為0",
+        "targetField": "rateQueryXmlFlag",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "敲價系統是否正常標記",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_cny_cny_cnvalue_cnvalue",
+        "sourceField": "當換成或者我要用幣別為人民幣的時候會使用民幣一律回CNY,我要用和換成金額都會被重置為CNY,CNValue不變",
+        "targetField": "cnValue",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "人民幣幣別",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_http_cnvaluename",
+        "sourceField": "http",
+        "targetField": "cnValueName",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "人民幣幣別",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_flase_true_showlistrate",
+        "sourceField": "若扣款幣別=兌換幣別，則牌告匯率不用顯示 Flase / True",
+        "targetField": "showListRate",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "是否展示牌告匯率",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_datetime_now_tostring_etstime",
+        "sourceField": "DateTime.Now.ToString()",
+        "targetField": "etsTime",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "當前時間",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_http_listrate",
+        "sourceField": "http",
+        "targetField": "listRate",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "牌告匯率",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_http_donerate",
+        "sourceField": "http",
+        "targetField": "doneRate",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "承作匯率",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_http_deductionamt",
+        "sourceField": "http",
+        "targetField": "deductionAmt",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "實際扣帳金額",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_http_payeeamt",
+        "sourceField": "http",
+        "targetField": "payeeAmt",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "實際入帳金額",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_http_txpair",
+        "sourceField": "http",
+        "targetField": "txPair",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "交易對",
+        "evidenceIds": []
+      }
+    ],
+    "dependencyHintsSelected": [
+      {
+        "dependencyType": "service",
+        "preferredAbstractions": [
+          "ICurrentRuntimeContextAccessor",
+          "IRedisService"
+        ],
+        "purpose": "Resolve keyId/custId from the current request context and Redis.",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "external_api",
+        "preferredAbstractions": [
+          "IApiRequestService"
+        ],
+        "purpose": "业务逻辑正文提到 CommonFunc->CheckVIP() 依赖。",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "external_api",
+        "preferredAbstractions": [
+          "IApiRequestService"
+        ],
+        "purpose": "业务逻辑正文提到 CommonFunc->GenFntTranSeq() 依赖。",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "external_api",
+        "preferredAbstractions": [
+          "IApiRequestService"
+        ],
+        "purpose": "Excel 依赖声明提到 ETSService->RequestSpotDs。",
+        "evidenceIds": []
+      }
+    ],
+    "legacyEvidenceUsed": [],
+    "constraintsApplied": [
+      {
+        "constraintType": "prohibited_shortcut",
+        "rule": "block_comment_header_substitution",
+        "severity": "error",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "error_code_rule",
+        "rule": "9001 | 連接數據庫失敗,外匯敲價系統失敗 | 系統繁忙,請稍後再試！",
+        "severity": "warning",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "error_code_rule",
+        "rule": "9000 | 詢價請求回傳錯誤碼 | 自定義錯誤訊息",
+        "severity": "warning",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "error_code_rule",
+        "rule": "0404 | 報價超時 | 報價逾時，請重新取得匯率",
+        "severity": "warning",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "error_code_rule",
+        "rule": "9999 | 未輸入必填請求參數 | 請輸入{Request參數}！",
+        "severity": "warning",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "request_field_validation",
+        "field": "debitCurrency",
+        "validationLayer": "dto_attribute",
+        "validationType": "required",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸入{Request參數}！",
+        "customValidationAttributeNeeded": false,
+        "rule": "debitCurrency | dto_attribute | required | 9999 | 請輸入{Request參數}！",
+        "severity": "warning",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "request_field_validation",
+        "field": "payeeCurrency",
+        "validationLayer": "dto_attribute",
+        "validationType": "required",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸入{Request參數}！",
+        "customValidationAttributeNeeded": false,
+        "rule": "payeeCurrency | dto_attribute | required | 9999 | 請輸入{Request參數}！",
+        "severity": "warning",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "request_field_validation",
+        "field": "decPayeeAmount",
+        "validationLayer": "dto_attribute",
+        "validationType": "required",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸入{Request參數}！",
+        "customValidationAttributeNeeded": false,
+        "rule": "decPayeeAmount | dto_attribute | required | 9999 | 請輸入{Request參數}！",
+        "severity": "warning",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "request_field_validation",
+        "field": "decDebitAmount",
+        "validationLayer": "dto_attribute",
+        "validationType": "required",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸入{Request參數}！",
+        "customValidationAttributeNeeded": false,
+        "rule": "decDebitAmount | dto_attribute | required | 9999 | 請輸入{Request參數}！",
+        "severity": "warning",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "request_field_validation",
+        "field": "specode",
+        "validationLayer": "dto_attribute",
+        "validationType": "required",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸入{Request參數}！",
+        "customValidationAttributeNeeded": false,
+        "rule": "specode | dto_attribute | required | 9999 | 請輸入{Request參數}！",
+        "severity": "warning",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "request_field_validation",
+        "field": "checkVIP",
+        "validationLayer": "dto_attribute",
+        "validationType": "required",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸入{Request參數}！",
+        "customValidationAttributeNeeded": false,
+        "rule": "checkVIP | dto_attribute | required | 9999 | 請輸入{Request參數}！",
+        "severity": "warning",
+        "evidenceIds": []
+      }
+    ],
+    "unresolvedLogic": [],
+    "testScenarioPlan": [
+      {
+        "source": "mockExamples",
+        "sourceIndex": 1,
+        "scenario": "正向情境",
+        "requestPayload": {
+          "strNote": 2,
+          "debitCurrency": "TWD",
+          "payeeCurrency": "USD",
+          "decPayeeAmount": 1500,
+          "decDebitAmount": 500,
+          "specode": "N"
+        },
+        "expectedResponsePayload": {
+          "isSuccess": true,
+          "responseCode": "0000",
+          "responseMessage": "",
+          "responseDT": "20241231123045",
+          "responseData": {
+            "etsRequest": [
+              {
+                "spotXML": "<ETSRequest><Rate>28.75</Rate></ETSRequest>",
+                "serialNo": "186451",
+                "transAmt": "1000000",
+                "etsTime": "20241231",
+                "listRate": "28.85",
+                "doneRate": "28.75",
+                "costRate": "28.75",
+                "deductionAmt": "1000000",
+                "payeeAmt": "17500",
+                "equvBaseAmount": "1000000",
+                "equvUsdAmount": "17500",
+                "pageDeductionCurrEName": "TWD",
+                "rateQueryXmlFlag": "1",
+                "cnValue": "CNY",
+                "cnValueName": "人民幣"
+              }
+            ],
+            "showListRate": "True",
+            "etsTime": "20241231",
+            "listRate": "28.85",
+            "doneRate": "28.75",
+            "deductionAmt": "1939",
+            "payeeAmt": "USD"
+          }
+        },
+        "expectedResponseCode": "0000",
+        "expectedResponseMessage": "",
+        "expectedIsSuccess": true,
+        "coverageTargets": [
+          "unit_test",
+          "integration_test"
+        ],
+        "preserveScenarioName": true
+      },
+      {
+        "source": "mockExamples",
+        "sourceIndex": 2,
+        "scenario": "連接數據庫失敗,外匯敲價系統失敗",
+        "requestPayload": {},
+        "expectedResponsePayload": {
+          "isSuccess": false,
+          "responseCode": "9001",
+          "responseMessage": "系統繁忙,請稍後再試！",
+          "responseDT": "2026/02/24 10:30:25",
+          "responseData": {}
+        },
+        "expectedResponseCode": "9001",
+        "expectedResponseMessage": "系統繁忙,請稍後再試！",
+        "expectedIsSuccess": false,
+        "coverageTargets": [
+          "unit_test",
+          "integration_test"
+        ],
+        "preserveScenarioName": true
+      },
+      {
+        "source": "mockExamples",
+        "sourceIndex": 3,
+        "scenario": "詢價請求回傳錯誤碼",
+        "requestPayload": {},
+        "expectedResponsePayload": {
+          "isSuccess": false,
+          "responseCode": "9000",
+          "responseMessage": "自定義錯誤訊息",
+          "responseDT": "2026/02/24 10:30:25",
+          "responseData": {}
+        },
+        "expectedResponseCode": "9000",
+        "expectedResponseMessage": "自定義錯誤訊息",
+        "expectedIsSuccess": false,
+        "coverageTargets": [
+          "unit_test",
+          "integration_test"
+        ],
+        "preserveScenarioName": true
+      },
+      {
+        "source": "mockExamples",
+        "sourceIndex": 4,
+        "scenario": "報價超時",
+        "requestPayload": {},
+        "expectedResponsePayload": {
+          "isSuccess": false,
+          "responseCode": "0404",
+          "responseMessage": "報價逾時，請重新取得匯率",
+          "responseDT": "2026/02/24 10:30:25",
+          "responseData": {}
+        },
+        "expectedResponseCode": "0404",
+        "expectedResponseMessage": "報價逾時，請重新取得匯率",
+        "expectedIsSuccess": false,
+        "coverageTargets": [
+          "unit_test",
+          "integration_test"
+        ],
+        "preserveScenarioName": true
+      },
+      {
+        "source": "mockExamples",
+        "sourceIndex": 5,
+        "scenario": "未輸入必填請求參數",
+        "requestPayload": {},
+        "expectedResponsePayload": {
+          "isSuccess": false,
+          "responseCode": "9999",
+          "responseMessage": "請輸入{Request參數}！",
+          "responseDT": "2026/02/24 10:30:25",
+          "responseData": {}
+        },
+        "expectedResponseCode": "9999",
+        "expectedResponseMessage": "請輸入{Request參數}！",
+        "expectedIsSuccess": false,
+        "coverageTargets": [
+          "unit_test",
+          "integration_test"
+        ],
+        "preserveScenarioName": true
+      }
+    ],
+    "testScenarioSource": "mockExamples",
+    "testScenarioCoverageRequired": true,
+    "requestValidationPlan": [
+      {
+        "field": "debitCurrency",
+        "validationType": "required",
+        "validationLayer": "dto_attribute",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸入{Request參數}！",
+        "customValidationAttributeNeeded": false
+      },
+      {
+        "field": "payeeCurrency",
+        "validationType": "required",
+        "validationLayer": "dto_attribute",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸入{Request參數}！",
+        "customValidationAttributeNeeded": false
+      },
+      {
+        "field": "decPayeeAmount",
+        "validationType": "required",
+        "validationLayer": "dto_attribute",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸入{Request參數}！",
+        "customValidationAttributeNeeded": false
+      },
+      {
+        "field": "decDebitAmount",
+        "validationType": "required",
+        "validationLayer": "dto_attribute",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸入{Request參數}！",
+        "customValidationAttributeNeeded": false
+      },
+      {
+        "field": "specode",
+        "validationType": "required",
+        "validationLayer": "dto_attribute",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸入{Request參數}！",
+        "customValidationAttributeNeeded": false
+      },
+      {
+        "field": "checkVIP",
+        "validationType": "required",
+        "validationLayer": "dto_attribute",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸入{Request參數}！",
+        "customValidationAttributeNeeded": false
+      }
+    ],
+    "dtoAttributeRules": [
+      {
+        "field": "debitCurrency",
+        "validationType": "required",
+        "validationLayer": "dto_attribute",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸入{Request參數}！",
+        "customValidationAttributeNeeded": false
+      },
+      {
+        "field": "payeeCurrency",
+        "validationType": "required",
+        "validationLayer": "dto_attribute",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸入{Request參數}！",
+        "customValidationAttributeNeeded": false
+      },
+      {
+        "field": "decPayeeAmount",
+        "validationType": "required",
+        "validationLayer": "dto_attribute",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸入{Request參數}！",
+        "customValidationAttributeNeeded": false
+      },
+      {
+        "field": "decDebitAmount",
+        "validationType": "required",
+        "validationLayer": "dto_attribute",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸入{Request參數}！",
+        "customValidationAttributeNeeded": false
+      },
+      {
+        "field": "specode",
+        "validationType": "required",
+        "validationLayer": "dto_attribute",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸入{Request參數}！",
+        "customValidationAttributeNeeded": false
+      },
+      {
+        "field": "checkVIP",
+        "validationType": "required",
+        "validationLayer": "dto_attribute",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸入{Request參數}！",
+        "customValidationAttributeNeeded": false
+      }
+    ],
+    "customValidationAttributesNeeded": [],
+    "validationResponseMappingMode": "spec_code_message",
+    "serviceValidationsRetained": [],
+    "validationInfrastructureGap": [
+      {
+        "topic": "validation_response_mapping",
+        "requiredCapability": "attribute_validation_to_spec_transaction_result",
+        "mode": "shared_commonstatic"
+      }
+    ],
+    "reviewSources": [],
+    "reviewConstraintsSelected": [
+      {
+        "reviewId": "default_external_api_name",
+        "scope": "global_skill",
+        "fileRole": "shared",
+        "ruleType": "naming",
+        "instruction": "對外 API 名稱、route 與需求說明必須沿用 GetRateEnquiry，不得額外追加 Async。",
+        "severity": "warning",
+        "blocking": true,
+        "appliesTo": [
+          "apiName"
+        ],
+        "examples": [
+          "GetRateEnquiry"
+        ],
+        "source": "default_policy"
+      },
+      {
+        "reviewId": "default_traditional_chinese_code",
+        "scope": "global_skill",
+        "fileRole": "shared",
+        "ruleType": "language",
+        "instruction": "AI 寫入的中文註解、字串、檔案說明與角色要求統一使用繁體中文。",
+        "severity": "warning",
+        "blocking": false,
+        "appliesTo": [
+          "code_comments",
+          "code_strings",
+          "file_headers"
+        ],
+        "examples": [
+          "繁體中文"
+        ],
+        "source": "default_policy"
+      },
+      {
+        "reviewId": "default_dependency_field_naming",
+        "scope": "global_skill",
+        "fileRole": "shared",
+        "ruleType": "naming_style",
+        "instruction": "凡是依賴注入後賦值到欄位的成員，命名一律使用 _camelCase，首字固定底線，例如 _service、_ctxAccessor、_sqlExecutor、_logger；不得使用 CtxAccessor、Logger 這類 PascalCase 欄位名。",
+        "severity": "warning",
+        "blocking": false,
+        "appliesTo": [
+          "constructor_injected_fields",
+          "controller_fields",
+          "service_fields",
+          "fixture_fields"
+        ],
+        "examples": [
+          "_service",
+          "_ctxAccessor",
+          "_sqlExecutor",
+          "_logger"
+        ],
+        "source": "default_policy"
+      }
+    ],
+    "fileRequirements": {
+      "controller": [
+        {
+          "reviewId": "default_external_api_name",
+          "ruleType": "naming",
+          "instruction": "對外 API 名稱、route 與需求說明必須沿用 GetRateEnquiry，不得額外追加 Async。",
+          "severity": "warning",
+          "blocking": true,
+          "appliesTo": [
+            "apiName"
+          ],
+          "examples": [
+            "GetRateEnquiry"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_traditional_chinese_code",
+          "ruleType": "language",
+          "instruction": "AI 寫入的中文註解、字串、檔案說明與角色要求統一使用繁體中文。",
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "code_comments",
+            "code_strings",
+            "file_headers"
+          ],
+          "examples": [
+            "繁體中文"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_dependency_field_naming",
+          "ruleType": "naming_style",
+          "instruction": "凡是依賴注入後賦值到欄位的成員，命名一律使用 _camelCase，首字固定底線，例如 _service、_ctxAccessor、_sqlExecutor、_logger；不得使用 CtxAccessor、Logger 這類 PascalCase 欄位名。",
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "constructor_injected_fields",
+            "controller_fields",
+            "service_fields",
+            "fixture_fields"
+          ],
+          "examples": [
+            "_service",
+            "_ctxAccessor",
+            "_sqlExecutor",
+            "_logger"
+          ],
+          "source": "default_policy"
+        }
+      ],
+      "service": [
+        {
+          "reviewId": "default_external_api_name",
+          "ruleType": "naming",
+          "instruction": "對外 API 名稱、route 與需求說明必須沿用 GetRateEnquiry，不得額外追加 Async。",
+          "severity": "warning",
+          "blocking": true,
+          "appliesTo": [
+            "apiName"
+          ],
+          "examples": [
+            "GetRateEnquiry"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_traditional_chinese_code",
+          "ruleType": "language",
+          "instruction": "AI 寫入的中文註解、字串、檔案說明與角色要求統一使用繁體中文。",
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "code_comments",
+            "code_strings",
+            "file_headers"
+          ],
+          "examples": [
+            "繁體中文"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_dependency_field_naming",
+          "ruleType": "naming_style",
+          "instruction": "凡是依賴注入後賦值到欄位的成員，命名一律使用 _camelCase，首字固定底線，例如 _service、_ctxAccessor、_sqlExecutor、_logger；不得使用 CtxAccessor、Logger 這類 PascalCase 欄位名。",
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "constructor_injected_fields",
+            "controller_fields",
+            "service_fields",
+            "fixture_fields"
+          ],
+          "examples": [
+            "_service",
+            "_ctxAccessor",
+            "_sqlExecutor",
+            "_logger"
+          ],
+          "source": "default_policy"
+        }
+      ],
+      "entity": [
+        {
+          "reviewId": "default_external_api_name",
+          "ruleType": "naming",
+          "instruction": "對外 API 名稱、route 與需求說明必須沿用 GetRateEnquiry，不得額外追加 Async。",
+          "severity": "warning",
+          "blocking": true,
+          "appliesTo": [
+            "apiName"
+          ],
+          "examples": [
+            "GetRateEnquiry"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_traditional_chinese_code",
+          "ruleType": "language",
+          "instruction": "AI 寫入的中文註解、字串、檔案說明與角色要求統一使用繁體中文。",
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "code_comments",
+            "code_strings",
+            "file_headers"
+          ],
+          "examples": [
+            "繁體中文"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_dependency_field_naming",
+          "ruleType": "naming_style",
+          "instruction": "凡是依賴注入後賦值到欄位的成員，命名一律使用 _camelCase，首字固定底線，例如 _service、_ctxAccessor、_sqlExecutor、_logger；不得使用 CtxAccessor、Logger 這類 PascalCase 欄位名。",
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "constructor_injected_fields",
+            "controller_fields",
+            "service_fields",
+            "fixture_fields"
+          ],
+          "examples": [
+            "_service",
+            "_ctxAccessor",
+            "_sqlExecutor",
+            "_logger"
+          ],
+          "source": "default_policy"
+        }
+      ],
+      "unitTest": [
+        {
+          "reviewId": "default_external_api_name",
+          "ruleType": "naming",
+          "instruction": "對外 API 名稱、route 與需求說明必須沿用 GetRateEnquiry，不得額外追加 Async。",
+          "severity": "warning",
+          "blocking": true,
+          "appliesTo": [
+            "apiName"
+          ],
+          "examples": [
+            "GetRateEnquiry"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_traditional_chinese_code",
+          "ruleType": "language",
+          "instruction": "AI 寫入的中文註解、字串、檔案說明與角色要求統一使用繁體中文。",
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "code_comments",
+            "code_strings",
+            "file_headers"
+          ],
+          "examples": [
+            "繁體中文"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_dependency_field_naming",
+          "ruleType": "naming_style",
+          "instruction": "凡是依賴注入後賦值到欄位的成員，命名一律使用 _camelCase，首字固定底線，例如 _service、_ctxAccessor、_sqlExecutor、_logger；不得使用 CtxAccessor、Logger 這類 PascalCase 欄位名。",
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "constructor_injected_fields",
+            "controller_fields",
+            "service_fields",
+            "fixture_fields"
+          ],
+          "examples": [
+            "_service",
+            "_ctxAccessor",
+            "_sqlExecutor",
+            "_logger"
+          ],
+          "source": "default_policy"
+        }
+      ],
+      "integrationTest": [
+        {
+          "reviewId": "default_external_api_name",
+          "ruleType": "naming",
+          "instruction": "對外 API 名稱、route 與需求說明必須沿用 GetRateEnquiry，不得額外追加 Async。",
+          "severity": "warning",
+          "blocking": true,
+          "appliesTo": [
+            "apiName"
+          ],
+          "examples": [
+            "GetRateEnquiry"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_traditional_chinese_code",
+          "ruleType": "language",
+          "instruction": "AI 寫入的中文註解、字串、檔案說明與角色要求統一使用繁體中文。",
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "code_comments",
+            "code_strings",
+            "file_headers"
+          ],
+          "examples": [
+            "繁體中文"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_dependency_field_naming",
+          "ruleType": "naming_style",
+          "instruction": "凡是依賴注入後賦值到欄位的成員，命名一律使用 _camelCase，首字固定底線，例如 _service、_ctxAccessor、_sqlExecutor、_logger；不得使用 CtxAccessor、Logger 這類 PascalCase 欄位名。",
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "constructor_injected_fields",
+            "controller_fields",
+            "service_fields",
+            "fixture_fields"
+          ],
+          "examples": [
+            "_service",
+            "_ctxAccessor",
+            "_sqlExecutor",
+            "_logger"
+          ],
+          "source": "default_policy"
+        }
+      ]
+    },
+    "responseLifecycleRules": [],
+    "failureDisposition": {
+      "mode": "rollback_after_validation_failure",
+      "preserveFailedCode": false,
+      "resumeStrategy": "retry_from_prepare",
+      "source": "default_policy"
+    },
+    "languagePolicy": {
+      "mode": "traditional_chinese_for_ai_code",
+      "appliesTo": [
+        "code_comments",
+        "code_strings",
+        "file_headers",
+        "file_requirements"
+      ],
+      "source": "default_policy"
+    },
+    "externalApiName": "GetRateEnquiry",
+    "internalAsyncMethod": "GetRateEnquiryAsync",
+    "resumedFromPhase": "blocked"
+  },
+  "validationChecks": [
+    "dotnet build \"Sinopac.EnterpriseAPI/Sinopac.EnterpriseAPI/Sinopac.EnterpriseAPI.csproj\" -m:1",
+    "dotnet test \"Sinopac.EnterpriseAPI/Test/EnterpriseApi.Unit/EnterpriseApi.Unit.csproj\" -m:1",
+    "dotnet test \"Sinopac.EnterpriseAPI/Test/EnterpriseApi.Integration/EnterpriseApi.Integration.csproj\" -m:1"
+  ],
+  "steps": [
+    {
+      "id": "precheck",
+      "status": "done",
+      "note": "Resolved EnterpriseAPI framework profile and module slots."
+    },
+    {
+      "id": "write_code",
+      "status": "blocked",
+      "note": "AI must directly modify controller/interface/service/entity business files for CommonFunc; test targets are handoff-only for step 05 and the script must not generate stubs."
+    },
+    {
+      "id": "validate",
+      "status": "pending",
+      "note": "After real code is written, run EnterpriseAPI build, unit test, and integration test validation."
+    }
+  ]
+}

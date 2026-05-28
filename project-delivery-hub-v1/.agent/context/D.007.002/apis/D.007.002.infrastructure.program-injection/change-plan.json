@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "4.1.0",
+  "skillName": "api-code-writer",
+  "manifestType": "change-plan",
+  "status": "planned",
+  "updatedAt": "2026-05-28T18:39:06+08:00",
+  "executionId": "D.007.002",
+  "apiId": "D.007.002.infrastructure.program-injection",
+  "projectRoot": ".",
+  "solutionPath": "Sinopac.EnterpriseAPI/Sinopac.EnterpriseAPI/Sinopac.EnterpriseAPI.csproj",
+  "scopeNote": "Minimal context for code-style-reviewer only. Captures HEAD commit 634dacf Program.cs injection change.",
+  "analysis": {
+    "frameworkProfile": "enterpriseapi",
+    "moduleName": "Infrastructure",
+    "controllerFile": null,
+    "interfaceFile": null,
+    "targetFile": "Sinopac.EnterpriseAPI/Sinopac.EnterpriseAPI/Program.cs",
+    "serviceFiles": [],
+    "entityFiles": [],
+    "codeTargetFiles": [
+      "Sinopac.EnterpriseAPI/Sinopac.EnterpriseAPI/Program.cs"
+    ],
+    "unitTestTargetFiles": [],
+    "integrationTestTargetFiles": []
+  },
+  "steps": [
+    {
+      "id": "code_style_review",
+      "status": "pending",
+      "note": "Run code-style-reviewer with --scope context; do not modify business code."
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "reviewStatus": "passed",
+  "checkedAt": "2026-05-23T19:28:04+08:00",
+  "apiId": "COMMON.exchangecommonfunc.getdawhorate",
+  "source": {
+    "tsdFile": "TSD.Common_封存TSD共用开发链路_v1.0_20260523.docx",
+    "workbookFile": "NEWDA_Method_DETAIL_ExchangeCommonFunc_20260522.xlsx",
+    "sheetNames": [
+      "GetDawhoRateFunc 取大戶匯率",
+      "GetDawhoRate取大戶匯率"
+    ]
+  },
+  "summary": {
+    "checks": 74,
+    "matched": 74,
+    "matchPct": 100.0,
+    "blockingCount": 0,
+    "warningCount": 0
+  },
+  "findings": []
+}

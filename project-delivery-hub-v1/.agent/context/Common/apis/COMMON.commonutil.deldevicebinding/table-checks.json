@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "4.1.0",
+  "skillName": "api-sql-fixture-preparer",
+  "manifestType": "table-checks",
+  "updatedAt": "2026-05-23T17:55:54+08:00",
+  "executionId": "Common",
+  "apiId": "COMMON.commonutil.deldevicebinding",
+  "dbTarget": "ConnectionStrings.Report",
+  "authorityRoot": null,
+  "tables": []
+}

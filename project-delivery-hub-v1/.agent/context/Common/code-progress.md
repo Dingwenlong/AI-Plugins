@@ -1,0 +1,77 @@
+- [2026-05-23T18:09:09+08:00] COMMON.commonutil.checkprelogindevicestatus blocked: EnterpriseAPI framework slots are missing: API/EnterpriseAPI/EnterpriseAPI/EnterpriseAPI.csproj, BusinessLogicLayout/EnterpriseApi/EnterpriseApiBusiness.Interface/EnterpriseApiBusiness.Interface.csproj, BusinessLogicLayout/EnterpriseApi/EnterpriseApiBusiness/EnterpriseApiBusiness.csproj, BusinessLogicLayout/EnterpriseApi/EnterpriseApiEntity/EnterpriseApiEntity.csproj, Test/UnitTesting/EnterpriseAPI/EnterpriseApiUnit/EnterpriseAPIUnit.csproj, Test/IntegrationTesting/EnterpriseAPI/EnterpriseApiIntegration/EnterpriseAPIIntegration.csproj
+- [2026-05-23T18:09:10+08:00] COMMON.commonutil.deldevicebinding blocked: EnterpriseAPI framework slots are missing: API/EnterpriseAPI/EnterpriseAPI/EnterpriseAPI.csproj, BusinessLogicLayout/EnterpriseApi/EnterpriseApiBusiness.Interface/EnterpriseApiBusiness.Interface.csproj, BusinessLogicLayout/EnterpriseApi/EnterpriseApiBusiness/EnterpriseApiBusiness.csproj, BusinessLogicLayout/EnterpriseApi/EnterpriseApiEntity/EnterpriseApiEntity.csproj, Test/UnitTesting/EnterpriseAPI/EnterpriseApiUnit/EnterpriseAPIUnit.csproj, Test/IntegrationTesting/EnterpriseAPI/EnterpriseApiIntegration/EnterpriseAPIIntegration.csproj
+- [2026-05-23T18:09:11+08:00] COMMON.commonutil.getdevicebinding blocked: EnterpriseAPI framework slots are missing: API/EnterpriseAPI/EnterpriseAPI/EnterpriseAPI.csproj, BusinessLogicLayout/EnterpriseApi/EnterpriseApiBusiness.Interface/EnterpriseApiBusiness.Interface.csproj, BusinessLogicLayout/EnterpriseApi/EnterpriseApiBusiness/EnterpriseApiBusiness.csproj, BusinessLogicLayout/EnterpriseApi/EnterpriseApiEntity/EnterpriseApiEntity.csproj, Test/UnitTesting/EnterpriseAPI/EnterpriseApiUnit/EnterpriseAPIUnit.csproj, Test/IntegrationTesting/EnterpriseAPI/EnterpriseApiIntegration/EnterpriseAPIIntegration.csproj
+- [2026-05-23T18:09:12+08:00] COMMON.depositcommonutil.getdawhofixsetting blocked: EnterpriseAPI framework slots are missing: API/EnterpriseAPI/EnterpriseAPI/EnterpriseAPI.csproj, BusinessLogicLayout/EnterpriseApi/EnterpriseApiBusiness.Interface/EnterpriseApiBusiness.Interface.csproj, BusinessLogicLayout/EnterpriseApi/EnterpriseApiBusiness/EnterpriseApiBusiness.csproj, BusinessLogicLayout/EnterpriseApi/EnterpriseApiEntity/EnterpriseApiEntity.csproj, Test/UnitTesting/EnterpriseAPI/EnterpriseApiUnit/EnterpriseAPIUnit.csproj, Test/IntegrationTesting/EnterpriseAPI/EnterpriseApiIntegration/EnterpriseAPIIntegration.csproj
+- [2026-05-23T18:09:12+08:00] COMMON.commonfunc.getaccountlistbytranscode blocked: EnterpriseAPI framework slots are missing: API/EnterpriseAPI/EnterpriseAPI/EnterpriseAPI.csproj, BusinessLogicLayout/EnterpriseApi/EnterpriseApiBusiness.Interface/EnterpriseApiBusiness.Interface.csproj, BusinessLogicLayout/EnterpriseApi/EnterpriseApiBusiness/EnterpriseApiBusiness.csproj, BusinessLogicLayout/EnterpriseApi/EnterpriseApiEntity/EnterpriseApiEntity.csproj, Test/UnitTesting/EnterpriseAPI/EnterpriseApiUnit/EnterpriseAPIUnit.csproj, Test/IntegrationTesting/EnterpriseAPI/EnterpriseApiIntegration/EnterpriseAPIIntegration.csproj
+- [2026-05-23T18:09:13+08:00] COMMON.commonfunc.getcencurr blocked: EnterpriseAPI framework slots are missing: API/EnterpriseAPI/EnterpriseAPI/EnterpriseAPI.csproj, BusinessLogicLayout/EnterpriseApi/EnterpriseApiBusiness.Interface/EnterpriseApiBusiness.Interface.csproj, BusinessLogicLayout/EnterpriseApi/EnterpriseApiBusiness/EnterpriseApiBusiness.csproj, BusinessLogicLayout/EnterpriseApi/EnterpriseApiEntity/EnterpriseApiEntity.csproj, Test/UnitTesting/EnterpriseAPI/EnterpriseApiUnit/EnterpriseAPIUnit.csproj, Test/IntegrationTesting/EnterpriseAPI/EnterpriseApiIntegration/EnterpriseAPIIntegration.csproj
+- [2026-05-23T18:09:14+08:00] COMMON.commonfunc.getcustidformat blocked: EnterpriseAPI framework slots are missing: API/EnterpriseAPI/EnterpriseAPI/EnterpriseAPI.csproj, BusinessLogicLayout/EnterpriseApi/EnterpriseApiBusiness.Interface/EnterpriseApiBusiness.Interface.csproj, BusinessLogicLayout/EnterpriseApi/EnterpriseApiBusiness/EnterpriseApiBusiness.csproj, BusinessLogicLayout/EnterpriseApi/EnterpriseApiEntity/EnterpriseApiEntity.csproj, Test/UnitTesting/EnterpriseAPI/EnterpriseApiUnit/EnterpriseAPIUnit.csproj, Test/IntegrationTesting/EnterpriseAPI/EnterpriseApiIntegration/EnterpriseAPIIntegration.csproj
+- [2026-05-23T18:09:15+08:00] COMMON.commonfunc.getic0001 blocked: EnterpriseAPI framework slots are missing: API/EnterpriseAPI/EnterpriseAPI/EnterpriseAPI.csproj, BusinessLogicLayout/EnterpriseApi/EnterpriseApiBusiness.Interface/EnterpriseApiBusiness.Interface.csproj, BusinessLogicLayout/EnterpriseApi/EnterpriseApiBusiness/EnterpriseApiBusiness.csproj, BusinessLogicLayout/EnterpriseApi/EnterpriseApiEntity/EnterpriseApiEntity.csproj, Test/UnitTesting/EnterpriseAPI/EnterpriseApiUnit/EnterpriseAPIUnit.csproj, Test/IntegrationTesting/EnterpriseAPI/EnterpriseApiIntegration/EnterpriseAPIIntegration.csproj
+- [2026-05-23T18:09:16+08:00] COMMON.commonfunc.getrateenquiry blocked: EnterpriseAPI framework slots are missing: API/EnterpriseAPI/EnterpriseAPI/EnterpriseAPI.csproj, BusinessLogicLayout/EnterpriseApi/EnterpriseApiBusiness.Interface/EnterpriseApiBusiness.Interface.csproj, BusinessLogicLayout/EnterpriseApi/EnterpriseApiBusiness/EnterpriseApiBusiness.csproj, BusinessLogicLayout/EnterpriseApi/EnterpriseApiEntity/EnterpriseApiEntity.csproj, Test/UnitTesting/EnterpriseAPI/EnterpriseApiUnit/EnterpriseAPIUnit.csproj, Test/IntegrationTesting/EnterpriseAPI/EnterpriseApiIntegration/EnterpriseAPIIntegration.csproj
+- [2026-05-23T18:10:21+08:00] COMMON.commonutil.checkprelogindevicestatus precheck completed.
+- [2026-05-23T18:10:21+08:00] COMMON.commonutil.checkprelogindevicestatus change-plan generated for Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonUtil/CommonUtilService.CheckPreLoginDeviceStatus.cs; waiting for AI-authored code changes.
+- [2026-05-23T18:10:22+08:00] COMMON.commonutil.deldevicebinding blocked: Business logic handoff is missing structured query, mapping, or legacy evidence.
+- [2026-05-23T18:10:23+08:00] COMMON.commonutil.getdevicebinding precheck completed.
+- [2026-05-23T18:10:23+08:00] COMMON.commonutil.getdevicebinding change-plan generated for Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonUtil/CommonUtilService.GetDeviceBinding.cs; waiting for AI-authored code changes.
+- [2026-05-23T18:10:23+08:00] COMMON.depositcommonutil.getdawhofixsetting precheck completed.
+- [2026-05-23T18:10:23+08:00] COMMON.depositcommonutil.getdawhofixsetting change-plan generated for Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonUtil/CommonUtilService.GetDawhoFixSetting.cs; waiting for AI-authored code changes.
+- [2026-05-23T18:10:24+08:00] COMMON.commonfunc.getaccountlistbytranscode precheck completed.
+- [2026-05-23T18:10:24+08:00] COMMON.commonfunc.getaccountlistbytranscode change-plan generated for Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonFunc/CommonFuncService.GetAccountListByTransCode.cs; waiting for AI-authored code changes.
+- [2026-05-23T18:10:25+08:00] COMMON.commonfunc.getcencurr precheck completed.
+- [2026-05-23T18:10:25+08:00] COMMON.commonfunc.getcencurr change-plan generated for Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonFunc/CommonFuncService.GetCENCurr.cs; waiting for AI-authored code changes.
+- [2026-05-23T18:10:26+08:00] COMMON.commonfunc.getcustidformat blocked: Business logic handoff is missing required query contracts for SQL-oriented dependencies.
+- [2026-05-23T18:10:26+08:00] COMMON.commonfunc.getic0001 precheck completed.
+- [2026-05-23T18:10:26+08:00] COMMON.commonfunc.getic0001 change-plan generated for Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonFunc/CommonFuncService.GetIC0001.cs; waiting for AI-authored code changes.
+- [2026-05-23T18:10:27+08:00] COMMON.commonfunc.getrateenquiry blocked: V6.2 dev-guideline selection blocked: API 同時命中前台與中後台線索，需由 spec/handoff 補明確調用者或使用場景。; frontstage-session: 命中特定前台/中後台規範，但 API 使用者或入口方向證據不足。
+- [2026-05-23T18:12:45+08:00] COMMON.commonutil.checkprelogindevicestatus precheck completed.
+- [2026-05-23T18:12:46+08:00] COMMON.commonutil.checkprelogindevicestatus code implemented.
+- [2026-05-23T18:13:27+08:00] COMMON.commonutil.checkprelogindevicestatus => tests_passed
+- [2026-05-23T20:59:50+08:00] COMMON.commonfunc.getcencurr blocked: EnterpriseAPI framework slots are missing: API/EnterpriseAPI/EnterpriseAPI/EnterpriseAPI.csproj, BusinessLogicLayout/EnterpriseApi/EnterpriseApiBusiness.Interface/EnterpriseApiBusiness.Interface.csproj, BusinessLogicLayout/EnterpriseApi/EnterpriseApiBusiness/EnterpriseApiBusiness.csproj, BusinessLogicLayout/EnterpriseApi/EnterpriseApiEntity/EnterpriseApiEntity.csproj, Test/UnitTesting/EnterpriseAPI/EnterpriseApiUnit/EnterpriseAPIUnit.csproj, Test/IntegrationTesting/EnterpriseAPI/EnterpriseApiIntegration/EnterpriseAPIIntegration.csproj
+- [2026-05-23T21:00:04+08:00] COMMON.commonfunc.getcencurr blocked: EnterpriseAPI framework slots are missing: API/EnterpriseAPI/EnterpriseAPI/EnterpriseAPI.csproj, BusinessLogicLayout/EnterpriseApi/EnterpriseApiBusiness.Interface/EnterpriseApiBusiness.Interface.csproj, BusinessLogicLayout/EnterpriseApi/EnterpriseApiBusiness/EnterpriseApiBusiness.csproj, BusinessLogicLayout/EnterpriseApi/EnterpriseApiEntity/EnterpriseApiEntity.csproj, Test/UnitTesting/EnterpriseAPI/EnterpriseApiUnit/EnterpriseAPIUnit.csproj, Test/IntegrationTesting/EnterpriseAPI/EnterpriseApiIntegration/EnterpriseAPIIntegration.csproj
+- [2026-05-23T21:01:46+08:00] COMMON.commonfunc.getcencurr precheck completed.
+- [2026-05-23T21:01:46+08:00] COMMON.commonfunc.getcencurr change-plan generated for EnterpriseApiBusiness/CommonFunc/CommonFuncService.GetCENCurr.cs; waiting for AI-authored code changes.
+- [2026-05-23T21:01:55+08:00] COMMON.commonfunc.getcustidformat blocked: Business logic handoff is missing required query contracts for SQL-oriented dependencies.
+- [2026-05-23T21:02:04+08:00] COMMON.commonfunc.getoperationhour precheck completed.
+- [2026-05-23T21:02:05+08:00] COMMON.commonfunc.getoperationhour change-plan generated for EnterpriseApiBusiness/CommonFunc/CommonFuncService.GetOperationHour.cs; waiting for AI-authored code changes.
+- [2026-05-23T21:06:55+08:00] COMMON.commonfunc.getcencurr precheck completed.
+- [2026-05-23T21:06:55+08:00] COMMON.commonfunc.getcencurr code implemented.
+- [2026-05-23T21:07:03+08:00] COMMON.commonfunc.getcencurr => tests_passed
+- [2026-05-23T22:08:53+08:00] COMMON.commonutil.checkprelogindevicestatus precheck completed.
+- [2026-05-23T22:08:53+08:00] COMMON.commonutil.checkprelogindevicestatus change-plan generated for EnterpriseApiBusiness/CommonUtil/CommonUtilService.CheckPreLoginDeviceStatus.cs; waiting for AI-authored code changes.
+- [2026-05-23T22:08:53+08:00] COMMON.commonutil.deldevicebinding blocked: Business logic handoff is missing structured query, mapping, or legacy evidence.
+- [2026-05-23T22:08:54+08:00] COMMON.commonutil.getdevicebinding precheck completed.
+- [2026-05-23T22:08:54+08:00] COMMON.commonutil.getdevicebinding change-plan generated for EnterpriseApiBusiness/CommonUtil/CommonUtilService.GetDeviceBinding.cs; waiting for AI-authored code changes.
+- [2026-05-23T22:08:54+08:00] COMMON.depositcommonutil.getdawhofixsetting precheck completed.
+- [2026-05-23T22:08:54+08:00] COMMON.depositcommonutil.getdawhofixsetting change-plan generated for EnterpriseApiBusiness/DepositCommonUtil/DepositCommonUtilService.GetDawhoFixSetting.cs; waiting for AI-authored code changes.
+- [2026-05-23T22:08:55+08:00] COMMON.commonfunc.checkaccount precheck completed.
+- [2026-05-23T22:08:55+08:00] COMMON.commonfunc.checkaccount change-plan generated for EnterpriseApiBusiness/CommonFunc/CommonFuncService.CheckAccount.cs; waiting for AI-authored code changes.
+- [2026-05-23T22:08:56+08:00] COMMON.commonfunc.checkforeignercustid precheck completed.
+- [2026-05-23T22:08:56+08:00] COMMON.commonfunc.checkforeignercustid change-plan generated for EnterpriseApiBusiness/CommonFunc/CommonFuncService.CheckForeignerCustId.cs; waiting for AI-authored code changes.
+- [2026-05-23T22:08:56+08:00] COMMON.commonfunc.getaccountlistbytranscode precheck completed.
+- [2026-05-23T22:08:56+08:00] COMMON.commonfunc.getaccountlistbytranscode change-plan generated for EnterpriseApiBusiness/CommonFunc/CommonFuncService.GetAccountListByTransCode.cs; waiting for AI-authored code changes.
+- [2026-05-23T22:08:57+08:00] COMMON.commonfunc.getcustidformat blocked: Business logic handoff is missing required query contracts for SQL-oriented dependencies.
+- [2026-05-23T22:08:58+08:00] COMMON.commonfunc.getic0001 precheck completed.
+- [2026-05-23T22:08:58+08:00] COMMON.commonfunc.getic0001 change-plan generated for EnterpriseApiBusiness/CommonFunc/CommonFuncService.GetIC0001.cs; waiting for AI-authored code changes.
+- [2026-05-23T22:08:59+08:00] COMMON.commonfunc.getoperationhour precheck completed.
+- [2026-05-23T22:08:59+08:00] COMMON.commonfunc.getoperationhour change-plan generated for EnterpriseApiBusiness/CommonFunc/CommonFuncService.GetOperationHour.cs; waiting for AI-authored code changes.
+- [2026-05-23T22:08:59+08:00] COMMON.commonfunc.getrateenquiry blocked: V6.2 dev-guideline selection blocked: API 同時命中前台與中後台線索，需由 spec/handoff 補明確調用者或使用場景。; frontstage-session: 命中特定前台/中後台規範，但 API 使用者或入口方向證據不足。
+- [2026-05-23T22:09:00+08:00] COMMON.commonfunc.getvirtualacctprefix precheck completed.
+- [2026-05-23T22:09:00+08:00] COMMON.commonfunc.getvirtualacctprefix change-plan generated for EnterpriseApiBusiness/CommonFunc/CommonFuncService.GetVirtualAcctPreFix.cs; waiting for AI-authored code changes.
+- [2026-05-23T22:09:01+08:00] COMMON.commonfunc.isintradedate precheck completed.
+- [2026-05-23T22:09:01+08:00] COMMON.commonfunc.isintradedate change-plan generated for EnterpriseApiBusiness/CommonFunc/CommonFuncService.IsInTradeDate.cs; waiting for AI-authored code changes.
+- [2026-05-23T22:09:01+08:00] COMMON.commonfunc.showacctlist precheck completed.
+- [2026-05-23T22:09:01+08:00] COMMON.commonfunc.showacctlist change-plan generated for EnterpriseApiBusiness/CommonFunc/CommonFuncService.ShowAcctList.cs; waiting for AI-authored code changes.
+- [2026-05-23T22:17:33+08:00] COMMON.commonfunc.checkforeignercustid precheck completed.
+- [2026-05-23T22:17:33+08:00] COMMON.commonfunc.checkforeignercustid code implemented.
+- [2026-05-23T22:17:37+08:00] COMMON.commonfunc.checkforeignercustid => tests_passed
+- [2026-05-23T22:17:37+08:00] COMMON.commonfunc.getvirtualacctprefix precheck completed.
+- [2026-05-23T22:17:37+08:00] COMMON.commonfunc.getvirtualacctprefix code implemented.
+- [2026-05-23T22:17:41+08:00] COMMON.commonfunc.getvirtualacctprefix => tests_passed
+- [2026-05-23T22:17:41+08:00] COMMON.commonfunc.getoperationhour precheck completed.
+- [2026-05-23T22:17:42+08:00] COMMON.commonfunc.getoperationhour code implemented.
+- [2026-05-23T22:17:45+08:00] COMMON.commonfunc.getoperationhour => tests_passed
+- [2026-05-23T22:17:46+08:00] COMMON.commonfunc.isintradedate precheck completed.
+- [2026-05-23T22:17:46+08:00] COMMON.commonfunc.isintradedate code implemented.
+- [2026-05-23T22:17:49+08:00] COMMON.commonfunc.isintradedate => tests_passed
+- [2026-05-23T22:18:10+08:00] COMMON.commonutil.checkprelogindevicestatus precheck completed.
+- [2026-05-23T22:18:10+08:00] COMMON.commonutil.checkprelogindevicestatus code implemented.
+- [2026-05-23T22:18:13+08:00] COMMON.commonutil.checkprelogindevicestatus => tests_passed

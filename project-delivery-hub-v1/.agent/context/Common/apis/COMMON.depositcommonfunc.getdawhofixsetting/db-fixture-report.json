@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "4.1.0",
+  "skillName": "api-sql-fixture-preparer",
+  "manifestType": "db-fixture-report",
+  "updatedAt": "2026-05-23T19:42:51+08:00",
+  "executionId": "Common",
+  "apiId": "COMMON.depositcommonfunc.getdawhofixsetting",
+  "status": "blocked",
+  "phase": "inspection_blocked",
+  "executionMode": "prepare",
+  "dbTarget": "connection-name:Report",
+  "authorityRoot": "../../.agent/reference/global",
+  "sqlFixtureRequired": true,
+  "sourcesUsed": [
+    "codeHandoff.queryContracts",
+    "businessLogic.sqlSpecs"
+  ],
+  "tableRefs": [
+    "DB"
+  ],
+  "summary": {
+    "tableCount": 1,
+    "blockingTableCount": 1,
+    "queryTextCount": 1
+  },
+  "message": "COMMON.depositcommonfunc.getdawhofixsetting fixture blocked: missing_schema_authority",
+  "findings": [
+    {
+      "tableRef": "DB",
+      "action": "create",
+      "blockReason": "missing_schema_authority"
+    }
+  ]
+}

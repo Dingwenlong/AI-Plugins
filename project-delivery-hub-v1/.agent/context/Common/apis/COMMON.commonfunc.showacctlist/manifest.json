@@ -1,0 +1,62 @@
+{
+  "schemaVersion": "4.1.0",
+  "manifestType": "api",
+  "executionId": "Common",
+  "apiId": "COMMON.commonfunc.showacctlist",
+  "apiCategory": "CommonFunc",
+  "apiName": "ShowAcctList",
+  "status": "pending",
+  "phase": "planned",
+  "updatedAt": "2026-05-23T22:18:09+08:00",
+  "newAuthor": "Jimmy",
+  "specStatus": "done",
+  "specUpdatedAt": "2026-05-23T19:40:52+08:00",
+  "specBlockReason": null,
+  "specSourceFingerprint": "sha256:78e368aa71c66bdbf23648c884664bfe864421f8a8d6547e11a5ed7bd0f1d3d7",
+  "specSource": {
+    "tsdFile": "TSD.Common_封存TSD共用开发链路_v1.0_20260523.docx",
+    "workbookFile": "NEWDA_Method_DETAIL_ExchangeCommonFunc_20260522.xlsx",
+    "sheetNames": [
+      "ShowAcctList各交易取帳號的通用邏輯"
+    ]
+  },
+  "specArtifacts": {
+    "apiSpec": "../../../.agent/context/Common/apis/COMMON.commonfunc.showacctlist/Common_API_Spec.json"
+  },
+  "fixtureStatus": "skipped",
+  "fixturePhase": "no_sql",
+  "fixtureUpdatedAt": "2026-05-23T19:42:41+08:00",
+  "fixtureBlockReason": null,
+  "fixtureSourceFingerprint": "sha256:78e368aa71c66bdbf23648c884664bfe864421f8a8d6547e11a5ed7bd0f1d3d7",
+  "fixtureArtifacts": {
+    "dbFixtureReport": "../../.agent/context/Common/apis/COMMON.commonfunc.showacctlist/db-fixture-report.json",
+    "tableChecks": "../../.agent/context/Common/apis/COMMON.commonfunc.showacctlist/table-checks.json",
+    "seedPlan": null,
+    "seedExecuted": null,
+    "seedManifest": null
+  },
+  "codeStatus": "pending",
+  "codePhase": "planned",
+  "codeUpdatedAt": "2026-05-23T22:18:09+08:00",
+  "codeBlockReason": null,
+  "codeProjectRoot": ".",
+  "codeSolutionPath": "Sinopac.EnterpriseAPI.slnx",
+  "inputHashes": {
+    "upstreamManifest": "sha256:5b3f73fbc52a75dabe32b42eeb67378cefe10cde51273ccd9ab3f8bdd6e5506a",
+    "apiSpec": "sha256:e31f1f68c445f1fdfbde217c044efed397226a4b2a5a2b6291746776e3c72e34"
+  },
+  "modifiedFiles": [],
+  "validationChecks": [
+    "dotnet build \"Sinopac.EnterpriseAPI/Sinopac.EnterpriseAPI.csproj\" -m:1",
+    "dotnet test \"Test/EnterpriseApi.Unit/EnterpriseApi.Unit.csproj\" -m:1",
+    "dotnet test \"Test/EnterpriseApi.Integration/EnterpriseApi.Integration.csproj\" -m:1"
+  ],
+  "validationResults": [],
+  "repoDriftFiles": [],
+  "codeArtifacts": {
+    "changePlan": "../../../.agent/context/Common/apis/COMMON.commonfunc.showacctlist/change-plan.json",
+    "implementationReport": null,
+    "diagnosisReport": null
+  },
+  "lastMessage": "COMMON.commonfunc.showacctlist change-plan generated for EnterpriseApiBusiness/CommonFunc/CommonFuncService.ShowAcctList.cs; waiting for AI-authored code changes."
+}

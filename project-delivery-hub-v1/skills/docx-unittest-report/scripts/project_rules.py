@@ -8,6 +8,7 @@ from typing import Any
 
 CONFIG_FILENAME = "local-workspaces.json"
 RULES_ROOT_ENV_KEYS = ("PROJECT_RULES_ROOT",)
+WORKSPACE_ROOT_ENV_KEYS = ("PROJECT_WORKSPACE_ROOT",)
 WORKSPACE_KEY_ENV_KEYS = ("PROJECT_WORKSPACE_KEY",)
 
 
@@ -31,6 +32,16 @@ def first_env(keys: tuple[str, ...]) -> str | None:
         if value:
             return value
     return None
+
+
+def resolve_config_path(value: str | None, *, base: Path | None = None) -> Path | None:
+    text = clean_text(value)
+    if not text:
+        return None
+    path = Path(text).expanduser()
+    if not path.is_absolute() and base is not None:
+        path = base / path
+    return path.resolve()
 
 
 def load_workspace_config(start: Path | None = None) -> tuple[dict[str, Any], Path | None]:
@@ -61,13 +72,16 @@ def resolve_rules_root(
     if not isinstance(selected, dict):
         return None
 
+    workspace_root = resolve_config_path(first_env(WORKSPACE_ROOT_ENV_KEYS) or clean_text(selected.get("workspaceRoot")))
     raw_rules_root = clean_text(selected.get("rulesRoot"))
     if raw_rules_root:
-        return Path(raw_rules_root).expanduser().resolve()
+        return resolve_config_path(raw_rules_root, base=workspace_root)
 
     raw_agent_root = clean_text(selected.get("agentRoot"))
     if raw_agent_root and selected_key:
-        return (Path(raw_agent_root).expanduser().resolve() / "project-rules" / selected_key).resolve()
+        agent_root = resolve_config_path(raw_agent_root, base=workspace_root)
+        if agent_root is not None:
+            return (agent_root / "project-rules" / selected_key).resolve()
     return None
 
 
@@ -81,8 +95,14 @@ def load_catalog(rules_root: Path | None) -> dict[str, Any]:
     return payload if isinstance(payload, dict) else {}
 
 
-def resolve_asset_path(asset_key: str, *, rules_root_arg: str | None = None, fallback: Path | None = None) -> Path | None:
-    rules_root = resolve_rules_root(rules_root_arg, start_path=Path(__file__).resolve())
+def resolve_asset_path(
+    asset_key: str,
+    *,
+    rules_root_arg: str | None = None,
+    workspace_key: str | None = None,
+    fallback: Path | None = None,
+) -> Path | None:
+    rules_root = resolve_rules_root(rules_root_arg, workspace_key=workspace_key, start_path=Path(__file__).resolve())
     catalog = load_catalog(rules_root)
     assets = catalog.get("assets") if isinstance(catalog.get("assets"), dict) else {}
     raw_path = clean_text(assets.get(asset_key))

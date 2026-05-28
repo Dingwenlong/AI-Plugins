@@ -3,20 +3,28 @@ from __future__ import annotations
 
 import json
 import os
-import sqlite3
 import subprocess
 import sys
 import tempfile
-from contextlib import closing
+import importlib.util
 from pathlib import Path
 from typing import Any
 
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 SKILL_DIR = SCRIPT_DIR.parent
+SCRIPTS_DIR = SKILL_DIR / "scripts"
 PREPARE_SQL_FIXTURE = SKILL_DIR / "scripts" / "prepare_sql_fixture.py"
 FUNCTION_CODE = "N.006"
 API_ID = "N.006.setting.queryuserloginlog"
+
+if str(SCRIPTS_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPTS_DIR))
+SPEC = importlib.util.spec_from_file_location("prepare_sql_fixture", PREPARE_SQL_FIXTURE)
+assert SPEC and SPEC.loader
+prepare_sql_fixture = importlib.util.module_from_spec(SPEC)
+sys.modules[SPEC.name] = prepare_sql_fixture
+SPEC.loader.exec_module(prepare_sql_fixture)
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -33,6 +41,43 @@ def dump_text(path: Path, content: str) -> None:
     path.write_text(content, encoding="utf-8")
 
 
+def write_appsettings(project_root: Path, connection_name: str, connection_string: str) -> None:
+    dump_json(
+        project_root / "Api" / "appsettings.json",
+        {"ConnectionStrings": {connection_name: connection_string}},
+    )
+
+
+def write_sql_fixture_target_config(
+    agent_dir: Path,
+    *,
+    target_database: str = "DAWHO",
+    initial_catalog: str = "MMA",
+    allow_create_table: bool = False,
+    allow_seed: bool = False,
+) -> None:
+    dump_json(
+        agent_dir / "config" / "sql-fixture-targets.local.json",
+        {
+            "schemaVersion": "1.0.0",
+            "defaultTarget": "develop",
+            "targets": {
+                "develop": {
+                    "provider": "sqlserver",
+                    "environment": "develop",
+                    "connectionString": (
+                        f"Server=fixture-sql.example;Initial Catalog={initial_catalog};"
+                        "User ID=fixture_user;Password=secret;TrustServerCertificate=True;"
+                    ),
+                    "targetDatabase": target_database,
+                    "allowCreateTable": allow_create_table,
+                    "allowSeed": allow_seed,
+                }
+            },
+        },
+    )
+
+
 def assert_true(condition: bool, message: str) -> None:
     if not condition:
         raise AssertionError(message)
@@ -40,7 +85,7 @@ def assert_true(condition: bool, message: str) -> None:
 
 def no_sql_spec(api_id: str = API_ID) -> dict[str, Any]:
     return {
-        "schemaVersion": "4.2.0",
+        "schemaVersion": "4.3.0",
         "apiId": api_id,
         "apiCategory": "Setting",
         "apiName": "QueryUserLoginLog",
@@ -245,7 +290,7 @@ def test_sql_dependency_without_db_target_blocks_missing_db_target() -> None:
         assert_preserved_non_fixture_fields(paths)
 
 
-def test_sql_dependency_with_db_target_without_schema_authority_blocks() -> None:
+def test_sqlite_target_is_disabled_without_creating_file() -> None:
     with tempfile.TemporaryDirectory() as temp_dir:
         paths = setup_project(Path(temp_dir), sql_spec())
         db_path = paths["project_root"] / "fixture.sqlite"
@@ -253,78 +298,107 @@ def test_sql_dependency_with_db_target_without_schema_authority_blocks() -> None
         assert_true(completed.returncode == 1, completed.stdout + completed.stderr)
         _, checklist, manifest = load_state(paths)
         item = checklist["items"][0]
-        assert_true(item["fixtureStatus"] == "blocked", "missing schema authority should block")
-        assert_true(item["fixtureBlockReason"] == "missing_schema_authority", "schema authority gap should use contract reason")
-        assert_true(manifest["fixtureBlockReason"] == "missing_schema_authority", "manifest should mirror schema authority gap")
+        assert_true(item["fixtureStatus"] == "blocked", "SQLite target should block")
+        assert_true(item["fixtureBlockReason"] == "sqlite_target_disabled", "SQLite target should use explicit block reason")
+        assert_true(manifest["fixtureBlockReason"] == "sqlite_target_disabled", "manifest should mirror SQLite block")
         table_checks = load_json(paths["table_checks_path"])
-        assert_true(table_checks["tables"][0]["blockReason"] == "missing_schema_authority", "table check should expose schema authority gap")
+        report = load_json(paths["db_fixture_report_path"])
+        assert_true(table_checks["tables"][0]["blockReason"] == "sqlite_target_disabled", "table check should expose disabled SQLite target")
+        assert_true(report["dbTarget"] == "sqlite:///<disabled>", "report should not persist a local SQLite path")
+        assert_true(not db_path.exists(), "disabled SQLite target must not create a local database file")
         assert_preserved_non_fixture_fields(paths)
 
 
-def test_sqlite_apply_creates_seeds_and_is_idempotent() -> None:
+def assert_unsafe_sqlserver_target_blocks(extra_args: list[str], connection_string: str | None = None) -> None:
     with tempfile.TemporaryDirectory() as temp_dir:
         paths = setup_project(Path(temp_dir), sql_spec())
-        authority_root = paths["project_root"] / ".agent" / "Reference" / "db"
-        dump_text(
-            authority_root / "customerprofile.sql",
-            """
-CREATE TABLE IF NOT EXISTS CustomerProfile (
-    CUSTID TEXT PRIMARY KEY,
-    NAME TEXT NOT NULL
-);
-""".lstrip(),
-        )
-        dump_text(
-            authority_root / "customerprofile.seed.sql",
-            """
-INSERT INTO CustomerProfile (CUSTID, NAME)
-SELECT 'C123456789', 'Fixture User'
-WHERE NOT EXISTS (
-    SELECT 1 FROM CustomerProfile WHERE CUSTID = 'C123456789'
-);
-""".lstrip(),
-        )
-        db_path = paths["project_root"] / "fixture.sqlite"
-        completed = run_fixture(
-            paths["project_root"],
-            "--execution-mode",
-            "apply",
-            "--db-target",
-            f"sqlite:///{db_path}",
-            "--schema-authority-root",
-            str(authority_root),
-            "--allow-create-table",
-            "--allow-seed",
-        )
-        assert_true(completed.returncode == 0, completed.stdout + completed.stderr)
-        with closing(sqlite3.connect(db_path)) as conn:
-            row_count = conn.execute("SELECT COUNT(*) FROM CustomerProfile").fetchone()[0]
-        assert_true(row_count == 1, "first apply should insert one deterministic fixture row")
+        if connection_string:
+            write_appsettings(paths["project_root"], "ProdConnection", connection_string)
+        completed = run_fixture(paths["project_root"], "--execution-mode", "prepare", *extra_args)
+        assert_true(completed.returncode == 1, completed.stdout + completed.stderr)
         _, checklist, manifest = load_state(paths)
         item = checklist["items"][0]
-        assert_true(item["fixtureStatus"] == "done", "successful apply should mark checklist done")
-        assert_true(manifest["fixtureStatus"] == "done", "successful apply should mark manifest done")
-        seed_manifest = load_json(paths["seed_manifest_path"])
-        assert_true(seed_manifest["executedStatementCount"] == 2, "first apply should execute schema and seed SQL")
-
-        second = run_fixture(
-            paths["project_root"],
-            "--execution-mode",
-            "apply",
-            "--db-target",
-            f"sqlite:///{db_path}",
-            "--schema-authority-root",
-            str(authority_root),
-            "--allow-create-table",
-            "--allow-seed",
-        )
-        assert_true(second.returncode == 0, second.stdout + second.stderr)
-        with closing(sqlite3.connect(db_path)) as conn:
-            row_count = conn.execute("SELECT COUNT(*) FROM CustomerProfile").fetchone()[0]
-        assert_true(row_count == 1, "second apply must not duplicate seed rows")
+        assert_true(item["fixtureStatus"] == "blocked", "unsafe SQL Server target should block fixture prepare")
+        assert_true(item["fixtureBlockReason"] == "unsafe_database_target", "unsafe target must use contract block reason")
+        assert_true(manifest["fixtureBlockReason"] == "unsafe_database_target", "manifest should mirror unsafe target")
+        report = load_json(paths["db_fixture_report_path"])
         table_checks = load_json(paths["table_checks_path"])
-        assert_true(table_checks["tables"][0]["action"] == "reuse", "second apply should reuse existing fixture data")
-        assert_preserved_non_fixture_fields(paths)
+        assert_true(report["status"] == "blocked", "unsafe target report should be blocked")
+        assert_true(report["findings"][0]["blockReason"] == "unsafe_database_target", "report should expose unsafe target")
+        assert_true(table_checks["tables"][0]["blockReason"] == "unsafe_database_target", "table checks should expose unsafe target")
+
+
+def test_sqlserver_target_forms_block_when_not_proven_safe() -> None:
+    raw = "Server=prod-sql.example;Database=CoreBank;User Id=fixture;Password=secret;"
+    assert_unsafe_sqlserver_target_blocks(["--db-target", raw])
+    assert_unsafe_sqlserver_target_blocks(["--db-target", f"connstr:{raw}"])
+    assert_unsafe_sqlserver_target_blocks(["--db-target", "connection-name:ProdConnection"], raw)
+
+
+def test_agent_local_config_proves_sqlserver_target_safe_and_forces_target_database() -> None:
+    with tempfile.TemporaryDirectory() as temp_dir:
+        root = Path(temp_dir)
+        project_root = root / "FixtureProject"
+        project_root.mkdir()
+        agent_dir = root / ".agent"
+        rules_root = root / "project-rules" / "default"
+        dump_json(agent_dir / "config" / "chain-workspace.json", {"rulesRoot": str(rules_root)})
+        dump_json(
+            rules_root / "rules" / "sql-fixture" / "defaults.json",
+            {"defaultSqlServerDatabase": "DAWHO"},
+        )
+        write_sql_fixture_target_config(agent_dir, target_database="DAWHO", initial_catalog="MMA", allow_create_table=True, allow_seed=True)
+        prepare_sql_fixture.configure_project_sql_defaults(agent_dir)
+        try:
+            target = prepare_sql_fixture.parse_db_target(None, project_root, agent_dir=agent_dir)
+            assert_true(
+                isinstance(target, prepare_sql_fixture.SqlServerTarget),
+                ".agent local config should prove SQL Server fixture target safe",
+            )
+            assert_true(target.database == "DAWHO", "configured targetDatabase should override connection Initial Catalog")
+            assert_true(target.allow_create_table is True, "allowCreateTable should be read from local config")
+            assert_true(target.allow_seed is True, "allowSeed should be read from local config")
+            report_label = prepare_sql_fixture.db_target_for_report(None, target)
+            assert_true("Password=" not in report_label, "report label must not expose the connection string password")
+            assert_true("database=DAWHO" in report_label, "report label should expose only the effective target database")
+        finally:
+            prepare_sql_fixture.reset_project_sql_defaults()
+
+
+def test_not_required_is_terminal_fixture_status() -> None:
+    items = [{"apiId": API_ID, "specStatus": "done", "fixtureStatus": "not_required"}]
+    state = prepare_sql_fixture.update_execution_state_payload(
+        {},
+        items,
+        current_api_id=None,
+        message="fixture not required",
+        phase="not_required",
+    )
+    summary = prepare_sql_fixture.summarize_fixture_status(items)
+    assert_true(state["fixtureStatus"] == "done", "not_required should aggregate as terminal fixture status")
+    assert_true(summary["not_required"] == 1, "fixture summary should count not_required explicitly")
+
+
+def test_agent_local_config_rejects_database_outside_project_rules() -> None:
+    with tempfile.TemporaryDirectory() as temp_dir:
+        root = Path(temp_dir)
+        project_root = root / "FixtureProject"
+        project_root.mkdir()
+        agent_dir = root / ".agent"
+        rules_root = root / "project-rules" / "default"
+        dump_json(agent_dir / "config" / "chain-workspace.json", {"rulesRoot": str(rules_root)})
+        dump_json(
+            rules_root / "rules" / "sql-fixture" / "defaults.json",
+            {"defaultSqlServerDatabase": "DAWHO"},
+        )
+        write_sql_fixture_target_config(agent_dir, target_database="MMA", initial_catalog="MMA")
+        prepare_sql_fixture.configure_project_sql_defaults(agent_dir)
+        try:
+            target = prepare_sql_fixture.parse_db_target(None, project_root, agent_dir=agent_dir)
+            assert_true(isinstance(target, prepare_sql_fixture.BlockedDbTarget), "targetDatabase outside project rules should block")
+            assert_true(target.block_reason == "unsafe_database_target", "database mismatch should use unsafe target reason")
+        finally:
+            prepare_sql_fixture.reset_project_sql_defaults()
 
 
 def main() -> int:
@@ -332,10 +406,16 @@ def main() -> int:
     print("[pass] test_no_sql_dependency_skips_and_preserves_non_fixture_state")
     test_sql_dependency_without_db_target_blocks_missing_db_target()
     print("[pass] test_sql_dependency_without_db_target_blocks_missing_db_target")
-    test_sql_dependency_with_db_target_without_schema_authority_blocks()
-    print("[pass] test_sql_dependency_with_db_target_without_schema_authority_blocks")
-    test_sqlite_apply_creates_seeds_and_is_idempotent()
-    print("[pass] test_sqlite_apply_creates_seeds_and_is_idempotent")
+    test_sqlite_target_is_disabled_without_creating_file()
+    print("[pass] test_sqlite_target_is_disabled_without_creating_file")
+    test_sqlserver_target_forms_block_when_not_proven_safe()
+    print("[pass] test_sqlserver_target_forms_block_when_not_proven_safe")
+    test_agent_local_config_proves_sqlserver_target_safe_and_forces_target_database()
+    print("[pass] test_agent_local_config_proves_sqlserver_target_safe_and_forces_target_database")
+    test_not_required_is_terminal_fixture_status()
+    print("[pass] test_not_required_is_terminal_fixture_status")
+    test_agent_local_config_rejects_database_outside_project_rules()
+    print("[pass] test_agent_local_config_rejects_database_outside_project_rules")
     return 0
 
 

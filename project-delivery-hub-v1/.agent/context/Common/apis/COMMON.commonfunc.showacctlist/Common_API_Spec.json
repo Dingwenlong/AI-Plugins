@@ -1,0 +1,952 @@
+{
+  "schemaVersion": "4.2.0",
+  "apiId": "COMMON.commonfunc.showacctlist",
+  "newAuthor": "Jimmy",
+  "functionCode": "Common",
+  "version": "1.0",
+  "apiCategory": "CommonFunc",
+  "apiName": "ShowAcctList",
+  "source": {
+    "tsdFile": "TSD.Common_封存TSD共用开发链路_v1.0_20260523.docx",
+    "workbookFile": "NEWDA_Method_DETAIL_ExchangeCommonFunc_20260522.xlsx",
+    "sheetNames": [
+      "ShowAcctList各交易取帳號的通用邏輯"
+    ]
+  },
+  "request": [
+    {
+      "rowKey": "1",
+      "fieldName": "transCode",
+      "dataType": "string",
+      "required": true,
+      "description": "交易代碼",
+      "example": "\"transCode\":\"B10700\""
+    },
+    {
+      "rowKey": "2",
+      "fieldName": "webSource",
+      "dataType": "string",
+      "required": true,
+      "description": "網站代碼",
+      "example": "\"webSource\":\"MAPP\""
+    }
+  ],
+  "response": [
+    {
+      "rowKey": "1",
+      "fieldName": "isSuccess",
+      "dataType": "boolean",
+      "required": true,
+      "description": "API成功與否",
+      "example": "True",
+      "notes": "true ; false"
+    },
+    {
+      "rowKey": "2",
+      "fieldName": "responseCode",
+      "dataType": "string",
+      "required": true,
+      "description": "回應代碼",
+      "example": "0",
+      "notes": "成功:0000其餘狀況為失敗"
+    },
+    {
+      "rowKey": "3",
+      "fieldName": "responseMessage",
+      "dataType": "string",
+      "required": true,
+      "description": "回應訊息",
+      "notes": "失敗狀況下回傳錯誤訊息"
+    },
+    {
+      "rowKey": "4",
+      "fieldName": "responseDT",
+      "dataType": "string",
+      "required": true,
+      "description": "系統回應時間",
+      "notes": "yyyy/MM/dd HH:mm:ss"
+    },
+    {
+      "rowKey": "5",
+      "fieldName": "responseData",
+      "dataType": "json",
+      "required": true,
+      "description": "回應資料框",
+      "example": "\"responseData\": {}",
+      "properties": [
+        {
+          "rowKey": "5.01",
+          "fieldName": "acctList",
+          "dataType": "list",
+          "properties": [
+            {
+              "rowKey": "5.01.01",
+              "fieldName": "acctValue",
+              "dataType": "string",
+              "required": true,
+              "description": "帳號",
+              "example": "\"acctValue\":\"8838234284\"",
+              "notes": "GetEC0001().acctValue"
+            },
+            {
+              "rowKey": "5.01.02",
+              "fieldName": "acctCName",
+              "dataType": "string",
+              "required": true,
+              "description": "中文名稱組合",
+              "example": "\"acctCName\":\"DaWho組合存款帳戶\"",
+              "notes": "GetEC0001().acctCName"
+            },
+            {
+              "rowKey": "5.01.03",
+              "fieldName": "accType",
+              "dataType": "string",
+              "required": true,
+              "description": "帳號類型",
+              "example": "\"accType\":\"01\"",
+              "notes": "帳號類型，01：臺幣、02：支存、03儲值支付帳號、04行儲、11：外組、12：002、21：信用卡、22：GIFTCARD、23：598、30：虛擬帳號、80：有無單定存、05數位帳號(台)、13數位帳號(外)、14外匯授信目的帳戶(不計息)"
+            },
+            {
+              "rowKey": "5.01.04",
+              "fieldName": "digitalFg",
+              "dataType": "string",
+              "required": true,
+              "description": "數位帳號幾號",
+              "example": "\"digitalFg\":\"\"",
+              "notes": "GetEC0001().digitalFg"
+            },
+            {
+              "rowKey": "5.01.05",
+              "fieldName": "genQuotaMark",
+              "dataType": "int",
+              "required": true,
+              "description": "cancel，均可做綜合額度",
+              "example": "\"genQuotaMark\":1",
+              "notes": "GetEC0001().genQuotaMark"
+            },
+            {
+              "rowKey": "5.01.06",
+              "fieldName": "genAcctMark",
+              "dataType": "string",
+              "required": true,
+              "description": "綜存戶記號",
+              "example": "\"genAcctMark\":1",
+              "notes": "GetEC0001().genAcctMark"
+            },
+            {
+              "rowKey": "5.01.07",
+              "fieldName": "acctStat",
+              "dataType": "string",
+              "required": true,
+              "description": "久未往來戶記號",
+              "example": "\"acctStat\":\"Y\"",
+              "notes": "GetEC0001().acctStat"
+            },
+            {
+              "rowKey": "5.01.08",
+              "fieldName": "subAcct",
+              "dataType": "string",
+              "required": true,
+              "description": "子帳戶",
+              "example": "\"subAcct\":\"\"",
+              "notes": "GetEC0001().subAcct"
+            },
+            {
+              "rowKey": "5.01.09",
+              "fieldName": "curr",
+              "dataType": "string",
+              "required": true,
+              "description": "幣別",
+              "example": "\"curr\":\"TWD\"",
+              "notes": "GetEC0001().curr"
+            },
+            {
+              "rowKey": "5.01.10",
+              "fieldName": "curText",
+              "dataType": "string",
+              "required": true,
+              "description": "幣別中文",
+              "example": "\"curText\":\"新臺幣\"",
+              "notes": "GetEC0001().curText"
+            },
+            {
+              "rowKey": "5.01.11",
+              "fieldName": "availBalance",
+              "dataType": "decimal",
+              "required": true,
+              "description": "(帳戶)餘額",
+              "example": "\"availBalance\":531",
+              "notes": "GetEC0001().availBalance"
+            },
+            {
+              "rowKey": "5.01.12",
+              "fieldName": "availableAmount",
+              "dataType": "decimal",
+              "required": true,
+              "description": "最高可使用額",
+              "example": "\"availableAmount\":677675",
+              "notes": "GetEC0001().availableAmount"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "mockExamples": [
+    {
+      "scenario": "獲取成功結果示例",
+      "requestPayload": {
+        "transCode": "B10700",
+        "webSource": "MAPP"
+      },
+      "responsePayload": {
+        "responseData": {
+          "acctList": [
+            {
+              "acctValue": "8838234284",
+              "acctCName": "DaWho組合存款帳戶",
+              "accType": "01",
+              "digitalFg": "",
+              "genQuotaMark": 1,
+              "genAcctMark": "1",
+              "acctStat": "Y",
+              "subAcct": "",
+              "curr": "TWD",
+              "curText": "新臺幣",
+              "availBalance": 531
+            },
+            {
+              "acctValue": "9922334455",
+              "acctCName": "外幣綜合存款帳戶",
+              "accType": "11",
+              "digitalFg": "1",
+              "genQuotaMark": 0,
+              "genAcctMark": "0",
+              "acctStat": "N",
+              "subAcct": "01",
+              "curr": "USD",
+              "curText": "美金",
+              "availBalance": 1200.5
+            }
+          ]
+        }
+      }
+    },
+    {
+      "scenario": "連接數據庫失敗",
+      "responsePayload": {
+        "isSuccess": false,
+        "responseCode": "9001",
+        "responseMessage": "系統繁忙,請稍後再試！",
+        "responseDT": "2026/02/24 10:30:25",
+        "responseData": {}
+      }
+    }
+  ],
+  "backendApis": {
+    "CommonFunc": [
+      "GetEC0001() 取帳戶總覽",
+      "GetAcctKind()單一帳號&新版網銀使用邏輯"
+    ],
+    "CommonUtil": [
+      "GetAcctKind()"
+    ]
+  },
+  "businessLogic": {
+    "steps": [
+      {
+        "step": 1,
+        "title": "獲取客戶帳戶資料",
+        "details": "1.調用CommonFunc.GetEC0001得到帳戶總覽"
+      },
+      {
+        "step": 2,
+        "title": "新版網銀使用邏輯",
+        "details": "1.取得帳號使用邏輯：object[] acctList = CommonUtil.GetAcctKind(transCode, webSource);"
+      },
+      {
+        "step": 3,
+        "title": "逐一篩選，帳號限制",
+        "details": "// 逐一篩選\nvar accountList = GetEC0001()\n.Where(a =>\n(string.IsNullOrEmpty(acctList[0]) || a.NonTrxferFlg != acctList[0]) &&\n(string.IsNullOrEmpty(acctList[1]) || a.GenQuotaMark == acctList[1]) &&\n(string.IsNullOrEmpty(acctList[2]) || a.GenAcctMark == acctList[2]) &&\n(string.IsNullOrEmpty(acctList[3]) || a.SinopayFlag == acctList[3]) &&\n(acctList.Skip(4).All(x => string.IsNullOrEmpty(x)) || acctList.Skip(4).Contains(a.AccType))\n)\n.ToList();"
+      },
+      {
+        "step": 4,
+        "title": "回傳結果",
+        "details": "將篩選後的帳號進行回傳"
+      },
+      {
+        "step": 5,
+        "title": "流水號",
+        "details": "流水號"
+      },
+      {
+        "step": 6,
+        "title": "呼叫的IRIS編號",
+        "details": "呼叫的IRIS編號\n可读取外援：TW T24 IRIS_OpenAPI_Summary_20231212 -> reference/global/raw/external-api/IRIS/TW T24 IRIS_OpenAPI_Summary_20231212.xlsx#sheetName=IRIS；ED0019_OpenAPI_spec_Enquiry_20260213 -> reference/global/raw/external-api/IRIS/ED0019_OpenAPI_spec_Enquiry_20260213.xlsx#sheetName=JSON Request-Response；EC0002_OpenAPI_spec_Enquiry_20260213 -> reference/global/raw/external-api/IRIS/EC0002_OpenAPI_spec_Enquiry_20260213.xlsx#sheetName=JSON Request-Response",
+        "referenceHints": [
+          {
+            "id": "external.iris.twt24iris-openapi-summary-20231212",
+            "category": "external_api",
+            "matchSource": "iris_keyword",
+            "matchKey": "IRIS",
+            "title": "TW T24 IRIS_OpenAPI_Summary_20231212",
+            "relativePath": "reference/global/raw/external-api/IRIS/TW T24 IRIS_OpenAPI_Summary_20231212.xlsx",
+            "locator": {
+              "sheetName": "IRIS"
+            },
+            "reason": "命中外部接口关键词 IRIS，可读取 IRIS/OpenAPI 设计",
+            "authority": "reference_imported"
+          },
+          {
+            "id": "external.iris.ed0019-openapi-spec-enquiry-20260213",
+            "category": "external_api",
+            "matchSource": "iris_keyword",
+            "matchKey": "IRIS",
+            "title": "ED0019_OpenAPI_spec_Enquiry_20260213",
+            "relativePath": "reference/global/raw/external-api/IRIS/ED0019_OpenAPI_spec_Enquiry_20260213.xlsx",
+            "locator": {
+              "sheetName": "JSON Request-Response"
+            },
+            "reason": "命中外部接口关键词 IRIS，可读取 IRIS/OpenAPI 设计",
+            "authority": "reference_imported"
+          },
+          {
+            "id": "external.iris.ec0002-openapi-spec-enquiry-20260213",
+            "category": "external_api",
+            "matchSource": "iris_keyword",
+            "matchKey": "IRIS",
+            "title": "EC0002_OpenAPI_spec_Enquiry_20260213",
+            "relativePath": "reference/global/raw/external-api/IRIS/EC0002_OpenAPI_spec_Enquiry_20260213.xlsx",
+            "locator": {
+              "sheetName": "JSON Request-Response"
+            },
+            "reason": "命中外部接口关键词 IRIS，可读取 IRIS/OpenAPI 设计",
+            "authority": "reference_imported"
+          }
+        ]
+      },
+      {
+        "step": 7,
+        "title": "帳號",
+        "details": "帳號"
+      },
+      {
+        "step": 8,
+        "title": "上送Json格式資料",
+        "details": "上送Json格式資料"
+      },
+      {
+        "step": 9,
+        "title": "IRIS回覆成功或失敗",
+        "details": "IRIS回覆成功或失敗\n可读取外援：TW T24 IRIS_OpenAPI_Summary_20231212 -> reference/global/raw/external-api/IRIS/TW T24 IRIS_OpenAPI_Summary_20231212.xlsx#sheetName=IRIS；ED0019_OpenAPI_spec_Enquiry_20260213 -> reference/global/raw/external-api/IRIS/ED0019_OpenAPI_spec_Enquiry_20260213.xlsx#sheetName=JSON Request-Response；EC0002_OpenAPI_spec_Enquiry_20260213 -> reference/global/raw/external-api/IRIS/EC0002_OpenAPI_spec_Enquiry_20260213.xlsx#sheetName=JSON Request-Response",
+        "referenceHints": [
+          {
+            "id": "external.iris.twt24iris-openapi-summary-20231212",
+            "category": "external_api",
+            "matchSource": "iris_keyword",
+            "matchKey": "IRIS",
+            "title": "TW T24 IRIS_OpenAPI_Summary_20231212",
+            "relativePath": "reference/global/raw/external-api/IRIS/TW T24 IRIS_OpenAPI_Summary_20231212.xlsx",
+            "locator": {
+              "sheetName": "IRIS"
+            },
+            "reason": "命中外部接口关键词 IRIS，可读取 IRIS/OpenAPI 设计",
+            "authority": "reference_imported"
+          },
+          {
+            "id": "external.iris.ed0019-openapi-spec-enquiry-20260213",
+            "category": "external_api",
+            "matchSource": "iris_keyword",
+            "matchKey": "IRIS",
+            "title": "ED0019_OpenAPI_spec_Enquiry_20260213",
+            "relativePath": "reference/global/raw/external-api/IRIS/ED0019_OpenAPI_spec_Enquiry_20260213.xlsx",
+            "locator": {
+              "sheetName": "JSON Request-Response"
+            },
+            "reason": "命中外部接口关键词 IRIS，可读取 IRIS/OpenAPI 设计",
+            "authority": "reference_imported"
+          },
+          {
+            "id": "external.iris.ec0002-openapi-spec-enquiry-20260213",
+            "category": "external_api",
+            "matchSource": "iris_keyword",
+            "matchKey": "IRIS",
+            "title": "EC0002_OpenAPI_spec_Enquiry_20260213",
+            "relativePath": "reference/global/raw/external-api/IRIS/EC0002_OpenAPI_spec_Enquiry_20260213.xlsx",
+            "locator": {
+              "sheetName": "JSON Request-Response"
+            },
+            "reason": "命中外部接口关键词 IRIS，可读取 IRIS/OpenAPI 设计",
+            "authority": "reference_imported"
+          }
+        ]
+      },
+      {
+        "step": 10,
+        "title": "錯誤代碼",
+        "details": "錯誤代碼"
+      },
+      {
+        "step": 11,
+        "title": "錯誤訊息",
+        "details": "錯誤訊息"
+      },
+      {
+        "step": 12,
+        "title": "交易序號",
+        "details": "交易序號"
+      }
+    ],
+    "fieldMappings": [
+      {
+        "target": "acctList",
+        "source": "GetEC0001()",
+        "rule": "帳號；中文名稱組合；帳號類型；數位帳號幾號；cancel，均可做綜合額度；綜存戶記號；久未往來戶記號；子帳戶；幣別；幣別中文；(帳戶)餘額；最高可使用額",
+        "fields": [
+          {
+            "field": "acctValue",
+            "source": "GetEC0001().acctValue",
+            "rule": "帳號"
+          },
+          {
+            "field": "acctCName",
+            "source": "GetEC0001().acctCName",
+            "rule": "中文名稱組合"
+          },
+          {
+            "field": "accType",
+            "source": "帳號類型，01：臺幣、02：支存、03儲值支付帳號、04行儲、11：外組、12：002、21：信用卡、22：GIFTCARD、23：598、30：虛擬帳號、80：有無單定存、05數位帳號(台)、13數位帳號(外)、14外匯授信目的帳戶(不計息)",
+            "rule": "帳號類型"
+          },
+          {
+            "field": "digitalFg",
+            "source": "GetEC0001().digitalFg",
+            "rule": "數位帳號幾號"
+          },
+          {
+            "field": "genQuotaMark",
+            "source": "GetEC0001().genQuotaMark",
+            "rule": "cancel，均可做綜合額度"
+          },
+          {
+            "field": "genAcctMark",
+            "source": "GetEC0001().genAcctMark",
+            "rule": "綜存戶記號"
+          },
+          {
+            "field": "acctStat",
+            "source": "GetEC0001().acctStat",
+            "rule": "久未往來戶記號"
+          },
+          {
+            "field": "subAcct",
+            "source": "GetEC0001().subAcct",
+            "rule": "子帳戶"
+          },
+          {
+            "field": "curr",
+            "source": "GetEC0001().curr",
+            "rule": "幣別"
+          },
+          {
+            "field": "curText",
+            "source": "GetEC0001().curText",
+            "rule": "幣別中文"
+          },
+          {
+            "field": "availBalance",
+            "source": "GetEC0001().availBalance",
+            "rule": "(帳戶)餘額"
+          },
+          {
+            "field": "availableAmount",
+            "source": "GetEC0001().availableAmount",
+            "rule": "最高可使用額"
+          }
+        ]
+      }
+    ],
+    "errorCodeRules": [
+      {
+        "code": "9001",
+        "scenario": "連接數據庫失敗",
+        "message": "系統繁忙,請稍後再試！"
+      },
+      {
+        "code": "9999",
+        "scenario": "未輸入必填請求參數",
+        "message": "請輸入{Request參數}！"
+      }
+    ],
+    "runtimeDependencies": [
+      {
+        "id": "external_api_commonfunc_getacctkind",
+        "type": "external_api",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "Excel 依赖声明提到 CommonFunc->GetAcctKind()單一帳號&新版網銀使用邏輯。"
+      },
+      {
+        "id": "external_api_commonfunc_getec0001",
+        "type": "external_api",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "业务逻辑正文提到 CommonFunc->GetEC0001() 取帳戶總覽 依赖。"
+      },
+      {
+        "id": "external_api_commonutil_getacctkind",
+        "type": "external_api",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "业务逻辑正文提到 CommonUtil->GetAcctKind() 依赖。"
+      }
+    ],
+    "dataSources": [],
+    "sqlSpecs": [],
+    "legacyReferences": [],
+    "prohibitedShortcuts": [
+      "block_comment_header_substitution"
+    ],
+    "referenceHints": [
+      {
+        "id": "external.iris.twt24iris-openapi-summary-20231212",
+        "category": "external_api",
+        "matchSource": "iris_keyword",
+        "matchKey": "IRIS",
+        "title": "TW T24 IRIS_OpenAPI_Summary_20231212",
+        "relativePath": "reference/global/raw/external-api/IRIS/TW T24 IRIS_OpenAPI_Summary_20231212.xlsx",
+        "locator": {
+          "sheetName": "IRIS"
+        },
+        "reason": "命中外部接口关键词 IRIS，可读取 IRIS/OpenAPI 设计",
+        "authority": "reference_imported"
+      },
+      {
+        "id": "external.iris.ed0019-openapi-spec-enquiry-20260213",
+        "category": "external_api",
+        "matchSource": "iris_keyword",
+        "matchKey": "IRIS",
+        "title": "ED0019_OpenAPI_spec_Enquiry_20260213",
+        "relativePath": "reference/global/raw/external-api/IRIS/ED0019_OpenAPI_spec_Enquiry_20260213.xlsx",
+        "locator": {
+          "sheetName": "JSON Request-Response"
+        },
+        "reason": "命中外部接口关键词 IRIS，可读取 IRIS/OpenAPI 设计",
+        "authority": "reference_imported"
+      },
+      {
+        "id": "external.iris.ec0002-openapi-spec-enquiry-20260213",
+        "category": "external_api",
+        "matchSource": "iris_keyword",
+        "matchKey": "IRIS",
+        "title": "EC0002_OpenAPI_spec_Enquiry_20260213",
+        "relativePath": "reference/global/raw/external-api/IRIS/EC0002_OpenAPI_spec_Enquiry_20260213.xlsx",
+        "locator": {
+          "sheetName": "JSON Request-Response"
+        },
+        "reason": "命中外部接口关键词 IRIS，可读取 IRIS/OpenAPI 设计",
+        "authority": "reference_imported"
+      }
+    ]
+  },
+  "codeHandoff": {
+    "schemaVersion": "1.0.0",
+    "logicSummary": {
+      "stepCount": 12,
+      "queryContractCount": 0,
+      "mappingRuleCount": 12,
+      "legacyEvidenceCount": 1,
+      "dependencyHintCount": 3,
+      "constraintCount": 4,
+      "unresolvedCount": 0,
+      "primarySource": "businessLogic"
+    },
+    "logicFlow": [
+      {
+        "stepId": "step_1",
+        "title": "獲取客戶帳戶資料",
+        "actionType": "process",
+        "inputs": [
+          "transCode",
+          "webSource"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_2",
+        "title": "新版網銀使用邏輯",
+        "actionType": "process",
+        "inputs": [
+          "transCode",
+          "webSource"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_3",
+        "title": "逐一篩選，帳號限制",
+        "actionType": "process",
+        "inputs": [
+          "transCode",
+          "webSource"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_4",
+        "title": "回傳結果",
+        "actionType": "return",
+        "inputs": [
+          "transCode",
+          "webSource"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_5",
+        "title": "流水號",
+        "actionType": "process",
+        "inputs": [
+          "transCode",
+          "webSource"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_6",
+        "title": "呼叫的IRIS編號",
+        "actionType": "return",
+        "inputs": [
+          "transCode",
+          "webSource"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_7",
+        "title": "帳號",
+        "actionType": "process",
+        "inputs": [
+          "transCode",
+          "webSource"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_8",
+        "title": "上送Json格式資料",
+        "actionType": "process",
+        "inputs": [
+          "transCode",
+          "webSource"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_9",
+        "title": "IRIS回覆成功或失敗",
+        "actionType": "return",
+        "inputs": [
+          "transCode",
+          "webSource"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_10",
+        "title": "錯誤代碼",
+        "actionType": "process",
+        "inputs": [
+          "transCode",
+          "webSource"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_11",
+        "title": "錯誤訊息",
+        "actionType": "process",
+        "inputs": [
+          "transCode",
+          "webSource"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_12",
+        "title": "交易序號",
+        "actionType": "process",
+        "inputs": [
+          "transCode",
+          "webSource"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      }
+    ],
+    "legacyEvidence": [
+      {
+        "evidenceId": "response_code.o_common.9999",
+        "kind": "responseCodeCatalog",
+        "origin": "feature_common/P240301Git/Sinopac.EnterpriseAPI/EnterpriseApiEntity/ResponseCodes/O_Common.resx",
+        "authority": "existing_code",
+        "symbols": [
+          "O_Common.Code_9999"
+        ],
+        "summary": "公共必填参数错误码 9999 = 請輸入{Request參數}！",
+        "snippet": "Code_9999: 請輸入{Request參數}！"
+      }
+    ],
+    "queryContracts": [],
+    "mappingRules": [
+      {
+        "ruleId": "map_getec0001_acctvalue_acctvalue",
+        "sourceField": "GetEC0001().acctValue",
+        "targetField": "acctValue",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "帳號",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_getec0001_acctcname_acctcname",
+        "sourceField": "GetEC0001().acctCName",
+        "targetField": "acctCName",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "中文名稱組合",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_01_02_03_04_11_12_002_21_22_giftcard_23_598_30_80_05_13_14_acctype",
+        "sourceField": "帳號類型，01：臺幣、02：支存、03儲值支付帳號、04行儲、11：外組、12：002、21：信用卡、22：GIFTCARD、23：598、30：虛擬帳號、80：有無單定存、05數位帳號(台)、13數位帳號(外)、14外匯授信目的帳戶(不計息)",
+        "targetField": "accType",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "帳號類型",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_getec0001_digitalfg_digitalfg",
+        "sourceField": "GetEC0001().digitalFg",
+        "targetField": "digitalFg",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "數位帳號幾號",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_getec0001_genquotamark_genquotamark",
+        "sourceField": "GetEC0001().genQuotaMark",
+        "targetField": "genQuotaMark",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "cancel，均可做綜合額度",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_getec0001_genacctmark_genacctmark",
+        "sourceField": "GetEC0001().genAcctMark",
+        "targetField": "genAcctMark",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "綜存戶記號",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_getec0001_acctstat_acctstat",
+        "sourceField": "GetEC0001().acctStat",
+        "targetField": "acctStat",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "久未往來戶記號",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_getec0001_subacct_subacct",
+        "sourceField": "GetEC0001().subAcct",
+        "targetField": "subAcct",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "子帳戶",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_getec0001_curr_curr",
+        "sourceField": "GetEC0001().curr",
+        "targetField": "curr",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "幣別",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_getec0001_curtext_curtext",
+        "sourceField": "GetEC0001().curText",
+        "targetField": "curText",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "幣別中文",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_getec0001_availbalance_availbalance",
+        "sourceField": "GetEC0001().availBalance",
+        "targetField": "availBalance",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "(帳戶)餘額",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_getec0001_availableamount_availableamount",
+        "sourceField": "GetEC0001().availableAmount",
+        "targetField": "availableAmount",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "最高可使用額",
+        "evidenceIds": []
+      }
+    ],
+    "dependencyHints": [
+      {
+        "dependencyType": "external_api",
+        "preferredAbstractions": [
+          "IApiRequestService"
+        ],
+        "purpose": "Excel 依赖声明提到 CommonFunc->GetAcctKind()單一帳號&新版網銀使用邏輯。",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "external_api",
+        "preferredAbstractions": [
+          "IApiRequestService"
+        ],
+        "purpose": "业务逻辑正文提到 CommonFunc->GetEC0001() 取帳戶總覽 依赖。",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "external_api",
+        "preferredAbstractions": [
+          "IApiRequestService"
+        ],
+        "purpose": "业务逻辑正文提到 CommonUtil->GetAcctKind() 依赖。",
+        "evidenceIds": []
+      }
+    ],
+    "constraints": [
+      {
+        "constraintType": "prohibited_shortcut",
+        "rule": "block_comment_header_substitution",
+        "severity": "error",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "error_code_rule",
+        "rule": "9001 | 連接數據庫失敗 | 系統繁忙,請稍後再試！",
+        "severity": "warning",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "request_field_validation",
+        "field": "transCode",
+        "validationLayer": "dto_attribute",
+        "validationType": "required",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸入{Request參數}！",
+        "customValidationAttributeNeeded": false,
+        "rule": "transCode | dto_attribute | required | 9999 | 請輸入{Request參數}！",
+        "severity": "warning",
+        "evidenceIds": [
+          "response_code.o_common.9999"
+        ]
+      },
+      {
+        "constraintType": "request_field_validation",
+        "field": "webSource",
+        "validationLayer": "dto_attribute",
+        "validationType": "required",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸入{Request參數}！",
+        "customValidationAttributeNeeded": false,
+        "rule": "webSource | dto_attribute | required | 9999 | 請輸入{Request參數}！",
+        "severity": "warning",
+        "evidenceIds": [
+          "response_code.o_common.9999"
+        ]
+      }
+    ],
+    "unresolved": []
+  }
+}

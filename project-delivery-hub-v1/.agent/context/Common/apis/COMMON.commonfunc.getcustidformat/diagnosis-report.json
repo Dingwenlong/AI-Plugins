@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "4.1.0",
+  "skillName": "api-code-writer",
+  "executionId": "Common",
+  "apiId": "COMMON.commonfunc.getcustidformat",
+  "status": "blocked",
+  "phase": "blocked",
+  "updatedAt": "2026-05-23T22:08:57+08:00",
+  "diagnosisType": "spec_handoff_gap",
+  "detail": "Business logic handoff is missing required query contracts for SQL-oriented dependencies.",
+  "targetFile": null,
+  "modifiedFiles": [],
+  "validationChecks": [],
+  "validationResults": [],
+  "failureKind": null,
+  "failureClassifications": [],
+  "unresolvedLogic": [],
+  "repoDriftFiles": []
+}

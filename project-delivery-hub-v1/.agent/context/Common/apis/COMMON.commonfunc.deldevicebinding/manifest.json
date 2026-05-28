@@ -1,0 +1,58 @@
+{
+  "schemaVersion": "4.1.0",
+  "manifestType": "api",
+  "executionId": "Common",
+  "apiId": "COMMON.commonfunc.deldevicebinding",
+  "apiCategory": "CommonFunc",
+  "apiName": "DelDeviceBinding",
+  "status": "pending",
+  "phase": "pending",
+  "updatedAt": "2026-05-23T22:18:09+08:00",
+  "newAuthor": "Jimmy",
+  "specStatus": "done",
+  "specUpdatedAt": "2026-05-23T19:21:13+08:00",
+  "specBlockReason": null,
+  "specSourceFingerprint": "sha256:15b7ea9670ca1390ec86f85c6c9cf2d01372eb1ab048d0ac0e6d5e6cde0c5f37",
+  "specSource": {
+    "tsdFile": "TSD.Common_封存TSD共用开发链路_v1.0_20260523.docx",
+    "workbookFile": "NEWDA_Method_DETAIL_ExchangeCommonFunc_20260522.xlsx",
+    "sheetNames": [
+      "DelDeviceBindingFunc 解除裝置綁定"
+    ]
+  },
+  "specArtifacts": {
+    "apiSpec": "../../../.agent/context/Common/apis/COMMON.commonfunc.deldevicebinding/Common_API_Spec.json"
+  },
+  "fixtureStatus": "blocked",
+  "fixturePhase": "inspection_blocked",
+  "fixtureUpdatedAt": "2026-05-23T19:41:55+08:00",
+  "fixtureBlockReason": "missing_schema_authority",
+  "fixtureSourceFingerprint": "sha256:15b7ea9670ca1390ec86f85c6c9cf2d01372eb1ab048d0ac0e6d5e6cde0c5f37",
+  "fixtureArtifacts": {
+    "dbFixtureReport": "../../.agent/context/Common/apis/COMMON.commonfunc.deldevicebinding/db-fixture-report.json",
+    "tableChecks": "../../.agent/context/Common/apis/COMMON.commonfunc.deldevicebinding/table-checks.json",
+    "seedPlan": "../../.agent/context/Common/apis/COMMON.commonfunc.deldevicebinding/seed-plan.sql",
+    "seedExecuted": null,
+    "seedManifest": null
+  },
+  "codeStatus": "pending",
+  "codePhase": "pending",
+  "codeUpdatedAt": "2026-05-23T22:18:09+08:00",
+  "codeBlockReason": null,
+  "codeProjectRoot": ".",
+  "codeSolutionPath": "Sinopac.EnterpriseAPI.slnx",
+  "inputHashes": {
+    "upstreamManifest": "sha256:14a38323dd986e490b3e7edfdd83f497cebb14662695cd5d8e1990cd93c34af7",
+    "apiSpec": "sha256:fc608994e4863d96810ec9672607fa771eef46843303462f605e8cd5e97b866a"
+  },
+  "modifiedFiles": [],
+  "validationChecks": [],
+  "validationResults": [],
+  "repoDriftFiles": [],
+  "codeArtifacts": {
+    "changePlan": null,
+    "implementationReport": null,
+    "diagnosisReport": null
+  },
+  "lastMessage": null
+}

@@ -12,13 +12,28 @@ from pathlib import Path
 from typing import Any
 from zipfile import BadZipFile
 
-from docx import Document
-from docx.opc.exceptions import PackageNotFoundError
-from openpyxl import load_workbook
+try:
+    from docx import Document
+    from docx.opc.exceptions import PackageNotFoundError
+    from openpyxl import load_workbook
+except ImportError as exc:
+    missing_module = (getattr(exc, "name", "") or "").split(".", 1)[0]
+    package_name = {
+        "docx": "python-docx",
+        "openpyxl": "openpyxl",
+    }.get(missing_module, missing_module or "required package")
+    raise SystemExit(
+        "project-rule-analyzer 缺少 Python 依赖："
+        f"{package_name}。请在当前解释器安装后重试，例如："
+        f"python -m pip install {package_name}"
+    ) from exc
 
 
 OLE_MAGIC = bytes.fromhex("D0CF11E0A1B11AE1")
 CONFIG_FILENAME = "local-workspaces.json"
+WORKSPACE_ROOT_ENV_KEYS = ("PROJECT_WORKSPACE_ROOT",)
+WORKSPACE_KEY_ENV_KEYS = ("PROJECT_WORKSPACE_KEY",)
+RULES_ROOT_ENV_KEYS = ("PROJECT_RULES_ROOT",)
 RULE_CATEGORIES = {
     "api-contract",
     "api-detail-workbook",
@@ -36,6 +51,24 @@ CODE_GUIDELINE_AUDIENCE_SCOPES = ["frontstage", "midBackoffice", "shared", "unkn
 def clean_text(value: object) -> str:
     text = str(value or "").replace("\r\n", "\n").replace("\r", "\n")
     return "\n".join(line.strip() for line in text.split("\n") if line.strip())
+
+
+def first_env(keys: tuple[str, ...]) -> str | None:
+    for key in keys:
+        value = clean_text(os.environ.get(key))
+        if value:
+            return value
+    return None
+
+
+def resolve_config_path(value: str | None, *, base: Path | None = None) -> Path | None:
+    text = clean_text(value)
+    if not text:
+        return None
+    path = Path(text).expanduser()
+    if not path.is_absolute() and base is not None:
+        path = base / path
+    return path.resolve()
 
 
 def slugify(value: str) -> str:
@@ -77,20 +110,25 @@ def load_workspace_config() -> dict[str, Any]:
 def resolve_rules_root(args: argparse.Namespace) -> Path:
     if clean_text(args.rules_root):
         return Path(args.rules_root).expanduser().resolve()
-    env_root = clean_text(os.environ.get("PROJECT_RULES_ROOT"))
+    env_root = first_env(RULES_ROOT_ENV_KEYS)
     if env_root:
         return Path(env_root).expanduser().resolve()
     config = load_workspace_config()
     workspaces = config.get("workspaces") if isinstance(config.get("workspaces"), dict) else {}
-    workspace_key = clean_text(args.workspace_key) or clean_text(os.environ.get("PROJECT_WORKSPACE_KEY")) or clean_text(config.get("defaultWorkspace"))
+    workspace_key = clean_text(args.workspace_key) or first_env(WORKSPACE_KEY_ENV_KEYS) or clean_text(config.get("defaultWorkspace"))
     workspace = workspaces.get(workspace_key) if workspace_key else None
     if isinstance(workspace, dict):
+        workspace_root = resolve_config_path(args.workspace_root or first_env(WORKSPACE_ROOT_ENV_KEYS) or clean_text(workspace.get("workspaceRoot")))
         raw_rules_root = clean_text(workspace.get("rulesRoot"))
         if raw_rules_root:
-            return Path(raw_rules_root).expanduser().resolve()
+            resolved_rules_root = resolve_config_path(raw_rules_root, base=workspace_root)
+            if resolved_rules_root is not None:
+                return resolved_rules_root
         raw_agent_root = clean_text(workspace.get("agentRoot"))
         if raw_agent_root and workspace_key:
-            return Path(raw_agent_root).expanduser().resolve() / "project-rules" / workspace_key
+            agent_root = resolve_config_path(raw_agent_root, base=workspace_root)
+            if agent_root is not None:
+                return agent_root / "project-rules" / workspace_key
     project_root = Path(args.project_root).expanduser().resolve()
     return project_root / ".agent" / "project-rules" / (workspace_key or "default")
 
@@ -358,6 +396,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Analyze project rule documents into .agent/project-rules JSON and Markdown.")
     parser.add_argument("--project-root", default=str(Path.cwd()))
     parser.add_argument("--workspace-key")
+    parser.add_argument("--workspace-root", help="共享工作区根目录；用于解析 local-workspaces.json 中的相对 agentRoot/rulesRoot。")
     parser.add_argument("--rules-root")
     parser.add_argument("--category", required=True, choices=sorted(RULE_CATEGORIES))
     parser.add_argument("--source", action="append", required=True)

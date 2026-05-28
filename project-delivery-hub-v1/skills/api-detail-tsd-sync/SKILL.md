@@ -1,9 +1,13 @@
 ---
-name: 专案需求接口设计梳理
-description: 把 PRD、TSD 与 API Detail 梳理成可开发的 API 设计交接。用于比对 API contract、统一字段/API 命名、维护 Api_List/后端来源、产出功能设计梳理与开发就绪判断；也判断时序图影响，并在接近冻版时物化 handoff 给第 02 步 API 规格生成。关键词：PRD、TSD、API Detail、功能设计梳理、开发就绪、handoff。
+name: 【设计梳理】专案需求接口设计梳理
+description: 把 PRD、TSD 与 API Detail 梳理成可开发的 API 设计交接。用于比对 API contract、统一字段/API 命名、维护 Api_List/后端来源、产出功能设计梳理与开发就绪判断；也判断时序图影响，并在接近冻版时物化 handoff 给第 02 步 API 规格生成。多文件或 Office 交付物写入时作为 Design Leader 产出 edit plan/file claim，由 Office 交付文件编辑器执行 .docx/.xlsx 物理保存。关键词：PRD、TSD、API Detail、功能设计梳理、开发就绪、handoff、Design Leader、office-edit-plan。
 ---
 
-# 专案需求接口设计梳理
+# 【设计梳理】专案需求接口设计梳理
+
+## Office Edit Plan Contract
+
+When creating or handing off `office-edit-plan.json`, include `schemaVersion: "1.0.0"`, `claimId`, `targetFiles[]`, `allowedOperations[]`, `forbiddenOperations[]`, and `validation[]`. The Office editor result must echo the `claimId` and report `modifiedFiles` plus `validationCommands`.
 
 ## 上下文策略
 
@@ -20,7 +24,7 @@ description: 把 PRD、TSD 与 API Detail 梳理成可开发的 API 设计交接
 正式专案梳理、开发就绪判断、API Detail 语义编辑或 handoff 物化前，必须先解析梳理规则包：
 
 ```powershell
-python "C:\Users\<username>\plugins\project-delivery-hub-v1\references\resolve_project_rule_pack.py" `
+python "<pluginRoot>\references\resolve_project_rule_pack.py" `
   --pack apiDetailSync `
   --workspace-key "<workspaceKey>"
 ```
@@ -70,7 +74,7 @@ python "C:\Users\<username>\plugins\project-delivery-hub-v1\references\resolve_p
 
 - `analysis/`：当前功能设计梳理稿。
 - `inputs/tsd`、`inputs/api-spec`、`inputs/common`、`inputs/response-codes`、`inputs/reference`：开发链需要的 TSD、API Detail、Common、Response Code、DB/Redis/开发规范等输入文件副本。
-- `handoff/development-handoff.json`：记录来源路径、复制路径、hash 与开发就绪状态，供第 02 步跳过 01 直接消费。
+- `handoff/development-handoff.json`：记录来源路径、复制路径、hash 与开发就绪状态，供第 02 步优先消费；这是推荐交接物，不再是 02 的硬性前置。
 
 默认优先解析插件本地 `references/local-workspaces.json`，并按 `workspaceKey` 指向对应集中 `.agent`。PRD / TSD / API Detail 等设计来源目录统一读取 `<agentRoot>/config/design-source-registry.json`，不要再写入技能目录。
 
@@ -85,6 +89,55 @@ python ".\scripts\materialize_design_handoff.py" `
 ```
 
 若分析稿未达到可进入开发，仍可保存到 `analysis/`，但 `development-handoff.json` 必须标记 `status=blocked` / `developmentReady=false`，第 02 步不得自动推进。
+
+## Design Leader Mode
+
+当新需求梳理或反馈修正需要同步多份设计交付物时，本技能就是设计阶段 leader。业务语义、API contract、命名、后端来源、CommonFunc/CommonUtil 复用、Response Code 与开发就绪判断仍由本技能负责；worker 只处理已分配文件。TSD Word 与 API Detail/Common/Response Code Excel 的物理写入交给 `专案 Office 交付文件编辑器`，本技能只负责裁决和生成可执行 edit plan。
+
+触发条件：
+
+- 用户要求“梳理新需求并改文件”“推进到 100% / 冻版”“文件已解锁，按问题改改”。
+- 同一功能影响 TSD Word、API Detail Excel、CommonFunc、CommonUtil、Response Code、梳理稿、handoff 或时序图交接中的两类以上文件。
+- 用户明确要求使用多个子 agent、worker、并行修改或 leader 组织修改。
+
+进入此模式前，读取 `references/design-leader-protocol.md`。涉及 `.docx` / `.xlsx` 写入时同时读取 `references/office-deliverable-edit-protocol.md`。若任务只是只读梳理或单文件小改，可不生成 orchestration artifacts，但仍需遵守本技能的业务裁决规则。
+
+Design Leader 状态面：
+
+```text
+.agent/functions/<functionCode>/orchestration/
+  design-change-plan.json
+  file-claims.json
+  office-edit-plan.json
+  worker-results.json
+  final-design-fix-report.json
+```
+
+不要把设计阶段 orchestration 状态写入 `.agent/context/<functionCode>/`；`.agent/context` 留给 02-05 开发执行链。`development-handoff.json` 仍保留在 `.agent/functions/<functionCode>/handoff/`，由 leader 在验证后串行更新。
+
+Leader 职责：
+
+- 解析 `functionCode`、registry、规则库、权威 PRD/TSD/API Detail/Common/Response Code 来源。
+- 产出或更新 `design-change-plan.json`，列出 issue、业务裁决、目标文件、预计验证。
+- 产出或更新 `file-claims.json`，按文件重叠关系分配 worker；`.docx`、`.xlsx`、`.vsdx` 必须整文件 claim，不按 sheet/章节并行写同一文件。
+- 若 claim 目标是 Word/Excel，产出或交付 `office-edit-plan.json`，将实际保存动作交给 `专案 Office 交付文件编辑器`。
+- 可 spawn 只读 reviewer 检查 contract、Common/旧逻辑、DB/SQL、验收口径；reviewer 不写文件。
+- 可 spawn worker 修改互不重叠的 TSD、API Detail、CommonFunc、CommonUtil、Response Code 或分析稿文件；Office 文件 worker 必须使用 Office 编辑器边界。
+- 校验 worker 回报的 `modifiedFiles` 未越权，再接受结果。
+- 串行更新分析稿、handoff hash、状态与 `final-design-fix-report.json`。
+- 调用格式检查器验证 Word/Excel；如格式检查器要求写入修复，再由 Office 编辑器执行。时序图只记录影响，除非用户明确要求立即绘制或修图。
+
+Worker 约束：
+
+- 只能修改 `file-claims.json` 分配给自己的文件。
+- 可以读取共享 `.agent`、project rules、source registry 与分析稿。
+- 不得写 `.agent/functions/<functionCode>/handoff/*`、`.agent/functions/<functionCode>/orchestration/*`、`.agent/status/*`、`.agent/context/*`、最终报告或 package metadata。
+- 必须回报 `modifiedFiles`、改动摘要、验证命令/结果、阻塞项与风险。
+
+反馈修改入口：
+
+- 客户/SA/IT 反馈可先进入 `专案设计反馈修改协调器`，由其解析问题单与影响范围。
+- 正式业务裁决仍回到本技能的 Design Leader Mode；反馈技能不得复制或覆盖本技能的 API contract 规则。
 
 ## 不在本技能内完成的事
 
@@ -149,10 +202,11 @@ python ".\scripts\materialize_design_handoff.py" `
 
 - 使用 `references/design-summary-rules.md`。
 - 默认简体中文写说明、状态、风险、todo；官方证据、API 名、字段名、sheet 名、Response Code、BackendAPI、DB/SP、路径保持原文。
-- 使用 9 段式结构：总体判断、依据文件、功能定位、已确认交付物、TSD/API 清单、主流程设计、开发前收敛状态、API Contract 摘要、前后端责任边界。
+- 使用 9 段式结构：总体判断、依据文件、功能定位、已确认交付物、TSD/API 清单、主流程设计、开发前收敛状态、API Contract 摘要、前后端责任边界；若有 Customer IT SPEC，`开发前收敛状态` 必须内嵌 `Customer IT SPEC 差异矩阵` 摘要。
 - 不编造时序图、Response Code、IT SPEC、DB/SP、BackendAPI、popup 文案、页码或完成度。
 - 若证据不足，写 `待确认` 或 `未发现`，并说明对开发的影响。
 - 梳理稿完成后，若用户目标是后续开发，运行 `scripts/materialize_design_handoff.py`，把分析稿、开发输入包与 `development-handoff.json` 放入集中 `.agent/functions/<functionCode>/`。
+- Customer IT SPEC 与现行 TSD/API Detail 差异较大时，先运行 `scripts/generate_it_spec_diff_matrix.py` 生成 `analysis/it-spec-diff-matrix.md` 与 `analysis/it-spec-diff-matrix.json`；未裁决或 `readinessImpact=blocking` 的矩阵项会阻塞 handoff ready。
 
 ## 开发就绪度
 
@@ -172,14 +226,14 @@ python ".\scripts\materialize_design_handoff.py" `
 
 只读分析时，不写回 workbook。需要写回时：
 
-- 遵守当前工作区 `AGENTS.md`：修改既有文件前创建或覆盖唯一 `.bak`。
+- 遵守当前工作区 `AGENTS.md`：默认不要在项目、程序或交付目录生成 `.bak`、`.before_*`、时间戳备份等副本；若项目规则另有明确要求，先说明冲突并以当前工作区最高优先本地约束为准。
 - 读取 `references/api-detail-workbook-rules.md`。
-- 语义/API 设计编辑由本技能完成；格式修复不能补造缺失 API 内容。
-- 内容编辑、字体继承与格式修复必须限于本次实际变更的 API sheets、`Api_List` 行或明确语义范围；禁止因为修改少量内容而遍历全 workbook 或所有 sheets 改字体。
-- 写回 Excel 时必须记录本次实际变更的单元格/合并范围，并尽量保留未变更文字的既有字体。只有实际新增或替换后的字符/词组使用专案规则库 `apiDetailExcelStyle` 的字型槽位（中文 `微軟正黑體`、英文数字 `Times New Roman`、字号 10）并以红色字体标示；不得整格、整行或整段标红。
-- 写回 Excel 后，必须对目标 workbook 的所有工作表已用行执行 Excel COM 行高自适应；含换行文字或合并格的行需按可见内容补足行高，避免文字裁切。
+- 语义/API 设计编辑裁决由本技能完成；实际 `.xlsx` 保存由 `专案 Office 交付文件编辑器` 执行；格式修复不能补造缺失 API 内容。
+- 生成 `office-edit-plan` 时，内容编辑、字体继承与格式修复必须限于本次实际变更的 API sheets、`Api_List` 行或明确语义范围；禁止因为修改少量内容而遍历全 workbook 或所有 sheets 改字体。
+- `office-edit-plan` 必须记录本次实际变更的单元格/合并范围，并要求尽量保留未变更文字的既有字体。只有实际新增或替换后的字符/词组使用专案规则库 `apiDetailExcelStyle` 的字型槽位（中文 `微軟正黑體`、英文数字 `Times New Roman`、字号 10）并以红色字体标示；不得整格、整行或整段标红。
+- 若写入会影响列高，`office-edit-plan` 必须要求目标 workbook 的所有工作表已用行或明确范围执行 Excel COM 行高自适应；含换行文字或合并格的行需按可见内容补足行高，避免文字裁切。
 - 补充设计说明时避免重复灌入多个位置：`涉及BackendAPI` / `後端來源` 只保留调用关系和来源摘要，Redis、fallback、排序等细节放在对应业务逻辑行或字段说明中，除非客户模板明确要求重复列示。
-- 保存 API Detail workbook 后，必须交给 `delivery-format-checker` 做格式修复/检查闭环。
+- Office 编辑器保存 API Detail workbook 后，必须交给 `delivery-format-checker` 做格式检查闭环；若检查器产出修复计划，再回到 Office 编辑器保存。
 - 交接格式检查器时必须列出本次变更的 sheet 名、`Api_List` 行或范围；若范围无法确认，只做只读检查并先报告风险，不执行全 workbook 字体槽位。
 - 在格式检查器显示 `Must fix = 0` 且 `Visual risk = 0` 前，不宣称 workbook 完成。
 - 若目标文件被锁定或需要另存，最终报告必须说明。
@@ -209,5 +263,5 @@ python ".\scripts\materialize_design_handoff.py" `
 - 改了哪些主档；如果只读分析，也说明未写回。
 - 发现的设计缺口、命名问题、来源待确认项。
 - 是否可进入开发、是否接近冻版。
-- 若写回 workbook，说明备份、格式检查器交接和验证结果。
+- 若交由 Office 编辑器写回 workbook，说明 `office-edit-plan` 范围、`modifiedFiles`、格式检查器交接和验证结果。
 - 若有时序图影响，说明已整理为下游交接项，而不是假装已完成 VSDX。

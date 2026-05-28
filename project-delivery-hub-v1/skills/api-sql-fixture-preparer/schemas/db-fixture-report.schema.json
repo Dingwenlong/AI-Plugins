@@ -21,7 +21,10 @@
     "updatedAt": { "type": "string" },
     "executionId": { "type": "string" },
     "apiId": { "type": "string" },
-    "status": { "type": "string" },
+    "status": {
+      "type": "string",
+      "enum": ["pending", "in_progress", "done", "skipped", "not_required", "blocked", "error"]
+    },
     "phase": { "type": "string" },
     "executionMode": { "type": ["string", "null"] },
     "dbTarget": { "type": ["string", "null"] },

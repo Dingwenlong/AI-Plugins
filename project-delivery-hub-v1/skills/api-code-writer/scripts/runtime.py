@@ -15,9 +15,9 @@ from chain_workspace import resolve_chain_workspace, write_workspace_snapshot
 STATE_SCHEMA_VERSION = "4.1.0"
 BATCH_SCHEMA_VERSION = "1.0.0"
 SKILL_NAME = "api-code-writer"
-UPSTREAM_MANIFEST_SCHEMA_VERSION = "4.0.0"
-UPSTREAM_API_SPEC_SCHEMA_VERSION = "4.2.0"
-COMPATIBLE_UPSTREAM_API_SPEC_SCHEMA_VERSIONS = {"4.1.0", "4.2.0"}
+UPSTREAM_MANIFEST_SCHEMA_VERSION = "4.2.0"
+UPSTREAM_API_SPEC_SCHEMA_VERSION = "4.3.0"
+COMPATIBLE_UPSTREAM_API_SPEC_SCHEMA_VERSIONS = {"4.1.0", "4.2.0", "4.3.0"}
 TRACKED_SOURCE_SUFFIXES = {
     ".cs",
     ".csproj",
@@ -25,6 +25,7 @@ TRACKED_SOURCE_SUFFIXES = {
     ".md",
     ".props",
     ".sln",
+    ".slnx",
     ".sql",
     ".targets",
     ".txt",
@@ -272,15 +273,20 @@ def resolve_solution_path(project_root: Path, solution_path_arg: str | None) -> 
         solution_path = Path(solution_path_arg).expanduser()
         if not solution_path.is_absolute():
             solution_path = (project_root / solution_path).resolve()
-        if not solution_path.exists() or not solution_path.is_file() or solution_path.suffix.lower() != ".sln":
-            raise SystemExit(f"solution-path does not exist or is not a .sln: {solution_path.as_posix()}")
+        if not solution_path.exists() or not solution_path.is_file() or solution_path.suffix.lower() not in {".sln", ".slnx"}:
+            raise SystemExit(f"solution-path does not exist or is not a .sln/.slnx: {solution_path.as_posix()}")
         try:
             solution_path.relative_to(project_root)
         except ValueError as exc:
             raise SystemExit("solution-path must be under project-root.") from exc
         return solution_path
 
-    solutions = sorted(path.resolve() for path in project_root.rglob("*.sln") if path.is_file())
+    solutions = sorted(
+        path.resolve()
+        for pattern in ("*.sln", "*.slnx")
+        for path in project_root.rglob(pattern)
+        if path.is_file()
+    )
     if not solutions:
         raise SystemExit("当前目录不是.NET解决方案工作区")
     if len(solutions) > 1:

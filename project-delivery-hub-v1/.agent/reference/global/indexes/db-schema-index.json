@@ -1,0 +1,8752 @@
+{
+  "schemaVersion": "1.0.0",
+  "generatedAt": "2026-05-23T19:02:05+08:00",
+  "category": "db_schema",
+  "items": [
+    {
+      "refId": "db.ac.mmancb.2e12f078",
+      "category": "db_schema",
+      "title": "MMANCB",
+      "relativePath": "reference/global/raw/db-schema/MMANCB.xlsx",
+      "checksum": "sha256:8a409ff1ad474ba164c614fe51c886210ff1210234dbbb2d27930b92879db78b",
+      "fileType": "xlsx",
+      "versionDateToken": null,
+      "sourceLabel": "db-workbook",
+      "keywords": [],
+      "matchKeys": [
+        "AC",
+        "AC.NO",
+        "ALLBANK_ADDRRESS",
+        "ALLBANK_ALIASNAME",
+        "ALLBANK_BKNO",
+        "ALLBANK_BRNO",
+        "ALLBANK_BRNO_CHKCODE",
+        "ALLBANK_ENGNAME",
+        "ALLBANK_FISC_UNIT",
+        "ALLBANK_FULLNAME",
+        "ALLBANK_RMFLAG",
+        "ALLBANK_RMFORWARD",
+        "ALLBANK_TELNO",
+        "ALLBANK_TEMP",
+        "ALLBANK_TYPE",
+        "ALLBANK_UNIT_BANK",
+        "ALLBANK_ZIPCODE1",
+        "ALLBANK_ZIPCODE2",
+        "AMOUNT",
+        "BANK.CODE",
+        "BOOKING.DATE",
+        "BR",
+        "CHNN",
+        "CNAPS_BANK",
+        "CNAPS_BANK_XXX",
+        "CNAPS_REGION",
+        "CNS_CODE_BANK",
+        "CNS_CODE_REGION_E",
+        "CNS_CODE_REGION_S",
+        "CODE",
+        "COMM_CACHEDATA",
+        "COMM_JOB",
+        "COMM_MAIL",
+        "COMM_SCHEDULER",
+        "COMM_TASK",
+        "COUNTRY_HK",
+        "COUNTRY_MO",
+        "COUNTRY_TW",
+        "COUNTRY_VN",
+        "CURR.REAL",
+        "CURR_CNAME",
+        "CURR_DESC",
+        "CURR_ENAME",
+        "CURR_LNAME",
+        "CUSTOMIZE_MSGCODE",
+        "DATA_DESC",
+        "DATE",
+        "DESCRIPTION_ENG",
+        "DESCRIPTION_IN",
+        "DESCRIPTION_IN_ENG",
+        "DMYDTL_NPC",
+        "DMYDTL_ONEDAY",
+        "DMYDTL_ONEDAY_20160221",
+        "DMYDTL_TXNMEMOMAP",
+        "E.AC.NO",
+        "E.BANK.CODE",
+        "E.BOOKING.DATE",
+        "E.CURR.REAL",
+        "E.INP.BR",
+        "E.REV.FLG",
+        "E.TF.TXN",
+        "E.TXN.AMOUNT",
+        "E.TXN.CHNN",
+        "E.TXN.DATE",
+        "E.TXN.REF",
+        "E.TXN.TIME",
+        "E.VR.AC",
+        "E.VR.MAP",
+        "ERRMSG_CN",
+        "ERRMSG_ENG",
+        "ERRMSG_TW",
+        "EXT.TXN.MEMO",
+        "EXT.TXN.REM",
+        "EXT_TXN_MEMO",
+        "EXT_TXN_REM_F",
+        "EX_CLASS",
+        "EX_DETAIL",
+        "EX_DETAIL_20141231",
+        "EX_DETAIL_B2B",
+        "EX_NATURE",
+        "EX_NATURE_20140123",
+        "EX_NATURE_20141231",
+        "EX_NATURE_20150331",
+        "EX_NATURE_20200406",
+        "EX_NATURE_20221219",
+        "EX_NATURE_B2B",
+        "EX_NATURE_OBU",
+        "E_BOOKING_DATE",
+        "E_CURR_REAL_ACCT",
+        "E_REV_FLG",
+        "E_TF_TXN_REF",
+        "E_TXN_AMOUNT",
+        "E_TXN_DATE",
+        "E_TXN_REF",
+        "E_VR_AC_DESC",
+        "E_VR_AC_MAP_DTL",
+        "E_VR_AC_TXN_CUR",
+        "E_VR_MAP_DTL_DESC",
+        "FILE_DESC",
+        "FLAG008_HK",
+        "FLAG008_MO",
+        "FLAG008_OBU",
+        "FLAG008_TW",
+        "FLAG031_MO",
+        "FLAGOTWD_HK",
+        "FLAGOTWD_MO",
+        "FLAGOTWD_OBU",
+        "FLAGOTWD_TW",
+        "FLG",
+        "FTP_DATE",
+        "FX_BRANCH",
+        "FX_CHECK",
+        "FX_CHECK_LIST",
+        "FX_CHECK_LIST_20141231",
+        "FX_CHECK_LIST_B2B",
+        "GET_FORMAT",
+        "HK_NAL_RISK",
+        "ID_TYPE",
+        "INP.BR",
+        "INTERNAL_IP",
+        "IS_LEVEL2",
+        "LNPURNAME_EN",
+        "LNPURNAME_GB",
+        "LN_PAYNAME",
+        "LN_PAYNAME_EN",
+        "LN_PAYNAME_GB",
+        "LN_PAYTYPE",
+        "LOANLCTYPENAME_EN",
+        "LOANLCTYPENAME_GB",
+        "LOANNAME_EN",
+        "LOANNAME_GB",
+        "MAIL_DATE",
+        "MAIN_ACCT",
+        "MAIN_ACCT_DATE",
+        "MAIN_SUB_ACCT",
+        "MAIN_SUB_ACCT_TMP",
+        "MAP",
+        "MEMO",
+        "MEMOS_ENG",
+        "MEMOS_IN",
+        "MEMOS_IN_ENG",
+        "MMAB2B_OVERTRADE",
+        "MMAQ_SERVERLIST",
+        "MMAQ_TXNLIST",
+        "MO_NAL_RISK",
+        "MT940_DTLLOG",
+        "MT940_FTP",
+        "MT940_LOG",
+        "NATURAL_TYPE",
+        "NATURAL_TYPE_IN",
+        "NF_CHECK",
+        "NF_CHECK_20141231",
+        "NF_CHECK_B2B",
+        "NF_CHECK_OLD",
+        "NO",
+        "PARM_DATE",
+        "P_TYPE",
+        "REAL",
+        "REF",
+        "REFRESH_SEC",
+        "REM",
+        "REV.FLG",
+        "RSPCSR_ADMIN",
+        "SEND_FORMAT",
+        "SERVICE_STATUS",
+        "SUB_ACCT",
+        "T24_CATEGORY",
+        "T24_LOAN",
+        "T24_LOANCHARCD",
+        "T24_LOANLCTYPE",
+        "T24_LOANPAYTYPE",
+        "T24_LOANPUR",
+        "T24_MSGCODE",
+        "T24_RATETYPE",
+        "TF.TXN",
+        "THEO_CNAME",
+        "THEO_ENAME",
+        "TIME",
+        "TITLE_PARAMS",
+        "TXN",
+        "TXN.AMOUNT",
+        "TXN.CHNN",
+        "TXN.DATE",
+        "TXN.MEMO",
+        "TXN.REF",
+        "TXN.REM",
+        "TXN.TIME",
+        "TXN_DESC",
+        "UPDATE_USERID",
+        "VR.AC",
+        "VR.MAP",
+        "V_BANKBRANCH",
+        "X99_TYPE",
+        "X99_TYPE_DESCRIPTION",
+        "X99_TYPE_DESCRIPTION_IN"
+      ],
+      "apiCodes": [],
+      "tableNames": [
+        "AC",
+        "AC.NO",
+        "ALLBANK_ADDRRESS",
+        "ALLBANK_ALIASNAME",
+        "ALLBANK_BKNO",
+        "ALLBANK_BRNO",
+        "ALLBANK_BRNO_CHKCODE",
+        "ALLBANK_ENGNAME",
+        "ALLBANK_FISC_UNIT",
+        "ALLBANK_FULLNAME",
+        "ALLBANK_RMFLAG",
+        "ALLBANK_RMFORWARD",
+        "ALLBANK_TELNO",
+        "ALLBANK_TEMP",
+        "ALLBANK_TYPE",
+        "ALLBANK_UNIT_BANK",
+        "ALLBANK_ZIPCODE1",
+        "ALLBANK_ZIPCODE2",
+        "AMOUNT",
+        "BANK.CODE",
+        "BOOKING.DATE",
+        "BR",
+        "CHNN",
+        "CNAPS_BANK",
+        "CNAPS_BANK_XXX",
+        "CNAPS_REGION",
+        "CNS_CODE_BANK",
+        "CNS_CODE_REGION_E",
+        "CNS_CODE_REGION_S",
+        "CODE",
+        "COMM_CACHEDATA",
+        "COMM_JOB",
+        "COMM_MAIL",
+        "COMM_SCHEDULER",
+        "COMM_TASK",
+        "COUNTRY_HK",
+        "COUNTRY_MO",
+        "COUNTRY_TW",
+        "COUNTRY_VN",
+        "CURR.REAL",
+        "CURR_CNAME",
+        "CURR_DESC",
+        "CURR_ENAME",
+        "CURR_LNAME",
+        "CUSTOMIZE_MSGCODE",
+        "DATA_DESC",
+        "DATE",
+        "DESCRIPTION_ENG",
+        "DESCRIPTION_IN",
+        "DESCRIPTION_IN_ENG",
+        "DMYDTL_NPC",
+        "DMYDTL_ONEDAY",
+        "DMYDTL_ONEDAY_20160221",
+        "DMYDTL_TXNMEMOMAP",
+        "E.AC.NO",
+        "E.BANK.CODE",
+        "E.BOOKING.DATE",
+        "E.CURR.REAL",
+        "E.INP.BR",
+        "E.REV.FLG",
+        "E.TF.TXN",
+        "E.TXN.AMOUNT",
+        "E.TXN.CHNN",
+        "E.TXN.DATE",
+        "E.TXN.REF",
+        "E.TXN.TIME",
+        "E.VR.AC",
+        "E.VR.MAP",
+        "ERRMSG_CN",
+        "ERRMSG_ENG",
+        "ERRMSG_TW",
+        "EXT.TXN.MEMO",
+        "EXT.TXN.REM",
+        "EXT_TXN_MEMO",
+        "EXT_TXN_REM_F",
+        "EX_CLASS",
+        "EX_DETAIL",
+        "EX_DETAIL_20141231",
+        "EX_DETAIL_B2B",
+        "EX_NATURE",
+        "EX_NATURE_20140123",
+        "EX_NATURE_20141231",
+        "EX_NATURE_20150331",
+        "EX_NATURE_20200406",
+        "EX_NATURE_20221219",
+        "EX_NATURE_B2B",
+        "EX_NATURE_OBU",
+        "E_BOOKING_DATE",
+        "E_CURR_REAL_ACCT",
+        "E_REV_FLG",
+        "E_TF_TXN_REF",
+        "E_TXN_AMOUNT",
+        "E_TXN_DATE",
+        "E_TXN_REF",
+        "E_VR_AC_DESC",
+        "E_VR_AC_MAP_DTL",
+        "E_VR_AC_TXN_CUR",
+        "E_VR_MAP_DTL_DESC",
+        "FILE_DESC",
+        "FLAG008_HK",
+        "FLAG008_MO",
+        "FLAG008_OBU",
+        "FLAG008_TW",
+        "FLAG031_MO",
+        "FLAGOTWD_HK",
+        "FLAGOTWD_MO",
+        "FLAGOTWD_OBU",
+        "FLAGOTWD_TW",
+        "FLG",
+        "FTP_DATE",
+        "FX_BRANCH",
+        "FX_CHECK",
+        "FX_CHECK_LIST",
+        "FX_CHECK_LIST_20141231",
+        "FX_CHECK_LIST_B2B",
+        "GET_FORMAT",
+        "HK_NAL_RISK",
+        "ID_TYPE",
+        "INP.BR",
+        "INTERNAL_IP",
+        "IS_LEVEL2",
+        "LNPURNAME_EN",
+        "LNPURNAME_GB",
+        "LN_PAYNAME",
+        "LN_PAYNAME_EN",
+        "LN_PAYNAME_GB",
+        "LN_PAYTYPE",
+        "LOANLCTYPENAME_EN",
+        "LOANLCTYPENAME_GB",
+        "LOANNAME_EN",
+        "LOANNAME_GB",
+        "MAIL_DATE",
+        "MAIN_ACCT",
+        "MAIN_ACCT_DATE",
+        "MAIN_SUB_ACCT",
+        "MAIN_SUB_ACCT_TMP",
+        "MAP",
+        "MEMO",
+        "MEMOS_ENG",
+        "MEMOS_IN",
+        "MEMOS_IN_ENG",
+        "MMAB2B_OVERTRADE",
+        "MMAQ_SERVERLIST",
+        "MMAQ_TXNLIST",
+        "MO_NAL_RISK",
+        "MT940_DTLLOG",
+        "MT940_FTP",
+        "MT940_LOG",
+        "NATURAL_TYPE",
+        "NATURAL_TYPE_IN",
+        "NF_CHECK",
+        "NF_CHECK_20141231",
+        "NF_CHECK_B2B",
+        "NF_CHECK_OLD",
+        "NO",
+        "PARM_DATE",
+        "P_TYPE",
+        "REAL",
+        "REF",
+        "REFRESH_SEC",
+        "REM",
+        "REV.FLG",
+        "RSPCSR_ADMIN",
+        "SEND_FORMAT",
+        "SERVICE_STATUS",
+        "SUB_ACCT",
+        "T24_CATEGORY",
+        "T24_LOAN",
+        "T24_LOANCHARCD",
+        "T24_LOANLCTYPE",
+        "T24_LOANPAYTYPE",
+        "T24_LOANPUR",
+        "T24_MSGCODE",
+        "T24_RATETYPE",
+        "TF.TXN",
+        "THEO_CNAME",
+        "THEO_ENAME",
+        "TIME",
+        "TITLE_PARAMS",
+        "TXN",
+        "TXN.AMOUNT",
+        "TXN.CHNN",
+        "TXN.DATE",
+        "TXN.MEMO",
+        "TXN.REF",
+        "TXN.REM",
+        "TXN.TIME",
+        "TXN_DESC",
+        "UPDATE_USERID",
+        "VR.AC",
+        "VR.MAP",
+        "V_BANKBRANCH",
+        "X99_TYPE",
+        "X99_TYPE_DESCRIPTION",
+        "X99_TYPE_DESCRIPTION_IN"
+      ],
+      "fieldNames": [
+        "ALLBANK_ADDRRESS",
+        "ALLBANK_ALIASNAME",
+        "ALLBANK_BKNO",
+        "ALLBANK_BRNO",
+        "ALLBANK_BRNO_CHKCODE",
+        "ALLBANK_ENGNAME",
+        "ALLBANK_FISC_UNIT",
+        "ALLBANK_FULLNAME",
+        "ALLBANK_RMFLAG",
+        "ALLBANK_RMFORWARD",
+        "ALLBANK_SET_CLOSE_FLAG",
+        "ALLBANK_SET_CLOSE_TIME",
+        "ALLBANK_TELNO",
+        "ALLBANK_TEMP",
+        "ALLBANK_TYPE",
+        "ALLBANK_UNIT_BANK",
+        "ALLBANK_ZIPCODE1",
+        "ALLBANK_ZIPCODE2",
+        "BANKBRANCH_ID",
+        "BANKBRANCH_NAME",
+        "BANK_NAME",
+        "CH_COUNTRY_NAME",
+        "CNAPS_BANK",
+        "CNAPS_BANK_XXX",
+        "CNAPS_REGION",
+        "CNS_CODE_BANK",
+        "CNS_CODE_REGION_E",
+        "CNS_CODE_REGION_S",
+        "COMM_CACHEDATA",
+        "COMM_JOB",
+        "COMM_MAIL",
+        "COMM_SCHEDULER",
+        "COMM_TASK",
+        "COUNTRY_HK",
+        "COUNTRY_MO",
+        "COUNTRY_TW",
+        "COUNTRY_VN",
+        "CREATE_TIME",
+        "CURR_CNAME",
+        "CURR_DESC",
+        "CURR_ENAME",
+        "CURR_ID",
+        "CURR_LNAME",
+        "CUSTOMIZE_MSGCODE",
+        "DATA_DESC",
+        "DESCRIPTION_ENG",
+        "DESCRIPTION_IN",
+        "DESCRIPTION_IN_ENG",
+        "DMYDTL_NPC",
+        "DMYDTL_ONEDAY",
+        "DMYDTL_ONEDAY_20160221",
+        "DMYDTL_TXNMEMOMAP",
+        "ERRMSG_CN",
+        "ERRMSG_ENG",
+        "ERRMSG_TW",
+        "EXT_TXN_MEMO",
+        "EXT_TXN_REM_F",
+        "EX_CLASS",
+        "EX_DETAIL",
+        "EX_DETAIL_20141231",
+        "EX_DETAIL_B2B",
+        "EX_NATURE",
+        "EX_NATURE_20140123",
+        "EX_NATURE_20141231",
+        "EX_NATURE_20150331",
+        "EX_NATURE_20200406",
+        "EX_NATURE_20221219",
+        "EX_NATURE_B2B",
+        "EX_NATURE_OBU",
+        "E_BOOKING_DATE",
+        "E_CHNN_CODE",
+        "E_CURR_REAL_ACCT",
+        "E_REV_FLG",
+        "E_TF_TXN_REF",
+        "E_TXN_AMOUNT",
+        "E_TXN_DATE",
+        "E_TXN_REF",
+        "E_TXN_TIME",
+        "E_VR_AC_DESC",
+        "E_VR_AC_MAP_CODE",
+        "E_VR_AC_MAP_DTL",
+        "E_VR_AC_TXN_CUR",
+        "E_VR_MAP_DTL_DESC",
+        "FILE_DESC",
+        "FLAG008_HK",
+        "FLAG008_MO",
+        "FLAG008_OBU",
+        "FLAG008_TW",
+        "FLAG031_MO",
+        "FLAGOTWD_HK",
+        "FLAGOTWD_MO",
+        "FLAGOTWD_OBU",
+        "FLAGOTWD_TW",
+        "FTP_DATE",
+        "FTP_FLAG",
+        "FX_BRANCH",
+        "FX_CHECK",
+        "FX_CHECK_LIST",
+        "FX_CHECK_LIST_20141231",
+        "FX_CHECK_LIST_B2B",
+        "GB_COUNTRY_NAME",
+        "GET_FORMAT",
+        "HK_NAL_RISK",
+        "ID_TYPE",
+        "INTERNAL_IP",
+        "IS_LEVEL2",
+        "LNPURNAME_EN",
+        "LNPURNAME_GB",
+        "LN_PAYNAME",
+        "LN_PAYNAME_EN",
+        "LN_PAYNAME_GB",
+        "LN_PAYTYPE",
+        "LOANLCTYPENAME_EN",
+        "LOANLCTYPENAME_GB",
+        "LOANNAME_EN",
+        "LOANNAME_GB",
+        "MAIL_DATE",
+        "MAIL_FLAG",
+        "MAIN_ACCT",
+        "MAIN_ACCT_DATE",
+        "MAIN_SUB_ACCT",
+        "MAIN_SUB_ACCT_TMP",
+        "MEMOS_ENG",
+        "MEMOS_IN",
+        "MEMOS_IN_ENG",
+        "MMAB2B_OVERTRADE",
+        "MMAQ_SERVERLIST",
+        "MMAQ_TXNLIST",
+        "MO_NAL_RISK",
+        "MT940_DTLLOG",
+        "MT940_FTP",
+        "MT940_LOG",
+        "NATURAL_TYPE",
+        "NATURAL_TYPE_IN",
+        "NATURE_CODE",
+        "NF_CHECK",
+        "NF_CHECK_20141231",
+        "NF_CHECK_B2B",
+        "NF_CHECK_OLD",
+        "PARM_DATE",
+        "PROCESS_FLAG",
+        "P_TYPE",
+        "REFRESH_SEC",
+        "REGION_NAME",
+        "RSPCSR_ADMIN",
+        "SEND_FORMAT",
+        "SERVICE_STATUS",
+        "SUB_ACCT",
+        "T24_CATEGORY",
+        "T24_CODE",
+        "T24_LOAN",
+        "T24_LOANCHARCD",
+        "T24_LOANLCTYPE",
+        "T24_LOANPAYTYPE",
+        "T24_LOANPUR",
+        "T24_MSGCODE",
+        "T24_RATETYPE",
+        "THEO_CNAME",
+        "THEO_ENAME",
+        "TITLE_PARAMS",
+        "TXN_DESC",
+        "UPDATE_TIME",
+        "UPDATE_USERID",
+        "V_bankbranch",
+        "X99_TYPE",
+        "X99_TYPE_DESCRIPTION",
+        "X99_TYPE_DESCRIPTION_IN",
+        "bigint",
+        "char",
+        "dateadd",
+        "decimal",
+        "getdate",
+        "list",
+        "nchar",
+        "numeric",
+        "nvarchar",
+        "second",
+        "sysdatetime",
+        "tinyint"
+      ],
+      "sheetNames": [
+        "Table List",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "13",
+        "14",
+        "15",
+        "16",
+        "17",
+        "18",
+        "19",
+        "20",
+        "21",
+        "22",
+        "23",
+        "24",
+        "25",
+        "26",
+        "27",
+        "28",
+        "29",
+        "30",
+        "31",
+        "32",
+        "33",
+        "34",
+        "35",
+        "36",
+        "37",
+        "38",
+        "39",
+        "40",
+        "41",
+        "42",
+        "43",
+        "44",
+        "45",
+        "46",
+        "47",
+        "48",
+        "49",
+        "50",
+        "51",
+        "52",
+        "53",
+        "54",
+        "55",
+        "56",
+        "57",
+        "58",
+        "59",
+        "60",
+        "61",
+        "62",
+        "63",
+        "64",
+        "65",
+        "66",
+        "67",
+        "68",
+        "69"
+      ],
+      "sheetMatchKeys": {
+        "AC": [
+          "19",
+          "21",
+          "22"
+        ],
+        "AC.NO": [
+          "19",
+          "21",
+          "22"
+        ],
+        "ALLBANK_ADDRRESS": [
+          "2",
+          "3"
+        ],
+        "ALLBANK_ALIASNAME": [
+          "2",
+          "3"
+        ],
+        "ALLBANK_BKNO": [
+          "2",
+          "3"
+        ],
+        "ALLBANK_BRNO": [
+          "2",
+          "3"
+        ],
+        "ALLBANK_BRNO_CHKCODE": [
+          "2",
+          "3"
+        ],
+        "ALLBANK_ENGNAME": [
+          "2",
+          "3"
+        ],
+        "ALLBANK_FISC_UNIT": [
+          "2",
+          "3"
+        ],
+        "ALLBANK_FULLNAME": [
+          "2",
+          "3"
+        ],
+        "ALLBANK_RMFLAG": [
+          "2",
+          "3"
+        ],
+        "ALLBANK_RMFORWARD": [
+          "2",
+          "3"
+        ],
+        "ALLBANK_TELNO": [
+          "2",
+          "3"
+        ],
+        "ALLBANK_TEMP": [
+          "3",
+          "Table List"
+        ],
+        "ALLBANK_TYPE": [
+          "2",
+          "3"
+        ],
+        "ALLBANK_UNIT_BANK": [
+          "2",
+          "3"
+        ],
+        "ALLBANK_ZIPCODE1": [
+          "2",
+          "3"
+        ],
+        "ALLBANK_ZIPCODE2": [
+          "2",
+          "3"
+        ],
+        "AMOUNT": [
+          "19",
+          "21",
+          "22"
+        ],
+        "BANK.CODE": [
+          "19",
+          "21",
+          "22"
+        ],
+        "BOOKING.DATE": [
+          "19",
+          "21",
+          "22"
+        ],
+        "BR": [
+          "19",
+          "21",
+          "22"
+        ],
+        "CHNN": [
+          "19",
+          "21",
+          "22"
+        ],
+        "CNAPS_BANK": [
+          "4",
+          "Table List"
+        ],
+        "CNAPS_BANK_XXX": [
+          "5",
+          "Table List"
+        ],
+        "CNAPS_REGION": [
+          "6",
+          "Table List"
+        ],
+        "CNS_CODE_BANK": [
+          "4",
+          "5"
+        ],
+        "CNS_CODE_REGION_E": [
+          "6"
+        ],
+        "CNS_CODE_REGION_S": [
+          "6"
+        ],
+        "CODE": [
+          "19",
+          "21",
+          "22"
+        ],
+        "COMM_CACHEDATA": [
+          "7",
+          "Table List"
+        ],
+        "COMM_JOB": [
+          "8",
+          "Table List"
+        ],
+        "COMM_MAIL": [
+          "9",
+          "Table List"
+        ],
+        "COMM_SCHEDULER": [
+          "10",
+          "Table List"
+        ],
+        "COMM_TASK": [
+          "11",
+          "Table List"
+        ],
+        "COUNTRY_HK": [
+          "12",
+          "Table List"
+        ],
+        "COUNTRY_MO": [
+          "13",
+          "Table List"
+        ],
+        "COUNTRY_TW": [
+          "14",
+          "Table List"
+        ],
+        "COUNTRY_VN": [
+          "15",
+          "Table List"
+        ],
+        "CURR.REAL": [
+          "19",
+          "21",
+          "22"
+        ],
+        "CURR_CNAME": [
+          "16"
+        ],
+        "CURR_DESC": [
+          "17"
+        ],
+        "CURR_ENAME": [
+          "16",
+          "17"
+        ],
+        "CURR_LNAME": [
+          "16"
+        ],
+        "CUSTOMIZE_MSGCODE": [
+          "18",
+          "Table List"
+        ],
+        "DATA_DESC": [
+          "47"
+        ],
+        "DATE": [
+          "19",
+          "21",
+          "22"
+        ],
+        "DESCRIPTION_ENG": [
+          "26",
+          "27",
+          "29",
+          "30",
+          "31",
+          "32",
+          "33",
+          "34",
+          "36"
+        ],
+        "DESCRIPTION_IN": [
+          "26",
+          "27",
+          "28",
+          "29",
+          "30",
+          "31",
+          "32",
+          "33",
+          "34",
+          "35"
+        ],
+        "DESCRIPTION_IN_ENG": [
+          "26",
+          "27",
+          "29",
+          "32",
+          "33",
+          "34"
+        ],
+        "DMYDTL_NPC": [
+          "20",
+          "Table List"
+        ],
+        "DMYDTL_ONEDAY": [
+          "21",
+          "Table List"
+        ],
+        "DMYDTL_ONEDAY_20160221": [
+          "22",
+          "Table List"
+        ],
+        "DMYDTL_TXNMEMOMAP": [
+          "23",
+          "Table List"
+        ],
+        "E.AC.NO": [
+          "19",
+          "21",
+          "22"
+        ],
+        "E.BANK.CODE": [
+          "19",
+          "21",
+          "22"
+        ],
+        "E.BOOKING.DATE": [
+          "19",
+          "21",
+          "22"
+        ],
+        "E.CURR.REAL": [
+          "19",
+          "21",
+          "22"
+        ],
+        "E.INP.BR": [
+          "19",
+          "21",
+          "22"
+        ],
+        "E.REV.FLG": [
+          "19",
+          "21",
+          "22"
+        ],
+        "E.TF.TXN": [
+          "19",
+          "21",
+          "22"
+        ],
+        "E.TXN.AMOUNT": [
+          "19",
+          "21",
+          "22"
+        ],
+        "E.TXN.CHNN": [
+          "19",
+          "21",
+          "22"
+        ],
+        "E.TXN.DATE": [
+          "19",
+          "21",
+          "22"
+        ],
+        "E.TXN.REF": [
+          "19",
+          "21",
+          "22"
+        ],
+        "E.TXN.TIME": [
+          "19",
+          "21",
+          "22"
+        ],
+        "E.VR.AC": [
+          "19",
+          "21",
+          "22"
+        ],
+        "E.VR.MAP": [
+          "19",
+          "21",
+          "22"
+        ],
+        "ERRMSG_CN": [
+          "67"
+        ],
+        "ERRMSG_ENG": [
+          "67"
+        ],
+        "ERRMSG_TW": [
+          "67"
+        ],
+        "EXT.TXN.MEMO": [
+          "19",
+          "21",
+          "22",
+          "23"
+        ],
+        "EXT.TXN.REM": [
+          "19",
+          "21",
+          "22"
+        ],
+        "EXT_TXN_MEMO": [
+          "20"
+        ],
+        "EXT_TXN_REM_F": [
+          "20"
+        ],
+        "EX_CLASS": [
+          "25",
+          "Table List"
+        ],
+        "EX_DETAIL": [
+          "26",
+          "Table List"
+        ],
+        "EX_DETAIL_20141231": [
+          "27",
+          "Table List"
+        ],
+        "EX_DETAIL_B2B": [
+          "28",
+          "Table List"
+        ],
+        "EX_NATURE": [
+          "29",
+          "Table List"
+        ],
+        "EX_NATURE_20140123": [
+          "30",
+          "Table List"
+        ],
+        "EX_NATURE_20141231": [
+          "31",
+          "Table List"
+        ],
+        "EX_NATURE_20150331": [
+          "32",
+          "Table List"
+        ],
+        "EX_NATURE_20200406": [
+          "33",
+          "Table List"
+        ],
+        "EX_NATURE_20221219": [
+          "34",
+          "Table List"
+        ],
+        "EX_NATURE_B2B": [
+          "35",
+          "Table List"
+        ],
+        "EX_NATURE_OBU": [
+          "36",
+          "Table List"
+        ],
+        "E_BOOKING_DATE": [
+          "20"
+        ],
+        "E_CURR_REAL_ACCT": [
+          "20"
+        ],
+        "E_REV_FLG": [
+          "20"
+        ],
+        "E_TF_TXN_REF": [
+          "20"
+        ],
+        "E_TXN_AMOUNT": [
+          "20"
+        ],
+        "E_TXN_DATE": [
+          "20"
+        ],
+        "E_TXN_REF": [
+          "20"
+        ],
+        "E_VR_AC_DESC": [
+          "20"
+        ],
+        "E_VR_AC_MAP_DTL": [
+          "20"
+        ],
+        "E_VR_AC_TXN_CUR": [
+          "20"
+        ],
+        "E_VR_MAP_DTL_DESC": [
+          "20"
+        ],
+        "FILE_DESC": [
+          "47"
+        ],
+        "FLAG008_HK": [
+          "16"
+        ],
+        "FLAG008_MO": [
+          "16"
+        ],
+        "FLAG008_OBU": [
+          "16"
+        ],
+        "FLAG008_TW": [
+          "16"
+        ],
+        "FLAG031_MO": [
+          "16"
+        ],
+        "FLAGOTWD_HK": [
+          "16"
+        ],
+        "FLAGOTWD_MO": [
+          "16"
+        ],
+        "FLAGOTWD_OBU": [
+          "16"
+        ],
+        "FLAGOTWD_TW": [
+          "16"
+        ],
+        "FLG": [
+          "19",
+          "21",
+          "22"
+        ],
+        "FTP_DATE": [
+          "47"
+        ],
+        "FX_BRANCH": [
+          "37",
+          "Table List"
+        ],
+        "FX_CHECK": [
+          "38",
+          "Table List"
+        ],
+        "FX_CHECK_LIST": [
+          "39",
+          "Table List"
+        ],
+        "FX_CHECK_LIST_20141231": [
+          "40",
+          "Table List"
+        ],
+        "FX_CHECK_LIST_B2B": [
+          "41",
+          "Table List"
+        ],
+        "GET_FORMAT": [
+          "47"
+        ],
+        "HK_NAL_RISK": [
+          "43",
+          "Table List"
+        ],
+        "ID_TYPE": [
+          "25",
+          "38",
+          "39",
+          "40",
+          "41",
+          "55",
+          "56",
+          "57",
+          "58"
+        ],
+        "INP.BR": [
+          "19",
+          "21",
+          "22"
+        ],
+        "INTERNAL_IP": [
+          "44",
+          "Table List"
+        ],
+        "IS_LEVEL2": [
+          "6"
+        ],
+        "LNPURNAME_EN": [
+          "66"
+        ],
+        "LNPURNAME_GB": [
+          "66"
+        ],
+        "LN_PAYNAME": [
+          "65"
+        ],
+        "LN_PAYNAME_EN": [
+          "65"
+        ],
+        "LN_PAYNAME_GB": [
+          "65"
+        ],
+        "LN_PAYTYPE": [
+          "65"
+        ],
+        "LOANLCTYPENAME_EN": [
+          "64"
+        ],
+        "LOANLCTYPENAME_GB": [
+          "64"
+        ],
+        "LOANNAME_EN": [
+          "62"
+        ],
+        "LOANNAME_GB": [
+          "62"
+        ],
+        "MAIL_DATE": [
+          "47"
+        ],
+        "MAIN_ACCT": [
+          "45",
+          "46"
+        ],
+        "MAIN_ACCT_DATE": [
+          "59"
+        ],
+        "MAIN_SUB_ACCT": [
+          "45",
+          "Table List"
+        ],
+        "MAIN_SUB_ACCT_TMP": [
+          "46",
+          "Table List"
+        ],
+        "MAP": [
+          "19",
+          "21",
+          "22"
+        ],
+        "MEMO": [
+          "19",
+          "21",
+          "22",
+          "23"
+        ],
+        "MEMOS_ENG": [
+          "26",
+          "27",
+          "29",
+          "30",
+          "31",
+          "32",
+          "33",
+          "34"
+        ],
+        "MEMOS_IN": [
+          "26",
+          "27",
+          "28",
+          "29",
+          "30",
+          "31",
+          "32",
+          "33",
+          "34",
+          "35"
+        ],
+        "MEMOS_IN_ENG": [
+          "26",
+          "27",
+          "29",
+          "32",
+          "33",
+          "34"
+        ],
+        "MMAB2B_OVERTRADE": [
+          "47",
+          "Table List"
+        ],
+        "MMAQ_SERVERLIST": [
+          "48",
+          "Table List"
+        ],
+        "MMAQ_TXNLIST": [
+          "49",
+          "Table List"
+        ],
+        "MO_NAL_RISK": [
+          "51",
+          "Table List"
+        ],
+        "MT940_DTLLOG": [
+          "52",
+          "Table List"
+        ],
+        "MT940_FTP": [
+          "53",
+          "Table List"
+        ],
+        "MT940_LOG": [
+          "54",
+          "Table List"
+        ],
+        "NATURAL_TYPE": [
+          "29",
+          "33",
+          "34"
+        ],
+        "NATURAL_TYPE_IN": [
+          "29",
+          "33",
+          "34"
+        ],
+        "NF_CHECK": [
+          "55",
+          "Table List"
+        ],
+        "NF_CHECK_20141231": [
+          "56",
+          "Table List"
+        ],
+        "NF_CHECK_B2B": [
+          "57",
+          "Table List"
+        ],
+        "NF_CHECK_OLD": [
+          "58",
+          "Table List"
+        ],
+        "NO": [
+          "19",
+          "21",
+          "22"
+        ],
+        "PARM_DATE": [
+          "59",
+          "Table List"
+        ],
+        "P_TYPE": [
+          "38"
+        ],
+        "REAL": [
+          "19",
+          "21",
+          "22"
+        ],
+        "REF": [
+          "19",
+          "21",
+          "22"
+        ],
+        "REFRESH_SEC": [
+          "7"
+        ],
+        "REM": [
+          "19",
+          "21",
+          "22"
+        ],
+        "REV.FLG": [
+          "19",
+          "21",
+          "22"
+        ],
+        "RSPCSR_ADMIN": [
+          "60",
+          "Table List"
+        ],
+        "SEND_FORMAT": [
+          "47"
+        ],
+        "SERVICE_STATUS": [
+          "49"
+        ],
+        "SUB_ACCT": [
+          "45",
+          "46"
+        ],
+        "T24_CATEGORY": [
+          "61",
+          "Table List"
+        ],
+        "T24_LOAN": [
+          "62",
+          "Table List"
+        ],
+        "T24_LOANCHARCD": [
+          "63",
+          "Table List"
+        ],
+        "T24_LOANLCTYPE": [
+          "64",
+          "Table List"
+        ],
+        "T24_LOANPAYTYPE": [
+          "65",
+          "Table List"
+        ],
+        "T24_LOANPUR": [
+          "66",
+          "Table List"
+        ],
+        "T24_MSGCODE": [
+          "67",
+          "Table List"
+        ],
+        "T24_RATETYPE": [
+          "68",
+          "Table List"
+        ],
+        "TF.TXN": [
+          "19",
+          "21",
+          "22"
+        ],
+        "THEO_CNAME": [
+          "16"
+        ],
+        "THEO_ENAME": [
+          "16"
+        ],
+        "TIME": [
+          "19",
+          "21",
+          "22"
+        ],
+        "TITLE_PARAMS": [
+          "9"
+        ],
+        "TXN": [
+          "19",
+          "21",
+          "22"
+        ],
+        "TXN.AMOUNT": [
+          "19",
+          "21",
+          "22"
+        ],
+        "TXN.CHNN": [
+          "19",
+          "21",
+          "22"
+        ],
+        "TXN.DATE": [
+          "19",
+          "21",
+          "22"
+        ],
+        "TXN.MEMO": [
+          "19",
+          "21",
+          "22",
+          "23"
+        ],
+        "TXN.REF": [
+          "19",
+          "21",
+          "22"
+        ],
+        "TXN.REM": [
+          "19",
+          "21",
+          "22"
+        ],
+        "TXN.TIME": [
+          "19",
+          "21",
+          "22"
+        ],
+        "TXN_DESC": [
+          "49"
+        ],
+        "UPDATE_USERID": [
+          "2",
+          "3"
+        ],
+        "VR.AC": [
+          "19",
+          "21",
+          "22"
+        ],
+        "VR.MAP": [
+          "19",
+          "21",
+          "22"
+        ],
+        "V_BANKBRANCH": [
+          "69",
+          "Table List"
+        ],
+        "X99_TYPE": [
+          "29",
+          "33",
+          "34",
+          "35"
+        ],
+        "X99_TYPE_DESCRIPTION": [
+          "29",
+          "33",
+          "34",
+          "35"
+        ],
+        "X99_TYPE_DESCRIPTION_IN": [
+          "29",
+          "33",
+          "34"
+        ]
+      },
+      "sectionMatchKeys": {},
+      "pageMatchKeys": {}
+    },
+    {
+      "refId": "db.access-token.apptable.4cbf6c92",
+      "category": "db_schema",
+      "title": "APP Table",
+      "relativePath": "reference/global/raw/db-schema/APP Table.xlsx",
+      "checksum": "sha256:ca4abe9fe3a44b96fc9849289b141d6a68386af2a5a56012564f0c5a7af0fc2a",
+      "fileType": "xlsx",
+      "versionDateToken": null,
+      "sourceLabel": "db-workbook",
+      "keywords": [
+        "IRIS",
+        "Redis"
+      ],
+      "matchKeys": [
+        "ACCESS_TOKEN",
+        "ACCOUNT_NUMBER",
+        "AC_FCY",
+        "AC_LCY",
+        "ADDMONTHS",
+        "AGREE_TYPE",
+        "APPLY_IP",
+        "APPLY_SOURCE",
+        "APP_VIDEO_MASTER",
+        "AUTH_SN",
+        "AZ_ACTNO",
+        "BANK_NA",
+        "BUILD_CID",
+        "CONTRACT_TYPE",
+        "CONTRACT_VERSION",
+        "CURRENT_TIMESTAMP",
+        "DAILY_MAXERRORCOUNT",
+        "DAILY_MAXSENDCOUNT",
+        "DATETIME.NOW.ADDMONTHS",
+        "DATETIME.NOW.TOSTRING",
+        "DATE_OF_BIRTH",
+        "DAWHO_AIFUND",
+        "DA_APPLOG",
+        "DA_CERTTOKEN",
+        "DA_EMAILOTPLIMIT",
+        "DA_EMAIL_DISPOSABLE_LOG",
+        "DA_LOGIN_WHITELIST",
+        "DA_NOACCT_TRANSFER",
+        "DA_PUSH_MESSAGES",
+        "DA_QRCDOE_CARDLESS",
+        "DA_SMSOTPLIMIT",
+        "DA_USER_ALIAS",
+        "DA_USER_SCORE",
+        "DA_VERIFY_ERRORS",
+        "DB.DBO.EMAIL_VERIFY",
+        "DBO.EMAIL_VERIFY",
+        "DBO.USER",
+        "DELIVERYPOOL_D",
+        "DELIVERYPOOL_PRECHK",
+        "DEVICEBINDING_LOG",
+        "EDIT_STATUS",
+        "EMAIL_VERIFY",
+        "EXTD_PUSHDATA",
+        "FEP_UPDATE_STATUS",
+        "IRIS",
+        "MATURITY_DATE",
+        "MB_ANNOUNCEMENT",
+        "MB_APPVERSION",
+        "MB_DEVICE",
+        "MB_DEVICEBINDINGLOG",
+        "MB_DEVICE_LOGIN_LOG",
+        "MB_FASTLOGIN_RSAKEY",
+        "MB_PROMOTION",
+        "MB_PUSHSERVICETOKEN",
+        "MB_PUSHTYPE",
+        "MB_PUSHTYPESETTING",
+        "MB_PUSH_MESSAGES",
+        "MB_PUSH_MESSAGES_B",
+        "MB_PUSH_MESSAGES_T",
+        "MB_USER_LEVEL",
+        "MB_USER_LEVEL_NEW",
+        "MMA.DBO.USER",
+        "MMA_UPDATE_STATUS",
+        "MONTHLY_MAXERRORCOUNT",
+        "MSG_TEXT",
+        "MSG_TYPE",
+        "NET_QUALITY",
+        "NON_AGREEMENT_TRANSFER",
+        "NOW.ADDMONTHS",
+        "NOW.TOSTRING",
+        "OPTION_URL",
+        "PUSHBATCH_EXCEPTIONLOG",
+        "RECENTACCOUNT_FOREIGN",
+        "REDIS",
+        "RED_ENVELOPE_BUILD",
+        "RED_ENVELOPE_RECEIVE",
+        "REFRESH_TOKEN",
+        "R_CID",
+        "R_CUSTID",
+        "R_STATUS",
+        "R_UUID",
+        "SMS_VERIFY",
+        "T24_UPD_FCY_STATUS",
+        "T24_UPD_LCY_STATUS",
+        "TIMESTAMP_AFTER",
+        "TOSTRING",
+        "TX_MAPPING",
+        "TX_OAUTH_TOKEN",
+        "TX_STATISTIC",
+        "T_AC_BRNO",
+        "T_KPI_BR",
+        "UDA_APPLY_CASE",
+        "UDA_CASE_CONTRACT",
+        "UDA_VIDEO_LOG",
+        "USER",
+        "VALUE_DATE",
+        "VERIFY_TYPE",
+        "WEBAC_BLOCKREASONS",
+        "WEBAC_COOKIE_BLOCK"
+      ],
+      "apiCodes": [],
+      "tableNames": [
+        "ACCESS_TOKEN",
+        "ACCOUNT_NUMBER",
+        "AC_FCY",
+        "AC_LCY",
+        "ADDMONTHS",
+        "AGREE_TYPE",
+        "APPLY_IP",
+        "APPLY_SOURCE",
+        "APP_VIDEO_MASTER",
+        "AUTH_SN",
+        "AZ_ACTNO",
+        "BANK_NA",
+        "BUILD_CID",
+        "CONTRACT_TYPE",
+        "CONTRACT_VERSION",
+        "CURRENT_TIMESTAMP",
+        "DAILY_MAXERRORCOUNT",
+        "DAILY_MAXSENDCOUNT",
+        "DATETIME.NOW.ADDMONTHS",
+        "DATETIME.NOW.TOSTRING",
+        "DATE_OF_BIRTH",
+        "DAWHO_AIFUND",
+        "DA_APPLOG",
+        "DA_CERTTOKEN",
+        "DA_EMAILOTPLIMIT",
+        "DA_EMAIL_DISPOSABLE_LOG",
+        "DA_LOGIN_WHITELIST",
+        "DA_NOACCT_TRANSFER",
+        "DA_PUSH_MESSAGES",
+        "DA_QRCDOE_CARDLESS",
+        "DA_SMSOTPLIMIT",
+        "DA_USER_ALIAS",
+        "DA_USER_SCORE",
+        "DA_VERIFY_ERRORS",
+        "DB.DBO.EMAIL_VERIFY",
+        "DBO.EMAIL_VERIFY",
+        "DBO.USER",
+        "DELIVERYPOOL_D",
+        "DELIVERYPOOL_PRECHK",
+        "DEVICEBINDING_LOG",
+        "EDIT_STATUS",
+        "EMAIL_VERIFY",
+        "EXTD_PUSHDATA",
+        "FEP_UPDATE_STATUS",
+        "MATURITY_DATE",
+        "MB_ANNOUNCEMENT",
+        "MB_APPVERSION",
+        "MB_DEVICE",
+        "MB_DEVICEBINDINGLOG",
+        "MB_DEVICE_LOGIN_LOG",
+        "MB_FASTLOGIN_RSAKEY",
+        "MB_PROMOTION",
+        "MB_PUSHSERVICETOKEN",
+        "MB_PUSHTYPE",
+        "MB_PUSHTYPESETTING",
+        "MB_PUSH_MESSAGES",
+        "MB_PUSH_MESSAGES_B",
+        "MB_PUSH_MESSAGES_T",
+        "MB_USER_LEVEL",
+        "MB_USER_LEVEL_NEW",
+        "MMA.DBO.USER",
+        "MMA_UPDATE_STATUS",
+        "MONTHLY_MAXERRORCOUNT",
+        "MSG_TEXT",
+        "MSG_TYPE",
+        "NET_QUALITY",
+        "NON_AGREEMENT_TRANSFER",
+        "NOW.ADDMONTHS",
+        "NOW.TOSTRING",
+        "OPTION_URL",
+        "PUSHBATCH_EXCEPTIONLOG",
+        "RECENTACCOUNT_FOREIGN",
+        "RED_ENVELOPE_BUILD",
+        "RED_ENVELOPE_RECEIVE",
+        "REFRESH_TOKEN",
+        "R_CID",
+        "R_CUSTID",
+        "R_STATUS",
+        "R_UUID",
+        "SMS_VERIFY",
+        "T24_UPD_FCY_STATUS",
+        "T24_UPD_LCY_STATUS",
+        "TIMESTAMP_AFTER",
+        "TOSTRING",
+        "TX_MAPPING",
+        "TX_OAUTH_TOKEN",
+        "TX_STATISTIC",
+        "T_AC_BRNO",
+        "T_KPI_BR",
+        "UDA_APPLY_CASE",
+        "UDA_CASE_CONTRACT",
+        "UDA_VIDEO_LOG",
+        "USER",
+        "VALUE_DATE",
+        "VERIFY_TYPE",
+        "WEBAC_BLOCKREASONS",
+        "WEBAC_COOKIE_BLOCK"
+      ],
+      "fieldNames": [
+        "AC_FCY",
+        "AC_LCY",
+        "AGREE_TIME",
+        "AGREE_TYPE",
+        "APPLY_IP",
+        "APPLY_SOURCE",
+        "APPLY_TIME",
+        "AZ_ACTNO",
+        "Account_Name",
+        "Account_Number",
+        "App_Video_Master",
+        "Bank_Na",
+        "Bank_Name",
+        "Build_CID",
+        "CONTRACT_NAME",
+        "CONTRACT_TYPE",
+        "CONTRACT_VERSION",
+        "CREATE_TIME",
+        "CURRENT_TIMESTAMP",
+        "Customer_id",
+        "DATE_OF_BIRTH",
+        "DA_APPLOG",
+        "DA_CERTTOKEN",
+        "DA_EMAIL_DISPOSABLE_LOG",
+        "DA_Login_WhiteList",
+        "DA_NoAcct_Transfer",
+        "DA_Push_Messages",
+        "DA_QRCDOE_CARDLESS",
+        "DA_USER_ALIAS",
+        "DA_USER_SCORE",
+        "DA_VERIFY_ERRORS",
+        "DA_emailOTPlimit",
+        "DA_smsOTPlimit",
+        "Daily_MaxErrorCount",
+        "Daily_MaxSendcount",
+        "Dawho_Aifund",
+        "DeliveryPool_D",
+        "DeliveryPool_PreChk",
+        "DeviceBinding_Log",
+        "EDIT_STATUS",
+        "EMAIL_VERIFY",
+        "EXTD_PUSHDATA",
+        "FEP_UPDATE_STATUS",
+        "LAST_QRCODE_TIME",
+        "LAST_UPDATE_TIME",
+        "MATURITY_DATE",
+        "MB_ANNOUNCEMENT",
+        "MB_APPVERSION",
+        "MB_DEVICE",
+        "MB_DEVICEBINDINGLOG",
+        "MB_DEVICE_LOGIN_LOG",
+        "MB_FASTLOGIN_RSAKey",
+        "MB_PROMOTION",
+        "MB_PUSHTYPE",
+        "MB_PUSHTYPESETTING",
+        "MB_PushServiceToken",
+        "MB_Push_Messages",
+        "MB_Push_Messages_B",
+        "MB_Push_Messages_T",
+        "MB_User_Level",
+        "MB_User_Level_NEW",
+        "MMA_UPDATE_STATUS",
+        "MSG_TEXT",
+        "MSG_TYPE",
+        "Monthly_MaxErrorCount",
+        "NET_QUALITY",
+        "NON_AGREEMENT_TRANSFER",
+        "OPTION_URL",
+        "Option_URL",
+        "PushBatch_ExceptionLog",
+        "RED_ENVELOPE_BUILD",
+        "RED_ENVELOPE_RECEIVE",
+        "R_CID",
+        "R_CustID",
+        "R_Name",
+        "R_Status",
+        "R_UUID",
+        "SMS_VERIFY",
+        "T24_UPD_FCY_STATUS",
+        "T24_UPD_LCY_STATUS",
+        "TX_MAPPING",
+        "TX_OAUTH_TOKEN",
+        "TX_STATISTIC",
+        "T_AC_BRNO",
+        "T_KPI_BR",
+        "TimeStamp_After",
+        "UDA_APPLY_CASE",
+        "UDA_CASE_CONTRACT",
+        "UDA_Video_LOG",
+        "VALUE_DATE",
+        "VERIFY_TYPE",
+        "WebAC_BlockReasons",
+        "WebAC_Cookie_Block",
+        "access_token",
+        "addressChk",
+        "android",
+        "apimreqid",
+        "apimreqtime",
+        "auth_sn",
+        "bit",
+        "changeNoticeYM",
+        "char",
+        "cid",
+        "complete",
+        "completed",
+        "createdby",
+        "createdts",
+        "data",
+        "date",
+        "dbo",
+        "dbxdb",
+        "decimal",
+        "emailOTPlimit",
+        "exchange_code",
+        "flag",
+        "float",
+        "fundcode",
+        "fundname",
+        "getOID",
+        "hash",
+        "iPhone",
+        "identity",
+        "isResieve",
+        "lastmodifiedts",
+        "long",
+        "modifiedby",
+        "nchar",
+        "non",
+        "numeric",
+        "nvarchar",
+        "otplimit",
+        "push",
+        "ratio1M",
+        "ratio1Y",
+        "ratio2Y",
+        "ratio3M",
+        "ratio3Y",
+        "ratio5Y",
+        "ratio6M",
+        "recentaccount_foreign",
+        "refresh_token",
+        "requestID",
+        "response",
+        "sClientDate",
+        "sClientTime",
+        "sContentHtml",
+        "sOID",
+        "smallint",
+        "stage",
+        "statusTime",
+        "synctimestamp",
+        "text",
+        "timestamp",
+        "tinyint",
+        "token",
+        "transactionid",
+        "type",
+        "uniqueidentifier",
+        "url",
+        "value",
+        "videoSN",
+        "yyyy",
+        "yyyyMMdd",
+        "yyyyMMddHHmmss"
+      ],
+      "sheetNames": [
+        "Table Index",
+        "DA_NoAcct_Transfer(無碼轉帳)",
+        "MB_DEVICEBINDINGLOG",
+        "MB_DEVICE_LOGIN_LOG",
+        "MB_DEVICE",
+        "MB_PROMOTION",
+        "MB_ANNOUNCEMENT",
+        "MB_APPVERSION",
+        "MB_PUSHTYPE",
+        "MB_FASTLOGIN_RSAKey",
+        "MB_Push_Messages",
+        "MB_PUSHTYPESETTING",
+        "MB_Push_Messages_B",
+        "MB_Push_Messages_T",
+        "RED_ENVELOPE_BUILD",
+        "RED_ENVELOPE_RECEIVE",
+        "TX_STATISTIC",
+        "TX_OAUTH_TOKEN",
+        "TX_MAPPING",
+        "DA_USER_ALIAS(大戶䁥稱)",
+        "DA_QRCDOE_CARDLESS(QRCODE無卡提款)",
+        "DA_CERTTOKEN(軟憑驗證)",
+        "DA_APPLOG(呼叫MID SDK LOG)",
+        "DeliveryPool_PreChk(批次推播表頭檔)",
+        "DeliveryPool_D(批次推播明細檔)",
+        "App_Video_Master",
+        "DA_APPLOG",
+        "DA_Login_WhiteList",
+        "DA_USER_SCORE",
+        "Dawho_Aifund",
+        "EXTD_PUSHDATA",
+        "MB_User_Level",
+        "PushBatch_ExceptionLog",
+        "SMS_VERIFY",
+        "UDA_APPLY_CASE",
+        "UDA_CASE_CONTRACT",
+        "UDA_Video_LOG",
+        "WebAC_BlockReasons",
+        "WebAC_Cookie_Block",
+        "CollectionMaster",
+        "CollectionDetail",
+        "DeviceBinding",
+        "DeviceBinding_Log",
+        "MB_PushServiceToken",
+        "DA_VERIFY_ERRORS",
+        "Fundratio",
+        "MB_User_Level_NEW",
+        "DepositCurrencyList",
+        "IRISTransactionRecord",
+        "OverseasWithdrawalSetting",
+        "MMA.dbo.User",
+        "recentaccount_foreign",
+        "DA_smsOTPlimit",
+        "DA_emailOTPlimit",
+        "EMAIL_VERIFY",
+        "DA_Push_Messages",
+        "ClientList",
+        "Redis",
+        "DA_EMAIL_DISPOSABLE_LOG",
+        "LoginWhiteList",
+        "OAUTHREFRESH",
+        "FastLoginRsaKey"
+      ],
+      "sheetMatchKeys": {
+        "ACCESS_TOKEN": [
+          "Redis"
+        ],
+        "ACCOUNT_NUMBER": [
+          "recentaccount_foreign"
+        ],
+        "AC_FCY": [
+          "UDA_APPLY_CASE"
+        ],
+        "AC_LCY": [
+          "UDA_APPLY_CASE"
+        ],
+        "ADDMONTHS": [
+          "EMAIL_VERIFY",
+          "SMS_VERIFY"
+        ],
+        "AGREE_TYPE": [
+          "UDA_CASE_CONTRACT"
+        ],
+        "APPLY_IP": [
+          "UDA_APPLY_CASE",
+          "WebAC_Cookie_Block"
+        ],
+        "APPLY_SOURCE": [
+          "UDA_APPLY_CASE"
+        ],
+        "APP_VIDEO_MASTER": [
+          "App_Video_Master",
+          "Table Index"
+        ],
+        "AUTH_SN": [
+          "Redis"
+        ],
+        "AZ_ACTNO": [
+          "EXTD_PUSHDATA"
+        ],
+        "BANK_NA": [
+          "DA_NoAcct_Transfer(無碼轉帳)"
+        ],
+        "BUILD_CID": [
+          "RED_ENVELOPE_BUILD",
+          "RED_ENVELOPE_RECEIVE"
+        ],
+        "CONTRACT_TYPE": [
+          "UDA_CASE_CONTRACT"
+        ],
+        "CONTRACT_VERSION": [
+          "UDA_CASE_CONTRACT"
+        ],
+        "CURRENT_TIMESTAMP": [
+          "DA_EMAIL_DISPOSABLE_LOG"
+        ],
+        "DAILY_MAXERRORCOUNT": [
+          "DA_emailOTPlimit",
+          "DA_smsOTPlimit"
+        ],
+        "DAILY_MAXSENDCOUNT": [
+          "DA_emailOTPlimit",
+          "DA_smsOTPlimit"
+        ],
+        "DATETIME.NOW.ADDMONTHS": [
+          "EMAIL_VERIFY",
+          "SMS_VERIFY"
+        ],
+        "DATETIME.NOW.TOSTRING": [
+          "EMAIL_VERIFY",
+          "SMS_VERIFY"
+        ],
+        "DATE_OF_BIRTH": [
+          "UDA_APPLY_CASE",
+          "WebAC_Cookie_Block"
+        ],
+        "DAWHO_AIFUND": [
+          "Dawho_Aifund",
+          "Table Index"
+        ],
+        "DA_APPLOG": [
+          "DA_APPLOG",
+          "DA_APPLOG(呼叫MID SDK LOG)",
+          "Table Index"
+        ],
+        "DA_CERTTOKEN": [
+          "DA_CERTTOKEN(軟憑驗證)",
+          "Table Index"
+        ],
+        "DA_EMAILOTPLIMIT": [
+          "DA_emailOTPlimit",
+          "Table Index"
+        ],
+        "DA_EMAIL_DISPOSABLE_LOG": [
+          "DA_EMAIL_DISPOSABLE_LOG",
+          "Table Index"
+        ],
+        "DA_LOGIN_WHITELIST": [
+          "DA_Login_WhiteList",
+          "Table Index"
+        ],
+        "DA_NOACCT_TRANSFER": [
+          "DA_NoAcct_Transfer(無碼轉帳)",
+          "Table Index"
+        ],
+        "DA_PUSH_MESSAGES": [
+          "DA_Push_Messages",
+          "Table Index"
+        ],
+        "DA_QRCDOE_CARDLESS": [
+          "DA_QRCDOE_CARDLESS(QRCODE無卡提款)",
+          "Table Index"
+        ],
+        "DA_SMSOTPLIMIT": [
+          "DA_smsOTPlimit",
+          "Table Index"
+        ],
+        "DA_USER_ALIAS": [
+          "DA_USER_ALIAS(大戶䁥稱)",
+          "Table Index"
+        ],
+        "DA_USER_SCORE": [
+          "DA_USER_SCORE",
+          "Table Index"
+        ],
+        "DA_VERIFY_ERRORS": [
+          "DA_VERIFY_ERRORS",
+          "Table Index"
+        ],
+        "DB.DBO.EMAIL_VERIFY": [
+          "DA_emailOTPlimit"
+        ],
+        "DBO.EMAIL_VERIFY": [
+          "DA_emailOTPlimit"
+        ],
+        "DBO.USER": [
+          "MMA.dbo.User"
+        ],
+        "DELIVERYPOOL_D": [
+          "DeliveryPool_D(批次推播明細檔)",
+          "Table Index"
+        ],
+        "DELIVERYPOOL_PRECHK": [
+          "DeliveryPool_PreChk(批次推播表頭檔)",
+          "Table Index"
+        ],
+        "DEVICEBINDING_LOG": [
+          "DeviceBinding_Log",
+          "Table Index"
+        ],
+        "EDIT_STATUS": [
+          "UDA_APPLY_CASE"
+        ],
+        "EMAIL_VERIFY": [
+          "DA_emailOTPlimit",
+          "EMAIL_VERIFY",
+          "Table Index"
+        ],
+        "EXTD_PUSHDATA": [
+          "EXTD_PUSHDATA",
+          "Table Index"
+        ],
+        "FEP_UPDATE_STATUS": [
+          "UDA_APPLY_CASE"
+        ],
+        "IRIS": [
+          "IRISTransactionRecord",
+          "Table Index"
+        ],
+        "MATURITY_DATE": [
+          "EXTD_PUSHDATA"
+        ],
+        "MB_ANNOUNCEMENT": [
+          "MB_ANNOUNCEMENT",
+          "Table Index"
+        ],
+        "MB_APPVERSION": [
+          "MB_APPVERSION",
+          "Table Index"
+        ],
+        "MB_DEVICE": [
+          "MB_DEVICE",
+          "MB_PushServiceToken",
+          "Table Index"
+        ],
+        "MB_DEVICEBINDINGLOG": [
+          "MB_DEVICEBINDINGLOG",
+          "Table Index"
+        ],
+        "MB_DEVICE_LOGIN_LOG": [
+          "MB_DEVICE_LOGIN_LOG",
+          "Table Index"
+        ],
+        "MB_FASTLOGIN_RSAKEY": [
+          "MB_FASTLOGIN_RSAKey",
+          "Table Index"
+        ],
+        "MB_PROMOTION": [
+          "MB_PROMOTION",
+          "Table Index"
+        ],
+        "MB_PUSHSERVICETOKEN": [
+          "MB_PushServiceToken",
+          "Table Index"
+        ],
+        "MB_PUSHTYPE": [
+          "MB_PUSHTYPE",
+          "Table Index"
+        ],
+        "MB_PUSHTYPESETTING": [
+          "MB_PUSHTYPESETTING",
+          "Table Index"
+        ],
+        "MB_PUSH_MESSAGES": [
+          "MB_Push_Messages",
+          "Table Index"
+        ],
+        "MB_PUSH_MESSAGES_B": [
+          "MB_Push_Messages_B",
+          "Table Index"
+        ],
+        "MB_PUSH_MESSAGES_T": [
+          "MB_Push_Messages_T"
+        ],
+        "MB_USER_LEVEL": [
+          "MB_User_Level",
+          "Table Index"
+        ],
+        "MB_USER_LEVEL_NEW": [
+          "MB_User_Level_NEW",
+          "Table Index"
+        ],
+        "MMA.DBO.USER": [
+          "MMA.dbo.User"
+        ],
+        "MMA_UPDATE_STATUS": [
+          "UDA_APPLY_CASE"
+        ],
+        "MONTHLY_MAXERRORCOUNT": [
+          "DA_emailOTPlimit",
+          "DA_smsOTPlimit"
+        ],
+        "MSG_TEXT": [
+          "MB_Push_Messages",
+          "MB_Push_Messages_B",
+          "MB_Push_Messages_T"
+        ],
+        "MSG_TYPE": [
+          "MB_Push_Messages",
+          "MB_Push_Messages_B",
+          "MB_Push_Messages_T"
+        ],
+        "NET_QUALITY": [
+          "DA_USER_SCORE"
+        ],
+        "NON_AGREEMENT_TRANSFER": [
+          "UDA_APPLY_CASE"
+        ],
+        "NOW.ADDMONTHS": [
+          "EMAIL_VERIFY",
+          "SMS_VERIFY"
+        ],
+        "NOW.TOSTRING": [
+          "EMAIL_VERIFY",
+          "SMS_VERIFY"
+        ],
+        "OPTION_URL": [
+          "DeliveryPool_D(批次推播明細檔)",
+          "MB_Push_Messages",
+          "MB_Push_Messages_B",
+          "MB_Push_Messages_T"
+        ],
+        "PUSHBATCH_EXCEPTIONLOG": [
+          "PushBatch_ExceptionLog",
+          "Table Index"
+        ],
+        "RECENTACCOUNT_FOREIGN": [
+          "Table Index",
+          "recentaccount_foreign"
+        ],
+        "REDIS": [
+          "Redis",
+          "Table Index"
+        ],
+        "RED_ENVELOPE_BUILD": [
+          "RED_ENVELOPE_BUILD",
+          "Table Index"
+        ],
+        "RED_ENVELOPE_RECEIVE": [
+          "RED_ENVELOPE_RECEIVE",
+          "Table Index"
+        ],
+        "REFRESH_TOKEN": [
+          "Redis"
+        ],
+        "R_CID": [
+          "RED_ENVELOPE_RECEIVE"
+        ],
+        "R_CUSTID": [
+          "RED_ENVELOPE_RECEIVE"
+        ],
+        "R_STATUS": [
+          "RED_ENVELOPE_RECEIVE"
+        ],
+        "R_UUID": [
+          "RED_ENVELOPE_RECEIVE"
+        ],
+        "SMS_VERIFY": [
+          "DA_smsOTPlimit",
+          "SMS_VERIFY",
+          "Table Index"
+        ],
+        "T24_UPD_FCY_STATUS": [
+          "UDA_APPLY_CASE"
+        ],
+        "T24_UPD_LCY_STATUS": [
+          "UDA_APPLY_CASE"
+        ],
+        "TIMESTAMP_AFTER": [
+          "IRISTransactionRecord"
+        ],
+        "TOSTRING": [
+          "EMAIL_VERIFY",
+          "SMS_VERIFY"
+        ],
+        "TX_MAPPING": [
+          "TX_MAPPING",
+          "Table Index"
+        ],
+        "TX_OAUTH_TOKEN": [
+          "TX_OAUTH_TOKEN",
+          "Table Index"
+        ],
+        "TX_STATISTIC": [
+          "TX_STATISTIC",
+          "Table Index"
+        ],
+        "T_AC_BRNO": [
+          "EXTD_PUSHDATA"
+        ],
+        "T_KPI_BR": [
+          "EXTD_PUSHDATA"
+        ],
+        "UDA_APPLY_CASE": [
+          "Table Index",
+          "UDA_APPLY_CASE"
+        ],
+        "UDA_CASE_CONTRACT": [
+          "Table Index",
+          "UDA_CASE_CONTRACT"
+        ],
+        "UDA_VIDEO_LOG": [
+          "Table Index",
+          "UDA_Video_LOG"
+        ],
+        "USER": [
+          "MMA.dbo.User"
+        ],
+        "VALUE_DATE": [
+          "EXTD_PUSHDATA"
+        ],
+        "VERIFY_TYPE": [
+          "UDA_APPLY_CASE"
+        ],
+        "WEBAC_BLOCKREASONS": [
+          "Table Index",
+          "WebAC_BlockReasons"
+        ],
+        "WEBAC_COOKIE_BLOCK": [
+          "Table Index",
+          "WebAC_Cookie_Block"
+        ]
+      },
+      "sectionMatchKeys": {},
+      "pageMatchKeys": {}
+    },
+    {
+      "refId": "db.account-balance.mma.c16fbd21",
+      "category": "db_schema",
+      "title": "MMA",
+      "relativePath": "reference/global/raw/db-schema/MMA.xlsx",
+      "checksum": "sha256:08eb96c4141d789f4ba1230e0585a069ccd44f6e8c89b93fda072d67d89cbaba",
+      "fileType": "xlsx",
+      "versionDateToken": null,
+      "sourceLabel": "db-workbook",
+      "keywords": [
+        "BSP"
+      ],
+      "matchKeys": [
+        "ACCOUNT_BALANCE",
+        "ACCOUNT_ENABLE",
+        "ACCOUNT_EUD_BALANCE",
+        "ACCOUNT_JPD_BALANCE",
+        "ACCOUNT_LIMIT",
+        "ACCOUNT_NUMBER",
+        "ACCOUNT_ORG_BALANCE",
+        "ACCOUNT_OTH_BALANCE",
+        "ACCOUNT_TWD_BALANCE",
+        "ACCOUNT_TYPE",
+        "ACCOUNT_USD_BALANCE",
+        "ACCRUED_INT",
+        "ACCRUED_INT_LCY",
+        "ACCT.NO",
+        "ACCT_ACTIVITY",
+        "ACCT_NOTRANSFER",
+        "ACCT_NOTRANSFER_LOG",
+        "ACC_STATUS",
+        "ACC_WORK_BAL",
+        "ADJUST_DEDUCHANGETYPE",
+        "ADJUST_INVEST_YEARS",
+        "ADJUST_LEFTPERIOD",
+        "ADJUST_MATURITY_DATE",
+        "ADJUST_RSP_DOLLAR",
+        "AFTER_CHANGE",
+        "AI_ADJUSTPLAN",
+        "AI_BUY",
+        "AI_DEDUCHANGE",
+        "AI_REBALANCE",
+        "AI_REDEM",
+        "AI_RISKSWITCH",
+        "AI_SIGNCONTRACT",
+        "AI_STAFFBUY",
+        "ALERT_MSG_STATUS",
+        "ALLBANK_ADDRESS",
+        "ALLBANK_ALIASNAME",
+        "ALLBANK_BKNO",
+        "ALLBANK_BRNO",
+        "ALLBANK_BRNO_CHKCODE",
+        "ALLBANK_ENGNAME",
+        "ALLBANK_FISC_UNIT",
+        "ALLBANK_FULLNAME",
+        "ALLBANK_RMFLAG",
+        "ALLBANK_RMFORWARD",
+        "ALLBANK_TELNO",
+        "ALLBANK_TYPE",
+        "ALLBANK_UNIT_BANK",
+        "ALLBANK_ZIPCODE1",
+        "ALLBANK_ZIPCODE2",
+        "ALLSEQUENCES_DAWHO",
+        "ALL_SERV",
+        "AMOUNT_TWD",
+        "APPLY_IP",
+        "APPLY_MEMBER",
+        "APPLY_STATUS",
+        "APPSEQNO_D",
+        "ASSET_DAILY",
+        "ASSET_DATE",
+        "ASSET_MAILBILL",
+        "ASSET_MONTH",
+        "ASSET_WEEK",
+        "ATM_24_SERVICE",
+        "ATM_ADDRESS_C",
+        "ATM_ATMNO",
+        "ATM_ATMTYPE",
+        "ATM_CITY_C",
+        "ATM_DELETE_FG",
+        "ATM_DIST_C",
+        "ATM_LATITUDE",
+        "ATM_LOCATION",
+        "ATM_LONGITUDE",
+        "ATM_SAVING",
+        "ATM_STATUS",
+        "ATM_STATUS_UPDATETIME",
+        "ATM_WITHDRAW",
+        "ATM_WITHDRAW_CNY",
+        "ATM_WITHDRAW_HKD",
+        "ATM_WITHDRAW_JPY",
+        "ATM_WITHDRAW_NTD_100",
+        "ATM_WITHDRAW_NTD_1000",
+        "ATM_WITHDRAW_USD",
+        "ATM_ZONE",
+        "AUDIT_ONLINE",
+        "AUTH_OS",
+        "AUTO_ACNO",
+        "AVAIL_CASH_CR",
+        "AVAIL_CR",
+        "AVG_LOGIN_DAYS",
+        "B2C.FXREM.SATUS",
+        "B2C_DESC",
+        "BANKCUSTID_NODM",
+        "BANK_CARDNO",
+        "BANK_TFRIN",
+        "BANK_TFRIN_LOG",
+        "BANK_UPDATE_DATE",
+        "BATCH_STATUS",
+        "BATCH_TIMESTAMP",
+        "BATCH_TIMESTAMP_AFTER",
+        "BEFORE_CHANGE",
+        "BEFORE_MAXLENGTH",
+        "BONDL_RATIO",
+        "BONDM_RATIO",
+        "BONDS_RATIO",
+        "BOND_CAIRGEN",
+        "BOND_CAIRREDEM",
+        "BOND_CGENERAL",
+        "BOND_CREDEM",
+        "BOND_RATIO",
+        "BOOKING_FEE_RATE",
+        "BOOKING_FUND_IDNAME",
+        "BP_ASSET_PROFILE",
+        "BP_BANK_ACCOUNT_BALANCE_STD",
+        "BP_BANK_BAL",
+        "BP_CARD_ACCOUNT_BALANCE",
+        "BP_CARD_BLHS",
+        "BP_CARD_CAM",
+        "BP_EMAIL_MSG",
+        "BP_EMP_CATEGORY",
+        "BP_ETF_STOCK",
+        "BP_FAVORITE_MSG",
+        "BP_FEP_ATM",
+        "BP_INSURANCE_ASSET",
+        "BP_IPIGCASHBALANCE_TMP",
+        "BP_IPIGDREAMGOAL_TMP",
+        "BP_LOANFAILMSG_L29BIOR",
+        "BP_NFUTURE_461",
+        "BP_NFUTURE_462",
+        "BP_NFUTURE_463",
+        "BP_NSTOCK_41",
+        "BP_NSTOCK_42",
+        "BP_NSTOCK_43",
+        "BP_NSTOCK_44",
+        "BP_NSTOCK_48",
+        "BP_NSTOCK_49",
+        "BP_NSTOCK_CEASE",
+        "BP_NSTOCK_TOTAL",
+        "BP_NSTOCK_TOTAL_STD_TMP",
+        "BP_OFFICE_WIFI",
+        "BP_P1200_CURR",
+        "BP_PARAMETER",
+        "BP_PROFILE_EPAPER",
+        "BP_PROFILE_NSC_STOCK",
+        "BP_QUERYSPOT",
+        "BP_RED_ENVELOPE_MAIN",
+        "BP_RPT_MEMBERCNT",
+        "BP_TIMEDEPOSITMATURITYNOTIFY_TMP",
+        "BP_USER_BANK_ACCOUNT_BALANCE",
+        "BP_USER_FUND_ACCOUNT_BALANCE",
+        "BP_USER_FUND_ALERT",
+        "BP_USER_FUND_LIST",
+        "BP_USER_FUND_WAY_BALANCE",
+        "BP_USER_FUND_WAY_LIST",
+        "BP_USER_MSG_LIST",
+        "BP_USER_NSTOCK_ACCOUNT_BALANCE",
+        "BP_USER_NSTOCK_DATE",
+        "BRANCH_RVMR_TOTXAMT",
+        "BSP",
+        "BSP_INCENTIVE",
+        "BSP_INCENTIVE_TYPE",
+        "BUS_TYPE",
+        "BUY_AMOUNT_ONWAY",
+        "CALL_MARGIN",
+        "CAM_SYSDATE",
+        "CARD16_STARTNO",
+        "CARD_CUSTID",
+        "CARD_SETDDACCOUNT",
+        "CARD_SETDDAMOUNT",
+        "CARD_SETDDIND",
+        "CARD_SUMMARY",
+        "CARD_UPDCIF_LOG",
+        "CARD_USER_MAPPING",
+        "CASUALTY_INSURANCE",
+        "CEASE_DATE",
+        "CERT_NUMBER",
+        "CHANG_FIELD",
+        "CHK_DATE",
+        "CHNN.CODE",
+        "CLEAR_CURRENCY",
+        "CLOSED_USER",
+        "CLOSED_USER_PROFILE",
+        "CLOSED_USER_STATUS",
+        "CLOSE_TYPE",
+        "CODE",
+        "CODE_BANK",
+        "CODE_R",
+        "CODE_UNIT",
+        "COMMISSION_TYPE",
+        "CONTRACT_NUM",
+        "CREDIT.ACCT.NO",
+        "CREDIT_AMOUNT",
+        "CREDIT_APPLY_LOG",
+        "CREDIT_CURRENCY",
+        "CREDIT_LINE",
+        "CRS_ID_DATE_NEW",
+        "CRS_ID_DATE_ORG",
+        "CRS_ID_NOTE_NEW",
+        "CRS_ID_NOTE_ORG",
+        "CURRENCY_RATE",
+        "CURR_ACCU_PAYMENT",
+        "CURR_BALANCE",
+        "CUR_AMOUNT",
+        "CUR_PRICE",
+        "CUSTID_ODS_NODM",
+        "DAY_PUSH",
+        "DB_CIF_ADR2FG",
+        "DB_CIF_EMAILFG1",
+        "DB_CIF_TELNO1FG",
+        "DB_CIF_TELNO2FG",
+        "DB_CIF_TELNO3FG",
+        "DB_CIF_TELNO4FG",
+        "DD_ACCT",
+        "DD_BANKCODE",
+        "DD_IND",
+        "DEBIT.ACCT.NO",
+        "DEBIT_CURRENCY",
+        "DEDUCTCODE_R",
+        "DEDUCTHEADER_R",
+        "DEDUCTIONCURR_C",
+        "DEDUCTMFSEQ_R",
+        "DEDUCTMSG_R",
+        "DEDU_DAY",
+        "DEFERRED_UNPAID",
+        "DUE_DATE",
+        "DUE_DAY",
+        "EARN_RATE",
+        "EDATE_SHOW",
+        "EDUCATION_LEVEL",
+        "EFF_DATE",
+        "EMAIL_MARK",
+        "EMAIL_STATUS",
+        "EMAIL_VERIFY",
+        "EMPLOY_STATUS",
+        "END_DATE",
+        "END_DATETIME",
+        "ENUM_VALUES",
+        "EPAPER_ASSET",
+        "EPAPER_CARD",
+        "EPAPER_FUND",
+        "EPAPER_LOAN",
+        "EPAPER_MESSAGE",
+        "EPAPER_MONTH",
+        "EPAPER_OTHERASSET",
+        "EPAPER_PROMOTE",
+        "EPAPER_RMB",
+        "EPAPER_SAVE",
+        "EPAPER_STOCK",
+        "EPAPER_STOCKNEWS",
+        "EPAPER_WEEK",
+        "ERROR_MESSAGE",
+        "ES7000_CIFINFO",
+        "ETS_INSERTSPOTDEAL",
+        "EXCHANGE_RATE",
+        "EXCHANGE_RSPCODE",
+        "EXCHANGE_RSPMSG",
+        "EXCHANGE_STATUS",
+        "EXCHANGE_TIMESTAMP",
+        "EXRATE_NOTICE",
+        "EX_CUR",
+        "FAT_ID_DATE_NEW",
+        "FAT_ID_DATE_ORG",
+        "FAT_ID_NOTE_NEW",
+        "FAT_ID_NOTE_ORG",
+        "FAT_ID_TYPE_NEW",
+        "FAT_ID_TYPE_ORG",
+        "FAT_ORI_REP_NEW",
+        "FAT_ORI_REP_ORG",
+        "FAV_EPAPER_NEWS",
+        "FAV_SEE_BANK",
+        "FAV_SEE_CARD",
+        "FAV_SEE_FUND",
+        "FAV_SEE_LOAN",
+        "FAV_SEE_OTHER",
+        "FAV_SEE_SECURITY",
+        "FCY_ACC_BAL_DETAIL",
+        "FIN_CHARGE",
+        "FIRST_LOGIN_DAFACE",
+        "FIRST_LOGIN_DAGRAPHICS",
+        "FIRST_LOGIN_DATOUCH",
+        "FIRST_LOGIN_DAWHO",
+        "FIRST_LOGIN_FACE",
+        "FIRST_LOGIN_GRAPHICS",
+        "FIRST_LOGIN_MAPP",
+        "FIRST_LOGIN_MWEB",
+        "FIRST_LOGIN_NETBANK",
+        "FIRST_LOGIN_SINOCARD",
+        "FIRST_LOGIN_TOUCH",
+        "FIX_RSPCODE",
+        "FIX_RSPMSG",
+        "FIX_STATUS",
+        "FIX_TIMESTAMP",
+        "FUND_CAIRAUTO",
+        "FUND_CAIREIM",
+        "FUND_CAIRGAINLOSS",
+        "FUND_CAIRGEN",
+        "FUND_CAIRREDEM",
+        "FUND_CAIRSWITCH",
+        "FUND_CAUTO",
+        "FUND_CAUTOBAS",
+        "FUND_CAUTOSUSP",
+        "FUND_CAUTOTERM",
+        "FUND_CGENERAL",
+        "FUND_CGENERALBAS",
+        "FUND_CINSURE",
+        "FUND_COMPANY",
+        "FUND_CREDEM",
+        "FUND_CSWITCH",
+        "FUND_DBOOKING",
+        "FUND_DRSUBS",
+        "FUND_EXCGENERAL",
+        "FUND_SHARE",
+        "FUND_SUMMARY",
+        "FUND_SUMMARY_EFFECT",
+        "FUND_SYMBOL",
+        "FUND_UEMAIL",
+        "FUND_UINCOME",
+        "FUND_UPCIFETFFG",
+        "FUND_UPDATE_DATE",
+        "FUND_WAY_SUMMARY",
+        "FUND_WAY_SUMMARY_EFFECT",
+        "FXREM.SATUS",
+        "F_ETFFG",
+        "F_ETFFG_DATE",
+        "F_ETFFLAG",
+        "GAIN_AUTO_MARK",
+        "GOLD_SUMMARY",
+        "GRAPHICS_LEN",
+        "IFUND_CANCLOSEMARK",
+        "INFORM_DATE",
+        "INITIAL_DOLLAR",
+        "INIT_DRAW_DOWN",
+        "INSURANCE_AMOUNT",
+        "INSURANCE_CO",
+        "INSURANCE_TYPE",
+        "INSURE_INSUREPORTAL_LOG",
+        "INTEREST_TWD",
+        "INTRANET_ADDRESS_EXCLUSIVE",
+        "INTRANET_CUSTID_EXCLUSIVE",
+        "INT_RATE",
+        "INVALID_EMAIL",
+        "INVEST_BID_COMPETITION",
+        "INVEST_FC_DEPOSIT",
+        "INVEST_FIXED_DEPOSIT",
+        "INVEST_MUTUAL_FUND",
+        "INVEST_REAL_ESTATE",
+        "INVEST_STOCK",
+        "INVEST_TYPE",
+        "INVEST_YEARS",
+        "J_APP",
+        "J_BANK",
+        "J_BRANCH",
+        "J_COUNTRY",
+        "J_CURR",
+        "J_TAX",
+        "J_TAX_UNIT",
+        "KEEP_DEDU_MARK",
+        "LAST_BALANCE",
+        "LAST_LOGIN_DAFACE",
+        "LAST_LOGIN_DAGRAPHICS",
+        "LAST_LOGIN_DATOUCH",
+        "LAST_LOGIN_DAWHO",
+        "LAST_LOGIN_FACE",
+        "LAST_LOGIN_GRAPHICS",
+        "LAST_LOGIN_MAPP",
+        "LAST_LOGIN_MWEB",
+        "LAST_LOGIN_NETBANK",
+        "LAST_LOGIN_SINOCARD",
+        "LAST_LOGIN_TOUCH",
+        "LAST_PAYMENT_DATE",
+        "LATE_CHARGE",
+        "LCY_FCY_TYPE",
+        "LEVEL_ADJUSTED",
+        "LEVEL_BEFORE",
+        "LIFE_INSURANCE",
+        "LIMIT_LINE",
+        "LINE_CR",
+        "LISTRATE_HISTORY",
+        "LISTRATE_HISTORYN",
+        "LOAN_ACNO",
+        "LOAN_BALANCE",
+        "LOAN_SUMMARY",
+        "LOSS_AUTO_MARK",
+        "LOTS_B",
+        "LOTS_S",
+        "MAIL_MSG_STATUS",
+        "MAIL_UPTODATE",
+        "MANAGE_TIMESTAMP",
+        "MARGIN_SUMMARY",
+        "MARITAL_STATUS",
+        "MB_APPLOG",
+        "MB_DEVICE_BINDING",
+        "MB_DEVICE_BINDING_LOG",
+        "MB_DEVICE_BINDING_QRCODE_VERIFY",
+        "MB_DEVICE_LOGIN_LOG",
+        "MB_PUSH_HISTORICALMESSAGES",
+        "MB_PUSH_MESSAGES",
+        "MB_USER_SCORE",
+        "MEDICAL_INSURANCE",
+        "MESSAGE_R",
+        "MMACD_CMTXNINP_LOG",
+        "MMACD_LIMITTMBINAU_LOG",
+        "MMACD_ODDUMMYINP_LOG",
+        "MMAFIX_FAST",
+        "MMAFIX_FAST_CHECK",
+        "MMAMAIL_FORMAT",
+        "MMAMAIL_QUEUE",
+        "MMAMAIL_QUEUE_COMMON",
+        "MMANTFXG5000A_LOG",
+        "MMANTFXG5000B_LOG",
+        "MMANTFXG5000_EBILL",
+        "MMANTFXJQ_GOLD",
+        "MMANTFXPK_CARD",
+        "MMANTFXPK_PHONE",
+        "MMANTFXPK_PRE",
+        "MMANTFXPK_PRECARD",
+        "MMANTFXPK_RED",
+        "MMANTFXPK_TAX",
+        "MMAQ_SERVERLIST",
+        "MMA_ACCT_CLOSE_TX",
+        "MMA_ADV_BOND",
+        "MMA_ADV_BOND_UPDLOG",
+        "MMA_BRANCHSERVICE_XML",
+        "MMA_CARDLESSNO",
+        "MMA_CARDLESSTXN",
+        "MMA_CARDLESSTXN_FEPLOG",
+        "MMA_CARDLESSTXN_HISTORY",
+        "MMA_CARDLESSTXN_TEMPLOG",
+        "MMA_CREDITBANK_PAYBILL",
+        "MMA_CUSTID",
+        "MMA_E2EINFO",
+        "MMA_EXCHANGEFIX",
+        "MMA_FATCA_TX",
+        "MMA_FXORDER_PRECURR",
+        "MMA_H6000_EVT_GOLD",
+        "MMA_LINE_CASH",
+        "MMA_NOTUSER",
+        "MMA_PREFOREIGNCASH",
+        "MMA_QUERYLOGINSERVICE",
+        "MMA_SINOTRADE_API",
+        "MMA_SYPARAM",
+        "MMA_TRUST_INSURANCE",
+        "MN_ABRNO",
+        "MN_RBRCOD",
+        "MODIFY_TYPE",
+        "MSG_BODY",
+        "MSG_CATEGORY",
+        "MSG_DATE",
+        "MSG_FORMAT",
+        "MSG_FUND",
+        "MSG_LOGIN",
+        "MSG_MEMO",
+        "MSG_NOTIFY",
+        "MSG_TEXT",
+        "MSG_TITLE",
+        "MSG_TRADE",
+        "MSG_TRADE_NOW",
+        "MSG_TYPE",
+        "MSG_VALUE",
+        "MSG_WEIGHT_LEVEL",
+        "MTP_UNREGISTER_RCODE",
+        "MTP_UNREGISTER_RSPCODE",
+        "MTP_UNREGISTER_RSPMSG",
+        "MYVOICE_RECORD",
+        "M_PREFOREIGNCASH_COUNTRY",
+        "NATIONALITY_ORG",
+        "NEW_CHITEM",
+        "NEW_DD_ACCT",
+        "NEW_DD_BANKCODE",
+        "NEW_DD_IND",
+        "NEXT_DEDU_DATE",
+        "NEXT_SCHEDULE",
+        "NO",
+        "NOT_MARGIN",
+        "NO_HOUSEHOLD",
+        "NTFXPK_TAX",
+        "NT_CURRBAL",
+        "NUMBER_LOGIN",
+        "NUMBER_R",
+        "ODS_MOBILE",
+        "OD_SUMMARY",
+        "OFFICE_WIFI_IP",
+        "OLD_CHITEM",
+        "OPEN_GL",
+        "OPEN_GL_TWD",
+        "OPTION_URL",
+        "ORG_AMOUNT",
+        "ORG_AMOUNT_CUR",
+        "ORG_CURRENCY",
+        "ORG_UNIT_PRICE",
+        "ORIGINAL_RISKLEVEL",
+        "OTHER_SUMMARY",
+        "OTP_STATE",
+        "OUTSTANDING_PE",
+        "OUTSTAND_OD_AC",
+        "OUTSTAND_PD",
+        "OUT_CERT",
+        "OUT_DOLLAR",
+        "OUT_UNIT",
+        "OWNER_SID",
+        "P4000_FUNCTION_TYPE",
+        "P4000_RSPCODE",
+        "P4000_RSPMSG",
+        "PASSWORD_LEN",
+        "PAYEECURR_C",
+        "PAYMENT_TYPE",
+        "PMT_PREFERENCE",
+        "POINTS_EVENT_LOG",
+        "POINTS_TERMS_AGREE_LOG",
+        "POLICY_STATUS",
+        "PORTAL_IP",
+        "PORTAL_URL",
+        "PRE_PYMT_DATE",
+        "PRICE_DATE",
+        "PURCHASE_DATE",
+        "PWDCHG_TIMESTAMP",
+        "PWD_REVOKE_LOG",
+        "PWD_REVOKE_LOG_SMS",
+        "P_VALUE",
+        "QTY_WAY",
+        "RECV_DATA",
+        "REDEM_SUBS_MARK",
+        "REGISTERFLAG_R",
+        "REMAINING_DOLLAR",
+        "REMAINING_UNIT",
+        "REMIT_STATUS",
+        "REPAYMENT_ACNO",
+        "REPAYMENT_DATE",
+        "RESPONSE_URL",
+        "RES_DATE",
+        "RISK_PREFERENCE",
+        "ROIRATE_D",
+        "RQ_EDATE",
+        "RQ_PRDCD",
+        "RQ_PRDCDD",
+        "RQ_RATETYPE",
+        "RQ_XPERIODTYPE",
+        "RSP_DOLLAR",
+        "RS_EDATE",
+        "RS_PRDCD",
+        "RS_PRDCDD",
+        "RS_RATETYPE",
+        "RS_XPERIODTYPE",
+        "SATUS",
+        "SAVING_SUMMARY",
+        "SCHEDULE_TEXT",
+        "SCHEDULE_TYPE",
+        "SECURITIES_SUMMARY",
+        "SELL_PRICE",
+        "SELL_QTY_WAY",
+        "SELL_TRUSTAMT",
+        "SELL_TRUSTAMT_PRICE",
+        "SEND_DATA",
+        "SEND_EMAIL",
+        "SETTLEMENT_ACCT",
+        "SETTMENT_PRICE",
+        "SINOTRADE_API_RESULT",
+        "SINOTRADE_CBURL",
+        "SMSD15_REMIND_LOG",
+        "SMSFUND_REMIND_LOG",
+        "SMSFUND_REMIND_TMP",
+        "SMS_MODIFYLOG",
+        "SMS_MSGLOG",
+        "SMS_REMIND",
+        "SMS_SENDFLAG",
+        "SMS_STATUS",
+        "SMS_VERIFY",
+        "SOURCE_2",
+        "SP_BANK_IPIGCASHBALNOTIFY_PUSH_117667",
+        "SP_CREDIT_ACT",
+        "SP_EBANK_NODM",
+        "SP_EMAIL_MSG_TYPE",
+        "SP_FAVORITE_MSG_TYPE",
+        "SP_FUND_ACT",
+        "SP_MMA_ACT",
+        "SP_NON_RAISE",
+        "SP_RAISE_CHILD",
+        "SP_RAISE_NUM",
+        "SP_RAISE_PARENT",
+        "SP_SAVING_ACT",
+        "SP_SECURITIES_ACT",
+        "SP_TEACHER_EMAIL_SMS",
+        "SS_BUY",
+        "SS_MODIFY",
+        "SS_SELL",
+        "START_DATE",
+        "START_DATETIME",
+        "STATEMENT_DATE",
+        "STATUS_1",
+        "STATUS_2",
+        "STATUS_R",
+        "STATUS_X000D_",
+        "STMT_DUEDATE",
+        "STOCKA_RATIO",
+        "STOCKB_RATIO",
+        "STOCKC_RATIO",
+        "STOCK_ACCOMMODATION",
+        "STOCK_COLLAT",
+        "STOCK_FUTURE",
+        "STOCK_LOAN",
+        "STOCK_LOT",
+        "STOCK_RATIO",
+        "STOCK_RP",
+        "STOCK_RS",
+        "STOCK_SYMBOL",
+        "STOCK_TOTAL",
+        "STOCK_UPDATE_DATE",
+        "STOCK_VALUE",
+        "STOCK_WAY",
+        "STOP_GAIN_POINT1",
+        "STOP_GAIN_POINT2",
+        "STOP_GAIN_POINT3",
+        "STOP_GAIN_TYPE",
+        "STOP_LOSS_POINT",
+        "STOP_LOSS_TYPE",
+        "ST_DESC",
+        "SUB_AREA",
+        "SUSPENSE_MARK",
+        "SYSSAMPLECHK_D",
+        "T24_BEFORE_CHANGE",
+        "T24_CUSTID",
+        "T24_PHONE_MAP_MNEMONIC",
+        "T24_PHONE_MAP_RSPCODE",
+        "T24_PHONE_MAP_RSPMSG",
+        "T24_PHONE_MAP_SMS",
+        "T24_PHONE_MAP_STOP_FLG",
+        "T24_PHONE_MAP_TOKEN",
+        "T24_TMBI_P1200_CURR",
+        "T24_TMB_AIO_ACCT",
+        "TARGET_TYPE",
+        "TAX_CLASS",
+        "TAX_FOR_CUST_LCY",
+        "TAX_SUBCLASS",
+        "TC_ACC_RANGE",
+        "TC_API_1",
+        "TC_API_2",
+        "TC_BANKKEY",
+        "TC_SERVER",
+        "TERM_AMOUNT",
+        "TFRIN_NOPACT",
+        "TFRIN_NOPACT_LIMIT",
+        "TI.CHNN.CODE",
+        "TIMESTAMP_AFTER",
+        "TIMESTAMP_D",
+        "TOTAL_CLOSE_AMT_LCY",
+        "TOTAL_COUNT",
+        "TOTAL_STOCK",
+        "TOTAL_WAY",
+        "TRADE_ACCOUNT",
+        "TRADE_DATE",
+        "TRADE_SEQNO",
+        "TRADE_STOCK",
+        "TRADE_TYPE",
+        "TRANSFER_TAX",
+        "TRANS_TYPE",
+        "TREASURY_RATE",
+        "TRUSTAMT_WAY",
+        "TRUSTAMT_WAY_TWD",
+        "TRUST_AMOUNT",
+        "TRUST_AMT_TWD",
+        "TRUST_CUR",
+        "TWD_AMOUNT",
+        "TWID_TOKEN",
+        "TXN_DATE",
+        "TX_MAPPING",
+        "TX_STATISTIC",
+        "T_ADDR2",
+        "T_AUTHORISER",
+        "T_BR_SEQNO",
+        "T_CBR_EX_RATE",
+        "T_CLASS",
+        "T_CNTRY",
+        "T_COST_RATE",
+        "T_CR_KPI_BR",
+        "T_CS_DENOM",
+        "T_CS_PHONE",
+        "T_CS_QUANTITY",
+        "T_CS_SETT_DATE",
+        "T_DATA_KIND",
+        "T_EMAIL",
+        "T_FX_RATE",
+        "T_FX_TXN_REF",
+        "T_KPI_BR",
+        "T_LISTRATE",
+        "T_MNEMONIC",
+        "T_PHONE_TYPE",
+        "T_PSB_MEMO_C",
+        "T_PYMT_MODE",
+        "T_REF_EXRATE",
+        "T_REMARK",
+        "T_TX_O_ACCT_D",
+        "UNCLAMP_R",
+        "UPDATE_DATE",
+        "UPDATE_DATE_BANK",
+        "UPDATE_DATE_CARD",
+        "UPDATE_DATE_FUND",
+        "UPDATE_DATE_STOCK",
+        "UPDATE_USERID",
+        "UPL_FC_DIVIDEND",
+        "URETURN_FC_DIVIDEND",
+        "USERCODE_LEN",
+        "USER_AUTHLOG",
+        "USER_CHANGE_LOG",
+        "USER_CREATEMMAMEMBER_LOG",
+        "USER_EDIT_EMAIL_LOG",
+        "USER_FAVORITE_LINK",
+        "USER_FOREIGNER_LIST",
+        "USER_ICCARDAPPLYMEMBER_LOG",
+        "USER_IP",
+        "USER_LOGIN_LOG",
+        "USER_ONLINEAPPLYMEMBER_LOG",
+        "USER_ONLINEAPPLYMEMBER_RESET",
+        "USER_OTHER_ACCOUNT_BALANCE",
+        "USER_PASSWORD_CHANGE",
+        "USER_PROFILE",
+        "USER_PROFILE_CHANGLOG",
+        "USER_SCHEDULE",
+        "USER_STATE",
+        "USER_STATUS",
+        "USER_STATUS_LOG",
+        "USE_VALID_TYPE",
+        "VAILIDATE_STATUS",
+        "VALI_DATE",
+        "VALUE_TWD",
+        "VALUE_WAY_TWD",
+        "VAL_CUR",
+        "VD_OCT_1",
+        "WANT_MESSAGE",
+        "WAY_AMOUNT",
+        "WEBATMLOG_DAILY"
+      ],
+      "apiCodes": [],
+      "tableNames": [
+        "ACCOUNT_BALANCE",
+        "ACCOUNT_ENABLE",
+        "ACCOUNT_EUD_BALANCE",
+        "ACCOUNT_JPD_BALANCE",
+        "ACCOUNT_LIMIT",
+        "ACCOUNT_NUMBER",
+        "ACCOUNT_ORG_BALANCE",
+        "ACCOUNT_OTH_BALANCE",
+        "ACCOUNT_TWD_BALANCE",
+        "ACCOUNT_TYPE",
+        "ACCOUNT_USD_BALANCE",
+        "ACCRUED_INT",
+        "ACCRUED_INT_LCY",
+        "ACCT.NO",
+        "ACCT_ACTIVITY",
+        "ACCT_NOTRANSFER",
+        "ACCT_NOTRANSFER_LOG",
+        "ACC_STATUS",
+        "ACC_WORK_BAL",
+        "ADJUST_DEDUCHANGETYPE",
+        "ADJUST_INVEST_YEARS",
+        "ADJUST_LEFTPERIOD",
+        "ADJUST_MATURITY_DATE",
+        "ADJUST_RSP_DOLLAR",
+        "AFTER_CHANGE",
+        "AI_ADJUSTPLAN",
+        "AI_BUY",
+        "AI_DEDUCHANGE",
+        "AI_REBALANCE",
+        "AI_REDEM",
+        "AI_RISKSWITCH",
+        "AI_SIGNCONTRACT",
+        "AI_STAFFBUY",
+        "ALERT_MSG_STATUS",
+        "ALLBANK_ADDRESS",
+        "ALLBANK_ALIASNAME",
+        "ALLBANK_BKNO",
+        "ALLBANK_BRNO",
+        "ALLBANK_BRNO_CHKCODE",
+        "ALLBANK_ENGNAME",
+        "ALLBANK_FISC_UNIT",
+        "ALLBANK_FULLNAME",
+        "ALLBANK_RMFLAG",
+        "ALLBANK_RMFORWARD",
+        "ALLBANK_TELNO",
+        "ALLBANK_TYPE",
+        "ALLBANK_UNIT_BANK",
+        "ALLBANK_ZIPCODE1",
+        "ALLBANK_ZIPCODE2",
+        "ALLSEQUENCES_DAWHO",
+        "ALL_SERV",
+        "AMOUNT_TWD",
+        "APPLY_IP",
+        "APPLY_MEMBER",
+        "APPLY_STATUS",
+        "APPSEQNO_D",
+        "ASSET_DAILY",
+        "ASSET_DATE",
+        "ASSET_MAILBILL",
+        "ASSET_MONTH",
+        "ASSET_WEEK",
+        "ATM_24_SERVICE",
+        "ATM_ADDRESS_C",
+        "ATM_ATMNO",
+        "ATM_ATMTYPE",
+        "ATM_CITY_C",
+        "ATM_DELETE_FG",
+        "ATM_DIST_C",
+        "ATM_LATITUDE",
+        "ATM_LOCATION",
+        "ATM_LONGITUDE",
+        "ATM_SAVING",
+        "ATM_STATUS",
+        "ATM_STATUS_UPDATETIME",
+        "ATM_WITHDRAW",
+        "ATM_WITHDRAW_CNY",
+        "ATM_WITHDRAW_HKD",
+        "ATM_WITHDRAW_JPY",
+        "ATM_WITHDRAW_NTD_100",
+        "ATM_WITHDRAW_NTD_1000",
+        "ATM_WITHDRAW_USD",
+        "ATM_ZONE",
+        "AUDIT_ONLINE",
+        "AUTH_OS",
+        "AUTO_ACNO",
+        "AVAIL_CASH_CR",
+        "AVAIL_CR",
+        "AVG_LOGIN_DAYS",
+        "B2C.FXREM.SATUS",
+        "B2C_DESC",
+        "BANKCUSTID_NODM",
+        "BANK_CARDNO",
+        "BANK_TFRIN",
+        "BANK_TFRIN_LOG",
+        "BANK_UPDATE_DATE",
+        "BATCH_STATUS",
+        "BATCH_TIMESTAMP",
+        "BATCH_TIMESTAMP_AFTER",
+        "BEFORE_CHANGE",
+        "BEFORE_MAXLENGTH",
+        "BONDL_RATIO",
+        "BONDM_RATIO",
+        "BONDS_RATIO",
+        "BOND_CAIRGEN",
+        "BOND_CAIRREDEM",
+        "BOND_CGENERAL",
+        "BOND_CREDEM",
+        "BOND_RATIO",
+        "BOOKING_FEE_RATE",
+        "BOOKING_FUND_IDNAME",
+        "BP_ASSET_PROFILE",
+        "BP_BANK_ACCOUNT_BALANCE_STD",
+        "BP_BANK_BAL",
+        "BP_CARD_ACCOUNT_BALANCE",
+        "BP_CARD_BLHS",
+        "BP_CARD_CAM",
+        "BP_EMAIL_MSG",
+        "BP_EMP_CATEGORY",
+        "BP_ETF_STOCK",
+        "BP_FAVORITE_MSG",
+        "BP_FEP_ATM",
+        "BP_INSURANCE_ASSET",
+        "BP_IPIGCASHBALANCE_TMP",
+        "BP_IPIGDREAMGOAL_TMP",
+        "BP_LOANFAILMSG_L29BIOR",
+        "BP_NFUTURE_461",
+        "BP_NFUTURE_462",
+        "BP_NFUTURE_463",
+        "BP_NSTOCK_41",
+        "BP_NSTOCK_42",
+        "BP_NSTOCK_43",
+        "BP_NSTOCK_44",
+        "BP_NSTOCK_48",
+        "BP_NSTOCK_49",
+        "BP_NSTOCK_CEASE",
+        "BP_NSTOCK_TOTAL",
+        "BP_NSTOCK_TOTAL_STD_TMP",
+        "BP_OFFICE_WIFI",
+        "BP_P1200_CURR",
+        "BP_PARAMETER",
+        "BP_PROFILE_EPAPER",
+        "BP_PROFILE_NSC_STOCK",
+        "BP_QUERYSPOT",
+        "BP_RED_ENVELOPE_MAIN",
+        "BP_RPT_MEMBERCNT",
+        "BP_TIMEDEPOSITMATURITYNOTIFY_TMP",
+        "BP_USER_BANK_ACCOUNT_BALANCE",
+        "BP_USER_FUND_ACCOUNT_BALANCE",
+        "BP_USER_FUND_ALERT",
+        "BP_USER_FUND_LIST",
+        "BP_USER_FUND_WAY_BALANCE",
+        "BP_USER_FUND_WAY_LIST",
+        "BP_USER_MSG_LIST",
+        "BP_USER_NSTOCK_ACCOUNT_BALANCE",
+        "BP_USER_NSTOCK_DATE",
+        "BRANCH_RVMR_TOTXAMT",
+        "BSP_INCENTIVE",
+        "BSP_INCENTIVE_TYPE",
+        "BUS_TYPE",
+        "BUY_AMOUNT_ONWAY",
+        "CALL_MARGIN",
+        "CAM_SYSDATE",
+        "CARD16_STARTNO",
+        "CARD_CUSTID",
+        "CARD_SETDDACCOUNT",
+        "CARD_SETDDAMOUNT",
+        "CARD_SETDDIND",
+        "CARD_SUMMARY",
+        "CARD_UPDCIF_LOG",
+        "CARD_USER_MAPPING",
+        "CASUALTY_INSURANCE",
+        "CEASE_DATE",
+        "CERT_NUMBER",
+        "CHANG_FIELD",
+        "CHK_DATE",
+        "CHNN.CODE",
+        "CLEAR_CURRENCY",
+        "CLOSED_USER",
+        "CLOSED_USER_PROFILE",
+        "CLOSED_USER_STATUS",
+        "CLOSE_TYPE",
+        "CODE",
+        "CODE_BANK",
+        "CODE_R",
+        "CODE_UNIT",
+        "COMMISSION_TYPE",
+        "CONTRACT_NUM",
+        "CREDIT.ACCT.NO",
+        "CREDIT_AMOUNT",
+        "CREDIT_APPLY_LOG",
+        "CREDIT_CURRENCY",
+        "CREDIT_LINE",
+        "CRS_ID_DATE_NEW",
+        "CRS_ID_DATE_ORG",
+        "CRS_ID_NOTE_NEW",
+        "CRS_ID_NOTE_ORG",
+        "CURRENCY_RATE",
+        "CURR_ACCU_PAYMENT",
+        "CURR_BALANCE",
+        "CUR_AMOUNT",
+        "CUR_PRICE",
+        "CUSTID_ODS_NODM",
+        "DAY_PUSH",
+        "DB_CIF_ADR2FG",
+        "DB_CIF_EMAILFG1",
+        "DB_CIF_TELNO1FG",
+        "DB_CIF_TELNO2FG",
+        "DB_CIF_TELNO3FG",
+        "DB_CIF_TELNO4FG",
+        "DD_ACCT",
+        "DD_BANKCODE",
+        "DD_IND",
+        "DEBIT.ACCT.NO",
+        "DEBIT_CURRENCY",
+        "DEDUCTCODE_R",
+        "DEDUCTHEADER_R",
+        "DEDUCTIONCURR_C",
+        "DEDUCTMFSEQ_R",
+        "DEDUCTMSG_R",
+        "DEDU_DAY",
+        "DEFERRED_UNPAID",
+        "DUE_DATE",
+        "DUE_DAY",
+        "EARN_RATE",
+        "EDATE_SHOW",
+        "EDUCATION_LEVEL",
+        "EFF_DATE",
+        "EMAIL_MARK",
+        "EMAIL_STATUS",
+        "EMAIL_VERIFY",
+        "EMPLOY_STATUS",
+        "END_DATE",
+        "END_DATETIME",
+        "ENUM_VALUES",
+        "EPAPER_ASSET",
+        "EPAPER_CARD",
+        "EPAPER_FUND",
+        "EPAPER_LOAN",
+        "EPAPER_MESSAGE",
+        "EPAPER_MONTH",
+        "EPAPER_OTHERASSET",
+        "EPAPER_PROMOTE",
+        "EPAPER_RMB",
+        "EPAPER_SAVE",
+        "EPAPER_STOCK",
+        "EPAPER_STOCKNEWS",
+        "EPAPER_WEEK",
+        "ERROR_MESSAGE",
+        "ES7000_CIFINFO",
+        "ETS_INSERTSPOTDEAL",
+        "EXCHANGE_RATE",
+        "EXCHANGE_RSPCODE",
+        "EXCHANGE_RSPMSG",
+        "EXCHANGE_STATUS",
+        "EXCHANGE_TIMESTAMP",
+        "EXRATE_NOTICE",
+        "EX_CUR",
+        "FAT_ID_DATE_NEW",
+        "FAT_ID_DATE_ORG",
+        "FAT_ID_NOTE_NEW",
+        "FAT_ID_NOTE_ORG",
+        "FAT_ID_TYPE_NEW",
+        "FAT_ID_TYPE_ORG",
+        "FAT_ORI_REP_NEW",
+        "FAT_ORI_REP_ORG",
+        "FAV_EPAPER_NEWS",
+        "FAV_SEE_BANK",
+        "FAV_SEE_CARD",
+        "FAV_SEE_FUND",
+        "FAV_SEE_LOAN",
+        "FAV_SEE_OTHER",
+        "FAV_SEE_SECURITY",
+        "FCY_ACC_BAL_DETAIL",
+        "FIN_CHARGE",
+        "FIRST_LOGIN_DAFACE",
+        "FIRST_LOGIN_DAGRAPHICS",
+        "FIRST_LOGIN_DATOUCH",
+        "FIRST_LOGIN_DAWHO",
+        "FIRST_LOGIN_FACE",
+        "FIRST_LOGIN_GRAPHICS",
+        "FIRST_LOGIN_MAPP",
+        "FIRST_LOGIN_MWEB",
+        "FIRST_LOGIN_NETBANK",
+        "FIRST_LOGIN_SINOCARD",
+        "FIRST_LOGIN_TOUCH",
+        "FIX_RSPCODE",
+        "FIX_RSPMSG",
+        "FIX_STATUS",
+        "FIX_TIMESTAMP",
+        "FUND_CAIRAUTO",
+        "FUND_CAIREIM",
+        "FUND_CAIRGAINLOSS",
+        "FUND_CAIRGEN",
+        "FUND_CAIRREDEM",
+        "FUND_CAIRSWITCH",
+        "FUND_CAUTO",
+        "FUND_CAUTOBAS",
+        "FUND_CAUTOSUSP",
+        "FUND_CAUTOTERM",
+        "FUND_CGENERAL",
+        "FUND_CGENERALBAS",
+        "FUND_CINSURE",
+        "FUND_COMPANY",
+        "FUND_CREDEM",
+        "FUND_CSWITCH",
+        "FUND_DBOOKING",
+        "FUND_DRSUBS",
+        "FUND_EXCGENERAL",
+        "FUND_SHARE",
+        "FUND_SUMMARY",
+        "FUND_SUMMARY_EFFECT",
+        "FUND_SYMBOL",
+        "FUND_UEMAIL",
+        "FUND_UINCOME",
+        "FUND_UPCIFETFFG",
+        "FUND_UPDATE_DATE",
+        "FUND_WAY_SUMMARY",
+        "FUND_WAY_SUMMARY_EFFECT",
+        "FXREM.SATUS",
+        "F_ETFFG",
+        "F_ETFFG_DATE",
+        "F_ETFFLAG",
+        "GAIN_AUTO_MARK",
+        "GOLD_SUMMARY",
+        "GRAPHICS_LEN",
+        "IFUND_CANCLOSEMARK",
+        "INFORM_DATE",
+        "INITIAL_DOLLAR",
+        "INIT_DRAW_DOWN",
+        "INSURANCE_AMOUNT",
+        "INSURANCE_CO",
+        "INSURANCE_TYPE",
+        "INSURE_INSUREPORTAL_LOG",
+        "INTEREST_TWD",
+        "INTRANET_ADDRESS_EXCLUSIVE",
+        "INTRANET_CUSTID_EXCLUSIVE",
+        "INT_RATE",
+        "INVALID_EMAIL",
+        "INVEST_BID_COMPETITION",
+        "INVEST_FC_DEPOSIT",
+        "INVEST_FIXED_DEPOSIT",
+        "INVEST_MUTUAL_FUND",
+        "INVEST_REAL_ESTATE",
+        "INVEST_STOCK",
+        "INVEST_TYPE",
+        "INVEST_YEARS",
+        "J_APP",
+        "J_BANK",
+        "J_BRANCH",
+        "J_COUNTRY",
+        "J_CURR",
+        "J_TAX",
+        "J_TAX_UNIT",
+        "KEEP_DEDU_MARK",
+        "LAST_BALANCE",
+        "LAST_LOGIN_DAFACE",
+        "LAST_LOGIN_DAGRAPHICS",
+        "LAST_LOGIN_DATOUCH",
+        "LAST_LOGIN_DAWHO",
+        "LAST_LOGIN_FACE",
+        "LAST_LOGIN_GRAPHICS",
+        "LAST_LOGIN_MAPP",
+        "LAST_LOGIN_MWEB",
+        "LAST_LOGIN_NETBANK",
+        "LAST_LOGIN_SINOCARD",
+        "LAST_LOGIN_TOUCH",
+        "LAST_PAYMENT_DATE",
+        "LATE_CHARGE",
+        "LCY_FCY_TYPE",
+        "LEVEL_ADJUSTED",
+        "LEVEL_BEFORE",
+        "LIFE_INSURANCE",
+        "LIMIT_LINE",
+        "LINE_CR",
+        "LISTRATE_HISTORY",
+        "LISTRATE_HISTORYN",
+        "LOAN_ACNO",
+        "LOAN_BALANCE",
+        "LOAN_SUMMARY",
+        "LOSS_AUTO_MARK",
+        "LOTS_B",
+        "LOTS_S",
+        "MAIL_MSG_STATUS",
+        "MAIL_UPTODATE",
+        "MANAGE_TIMESTAMP",
+        "MARGIN_SUMMARY",
+        "MARITAL_STATUS",
+        "MB_APPLOG",
+        "MB_DEVICE_BINDING",
+        "MB_DEVICE_BINDING_LOG",
+        "MB_DEVICE_BINDING_QRCODE_VERIFY",
+        "MB_DEVICE_LOGIN_LOG",
+        "MB_PUSH_HISTORICALMESSAGES",
+        "MB_PUSH_MESSAGES",
+        "MB_USER_SCORE",
+        "MEDICAL_INSURANCE",
+        "MESSAGE_R",
+        "MMACD_CMTXNINP_LOG",
+        "MMACD_LIMITTMBINAU_LOG",
+        "MMACD_ODDUMMYINP_LOG",
+        "MMAFIX_FAST",
+        "MMAFIX_FAST_CHECK",
+        "MMAMAIL_FORMAT",
+        "MMAMAIL_QUEUE",
+        "MMAMAIL_QUEUE_COMMON",
+        "MMANTFXG5000A_LOG",
+        "MMANTFXG5000B_LOG",
+        "MMANTFXG5000_EBILL",
+        "MMANTFXJQ_GOLD",
+        "MMANTFXPK_CARD",
+        "MMANTFXPK_PHONE",
+        "MMANTFXPK_PRE",
+        "MMANTFXPK_PRECARD",
+        "MMANTFXPK_RED",
+        "MMANTFXPK_TAX",
+        "MMAQ_SERVERLIST",
+        "MMA_ACCT_CLOSE_TX",
+        "MMA_ADV_BOND",
+        "MMA_ADV_BOND_UPDLOG",
+        "MMA_BRANCHSERVICE_XML",
+        "MMA_CARDLESSNO",
+        "MMA_CARDLESSTXN",
+        "MMA_CARDLESSTXN_FEPLOG",
+        "MMA_CARDLESSTXN_HISTORY",
+        "MMA_CARDLESSTXN_TEMPLOG",
+        "MMA_CREDITBANK_PAYBILL",
+        "MMA_CUSTID",
+        "MMA_E2EINFO",
+        "MMA_EXCHANGEFIX",
+        "MMA_FATCA_TX",
+        "MMA_FXORDER_PRECURR",
+        "MMA_H6000_EVT_GOLD",
+        "MMA_LINE_CASH",
+        "MMA_NOTUSER",
+        "MMA_PREFOREIGNCASH",
+        "MMA_QUERYLOGINSERVICE",
+        "MMA_SINOTRADE_API",
+        "MMA_SYPARAM",
+        "MMA_TRUST_INSURANCE",
+        "MN_ABRNO",
+        "MN_RBRCOD",
+        "MODIFY_TYPE",
+        "MSG_BODY",
+        "MSG_CATEGORY",
+        "MSG_DATE",
+        "MSG_FORMAT",
+        "MSG_FUND",
+        "MSG_LOGIN",
+        "MSG_MEMO",
+        "MSG_NOTIFY",
+        "MSG_TEXT",
+        "MSG_TITLE",
+        "MSG_TRADE",
+        "MSG_TRADE_NOW",
+        "MSG_TYPE",
+        "MSG_VALUE",
+        "MSG_WEIGHT_LEVEL",
+        "MTP_UNREGISTER_RCODE",
+        "MTP_UNREGISTER_RSPCODE",
+        "MTP_UNREGISTER_RSPMSG",
+        "MYVOICE_RECORD",
+        "M_PREFOREIGNCASH_COUNTRY",
+        "NATIONALITY_ORG",
+        "NEW_CHITEM",
+        "NEW_DD_ACCT",
+        "NEW_DD_BANKCODE",
+        "NEW_DD_IND",
+        "NEXT_DEDU_DATE",
+        "NEXT_SCHEDULE",
+        "NO",
+        "NOT_MARGIN",
+        "NO_HOUSEHOLD",
+        "NTFXPK_TAX",
+        "NT_CURRBAL",
+        "NUMBER_LOGIN",
+        "NUMBER_R",
+        "ODS_MOBILE",
+        "OD_SUMMARY",
+        "OFFICE_WIFI_IP",
+        "OLD_CHITEM",
+        "OPEN_GL",
+        "OPEN_GL_TWD",
+        "OPTION_URL",
+        "ORG_AMOUNT",
+        "ORG_AMOUNT_CUR",
+        "ORG_CURRENCY",
+        "ORG_UNIT_PRICE",
+        "ORIGINAL_RISKLEVEL",
+        "OTHER_SUMMARY",
+        "OTP_STATE",
+        "OUTSTANDING_PE",
+        "OUTSTAND_OD_AC",
+        "OUTSTAND_PD",
+        "OUT_CERT",
+        "OUT_DOLLAR",
+        "OUT_UNIT",
+        "OWNER_SID",
+        "P4000_FUNCTION_TYPE",
+        "P4000_RSPCODE",
+        "P4000_RSPMSG",
+        "PASSWORD_LEN",
+        "PAYEECURR_C",
+        "PAYMENT_TYPE",
+        "PMT_PREFERENCE",
+        "POINTS_EVENT_LOG",
+        "POINTS_TERMS_AGREE_LOG",
+        "POLICY_STATUS",
+        "PORTAL_IP",
+        "PORTAL_URL",
+        "PRE_PYMT_DATE",
+        "PRICE_DATE",
+        "PURCHASE_DATE",
+        "PWDCHG_TIMESTAMP",
+        "PWD_REVOKE_LOG",
+        "PWD_REVOKE_LOG_SMS",
+        "P_VALUE",
+        "QTY_WAY",
+        "RECV_DATA",
+        "REDEM_SUBS_MARK",
+        "REGISTERFLAG_R",
+        "REMAINING_DOLLAR",
+        "REMAINING_UNIT",
+        "REMIT_STATUS",
+        "REPAYMENT_ACNO",
+        "REPAYMENT_DATE",
+        "RESPONSE_URL",
+        "RES_DATE",
+        "RISK_PREFERENCE",
+        "ROIRATE_D",
+        "RQ_EDATE",
+        "RQ_PRDCD",
+        "RQ_PRDCDD",
+        "RQ_RATETYPE",
+        "RQ_XPERIODTYPE",
+        "RSP_DOLLAR",
+        "RS_EDATE",
+        "RS_PRDCD",
+        "RS_PRDCDD",
+        "RS_RATETYPE",
+        "RS_XPERIODTYPE",
+        "SATUS",
+        "SAVING_SUMMARY",
+        "SCHEDULE_TEXT",
+        "SCHEDULE_TYPE",
+        "SECURITIES_SUMMARY",
+        "SELL_PRICE",
+        "SELL_QTY_WAY",
+        "SELL_TRUSTAMT",
+        "SELL_TRUSTAMT_PRICE",
+        "SEND_DATA",
+        "SEND_EMAIL",
+        "SETTLEMENT_ACCT",
+        "SETTMENT_PRICE",
+        "SINOTRADE_API_RESULT",
+        "SINOTRADE_CBURL",
+        "SMSD15_REMIND_LOG",
+        "SMSFUND_REMIND_LOG",
+        "SMSFUND_REMIND_TMP",
+        "SMS_MODIFYLOG",
+        "SMS_MSGLOG",
+        "SMS_REMIND",
+        "SMS_SENDFLAG",
+        "SMS_STATUS",
+        "SMS_VERIFY",
+        "SOURCE_2",
+        "SP_BANK_IPIGCASHBALNOTIFY_PUSH_117667",
+        "SP_CREDIT_ACT",
+        "SP_EBANK_NODM",
+        "SP_EMAIL_MSG_TYPE",
+        "SP_FAVORITE_MSG_TYPE",
+        "SP_FUND_ACT",
+        "SP_MMA_ACT",
+        "SP_NON_RAISE",
+        "SP_RAISE_CHILD",
+        "SP_RAISE_NUM",
+        "SP_RAISE_PARENT",
+        "SP_SAVING_ACT",
+        "SP_SECURITIES_ACT",
+        "SP_TEACHER_EMAIL_SMS",
+        "SS_BUY",
+        "SS_MODIFY",
+        "SS_SELL",
+        "START_DATE",
+        "START_DATETIME",
+        "STATEMENT_DATE",
+        "STATUS_1",
+        "STATUS_2",
+        "STATUS_R",
+        "STATUS_X000D_",
+        "STMT_DUEDATE",
+        "STOCKA_RATIO",
+        "STOCKB_RATIO",
+        "STOCKC_RATIO",
+        "STOCK_ACCOMMODATION",
+        "STOCK_COLLAT",
+        "STOCK_FUTURE",
+        "STOCK_LOAN",
+        "STOCK_LOT",
+        "STOCK_RATIO",
+        "STOCK_RP",
+        "STOCK_RS",
+        "STOCK_SYMBOL",
+        "STOCK_TOTAL",
+        "STOCK_UPDATE_DATE",
+        "STOCK_VALUE",
+        "STOCK_WAY",
+        "STOP_GAIN_POINT1",
+        "STOP_GAIN_POINT2",
+        "STOP_GAIN_POINT3",
+        "STOP_GAIN_TYPE",
+        "STOP_LOSS_POINT",
+        "STOP_LOSS_TYPE",
+        "ST_DESC",
+        "SUB_AREA",
+        "SUSPENSE_MARK",
+        "SYSSAMPLECHK_D",
+        "T24_BEFORE_CHANGE",
+        "T24_CUSTID",
+        "T24_PHONE_MAP_MNEMONIC",
+        "T24_PHONE_MAP_RSPCODE",
+        "T24_PHONE_MAP_RSPMSG",
+        "T24_PHONE_MAP_SMS",
+        "T24_PHONE_MAP_STOP_FLG",
+        "T24_PHONE_MAP_TOKEN",
+        "T24_TMBI_P1200_CURR",
+        "T24_TMB_AIO_ACCT",
+        "TARGET_TYPE",
+        "TAX_CLASS",
+        "TAX_FOR_CUST_LCY",
+        "TAX_SUBCLASS",
+        "TC_ACC_RANGE",
+        "TC_API_1",
+        "TC_API_2",
+        "TC_BANKKEY",
+        "TC_SERVER",
+        "TERM_AMOUNT",
+        "TFRIN_NOPACT",
+        "TFRIN_NOPACT_LIMIT",
+        "TI.CHNN.CODE",
+        "TIMESTAMP_AFTER",
+        "TIMESTAMP_D",
+        "TOTAL_CLOSE_AMT_LCY",
+        "TOTAL_COUNT",
+        "TOTAL_STOCK",
+        "TOTAL_WAY",
+        "TRADE_ACCOUNT",
+        "TRADE_DATE",
+        "TRADE_SEQNO",
+        "TRADE_STOCK",
+        "TRADE_TYPE",
+        "TRANSFER_TAX",
+        "TRANS_TYPE",
+        "TREASURY_RATE",
+        "TRUSTAMT_WAY",
+        "TRUSTAMT_WAY_TWD",
+        "TRUST_AMOUNT",
+        "TRUST_AMT_TWD",
+        "TRUST_CUR",
+        "TWD_AMOUNT",
+        "TWID_TOKEN",
+        "TXN_DATE",
+        "TX_MAPPING",
+        "TX_STATISTIC",
+        "T_ADDR2",
+        "T_AUTHORISER",
+        "T_BR_SEQNO",
+        "T_CBR_EX_RATE",
+        "T_CLASS",
+        "T_CNTRY",
+        "T_COST_RATE",
+        "T_CR_KPI_BR",
+        "T_CS_DENOM",
+        "T_CS_PHONE",
+        "T_CS_QUANTITY",
+        "T_CS_SETT_DATE",
+        "T_DATA_KIND",
+        "T_EMAIL",
+        "T_FX_RATE",
+        "T_FX_TXN_REF",
+        "T_KPI_BR",
+        "T_LISTRATE",
+        "T_MNEMONIC",
+        "T_PHONE_TYPE",
+        "T_PSB_MEMO_C",
+        "T_PYMT_MODE",
+        "T_REF_EXRATE",
+        "T_REMARK",
+        "T_TX_O_ACCT_D",
+        "UNCLAMP_R",
+        "UPDATE_DATE",
+        "UPDATE_DATE_BANK",
+        "UPDATE_DATE_CARD",
+        "UPDATE_DATE_FUND",
+        "UPDATE_DATE_STOCK",
+        "UPDATE_USERID",
+        "UPL_FC_DIVIDEND",
+        "URETURN_FC_DIVIDEND",
+        "USERCODE_LEN",
+        "USER_AUTHLOG",
+        "USER_CHANGE_LOG",
+        "USER_CREATEMMAMEMBER_LOG",
+        "USER_EDIT_EMAIL_LOG",
+        "USER_FAVORITE_LINK",
+        "USER_FOREIGNER_LIST",
+        "USER_ICCARDAPPLYMEMBER_LOG",
+        "USER_IP",
+        "USER_LOGIN_LOG",
+        "USER_ONLINEAPPLYMEMBER_LOG",
+        "USER_ONLINEAPPLYMEMBER_RESET",
+        "USER_OTHER_ACCOUNT_BALANCE",
+        "USER_PASSWORD_CHANGE",
+        "USER_PROFILE",
+        "USER_PROFILE_CHANGLOG",
+        "USER_SCHEDULE",
+        "USER_STATE",
+        "USER_STATUS",
+        "USER_STATUS_LOG",
+        "USE_VALID_TYPE",
+        "VAILIDATE_STATUS",
+        "VALI_DATE",
+        "VALUE_TWD",
+        "VALUE_WAY_TWD",
+        "VAL_CUR",
+        "VD_OCT_1",
+        "WANT_MESSAGE",
+        "WAY_AMOUNT",
+        "WEBATMLOG_DAILY"
+      ],
+      "fieldNames": [
+        "ACCOUNT_BALANCE",
+        "ACCOUNT_ENABLE",
+        "ACCOUNT_EUD_BALANCE",
+        "ACCOUNT_JPD_BALANCE",
+        "ACCOUNT_LIMIT",
+        "ACCOUNT_NAME",
+        "ACCOUNT_NUMBER",
+        "ACCOUNT_ORG_BALANCE",
+        "ACCOUNT_OTH_BALANCE",
+        "ACCOUNT_TWD_BALANCE",
+        "ACCOUNT_TYPE",
+        "ACCOUNT_USD_BALANCE",
+        "ACCRUED_INT",
+        "ACCRUED_INT_LCY",
+        "ACCT_ACTIVITY",
+        "ACCT_NO",
+        "ACCT_NOTRANSFER",
+        "ACCT_NOTRANSFER_LOG",
+        "ACC_STATUS",
+        "ACC_WORK_BAL",
+        "AGREE_TIME",
+        "AI_ADJUSTPLAN",
+        "AI_BUY",
+        "AI_DEDUCHANGE",
+        "AI_REBALANCE",
+        "AI_REDEM",
+        "AI_RISKSWITCH",
+        "AI_STAFFBUY",
+        "AI_SignContract",
+        "ALERT_MSG_STATUS",
+        "ALLBANK_ADDRESS",
+        "ALLBANK_ALIASNAME",
+        "ALLBANK_BKNO",
+        "ALLBANK_BRNO",
+        "ALLBANK_BRNO_CHKCODE",
+        "ALLBANK_ENGNAME",
+        "ALLBANK_FISC_UNIT",
+        "ALLBANK_FULLNAME",
+        "ALLBANK_RMFLAG",
+        "ALLBANK_RMFORWARD",
+        "ALLBANK_SET_CLOSE_FLAG",
+        "ALLBANK_SET_CLOSE_TIME",
+        "ALLBANK_TELNO",
+        "ALLBANK_TYPE",
+        "ALLBANK_UNIT_BANK",
+        "ALLBANK_ZIPCODE1",
+        "ALLBANK_ZIPCODE2",
+        "ALL_SERV",
+        "APPLY_IP",
+        "APPLY_MEMBER",
+        "APPLY_STATUS",
+        "APPSEQNO_D",
+        "AP_NAME",
+        "ASSET_DAILY",
+        "ASSET_DATE",
+        "ASSET_MAILBILL",
+        "ASSET_MONTH",
+        "ASSET_WEEK",
+        "ATMLOC_NAME",
+        "ATM_24_SERVICE",
+        "ATM_ADDRESS_C",
+        "ATM_ATMNO",
+        "ATM_ATMTYPE",
+        "ATM_CITY_C",
+        "ATM_DELETE_FG",
+        "ATM_DIST_C",
+        "ATM_GROUP_NO",
+        "ATM_LATITUDE",
+        "ATM_LOCATION",
+        "ATM_LOC_NO",
+        "ATM_LONGITUDE",
+        "ATM_SAVING",
+        "ATM_STATUS",
+        "ATM_STATUS_UPDATETIME",
+        "ATM_TEL_NO",
+        "ATM_WITHDRAW",
+        "ATM_WITHDRAW_CNY",
+        "ATM_WITHDRAW_HKD",
+        "ATM_WITHDRAW_JPY",
+        "ATM_WITHDRAW_NTD_100",
+        "ATM_WITHDRAW_NTD_1000",
+        "ATM_WITHDRAW_USD",
+        "ATM_ZONE",
+        "AUTH_OS",
+        "AUTO_ACNO",
+        "AVAIL_CASH_CR",
+        "AVAIL_CR",
+        "AVG_LOGIN_DAYS",
+        "Adjust_DeduChangeType",
+        "Adjust_Invest_Years",
+        "Adjust_LeftPeriod",
+        "Adjust_MATURITY_DATE",
+        "Adjust_RSP_Dollar",
+        "AllSequences_DAWHO",
+        "AppSeqNo_D",
+        "Audit_Online",
+        "B2C_DESC",
+        "BANKCUSTID_NODM",
+        "BANK_CARDNO",
+        "BANK_ID",
+        "BANK_NAME",
+        "BANK_TFRIN",
+        "BANK_TFRIN_LOG",
+        "BANK_UPDATE_DATE",
+        "BATCH_STATUS",
+        "BATCH_TIMESTAMP",
+        "BATCH_TIMESTAMP_AFTER",
+        "BEFORE_MAXLENGTH",
+        "BOND_CAIRGEN",
+        "BOND_CAIRREDEM",
+        "BOND_CGENERAL",
+        "BOND_CREDEM",
+        "BP_ASSET_PROFILE",
+        "BP_BANK_ACCOUNT_BALANCE_STD",
+        "BP_BANK_BAL",
+        "BP_CARD_ACCOUNT_BALANCE",
+        "BP_CARD_BLHS",
+        "BP_CARD_CAM",
+        "BP_EMAIL_MSG",
+        "BP_EMP_CATEGORY",
+        "BP_ETF_STOCK",
+        "BP_FAVORITE_MSG",
+        "BP_FEP_ATM",
+        "BP_INSURANCE_ASSET",
+        "BP_IPigCashBalance_TMP",
+        "BP_IPigDreamGoal_TMP",
+        "BP_LoanFailMsg_L29BIOR",
+        "BP_NFUTURE_461",
+        "BP_NFUTURE_462",
+        "BP_NFUTURE_463",
+        "BP_NSTOCK_41",
+        "BP_NSTOCK_42",
+        "BP_NSTOCK_43",
+        "BP_NSTOCK_44",
+        "BP_NSTOCK_48",
+        "BP_NSTOCK_49",
+        "BP_NSTOCK_CEASE",
+        "BP_NSTOCK_TOTAL",
+        "BP_NSTOCK_TOTAL_STD_TMP",
+        "BP_OFFICE_WIFI",
+        "BP_P1200_CURR",
+        "BP_PROFILE_EPAPER",
+        "BP_PROFILE_NSC_STOCK",
+        "BP_QUERYSPOT",
+        "BP_RED_ENVELOPE_MAIN",
+        "BP_RPT_MemberCnt",
+        "BP_TimeDepositMaturityNotify_TMP",
+        "BP_USER_BANK_ACCOUNT_BALANCE",
+        "BP_USER_FUND_ACCOUNT_BALANCE",
+        "BP_USER_FUND_ALERT",
+        "BP_USER_FUND_LIST",
+        "BP_USER_FUND_WAY_BALANCE",
+        "BP_USER_FUND_WAY_LIST",
+        "BP_USER_MSG_LIST",
+        "BP_USER_NSTOCK_ACCOUNT_BALANCE",
+        "BP_USER_NSTOCK_DATE",
+        "BRANCH_RVMR_TOTXAMT",
+        "BSP_INCENTIVE",
+        "BSP_INCENTIVE_TYPE",
+        "BUS_TYPE",
+        "BondL_ID",
+        "BondL_Name",
+        "BondL_Ratio",
+        "BondM_ID",
+        "BondM_Name",
+        "BondM_Ratio",
+        "BondS_ID",
+        "BondS_Name",
+        "BondS_Ratio",
+        "Bond_Ratio",
+        "Booking_Fee_Rate",
+        "Booking_Fund_Id",
+        "Booking_Fund_IdName",
+        "CALL_MARGIN",
+        "CAM_SYSDATE",
+        "CARD16_STARTNO",
+        "CARD_CUSTID",
+        "CARD_SETDDACCOUNT",
+        "CARD_SETDDAMOUNT",
+        "CARD_SETDDIND",
+        "CARD_SUMMARY",
+        "CARD_UPDCIF_LOG",
+        "CARD_USER_MAPPING",
+        "CASUALTY_INSURANCE",
+        "CCY_NAME",
+        "CERT_NUMBER",
+        "CHARGES_ACCT_NO",
+        "CHK_DATE",
+        "CHNN_CODE",
+        "CHNN_TXN_CODE",
+        "CLEAR_CURRENCY",
+        "CLOSED_USER",
+        "CLOSED_USER_PROFILE",
+        "CLOSED_USER_STATUS",
+        "CLOSE_TIME",
+        "CLOSE_TYPE",
+        "COMMISSION_AMT",
+        "COMMISSION_CODE",
+        "COMMISSION_TYPE",
+        "COMMODITY_NAME",
+        "CONTRACT_NUM",
+        "COUNTRY_ID",
+        "COUNTRY_NAME",
+        "CO_CODE",
+        "CREATE_TIME",
+        "CREDIT_ACCT_NO",
+        "CREDIT_AMOUNT",
+        "CREDIT_APPLY_LOG",
+        "CREDIT_CURRENCY",
+        "CREDIT_LINE",
+        "CRS_ID_DATE_new",
+        "CRS_ID_DATE_org",
+        "CRS_ID_NOTE_new",
+        "CRS_ID_NOTE_org",
+        "CSR_LAST_MOD_TIME",
+        "CURRENCY_RATE",
+        "CURR_ACCU_PAYMENT",
+        "CURR_BALANCE",
+        "CURR_DUE_AMT",
+        "CUR_AMOUNT",
+        "CUR_PRICE",
+        "CUSTID_ODS_NODM",
+        "Cease_Date",
+        "Ch_Name",
+        "Code_Bank",
+        "Code_Unit",
+        "DAY_push",
+        "DB_CIF_ADR2FG",
+        "DB_CIF_EMAILFG1",
+        "DB_CIF_TELNO1FG",
+        "DB_CIF_TELNO2FG",
+        "DB_CIF_TELNO3FG",
+        "DB_CIF_TELNO4FG",
+        "DD_ACCT",
+        "DD_BANKCODE",
+        "DD_FLAG",
+        "DD_IND",
+        "DD_STMT_Amt",
+        "DEBIT_ACCT_NO",
+        "DEBIT_CURRENCY",
+        "DEDUCTCODE_R",
+        "DEDUCTHEADER_R",
+        "DEDUCTIONCURR_C",
+        "DEDUCTMFSEQ_R",
+        "DEDUCTMSG_R",
+        "DEFAULT_NAME",
+        "DEFERRED_UNPAID",
+        "DUE_DATE",
+        "DUE_DAY",
+        "Dedu_Day",
+        "EARN_RATE",
+        "EDATE_SHOW",
+        "EDUCATION_LEVEL",
+        "EFF_DATE",
+        "EMAIL_STATUS",
+        "EMAIL_VERIFY",
+        "EMPLOY_STATUS",
+        "END_DATE",
+        "ENUM_VALUES",
+        "EPAPER_ASSET",
+        "EPAPER_CARD",
+        "EPAPER_FUND",
+        "EPAPER_LOAN",
+        "EPAPER_MESSAGE",
+        "EPAPER_MONTH",
+        "EPAPER_OTHERASSET",
+        "EPAPER_PROMOTE",
+        "EPAPER_RMB",
+        "EPAPER_SAVE",
+        "EPAPER_STOCK",
+        "EPAPER_STOCKNEWS",
+        "EPAPER_WEEK",
+        "ERROR_CODE",
+        "ERROR_MESSAGE",
+        "ES7000_CIFINFO",
+        "ETS_INSERTSPOTDEAL",
+        "EXCHANGE_NAME",
+        "EXCHANGE_RATE",
+        "EXCHANGE_RSPCODE",
+        "EXCHANGE_RSPMSG",
+        "EXCHANGE_SEQ",
+        "EXCHANGE_STATUS",
+        "EXCHANGE_TIMESTAMP",
+        "EXEC_FLAG",
+        "EXRATE_NOTICE",
+        "Email_Mark",
+        "Ex_Cur",
+        "FAT_ID_DATE_new",
+        "FAT_ID_DATE_org",
+        "FAT_ID_NOTE_new",
+        "FAT_ID_NOTE_org",
+        "FAT_ID_TYPE_new",
+        "FAT_ID_TYPE_org",
+        "FAT_ORI_REP_new",
+        "FAT_ORI_REP_org",
+        "FAV_EPAPER_NEWS",
+        "FAV_SEE_BANK",
+        "FAV_SEE_CARD",
+        "FAV_SEE_FUND",
+        "FAV_SEE_LOAN",
+        "FAV_SEE_OTHER",
+        "FAV_SEE_SECURITY",
+        "FCY_ACC_BAL_Detail",
+        "FIN_CHARGE",
+        "FIRST_LOGIN_DAFACE",
+        "FIRST_LOGIN_DAGRAPHICS",
+        "FIRST_LOGIN_DATOUCH",
+        "FIRST_LOGIN_DAWHO",
+        "FIRST_LOGIN_FACE",
+        "FIRST_LOGIN_GRAPHICS",
+        "FIRST_LOGIN_MAPP",
+        "FIRST_LOGIN_MWEB",
+        "FIRST_LOGIN_NETBANK",
+        "FIRST_LOGIN_SINOCARD",
+        "FIRST_LOGIN_TOUCH",
+        "FIX_FLAG",
+        "FIX_RSPCODE",
+        "FIX_RSPMSG",
+        "FIX_SEQ",
+        "FIX_STATUS",
+        "FIX_TIMESTAMP",
+        "FT_NO",
+        "FUND_CAIRAUTO",
+        "FUND_CAIREIM",
+        "FUND_CAIRGAINLOSS",
+        "FUND_CAIRGEN",
+        "FUND_CAIRREDEM",
+        "FUND_CAIRSWITCH",
+        "FUND_CAUTO",
+        "FUND_CAUTOBAS",
+        "FUND_CAUTOSUSP",
+        "FUND_CAUTOTERM",
+        "FUND_CGENERAL",
+        "FUND_CGENERALBAS",
+        "FUND_CINSURE",
+        "FUND_CREDEM",
+        "FUND_CSWITCH",
+        "FUND_DBOOKING",
+        "FUND_DRSUBS",
+        "FUND_EXCGENERAL",
+        "FUND_ID",
+        "FUND_NAME",
+        "FUND_SHARE",
+        "FUND_SUMMARY",
+        "FUND_SUMMARY_EFFECT",
+        "FUND_SYMBOL",
+        "FUND_UEMAIL",
+        "FUND_UINCOME",
+        "FUND_UPCIFETFFG",
+        "FUND_UPDATE_DATE",
+        "FUND_WAY_SUMMARY",
+        "FUND_WAY_SUMMARY_EFFECT",
+        "F_ETFFG",
+        "F_ETFFG_DATE",
+        "F_ETFFLAG",
+        "F_ETFFlag",
+        "Fund_Company",
+        "Fund_Name",
+        "GAIN_AUTO_MARK",
+        "GOLD_SUMMARY",
+        "GRAPHICS_LEN",
+        "IFUND_CanCloseMark",
+        "INFORM_DATE",
+        "INIT_DRAW_DOWN",
+        "INSURANCE_AMOUNT",
+        "INSURANCE_CO",
+        "INSURANCE_FLAG",
+        "INSURANCE_TYPE",
+        "INSURED_NAME",
+        "INTEREST_AMT",
+        "INTRANET_ADDRESS_EXCLUSIVE",
+        "INTRANET_CUSTID_EXCLUSIVE",
+        "INT_CODE",
+        "INT_RATE",
+        "INVALID_EMAIL",
+        "INVEST_BID_COMPETITION",
+        "INVEST_FC_DEPOSIT",
+        "INVEST_FIXED_DEPOSIT",
+        "INVEST_MUTUAL_FUND",
+        "INVEST_REAL_ESTATE",
+        "INVEST_STOCK",
+        "In_Cert_Name",
+        "Initial_Dollar",
+        "Insure_InsurePortal_Log",
+        "Invest_Years",
+        "J_APP",
+        "J_BANK",
+        "J_BRANCH",
+        "J_COUNTRY",
+        "J_CURR",
+        "J_TAX",
+        "J_TAX_UNIT",
+        "KEEP_DEDU_MARK",
+        "LAST_BALANCE",
+        "LAST_LOGIN_DAFACE",
+        "LAST_LOGIN_DAGRAPHICS",
+        "LAST_LOGIN_DATOUCH",
+        "LAST_LOGIN_DAWHO",
+        "LAST_LOGIN_FACE",
+        "LAST_LOGIN_GRAPHICS",
+        "LAST_LOGIN_MAPP",
+        "LAST_LOGIN_MWEB",
+        "LAST_LOGIN_NETBANK",
+        "LAST_LOGIN_SINOCARD",
+        "LAST_LOGIN_TIME",
+        "LAST_LOGIN_TOUCH",
+        "LAST_MOD_TIME",
+        "LAST_PAYMENT_AMT",
+        "LAST_PAYMENT_DATE",
+        "LATE_CHARGE",
+        "LCY_FCY_TYPE",
+        "LIFE_INSURANCE",
+        "LIMIT_LINE",
+        "LINE_CR",
+        "LOAN_ACNO",
+        "LOAN_BALANCE",
+        "LOAN_SUMMARY",
+        "LOSS_AUTO_MARK",
+        "LOTS_B",
+        "LOTS_S",
+        "LST_PYMT_AMT",
+        "L_PYMT_AMT",
+        "L_PYMT_DT",
+        "Level_Adjusted",
+        "ListRate_History",
+        "ListRate_HistoryN",
+        "MAIL_MSG_STATUS",
+        "MAIL_UPTODATE",
+        "MANAGE_TIMESTAMP",
+        "MARGIN_SUMMARY",
+        "MARITAL_STATUS",
+        "MB_APPLOG",
+        "MB_DEVICE_BINDING",
+        "MB_DEVICE_BINDING_LOG",
+        "MB_DEVICE_BINDING_QRCODE_VERIFY",
+        "MB_DEVICE_LOGIN_LOG",
+        "MB_Push_HistoricalMessages",
+        "MB_Push_Messages",
+        "MB_USER_SCORE",
+        "MEDICAL_INSURANCE",
+        "MMACD_CMTXNINP_Log",
+        "MMACD_LIMITTMBINAU_Log",
+        "MMACD_ODDUMMYINP_Log",
+        "MMAFIX_FAST",
+        "MMAFIX_FAST_check",
+        "MMAMAIL_FORMAT",
+        "MMAMAIL_QUEUE",
+        "MMAMAIL_QUEUE_COMMON",
+        "MMANTFXG5000A_LOG",
+        "MMANTFXG5000B_LOG",
+        "MMANTFXG5000_EBILL",
+        "MMANTFXJQ_GOLD",
+        "MMANTFXPK_CARD",
+        "MMANTFXPK_PHONE",
+        "MMANTFXPK_PRE",
+        "MMANTFXPK_PRECARD",
+        "MMANTFXPK_RED",
+        "MMANTFXPK_TAX",
+        "MMAQ_SERVERLIST",
+        "MMA_ACCT_CLOSE_TX",
+        "MMA_ADV_BOND",
+        "MMA_ADV_BOND_UPDLOG",
+        "MMA_BRANCHSERVICE_XML",
+        "MMA_CARDLESSNO",
+        "MMA_CARDLESSTXN",
+        "MMA_CARDLESSTXN_FEPLOG",
+        "MMA_CARDLESSTXN_HISTORY",
+        "MMA_CARDLESSTXN_TEMPLOG",
+        "MMA_CREDITBANK_PAYBILL",
+        "MMA_CUSTID",
+        "MMA_E2EINFO",
+        "MMA_EXCHANGEFIX",
+        "MMA_FATCA_TX",
+        "MMA_FXORDER_PRECURR",
+        "MMA_H6000_EVT_GOLD",
+        "MMA_LINE_CASH",
+        "MMA_NOTUSER",
+        "MMA_PREFOREIGNCASH",
+        "MMA_QUERYLOGINSERVICE",
+        "MMA_SINOTRADE_API",
+        "MMA_SYParam",
+        "MMA_TRUST_INSURANCE",
+        "MN_ABRNO",
+        "MN_RBRCOD",
+        "MODIFY_TYPE",
+        "MSG_BODY",
+        "MSG_CATEGORY",
+        "MSG_DATE",
+        "MSG_FORMAT",
+        "MSG_FUND",
+        "MSG_LOGIN",
+        "MSG_MEMO",
+        "MSG_NAME",
+        "MSG_NOTIFY",
+        "MSG_SEQ",
+        "MSG_TEXT",
+        "MSG_TITLE",
+        "MSG_TRADE",
+        "MSG_TRADE_NOW",
+        "MSG_TYPE",
+        "MSG_VALUE",
+        "MSG_WEIGHT_LEVEL",
+        "MTP_UNREGISTER_RCODE",
+        "MTP_UNREGISTER_RSPCODE",
+        "MTP_UNREGISTER_RSPMSG",
+        "MYVOICE_RECORD",
+        "M_PreForeignCash_Country",
+        "NATIONALITY_org",
+        "NEW_ADD_AMT",
+        "NEW_CHITEM",
+        "NEW_DD_ACCT",
+        "NEW_DD_BANKCODE",
+        "NEW_DD_IND",
+        "NEW_OTHER_AMT",
+        "NEXT_SCHEDULE",
+        "NHI_AMT",
+        "NOT_MARGIN",
+        "NO_HOUSEHOLD",
+        "NTFXPK_TAX",
+        "NT_CURRBAL",
+        "NT_TOTAL_AMT",
+        "NUMBER_LOGIN",
+        "Next_Dedu_Date",
+        "OD_SUMMARY",
+        "OFFICE_NAME",
+        "OFFICE_NO",
+        "OFFICE_WIFI_IP",
+        "OLD_CHITEM",
+        "OPEN_GL",
+        "OPEN_GL_TWD",
+        "OPTION_URL",
+        "ORG_AMOUNT",
+        "ORG_AMOUNT_CUR",
+        "ORG_CURRENCY",
+        "ORG_UNIT_PRICE",
+        "OTHER_SUMMARY",
+        "OTP_STATE",
+        "OTP_TIME",
+        "OUTSTANDING_PE",
+        "OUTSTAND_OD_AC",
+        "OUTSTAND_PD",
+        "OWNER_SID",
+        "Original_RiskLevel",
+        "Out_Cert",
+        "Out_Cert_Name",
+        "Out_Dollar",
+        "Out_Unit",
+        "P4000_FUNCTION_TYPE",
+        "P4000_RSPCODE",
+        "P4000_RSPMSG",
+        "P4000_SEQ",
+        "PASSWORD_LEN",
+        "PAYEECURR_C",
+        "PAYMENT_TYPE",
+        "PENALTY_AMT",
+        "PMT_PREFERENCE",
+        "POINTS_EVENT_LOG",
+        "POINTS_TERMS_AGREE_LOG",
+        "POLICY_STATUS",
+        "PORTAL_IP",
+        "PORTAL_URL",
+        "PRE_FLAG",
+        "PRE_PYMT_DATE",
+        "PRINCIPAL_AMT",
+        "PURCHASE_DATE",
+        "PWDCHG_TIMESTAMP",
+        "PWD_REVOKE_LOG",
+        "PWD_REVOKE_LOG_SMS",
+        "RATEQUERYXML_FLAG",
+        "RECV_DATA",
+        "REDEM_SUBS_MARK",
+        "RED_DTL_AMT",
+        "RED_PAY_AMT",
+        "RED_TOT_AMT",
+        "REGISTERFLAG_R",
+        "REPAYMENT_ACNO",
+        "REPAYMENT_DATE",
+        "RESPONSE_URL",
+        "RES_DATE",
+        "RISK_PREFERENCE",
+        "RQ_EDATE",
+        "RQ_PRDCD",
+        "RQ_PRDCDD",
+        "RQ_RATETYPE",
+        "RQ_XPERIODTYPE",
+        "RSP_Dollar",
+        "RS_EDATE",
+        "RS_PRDCD",
+        "RS_PRDCDD",
+        "RS_RATETYPE",
+        "RS_XPERIODTYPE",
+        "Remaining_Dollar",
+        "Remaining_Unit",
+        "Remit_Status",
+        "RoiRate_D",
+        "SAVING_SUMMARY",
+        "SCHEDULE_TEXT",
+        "SCHEDULE_TYPE",
+        "SECURITIES_SUMMARY",
+        "SEND_DATA",
+        "SEND_EMAIL",
+        "SEQ_NO",
+        "SETTLEMENT_ACCT",
+        "SETTMENT_PRICE",
+        "SINOTRADE_API_RESULT",
+        "SINOTRADE_CBURL",
+        "SMSD15_REMIND_LOG",
+        "SMSFUND_REMIND_LOG",
+        "SMSFUND_REMIND_TMP",
+        "SMS_MODIFYLOG",
+        "SMS_MSGLOG",
+        "SMS_REMIND",
+        "SMS_STATUS",
+        "SMS_VERIFY",
+        "SOURCE_2",
+        "SP_BANK_IPigCashBalNotify_PUSH_117667",
+        "SP_CREDIT_ACT",
+        "SP_EBANK_NODM",
+        "SP_EMAIL_MSG_TYPE",
+        "SP_FAVORITE_MSG_TYPE",
+        "SP_FUND_ACT",
+        "SP_MMA_ACT",
+        "SP_NON_RAISE",
+        "SP_RAISE_CHILD",
+        "SP_RAISE_NUM",
+        "SP_RAISE_PARENT",
+        "SP_SAVING_ACT",
+        "SP_SECURITIES_ACT",
+        "SP_TEACHER_EMAIL_SMS",
+        "SS_BUY",
+        "SS_MODIFY",
+        "SS_SELL",
+        "START_DATE",
+        "STATEMENT_DATE",
+        "STATUS_1",
+        "STATUS_2",
+        "STMT_DueDate",
+        "STOCK_ACCOMMODATION",
+        "STOCK_COLLAT",
+        "STOCK_FUTURE",
+        "STOCK_LOAN",
+        "STOCK_LOT",
+        "STOCK_NAME",
+        "STOCK_RP",
+        "STOCK_RS",
+        "STOCK_SYMBOL",
+        "STOCK_TOTAL",
+        "STOCK_UPDATE_DATE",
+        "STOCK_VALUE",
+        "STOCK_WAY",
+        "ST_CODE",
+        "ST_DESC",
+        "SUB_AREA",
+        "SUB_AREA_CODE",
+        "SUM_DIV_AMT",
+        "StockA_ID",
+        "StockA_Name",
+        "StockA_Ratio",
+        "StockB_ID",
+        "StockB_Name",
+        "StockB_Ratio",
+        "StockC_ID",
+        "StockC_Name",
+        "StockC_Ratio",
+        "Stock_Ratio",
+        "Stock_Symbol",
+        "Stop_Gain_Point1",
+        "Stop_Gain_Point2",
+        "Stop_Gain_Point3",
+        "Stop_Gain_Type",
+        "Stop_Loss_Point",
+        "Stop_Loss_Type",
+        "Suspense_Mark",
+        "SysSampleChk_D",
+        "T24_CUSTID",
+        "T24_PHONE_MAP_MNEMONIC",
+        "T24_PHONE_MAP_RSPCODE",
+        "T24_PHONE_MAP_RSPMSG",
+        "T24_PHONE_MAP_SMS",
+        "T24_PHONE_MAP_STOP_FLG",
+        "T24_PHONE_MAP_TOKEN",
+        "T24_TMBI_P1200_CURR",
+        "T24_TMB_AIO_ACCT",
+        "T24_before_change",
+        "TARGET_NAME",
+        "TARGET_NO",
+        "TARGET_TYPE",
+        "TAX_CLASS",
+        "TAX_CLASS_CODE",
+        "TAX_CODE",
+        "TAX_FOR_CUST_LCY",
+        "TAX_SUBCLASS",
+        "TC_ACC_RANGE",
+        "TC_API_1",
+        "TC_API_2",
+        "TC_BANKKEY",
+        "TC_SERVER",
+        "TERM_AMOUNT",
+        "TFRIN_NOPACT",
+        "TFRIN_NOPACT_LIMIT",
+        "TIMESTAMP_AFTER",
+        "TIMESTAMP_D",
+        "TOTAL_CLOSE_AMT_LCY",
+        "TOTAL_COUNT",
+        "TRADE_ACCOUNT",
+        "TRADE_DATE",
+        "TRADE_ID",
+        "TRADE_SEQNO",
+        "TRADE_STOCK",
+        "TRADE_TYPE",
+        "TRANSACTION_ID",
+        "TRANS_TYPE",
+        "TRAN_NO",
+        "TREASURY_RATE",
+        "TRUST_AMOUNT",
+        "TRUST_CUR",
+        "TWD_AMOUNT",
+        "TWID_TOKEN",
+        "TX_CODE",
+        "TX_MAPPING",
+        "TX_NAME",
+        "TX_STATISTIC",
+        "TYPE_NAME",
+        "T_ADDR2",
+        "T_AUTHORISER",
+        "T_BR_SEQNO",
+        "T_CBR_EX_RATE",
+        "T_CLASS",
+        "T_CNTRY",
+        "T_COST_RATE",
+        "T_CR_KPI_BR",
+        "T_CS_DENOM",
+        "T_CS_PHONE",
+        "T_CS_QUANTITY",
+        "T_CS_SETT_DATE",
+        "T_DATA_KIND",
+        "T_EMAIL",
+        "T_FX_RATE",
+        "T_FX_TXN_REF",
+        "T_KPI_BR",
+        "T_LISTRATE",
+        "T_MNEMONIC",
+        "T_PHONE_TYPE",
+        "T_PSB_MEMO_C",
+        "T_PYMT_MODE",
+        "T_REF_EXRATE",
+        "T_REMARK",
+        "T_SMS_FLAG",
+        "T_TX_O_ACCT_D",
+        "UNBILL_AMT",
+        "UNPRESENT_AMT",
+        "UNPRESENT_CNT",
+        "UPDATE_DATE",
+        "UPDATE_DATE_BANK",
+        "UPDATE_DATE_CARD",
+        "UPDATE_DATE_FUND",
+        "UPDATE_DATE_STOCK",
+        "UPDATE_TIME",
+        "UPDATE_USERID",
+        "UPL_FC_DIVIDEND",
+        "URETURN_FC_DIVIDEND",
+        "USERCODE_LEN",
+        "USER_AuthLog",
+        "USER_CHANGE_LOG",
+        "USER_CREATEMMAMEMBER_LOG",
+        "USER_EDIT_EMAIL_LOG",
+        "USER_FAVORITE_LINK",
+        "USER_FOREIGNER_LIST",
+        "USER_ICCARDAPPLYMEMBER_LOG",
+        "USER_IP",
+        "USER_LOGIN_LOG",
+        "USER_ONLINEAPPLYMEMBER_LOG",
+        "USER_ONLINEAPPLYMEMBER_RESET",
+        "USER_OTHER_ACCOUNT_BALANCE",
+        "USER_PASSWORD_CHANGE",
+        "USER_PROFILE",
+        "USER_SCHEDULE",
+        "USER_STATE",
+        "USER_STATUS",
+        "USER_STATUS_LOG",
+        "USE_VALID_TYPE",
+        "Unclamp_R",
+        "VAILIDATE_STATUS",
+        "VALI_DATE",
+        "VD_OCT_1",
+        "VIP_FLAG",
+        "Val_Cur",
+        "WANT_MESSAGE",
+        "WAY_AMOUNT",
+        "WebATMLOG_daily",
+        "abbreviation",
+        "about",
+        "access",
+        "accesses",
+        "according",
+        "account",
+        "accrual",
+        "accumulate",
+        "action",
+        "activated",
+        "actively",
+        "actno",
+        "added",
+        "address",
+        "adjustment",
+        "administrator",
+        "adult",
+        "advance",
+        "after",
+        "after_change",
+        "age",
+        "agency",
+        "agent",
+        "agree",
+        "agreed",
+        "agreement",
+        "all",
+        "allocation",
+        "allotment",
+        "alternative",
+        "amount",
+        "amount_TWD",
+        "annotation",
+        "announcement",
+        "annual",
+        "anti",
+        "api",
+        "app",
+        "applicable",
+        "application",
+        "applications",
+        "applies",
+        "appointment",
+        "appointments",
+        "approve",
+        "are",
+        "area",
+        "arrival",
+        "assessment",
+        "asset",
+        "assets",
+        "assistant",
+        "attribute",
+        "attributes",
+        "audit",
+        "authentication",
+        "authorities",
+        "automatic",
+        "automatically",
+        "available",
+        "back",
+        "backup",
+        "bad",
+        "balance",
+        "bank",
+        "bankbranch",
+        "banking",
+        "bankingWEBVersion",
+        "bankingappVersion",
+        "banknotes",
+        "banks",
+        "barcode",
+        "barcode1",
+        "base",
+        "baseflag",
+        "basic",
+        "basis",
+        "batch",
+        "batches",
+        "become",
+        "been",
+        "before",
+        "before_change",
+        "behavior",
+        "below",
+        "beneficiary",
+        "between",
+        "big",
+        "bigint",
+        "bill",
+        "billing",
+        "bin",
+        "bind",
+        "binding",
+        "birthday",
+        "bit",
+        "blank",
+        "block",
+        "bond",
+        "bonds",
+        "bondsAfter",
+        "bonus",
+        "booking",
+        "bookingMark",
+        "borrowing",
+        "bought",
+        "bourseMgmtFee",
+        "bp_parameter",
+        "bpfepatm",
+        "branch",
+        "branches",
+        "brch",
+        "break",
+        "breaking",
+        "breaks",
+        "broadcast",
+        "browser",
+        "buckle",
+        "build",
+        "burden",
+        "business",
+        "but",
+        "buy",
+        "buy_amount_onway",
+        "buyback",
+        "buying",
+        "buys",
+        "cabinet",
+        "calculated",
+        "call",
+        "can",
+        "cancel",
+        "canceled",
+        "cancellation",
+        "cancelled",
+        "canname",
+        "cannot",
+        "card",
+        "cash",
+        "category",
+        "center",
+        "central",
+        "certificate",
+        "chang_field",
+        "change",
+        "changeDate",
+        "changeItem",
+        "changeTime",
+        "changed",
+        "changing",
+        "channel",
+        "char",
+        "charge",
+        "chargeback",
+        "charged",
+        "charging",
+        "check",
+        "checkbox",
+        "checkout",
+        "child",
+        "chip",
+        "choose",
+        "chooses",
+        "cipher",
+        "city",
+        "class",
+        "class_code",
+        "clerk",
+        "client",
+        "clientIP",
+        "closed",
+        "closing",
+        "club",
+        "code",
+        "codeX",
+        "code_R",
+        "codes",
+        "coffee",
+        "coin",
+        "coins",
+        "collateral",
+        "collection",
+        "column",
+        "commands",
+        "comments",
+        "commission",
+        "commodity",
+        "common",
+        "company",
+        "comparison",
+        "compilation",
+        "completed",
+        "comprehensive",
+        "computer",
+        "concatenation",
+        "confirmation",
+        "conform",
+        "connected",
+        "connection",
+        "consent",
+        "consumer",
+        "consumption",
+        "contact",
+        "content",
+        "continue",
+        "contrNo",
+        "contrStatus",
+        "contrStatusNam",
+        "contrType",
+        "contrTypeNam",
+        "contract",
+        "control",
+        "convention",
+        "conversion",
+        "converted",
+        "corporate",
+        "correction",
+        "correctness",
+        "corresponding",
+        "cost",
+        "costRate",
+        "costbuy",
+        "costs",
+        "counter",
+        "country",
+        "created",
+        "creation",
+        "credit",
+        "credited",
+        "credits",
+        "cross",
+        "currencies",
+        "currency",
+        "current",
+        "currently",
+        "custAge",
+        "custFee",
+        "custFeeDisc",
+        "custFeeRate",
+        "custLvl",
+        "custSpecialFlag",
+        "custid",
+        "custom",
+        "customer",
+        "customers",
+        "customise",
+        "cycle",
+        "daily",
+        "damages",
+        "data",
+        "database",
+        "date",
+        "datetime2",
+        "dating",
+        "day",
+        "days",
+        "deadline",
+        "deal",
+        "debit",
+        "debited",
+        "decimal",
+        "declaration",
+        "decline",
+        "deduAcno",
+        "deduAcnoAfter",
+        "deduAcnoBefore",
+        "deduAmt",
+        "deduAmtAfter",
+        "deduAmtBefore",
+        "deduDays",
+        "deduDaysAfter",
+        "deduDaysBefore",
+        "deductible",
+        "deduction",
+        "default",
+        "defined",
+        "delay",
+        "delete",
+        "deletion",
+        "delivery",
+        "denomination",
+        "department",
+        "deposit",
+        "depositing",
+        "depositor",
+        "deposits",
+        "descending",
+        "describe",
+        "description",
+        "designated",
+        "desk",
+        "details",
+        "determined",
+        "developed",
+        "device",
+        "diff",
+        "different",
+        "differentiation",
+        "digits",
+        "discount",
+        "disease",
+        "dispcode",
+        "display",
+        "displayed",
+        "dispname",
+        "dispseqno",
+        "distinction",
+        "distributing",
+        "distribution",
+        "dividend",
+        "dividends",
+        "division",
+        "do_flag",
+        "document",
+        "documents",
+        "does",
+        "dollar",
+        "dollars",
+        "down",
+        "downlink",
+        "downstream",
+        "drawdown",
+        "dreams",
+        "due",
+        "duplicate",
+        "duty",
+        "dynamic",
+        "dynamically",
+        "each",
+        "earn",
+        "earnp",
+        "easy",
+        "editor",
+        "education",
+        "effective",
+        "efficiency",
+        "email",
+        "emerging",
+        "empty",
+        "enable",
+        "enabled",
+        "encoded",
+        "end_datetime",
+        "ending",
+        "entered",
+        "envelope",
+        "envelopes",
+        "equipment",
+        "equity",
+        "equivalent",
+        "error",
+        "errors",
+        "establishment",
+        "estimated",
+        "etc",
+        "etsSerialNo",
+        "evaluated",
+        "event",
+        "exRate",
+        "example",
+        "exceeded",
+        "excess",
+        "exchange",
+        "excluding",
+        "exclusive",
+        "execute",
+        "executed",
+        "execution",
+        "expiration",
+        "expiry",
+        "explanation",
+        "exrate",
+        "face",
+        "failed",
+        "failure",
+        "failures",
+        "family",
+        "familyappVersion",
+        "fee",
+        "fees",
+        "fetched",
+        "field",
+        "fields",
+        "file",
+        "files",
+        "fill",
+        "filled",
+        "financial",
+        "financing",
+        "first",
+        "fixed",
+        "flag",
+        "flexible",
+        "float",
+        "flow",
+        "folding",
+        "for",
+        "foreCurDollar",
+        "foreign",
+        "foreigners",
+        "form",
+        "format",
+        "formatting",
+        "four",
+        "friend",
+        "front",
+        "full",
+        "function",
+        "functions",
+        "fund",
+        "funddbooking",
+        "funddrsubs",
+        "funds",
+        "funduincome",
+        "fundupcifetffg",
+        "futures",
+        "gains",
+        "gender",
+        "general",
+        "generated",
+        "generation",
+        "getdate",
+        "goals",
+        "gold",
+        "good",
+        "government",
+        "graphic",
+        "graphically",
+        "groups",
+        "guardianship",
+        "guide",
+        "hand",
+        "handling",
+        "has",
+        "have",
+        "header",
+        "health",
+        "held",
+        "hide",
+        "high",
+        "history",
+        "hold",
+        "host",
+        "hour",
+        "hours",
+        "house",
+        "household",
+        "households",
+        "ibrAin",
+        "ibrain",
+        "identifying",
+        "identity",
+        "ifAcctTransferType",
+        "ikB",
+        "illness",
+        "illustrate",
+        "immediate",
+        "immediately",
+        "implemented",
+        "imported",
+        "included",
+        "including",
+        "income",
+        "incorrectly",
+        "increase",
+        "increased",
+        "individual",
+        "information",
+        "initial",
+        "initiative",
+        "injury",
+        "injuryCrtFlag",
+        "input",
+        "inspection",
+        "instant",
+        "institutions",
+        "instructions",
+        "insurance",
+        "insured",
+        "interbank",
+        "interest",
+        "interest_TWD",
+        "internal",
+        "into",
+        "invYear",
+        "invYears",
+        "invalid",
+        "inventory",
+        "invest_type",
+        "investment",
+        "investor",
+        "investors",
+        "isPhoneTrans",
+        "issuer",
+        "item",
+        "item_code",
+        "item_name",
+        "its",
+        "jcurr",
+        "judging",
+        "judgment",
+        "junior",
+        "keep",
+        "key",
+        "large",
+        "last",
+        "later",
+        "latest",
+        "lending",
+        "length",
+        "letter",
+        "level",
+        "level_before",
+        "liabilities",
+        "liability",
+        "library",
+        "life",
+        "like",
+        "limit",
+        "limited",
+        "line",
+        "linked",
+        "liquidated",
+        "list",
+        "listbuy",
+        "listsell",
+        "living",
+        "loan",
+        "location",
+        "lock",
+        "lockout",
+        "log",
+        "logged",
+        "logging",
+        "login",
+        "logout",
+        "logs",
+        "long",
+        "longer",
+        "loss",
+        "losses",
+        "lost",
+        "lot",
+        "low",
+        "lower",
+        "lowercase",
+        "lump",
+        "machine",
+        "mail",
+        "mail_flag",
+        "mailbox",
+        "mailing",
+        "main",
+        "maintaining",
+        "maintains",
+        "maintenance",
+        "major",
+        "make",
+        "management",
+        "manager",
+        "manufacturer",
+        "margin",
+        "mark",
+        "market",
+        "marketAfter",
+        "marketBefore",
+        "markets",
+        "master",
+        "maturity",
+        "mdflag",
+        "mean",
+        "means",
+        "media",
+        "median",
+        "medium",
+        "member",
+        "memberAdd",
+        "memberClosed",
+        "memberCnt",
+        "members",
+        "membership",
+        "menu",
+        "message",
+        "message_R",
+        "messages",
+        "method",
+        "methods",
+        "mid",
+        "middle",
+        "minimum",
+        "minor",
+        "minus",
+        "mixdAccountType",
+        "mkt_code",
+        "mmaexratenotice",
+        "mmantfxg5000ebill",
+        "mobile",
+        "model",
+        "modification",
+        "modified",
+        "modify",
+        "money",
+        "monitor",
+        "month",
+        "monthly",
+        "months",
+        "mortgage",
+        "most",
+        "mover",
+        "msg",
+        "multiple",
+        "multiplication",
+        "name",
+        "names",
+        "national",
+        "nature",
+        "nchar",
+        "need",
+        "needs",
+        "net",
+        "network",
+        "new",
+        "newid",
+        "newly",
+        "newsletter",
+        "next",
+        "nickname",
+        "night",
+        "non",
+        "none",
+        "not",
+        "note",
+        "notebuy",
+        "notes",
+        "notesell",
+        "notice",
+        "notification",
+        "notifications",
+        "notify",
+        "now",
+        "number",
+        "number_R",
+        "numbers",
+        "numeric",
+        "nvarchar",
+        "obtain",
+        "obtained",
+        "ods_mobile",
+        "off",
+        "office",
+        "officer",
+        "old",
+        "once",
+        "one",
+        "online",
+        "only",
+        "open",
+        "opening",
+        "operating",
+        "operator",
+        "option",
+        "optional",
+        "original",
+        "other",
+        "others",
+        "otp",
+        "out",
+        "overdraft",
+        "overdue",
+        "overview",
+        "overweight",
+        "own",
+        "p_name",
+        "p_value",
+        "page",
+        "paid",
+        "pair",
+        "pairname",
+        "parameter",
+        "parent",
+        "part",
+        "partial",
+        "participate",
+        "party",
+        "passbook",
+        "passed",
+        "password",
+        "passwords",
+        "path",
+        "pathway",
+        "payable",
+        "payees",
+        "paying",
+        "payment",
+        "penalty",
+        "pending",
+        "pens",
+        "pension",
+        "people",
+        "per",
+        "perforOrgId",
+        "performance",
+        "performed",
+        "period",
+        "person",
+        "personal",
+        "personnel",
+        "phone",
+        "piMark",
+        "piggy",
+        "pipeline",
+        "places",
+        "plan",
+        "plate",
+        "platform",
+        "please",
+        "plus",
+        "point",
+        "points",
+        "policy",
+        "positions",
+        "post",
+        "postback",
+        "prdLvl",
+        "pre",
+        "premium",
+        "present",
+        "previous",
+        "price",
+        "price_date",
+        "pricing",
+        "primary",
+        "prime",
+        "principal",
+        "private",
+        "process",
+        "product",
+        "profInvOptFlag",
+        "professional",
+        "profile",
+        "profiles",
+        "profit",
+        "program",
+        "progress",
+        "project",
+        "promote",
+        "promotion",
+        "prompt",
+        "property",
+        "provide",
+        "provided",
+        "provider",
+        "provides",
+        "proxy",
+        "purchase",
+        "purchases",
+        "purpose",
+        "push",
+        "qty",
+        "qty_way",
+        "qualified",
+        "quantity",
+        "query",
+        "questionnaire",
+        "queue",
+        "quota",
+        "quotation",
+        "quote",
+        "rankEduCode",
+        "rate",
+        "rating",
+        "ratings",
+        "ratio",
+        "reach",
+        "reached",
+        "real",
+        "realCustFeeRate",
+        "realize",
+        "reason",
+        "rebalancing",
+        "rebate",
+        "receipts",
+        "receivable",
+        "receive",
+        "received",
+        "receives",
+        "recent",
+        "recipient",
+        "recommended",
+        "record",
+        "records",
+        "recovery",
+        "recurring",
+        "red",
+        "redemption",
+        "reference",
+        "referral",
+        "refund",
+        "registration",
+        "regular",
+        "related",
+        "release",
+        "remaining",
+        "remind",
+        "reminder",
+        "reminds",
+        "remittance",
+        "rendering",
+        "repayment",
+        "repeat",
+        "replies",
+        "reply",
+        "report",
+        "request",
+        "requested",
+        "required",
+        "requiredThis",
+        "requiredscheduled",
+        "reservation",
+        "reserve",
+        "reset",
+        "response",
+        "rest",
+        "restrict",
+        "result",
+        "results",
+        "resumed",
+        "retention",
+        "retrieves",
+        "return",
+        "returned",
+        "returns",
+        "review",
+        "revision",
+        "risk",
+        "riskDate",
+        "rollover",
+        "rsvFlag",
+        "rules",
+        "sad",
+        "sale",
+        "sales",
+        "salesCode",
+        "salesperson",
+        "same",
+        "say",
+        "scheduled",
+        "school",
+        "scustSpecialFlag",
+        "second",
+        "secondary",
+        "seconds",
+        "secret",
+        "securities",
+        "segment",
+        "selection",
+        "self",
+        "sell",
+        "sellDate",
+        "sellQty",
+        "sell_price",
+        "sell_qty_way",
+        "sell_trustamt",
+        "sell_trustamt_price",
+        "selling",
+        "sells",
+        "semicolon",
+        "semicolons",
+        "send",
+        "sending",
+        "sends",
+        "sent",
+        "separate",
+        "separated",
+        "separation",
+        "sequence",
+        "serial",
+        "serialization",
+        "series",
+        "serious",
+        "server",
+        "service",
+        "session",
+        "set",
+        "setpoint",
+        "setting",
+        "settings",
+        "settle",
+        "settlement",
+        "sex",
+        "shares",
+        "sharing",
+        "sheet",
+        "shopping",
+        "short",
+        "should",
+        "show",
+        "side",
+        "sign",
+        "signed",
+        "signing",
+        "single",
+        "site",
+        "six",
+        "small",
+        "smallint",
+        "sms_sendflag",
+        "sold",
+        "sort",
+        "source",
+        "special",
+        "specialNo",
+        "specific",
+        "specified",
+        "specify",
+        "speed",
+        "sso",
+        "staff",
+        "stage",
+        "stamp",
+        "standard",
+        "start",
+        "start_datetime",
+        "starting",
+        "starts",
+        "state",
+        "station",
+        "status",
+        "status_R",
+        "status_x000D_",
+        "steps",
+        "still",
+        "stock",
+        "stop",
+        "storage",
+        "store",
+        "strike",
+        "sub",
+        "subclass",
+        "subject",
+        "submenu",
+        "subscribe",
+        "subscribed",
+        "subscription",
+        "subtract",
+        "subtype",
+        "success",
+        "successful",
+        "summary",
+        "supervisor",
+        "supplement",
+        "swiped",
+        "switch",
+        "switching",
+        "system",
+        "table",
+        "take",
+        "target",
+        "targets",
+        "tax",
+        "taxable",
+        "taxes",
+        "telephone",
+        "template",
+        "temporary",
+        "term",
+        "terms",
+        "text",
+        "tfrinnopactlimit",
+        "than",
+        "that",
+        "the",
+        "there",
+        "they",
+        "third",
+        "this",
+        "three",
+        "through",
+        "time",
+        "timeouttime",
+        "times",
+        "timestamp",
+        "timing",
+        "tinyint",
+        "title",
+        "today",
+        "token",
+        "total",
+        "total_stock",
+        "total_way",
+        "trade",
+        "traded",
+        "trading",
+        "transaction",
+        "transactions",
+        "transcation",
+        "transduction",
+        "transfer",
+        "transfer_tax",
+        "transferred",
+        "transfers",
+        "transit",
+        "trasaction",
+        "treasury",
+        "trial",
+        "tripping",
+        "trust",
+        "trustAcno",
+        "trustManageFee",
+        "trustManageFeeCurr",
+        "trust_amt",
+        "trust_amt_TWD",
+        "trust_flag",
+        "trustamt_way",
+        "trustamt_way_TWD",
+        "trustee",
+        "turns",
+        "twenty",
+        "two",
+        "txn_date",
+        "type",
+        "types",
+        "unbinding",
+        "unbuckle",
+        "unified",
+        "unique",
+        "uniqueidentifier",
+        "unit",
+        "units",
+        "unrequisitioned",
+        "unsubscribe",
+        "until",
+        "update",
+        "upgrade",
+        "uplink",
+        "upon",
+        "upper",
+        "url",
+        "usage",
+        "use",
+        "useJOB",
+        "used",
+        "user",
+        "userManager",
+        "user_profile_changlog",
+        "userstatus",
+        "uses",
+        "using",
+        "valid",
+        "validation",
+        "validity",
+        "valuation",
+        "value",
+        "value_TWD",
+        "value_way_TWD",
+        "values",
+        "variable",
+        "vehicle",
+        "venue",
+        "verification",
+        "verified",
+        "version",
+        "virtual",
+        "voice",
+        "vote",
+        "voting",
+        "was",
+        "water",
+        "way",
+        "web",
+        "website",
+        "weekly",
+        "weight",
+        "whether",
+        "which",
+        "whitelist",
+        "who",
+        "will",
+        "window",
+        "with",
+        "withdraw",
+        "withdrawal",
+        "withdrawn",
+        "wording",
+        "worth",
+        "write",
+        "writes",
+        "writing",
+        "written",
+        "wrong",
+        "www",
+        "xrate",
+        "yards",
+        "year",
+        "years",
+        "yet",
+        "you",
+        "your",
+        "yourself",
+        "yuan",
+        "yymmddXXXXX",
+        "yyyy",
+        "zone"
+      ],
+      "sheetNames": [
+        "Table List",
+        "15",
+        "16",
+        "17",
+        "19",
+        "20",
+        "21",
+        "22",
+        "23",
+        "24",
+        "25",
+        "26",
+        "28",
+        "29",
+        "30",
+        "41",
+        "46",
+        "52",
+        "54",
+        "55",
+        "56",
+        "57",
+        "58",
+        "59",
+        "61",
+        "67",
+        "68",
+        "71",
+        "73",
+        "75",
+        "81",
+        "82",
+        "83",
+        "85",
+        "86",
+        "93",
+        "95",
+        "96",
+        "99",
+        "108",
+        "110",
+        "112",
+        "114",
+        "116",
+        "118",
+        "120",
+        "122",
+        "124",
+        "126",
+        "128",
+        "129",
+        "132",
+        "133",
+        "134",
+        "138",
+        "139",
+        "140",
+        "144",
+        "146",
+        "147",
+        "149",
+        "150",
+        "151",
+        "152",
+        "153",
+        "154",
+        "155",
+        "156",
+        "159",
+        "167",
+        "168",
+        "169",
+        "170",
+        "172",
+        "175",
+        "176",
+        "177",
+        "185",
+        "189",
+        "195",
+        "204",
+        "207",
+        "209",
+        "214",
+        "215",
+        "216",
+        "217",
+        "218",
+        "219",
+        "220",
+        "221",
+        "222",
+        "223",
+        "224",
+        "225",
+        "226",
+        "231",
+        "232",
+        "233",
+        "234",
+        "235",
+        "238",
+        "239",
+        "240",
+        "257",
+        "258",
+        "259",
+        "260",
+        "261",
+        "262",
+        "265",
+        "266",
+        "267",
+        "270",
+        "271",
+        "272",
+        "273",
+        "274",
+        "275",
+        "293",
+        "299",
+        "303",
+        "304",
+        "305",
+        "309",
+        "310",
+        "313",
+        "314",
+        "315",
+        "316",
+        "317",
+        "320",
+        "321",
+        "322",
+        "323",
+        "325",
+        "326",
+        "327",
+        "328",
+        "329",
+        "330",
+        "331",
+        "332",
+        "333",
+        "334",
+        "337",
+        "338",
+        "339",
+        "341",
+        "342",
+        "343",
+        "344",
+        "345",
+        "346",
+        "348",
+        "349",
+        "351",
+        "352",
+        "353",
+        "354",
+        "355",
+        "356",
+        "357",
+        "358",
+        "360",
+        "361",
+        "362",
+        "363",
+        "365",
+        "366",
+        "367",
+        "368",
+        "369",
+        "370",
+        "371",
+        "372",
+        "373",
+        "374",
+        "375",
+        "376",
+        "377",
+        "378",
+        "381",
+        "399",
+        "400",
+        "406",
+        "407",
+        "411",
+        "413",
+        "415",
+        "416",
+        "418",
+        "419",
+        "428",
+        "429",
+        "430",
+        "431",
+        "433",
+        "435",
+        "438",
+        "436",
+        "439",
+        "441",
+        "442",
+        "443",
+        "444",
+        "445",
+        "462",
+        "470",
+        "471",
+        "472",
+        "474",
+        "475",
+        "476",
+        "478",
+        "481",
+        "482",
+        "483",
+        "484",
+        "485",
+        "486",
+        "487",
+        "488",
+        "489",
+        "491",
+        "493",
+        "495",
+        "496",
+        "499",
+        "502",
+        "519",
+        "549",
+        "553",
+        "554",
+        "555",
+        "556",
+        "558",
+        "559",
+        "560",
+        "561",
+        "562"
+      ],
+      "sheetMatchKeys": {
+        "ACCOUNT_BALANCE": [
+          "150",
+          "153",
+          "156",
+          "488"
+        ],
+        "ACCOUNT_ENABLE": [
+          "149",
+          "150",
+          "153",
+          "67"
+        ],
+        "ACCOUNT_EUD_BALANCE": [
+          "150",
+          "153"
+        ],
+        "ACCOUNT_JPD_BALANCE": [
+          "150",
+          "153"
+        ],
+        "ACCOUNT_LIMIT": [
+          "149",
+          "67",
+          "68"
+        ],
+        "ACCOUNT_NUMBER": [
+          "108",
+          "110",
+          "112",
+          "114",
+          "116",
+          "118",
+          "120",
+          "122",
+          "124",
+          "128",
+          "129",
+          "149",
+          "15",
+          "150",
+          "152",
+          "153",
+          "154",
+          "156",
+          "462",
+          "52",
+          "54",
+          "67",
+          "68"
+        ],
+        "ACCOUNT_ORG_BALANCE": [
+          "149",
+          "67",
+          "68"
+        ],
+        "ACCOUNT_OTH_BALANCE": [
+          "150",
+          "153"
+        ],
+        "ACCOUNT_TWD_BALANCE": [
+          "149",
+          "150",
+          "153",
+          "67",
+          "68"
+        ],
+        "ACCOUNT_TYPE": [
+          "462",
+          "488"
+        ],
+        "ACCOUNT_USD_BALANCE": [
+          "150",
+          "153"
+        ],
+        "ACCRUED_INT": [
+          "337"
+        ],
+        "ACCRUED_INT_LCY": [
+          "314"
+        ],
+        "ACCT.NO": [
+          "133"
+        ],
+        "ACCT_ACTIVITY": [
+          "15",
+          "Table List"
+        ],
+        "ACCT_NOTRANSFER": [
+          "16",
+          "Table List"
+        ],
+        "ACCT_NOTRANSFER_LOG": [
+          "17",
+          "Table List"
+        ],
+        "ACC_STATUS": [
+          "486"
+        ],
+        "ACC_WORK_BAL": [
+          "314"
+        ],
+        "ADJUST_DEDUCHANGETYPE": [
+          "19"
+        ],
+        "ADJUST_INVEST_YEARS": [
+          "19"
+        ],
+        "ADJUST_LEFTPERIOD": [
+          "19"
+        ],
+        "ADJUST_MATURITY_DATE": [
+          "19"
+        ],
+        "ADJUST_RSP_DOLLAR": [
+          "19"
+        ],
+        "AFTER_CHANGE": [
+          "493"
+        ],
+        "AI_ADJUSTPLAN": [
+          "19",
+          "Table List"
+        ],
+        "AI_BUY": [
+          "20",
+          "Table List"
+        ],
+        "AI_DEDUCHANGE": [
+          "21",
+          "Table List"
+        ],
+        "AI_REBALANCE": [
+          "22",
+          "Table List"
+        ],
+        "AI_REDEM": [
+          "23",
+          "Table List"
+        ],
+        "AI_RISKSWITCH": [
+          "24",
+          "Table List"
+        ],
+        "AI_SIGNCONTRACT": [
+          "25",
+          "Table List"
+        ],
+        "AI_STAFFBUY": [
+          "555",
+          "Table List"
+        ],
+        "ALERT_MSG_STATUS": [
+          "147",
+          "155"
+        ],
+        "ALLBANK_ADDRESS": [
+          "26"
+        ],
+        "ALLBANK_ALIASNAME": [
+          "26"
+        ],
+        "ALLBANK_BKNO": [
+          "26"
+        ],
+        "ALLBANK_BRNO": [
+          "26"
+        ],
+        "ALLBANK_BRNO_CHKCODE": [
+          "26"
+        ],
+        "ALLBANK_ENGNAME": [
+          "26"
+        ],
+        "ALLBANK_FISC_UNIT": [
+          "26"
+        ],
+        "ALLBANK_FULLNAME": [
+          "26"
+        ],
+        "ALLBANK_RMFLAG": [
+          "26"
+        ],
+        "ALLBANK_RMFORWARD": [
+          "26"
+        ],
+        "ALLBANK_TELNO": [
+          "26"
+        ],
+        "ALLBANK_TYPE": [
+          "26"
+        ],
+        "ALLBANK_UNIT_BANK": [
+          "26"
+        ],
+        "ALLBANK_ZIPCODE1": [
+          "26"
+        ],
+        "ALLBANK_ZIPCODE2": [
+          "26"
+        ],
+        "ALLSEQUENCES_DAWHO": [
+          "556",
+          "Table List"
+        ],
+        "ALL_SERV": [
+          "175",
+          "474"
+        ],
+        "AMOUNT_TWD": [
+          "314"
+        ],
+        "APPLY_IP": [
+          "560"
+        ],
+        "APPLY_MEMBER": [
+          "30",
+          "Table List"
+        ],
+        "APPLY_STATUS": [
+          "486"
+        ],
+        "APPSEQNO_D": [
+          "214",
+          "215",
+          "216",
+          "217",
+          "218",
+          "219",
+          "56",
+          "57"
+        ],
+        "ASSET_DAILY": [
+          "138"
+        ],
+        "ASSET_DATE": [
+          "41",
+          "Table List"
+        ],
+        "ASSET_MAILBILL": [
+          "138"
+        ],
+        "ASSET_MONTH": [
+          "138"
+        ],
+        "ASSET_WEEK": [
+          "138"
+        ],
+        "ATM_24_SERVICE": [
+          "86"
+        ],
+        "ATM_ADDRESS_C": [
+          "86"
+        ],
+        "ATM_ATMNO": [
+          "86"
+        ],
+        "ATM_ATMTYPE": [
+          "86"
+        ],
+        "ATM_CITY_C": [
+          "86"
+        ],
+        "ATM_DELETE_FG": [
+          "86"
+        ],
+        "ATM_DIST_C": [
+          "86"
+        ],
+        "ATM_LATITUDE": [
+          "86"
+        ],
+        "ATM_LOCATION": [
+          "86"
+        ],
+        "ATM_LONGITUDE": [
+          "86"
+        ],
+        "ATM_SAVING": [
+          "86"
+        ],
+        "ATM_STATUS": [
+          "86"
+        ],
+        "ATM_STATUS_UPDATETIME": [
+          "86"
+        ],
+        "ATM_WITHDRAW": [
+          "86"
+        ],
+        "ATM_WITHDRAW_CNY": [
+          "86"
+        ],
+        "ATM_WITHDRAW_HKD": [
+          "86"
+        ],
+        "ATM_WITHDRAW_JPY": [
+          "86"
+        ],
+        "ATM_WITHDRAW_NTD_100": [
+          "86"
+        ],
+        "ATM_WITHDRAW_NTD_1000": [
+          "86"
+        ],
+        "ATM_WITHDRAW_USD": [
+          "86"
+        ],
+        "ATM_ZONE": [
+          "86"
+        ],
+        "AUDIT_ONLINE": [
+          "132"
+        ],
+        "AUTH_OS": [
+          "75"
+        ],
+        "AUTO_ACNO": [
+          "71"
+        ],
+        "AVAIL_CASH_CR": [
+          "75"
+        ],
+        "AVAIL_CR": [
+          "75"
+        ],
+        "AVG_LOGIN_DAYS": [
+          "176",
+          "491"
+        ],
+        "B2C.FXREM.SATUS": [
+          "406"
+        ],
+        "B2C_DESC": [
+          "406"
+        ],
+        "BANKCUSTID_NODM": [
+          "55",
+          "Table List"
+        ],
+        "BANK_CARDNO": [
+          "46",
+          "Table List"
+        ],
+        "BANK_TFRIN": [
+          "52",
+          "Table List"
+        ],
+        "BANK_TFRIN_LOG": [
+          "54",
+          "Table List"
+        ],
+        "BANK_UPDATE_DATE": [
+          "41"
+        ],
+        "BATCH_STATUS": [
+          "144"
+        ],
+        "BATCH_TIMESTAMP": [
+          "144"
+        ],
+        "BATCH_TIMESTAMP_AFTER": [
+          "144"
+        ],
+        "BEFORE_CHANGE": [
+          "493"
+        ],
+        "BEFORE_MAXLENGTH": [
+          "489"
+        ],
+        "BONDL_RATIO": [
+          "20",
+          "555"
+        ],
+        "BONDM_RATIO": [
+          "20",
+          "555"
+        ],
+        "BONDS_RATIO": [
+          "20",
+          "555"
+        ],
+        "BOND_CAIRGEN": [
+          "56",
+          "Table List"
+        ],
+        "BOND_CAIRREDEM": [
+          "57",
+          "Table List"
+        ],
+        "BOND_CGENERAL": [
+          "58",
+          "Table List"
+        ],
+        "BOND_CREDEM": [
+          "59",
+          "Table List"
+        ],
+        "BOND_RATIO": [
+          "20",
+          "555"
+        ],
+        "BOOKING_FEE_RATE": [
+          "235"
+        ],
+        "BOOKING_FUND_IDNAME": [
+          "235"
+        ],
+        "BP_ASSET_PROFILE": [
+          "61",
+          "Table List"
+        ],
+        "BP_BANK_ACCOUNT_BALANCE_STD": [
+          "67",
+          "Table List"
+        ],
+        "BP_BANK_BAL": [
+          "68",
+          "Table List"
+        ],
+        "BP_CARD_ACCOUNT_BALANCE": [
+          "71",
+          "Table List"
+        ],
+        "BP_CARD_BLHS": [
+          "73",
+          "Table List"
+        ],
+        "BP_CARD_CAM": [
+          "75",
+          "Table List"
+        ],
+        "BP_EMAIL_MSG": [
+          "81",
+          "Table List"
+        ],
+        "BP_EMP_CATEGORY": [
+          "82",
+          "Table List"
+        ],
+        "BP_ETF_STOCK": [
+          "83",
+          "Table List"
+        ],
+        "BP_FAVORITE_MSG": [
+          "85",
+          "Table List"
+        ],
+        "BP_FEP_ATM": [
+          "86",
+          "Table List"
+        ],
+        "BP_INSURANCE_ASSET": [
+          "93",
+          "Table List"
+        ],
+        "BP_IPIGCASHBALANCE_TMP": [
+          "95",
+          "Table List"
+        ],
+        "BP_IPIGDREAMGOAL_TMP": [
+          "96",
+          "Table List"
+        ],
+        "BP_LOANFAILMSG_L29BIOR": [
+          "99",
+          "Table List"
+        ],
+        "BP_NFUTURE_461": [
+          "108",
+          "Table List"
+        ],
+        "BP_NFUTURE_462": [
+          "110",
+          "Table List"
+        ],
+        "BP_NFUTURE_463": [
+          "112",
+          "Table List"
+        ],
+        "BP_NSTOCK_41": [
+          "114",
+          "Table List"
+        ],
+        "BP_NSTOCK_42": [
+          "116",
+          "Table List"
+        ],
+        "BP_NSTOCK_43": [
+          "118",
+          "Table List"
+        ],
+        "BP_NSTOCK_44": [
+          "120",
+          "Table List"
+        ],
+        "BP_NSTOCK_48": [
+          "122",
+          "Table List"
+        ],
+        "BP_NSTOCK_49": [
+          "124",
+          "Table List"
+        ],
+        "BP_NSTOCK_CEASE": [
+          "126",
+          "Table List"
+        ],
+        "BP_NSTOCK_TOTAL": [
+          "128",
+          "Table List"
+        ],
+        "BP_NSTOCK_TOTAL_STD_TMP": [
+          "129"
+        ],
+        "BP_OFFICE_WIFI": [
+          "132",
+          "Table List"
+        ],
+        "BP_P1200_CURR": [
+          "133",
+          "Table List"
+        ],
+        "BP_PARAMETER": [
+          "134",
+          "Table List"
+        ],
+        "BP_PROFILE_EPAPER": [
+          "138",
+          "Table List"
+        ],
+        "BP_PROFILE_NSC_STOCK": [
+          "139",
+          "Table List"
+        ],
+        "BP_QUERYSPOT": [
+          "140",
+          "Table List"
+        ],
+        "BP_RED_ENVELOPE_MAIN": [
+          "144",
+          "Table List"
+        ],
+        "BP_RPT_MEMBERCNT": [
+          "146",
+          "Table List"
+        ],
+        "BP_TIMEDEPOSITMATURITYNOTIFY_TMP": [
+          "147",
+          "Table List"
+        ],
+        "BP_USER_BANK_ACCOUNT_BALANCE": [
+          "149",
+          "Table List"
+        ],
+        "BP_USER_FUND_ACCOUNT_BALANCE": [
+          "150",
+          "Table List"
+        ],
+        "BP_USER_FUND_ALERT": [
+          "151",
+          "Table List"
+        ],
+        "BP_USER_FUND_LIST": [
+          "152",
+          "Table List"
+        ],
+        "BP_USER_FUND_WAY_BALANCE": [
+          "153",
+          "Table List"
+        ],
+        "BP_USER_FUND_WAY_LIST": [
+          "154",
+          "Table List"
+        ],
+        "BP_USER_MSG_LIST": [
+          "155",
+          "Table List"
+        ],
+        "BP_USER_NSTOCK_ACCOUNT_BALANCE": [
+          "156",
+          "Table List"
+        ],
+        "BP_USER_NSTOCK_DATE": [
+          "159",
+          "Table List"
+        ],
+        "BRANCH_RVMR_TOTXAMT": [
+          "314"
+        ],
+        "BSP": [
+          "176",
+          "491",
+          "58"
+        ],
+        "BSP_INCENTIVE": [
+          "176",
+          "491"
+        ],
+        "BSP_INCENTIVE_TYPE": [
+          "176",
+          "491"
+        ],
+        "BUS_TYPE": [
+          "176",
+          "491"
+        ],
+        "BUY_AMOUNT_ONWAY": [
+          "83"
+        ],
+        "CALL_MARGIN": [
+          "112"
+        ],
+        "CAM_SYSDATE": [
+          "75"
+        ],
+        "CARD16_STARTNO": [
+          "46"
+        ],
+        "CARD_CUSTID": [
+          "172"
+        ],
+        "CARD_SETDDACCOUNT": [
+          "167",
+          "Table List"
+        ],
+        "CARD_SETDDAMOUNT": [
+          "168",
+          "Table List"
+        ],
+        "CARD_SETDDIND": [
+          "169",
+          "Table List"
+        ],
+        "CARD_SUMMARY": [
+          "61"
+        ],
+        "CARD_UPDCIF_LOG": [
+          "170",
+          "Table List"
+        ],
+        "CARD_USER_MAPPING": [
+          "172",
+          "Table List"
+        ],
+        "CASUALTY_INSURANCE": [
+          "61"
+        ],
+        "CEASE_DATE": [
+          "126"
+        ],
+        "CERT_NUMBER": [
+          "152",
+          "154"
+        ],
+        "CHANG_FIELD": [
+          "493"
+        ],
+        "CHK_DATE": [
+          "144"
+        ],
+        "CHNN.CODE": [
+          "133"
+        ],
+        "CLEAR_CURRENCY": [
+          "110"
+        ],
+        "CLOSED_USER": [
+          "175",
+          "Table List"
+        ],
+        "CLOSED_USER_PROFILE": [
+          "176",
+          "Table List"
+        ],
+        "CLOSED_USER_STATUS": [
+          "177",
+          "Table List"
+        ],
+        "CLOSE_TYPE": [
+          "175",
+          "176",
+          "177"
+        ],
+        "CODE": [
+          "133"
+        ],
+        "CODE_BANK": [
+          "26"
+        ],
+        "CODE_R": [
+          "345"
+        ],
+        "CODE_UNIT": [
+          "26"
+        ],
+        "COMMISSION_TYPE": [
+          "332"
+        ],
+        "CONTRACT_NUM": [
+          "334"
+        ],
+        "CREDIT.ACCT.NO": [
+          "133"
+        ],
+        "CREDIT_AMOUNT": [
+          "332"
+        ],
+        "CREDIT_APPLY_LOG": [
+          "185",
+          "Table List"
+        ],
+        "CREDIT_CURRENCY": [
+          "332"
+        ],
+        "CREDIT_LINE": [
+          "71"
+        ],
+        "CRS_ID_DATE_NEW": [
+          "328"
+        ],
+        "CRS_ID_DATE_ORG": [
+          "328"
+        ],
+        "CRS_ID_NOTE_NEW": [
+          "328"
+        ],
+        "CRS_ID_NOTE_ORG": [
+          "328"
+        ],
+        "CURRENCY_RATE": [
+          "112"
+        ],
+        "CURR_ACCU_PAYMENT": [
+          "71"
+        ],
+        "CURR_BALANCE": [
+          "71"
+        ],
+        "CUR_AMOUNT": [
+          "152",
+          "154"
+        ],
+        "CUR_PRICE": [
+          "152",
+          "154"
+        ],
+        "CUSTID_ODS_NODM": [
+          "189",
+          "Table List"
+        ],
+        "DAY_PUSH": [
+          "342"
+        ],
+        "DB_CIF_ADR2FG": [
+          "207"
+        ],
+        "DB_CIF_EMAILFG1": [
+          "207"
+        ],
+        "DB_CIF_TELNO1FG": [
+          "207"
+        ],
+        "DB_CIF_TELNO2FG": [
+          "207"
+        ],
+        "DB_CIF_TELNO3FG": [
+          "207"
+        ],
+        "DB_CIF_TELNO4FG": [
+          "207"
+        ],
+        "DD_ACCT": [
+          "167",
+          "168",
+          "169"
+        ],
+        "DD_BANKCODE": [
+          "167",
+          "168",
+          "169"
+        ],
+        "DD_IND": [
+          "167",
+          "168",
+          "169"
+        ],
+        "DEBIT.ACCT.NO": [
+          "133"
+        ],
+        "DEBIT_CURRENCY": [
+          "332"
+        ],
+        "DEDUCTCODE_R": [
+          "345"
+        ],
+        "DEDUCTHEADER_R": [
+          "345"
+        ],
+        "DEDUCTIONCURR_C": [
+          "327",
+          "345",
+          "358",
+          "360"
+        ],
+        "DEDUCTMFSEQ_R": [
+          "345"
+        ],
+        "DEDUCTMSG_R": [
+          "345"
+        ],
+        "DEDU_DAY": [
+          "19"
+        ],
+        "DEFERRED_UNPAID": [
+          "337"
+        ],
+        "DUE_DATE": [
+          "71"
+        ],
+        "DUE_DAY": [
+          "149",
+          "67",
+          "68"
+        ],
+        "EARN_RATE": [
+          "152"
+        ],
+        "EDATE_SHOW": [
+          "270"
+        ],
+        "EDUCATION_LEVEL": [
+          "176",
+          "491"
+        ],
+        "EFF_DATE": [
+          "52",
+          "54"
+        ],
+        "EMAIL_MARK": [
+          "216"
+        ],
+        "EMAIL_STATUS": [
+          "486"
+        ],
+        "EMAIL_VERIFY": [
+          "195",
+          "Table List"
+        ],
+        "EMPLOY_STATUS": [
+          "176",
+          "491"
+        ],
+        "END_DATE": [
+          "151",
+          "561"
+        ],
+        "END_DATETIME": [
+          "134"
+        ],
+        "ENUM_VALUES": [
+          "204",
+          "81",
+          "85",
+          "Table List"
+        ],
+        "EPAPER_ASSET": [
+          "138"
+        ],
+        "EPAPER_CARD": [
+          "138"
+        ],
+        "EPAPER_FUND": [
+          "138"
+        ],
+        "EPAPER_LOAN": [
+          "138"
+        ],
+        "EPAPER_MESSAGE": [
+          "138"
+        ],
+        "EPAPER_MONTH": [
+          "138"
+        ],
+        "EPAPER_OTHERASSET": [
+          "138"
+        ],
+        "EPAPER_PROMOTE": [
+          "138"
+        ],
+        "EPAPER_RMB": [
+          "138"
+        ],
+        "EPAPER_SAVE": [
+          "138"
+        ],
+        "EPAPER_STOCK": [
+          "138"
+        ],
+        "EPAPER_STOCKNEWS": [
+          "138"
+        ],
+        "EPAPER_WEEK": [
+          "138"
+        ],
+        "ERROR_MESSAGE": [
+          "144"
+        ],
+        "ES7000_CIFINFO": [
+          "207",
+          "Table List"
+        ],
+        "ETS_INSERTSPOTDEAL": [
+          "209",
+          "Table List"
+        ],
+        "EXCHANGE_RATE": [
+          "149",
+          "152",
+          "154",
+          "67",
+          "68"
+        ],
+        "EXCHANGE_RSPCODE": [
+          "327"
+        ],
+        "EXCHANGE_RSPMSG": [
+          "327"
+        ],
+        "EXCHANGE_STATUS": [
+          "327"
+        ],
+        "EXCHANGE_TIMESTAMP": [
+          "327"
+        ],
+        "EXRATE_NOTICE": [
+          "342",
+          "Table List"
+        ],
+        "EX_CUR": [
+          "214",
+          "217"
+        ],
+        "FAT_ID_DATE_NEW": [
+          "328"
+        ],
+        "FAT_ID_DATE_ORG": [
+          "328"
+        ],
+        "FAT_ID_NOTE_NEW": [
+          "328"
+        ],
+        "FAT_ID_NOTE_ORG": [
+          "328"
+        ],
+        "FAT_ID_TYPE_NEW": [
+          "328"
+        ],
+        "FAT_ID_TYPE_ORG": [
+          "328"
+        ],
+        "FAT_ORI_REP_NEW": [
+          "328"
+        ],
+        "FAT_ORI_REP_ORG": [
+          "328"
+        ],
+        "FAV_EPAPER_NEWS": [
+          "61"
+        ],
+        "FAV_SEE_BANK": [
+          "61"
+        ],
+        "FAV_SEE_CARD": [
+          "61"
+        ],
+        "FAV_SEE_FUND": [
+          "61"
+        ],
+        "FAV_SEE_LOAN": [
+          "61"
+        ],
+        "FAV_SEE_OTHER": [
+          "61"
+        ],
+        "FAV_SEE_SECURITY": [
+          "61"
+        ],
+        "FCY_ACC_BAL_DETAIL": [
+          "314"
+        ],
+        "FIN_CHARGE": [
+          "71"
+        ],
+        "FIRST_LOGIN_DAFACE": [
+          "474"
+        ],
+        "FIRST_LOGIN_DAGRAPHICS": [
+          "474"
+        ],
+        "FIRST_LOGIN_DATOUCH": [
+          "474"
+        ],
+        "FIRST_LOGIN_DAWHO": [
+          "474"
+        ],
+        "FIRST_LOGIN_FACE": [
+          "474"
+        ],
+        "FIRST_LOGIN_GRAPHICS": [
+          "474"
+        ],
+        "FIRST_LOGIN_MAPP": [
+          "474"
+        ],
+        "FIRST_LOGIN_MWEB": [
+          "474"
+        ],
+        "FIRST_LOGIN_NETBANK": [
+          "474"
+        ],
+        "FIRST_LOGIN_SINOCARD": [
+          "474"
+        ],
+        "FIRST_LOGIN_TOUCH": [
+          "474"
+        ],
+        "FIX_RSPCODE": [
+          "327"
+        ],
+        "FIX_RSPMSG": [
+          "327"
+        ],
+        "FIX_STATUS": [
+          "327"
+        ],
+        "FIX_TIMESTAMP": [
+          "327"
+        ],
+        "FUND_CAIRAUTO": [
+          "214",
+          "Table List"
+        ],
+        "FUND_CAIREIM": [
+          "215",
+          "Table List"
+        ],
+        "FUND_CAIRGAINLOSS": [
+          "216",
+          "Table List"
+        ],
+        "FUND_CAIRGEN": [
+          "217",
+          "Table List"
+        ],
+        "FUND_CAIRREDEM": [
+          "218",
+          "Table List"
+        ],
+        "FUND_CAIRSWITCH": [
+          "219",
+          "Table List"
+        ],
+        "FUND_CAUTO": [
+          "220",
+          "Table List"
+        ],
+        "FUND_CAUTOBAS": [
+          "221",
+          "Table List"
+        ],
+        "FUND_CAUTOSUSP": [
+          "222",
+          "Table List"
+        ],
+        "FUND_CAUTOTERM": [
+          "223",
+          "Table List"
+        ],
+        "FUND_CGENERAL": [
+          "224",
+          "Table List"
+        ],
+        "FUND_CGENERALBAS": [
+          "225",
+          "Table List"
+        ],
+        "FUND_CINSURE": [
+          "226",
+          "Table List"
+        ],
+        "FUND_COMPANY": [
+          "215"
+        ],
+        "FUND_CREDEM": [
+          "231",
+          "Table List"
+        ],
+        "FUND_CSWITCH": [
+          "232",
+          "Table List"
+        ],
+        "FUND_DBOOKING": [
+          "233",
+          "Table List"
+        ],
+        "FUND_DRSUBS": [
+          "234",
+          "Table List"
+        ],
+        "FUND_EXCGENERAL": [
+          "235",
+          "Table List"
+        ],
+        "FUND_SHARE": [
+          "152",
+          "154"
+        ],
+        "FUND_SUMMARY": [
+          "61"
+        ],
+        "FUND_SUMMARY_EFFECT": [
+          "61"
+        ],
+        "FUND_SYMBOL": [
+          "152",
+          "154"
+        ],
+        "FUND_UEMAIL": [
+          "238",
+          "Table List"
+        ],
+        "FUND_UINCOME": [
+          "239",
+          "Table List"
+        ],
+        "FUND_UPCIFETFFG": [
+          "240",
+          "Table List"
+        ],
+        "FUND_UPDATE_DATE": [
+          "41"
+        ],
+        "FUND_WAY_SUMMARY": [
+          "61"
+        ],
+        "FUND_WAY_SUMMARY_EFFECT": [
+          "61"
+        ],
+        "FXREM.SATUS": [
+          "406"
+        ],
+        "F_ETFFG": [
+          "240"
+        ],
+        "F_ETFFG_DATE": [
+          "240"
+        ],
+        "F_ETFFLAG": [
+          "214",
+          "215",
+          "217",
+          "218",
+          "219",
+          "56",
+          "58"
+        ],
+        "GAIN_AUTO_MARK": [
+          "216"
+        ],
+        "GOLD_SUMMARY": [
+          "61"
+        ],
+        "GRAPHICS_LEN": [
+          "476"
+        ],
+        "IFUND_CANCLOSEMARK": [
+          "314"
+        ],
+        "INFORM_DATE": [
+          "147",
+          "155"
+        ],
+        "INITIAL_DOLLAR": [
+          "19"
+        ],
+        "INIT_DRAW_DOWN": [
+          "149",
+          "67",
+          "68"
+        ],
+        "INSURANCE_AMOUNT": [
+          "334"
+        ],
+        "INSURANCE_CO": [
+          "334"
+        ],
+        "INSURANCE_TYPE": [
+          "334"
+        ],
+        "INSURE_INSUREPORTAL_LOG": [
+          "257",
+          "Table List"
+        ],
+        "INTEREST_TWD": [
+          "314"
+        ],
+        "INTRANET_ADDRESS_EXCLUSIVE": [
+          "258",
+          "Table List"
+        ],
+        "INTRANET_CUSTID_EXCLUSIVE": [
+          "259",
+          "Table List"
+        ],
+        "INT_RATE": [
+          "73"
+        ],
+        "INVALID_EMAIL": [
+          "176",
+          "491"
+        ],
+        "INVEST_BID_COMPETITION": [
+          "61"
+        ],
+        "INVEST_FC_DEPOSIT": [
+          "61"
+        ],
+        "INVEST_FIXED_DEPOSIT": [
+          "61"
+        ],
+        "INVEST_MUTUAL_FUND": [
+          "61"
+        ],
+        "INVEST_REAL_ESTATE": [
+          "61"
+        ],
+        "INVEST_STOCK": [
+          "61"
+        ],
+        "INVEST_TYPE": [
+          "83"
+        ],
+        "INVEST_YEARS": [
+          "19"
+        ],
+        "J_APP": [
+          "261",
+          "Table List"
+        ],
+        "J_BANK": [
+          "262",
+          "Table List"
+        ],
+        "J_BRANCH": [
+          "265",
+          "Table List"
+        ],
+        "J_COUNTRY": [
+          "266",
+          "Table List"
+        ],
+        "J_CURR": [
+          "267",
+          "Table List"
+        ],
+        "J_TAX": [
+          "270",
+          "Table List"
+        ],
+        "J_TAX_UNIT": [
+          "271",
+          "Table List"
+        ],
+        "KEEP_DEDU_MARK": [
+          "216"
+        ],
+        "LAST_BALANCE": [
+          "71"
+        ],
+        "LAST_LOGIN_DAFACE": [
+          "474"
+        ],
+        "LAST_LOGIN_DAGRAPHICS": [
+          "474"
+        ],
+        "LAST_LOGIN_DATOUCH": [
+          "474"
+        ],
+        "LAST_LOGIN_DAWHO": [
+          "474"
+        ],
+        "LAST_LOGIN_FACE": [
+          "474"
+        ],
+        "LAST_LOGIN_GRAPHICS": [
+          "474"
+        ],
+        "LAST_LOGIN_MAPP": [
+          "474"
+        ],
+        "LAST_LOGIN_MWEB": [
+          "474"
+        ],
+        "LAST_LOGIN_NETBANK": [
+          "474"
+        ],
+        "LAST_LOGIN_SINOCARD": [
+          "474"
+        ],
+        "LAST_LOGIN_TOUCH": [
+          "474"
+        ],
+        "LAST_PAYMENT_DATE": [
+          "71"
+        ],
+        "LATE_CHARGE": [
+          "71"
+        ],
+        "LCY_FCY_TYPE": [
+          "314"
+        ],
+        "LEVEL_ADJUSTED": [
+          "24"
+        ],
+        "LEVEL_BEFORE": [
+          "24"
+        ],
+        "LIFE_INSURANCE": [
+          "61"
+        ],
+        "LIMIT_LINE": [
+          "338"
+        ],
+        "LINE_CR": [
+          "75"
+        ],
+        "LISTRATE_HISTORY": [
+          "273",
+          "Table List"
+        ],
+        "LISTRATE_HISTORYN": [
+          "274",
+          "Table List"
+        ],
+        "LOAN_ACNO": [
+          "99"
+        ],
+        "LOAN_BALANCE": [
+          "149",
+          "67",
+          "68"
+        ],
+        "LOAN_SUMMARY": [
+          "61"
+        ],
+        "LOSS_AUTO_MARK": [
+          "216"
+        ],
+        "LOTS_B": [
+          "110"
+        ],
+        "LOTS_S": [
+          "110"
+        ],
+        "MAIL_MSG_STATUS": [
+          "147",
+          "155"
+        ],
+        "MAIL_UPTODATE": [
+          "491"
+        ],
+        "MANAGE_TIMESTAMP": [
+          "144"
+        ],
+        "MARGIN_SUMMARY": [
+          "61"
+        ],
+        "MARITAL_STATUS": [
+          "176",
+          "491"
+        ],
+        "MB_APPLOG": [
+          "299",
+          "Table List"
+        ],
+        "MB_DEVICE_BINDING": [
+          "303",
+          "Table List"
+        ],
+        "MB_DEVICE_BINDING_LOG": [
+          "304",
+          "Table List"
+        ],
+        "MB_DEVICE_BINDING_QRCODE_VERIFY": [
+          "558",
+          "Table List"
+        ],
+        "MB_DEVICE_LOGIN_LOG": [
+          "305",
+          "Table List"
+        ],
+        "MB_PUSH_HISTORICALMESSAGES": [
+          "309",
+          "Table List"
+        ],
+        "MB_PUSH_MESSAGES": [
+          "310",
+          "Table List"
+        ],
+        "MB_USER_SCORE": [
+          "313",
+          "Table List"
+        ],
+        "MEDICAL_INSURANCE": [
+          "61"
+        ],
+        "MESSAGE_R": [
+          "345"
+        ],
+        "MMACD_CMTXNINP_LOG": [
+          "337",
+          "Table List"
+        ],
+        "MMACD_LIMITTMBINAU_LOG": [
+          "338",
+          "Table List"
+        ],
+        "MMACD_ODDUMMYINP_LOG": [
+          "339",
+          "Table List"
+        ],
+        "MMAFIX_FAST": [
+          "343",
+          "Table List"
+        ],
+        "MMAFIX_FAST_CHECK": [
+          "344",
+          "Table List"
+        ],
+        "MMAMAIL_FORMAT": [
+          "346",
+          "Table List"
+        ],
+        "MMAMAIL_QUEUE": [
+          "348",
+          "Table List"
+        ],
+        "MMAMAIL_QUEUE_COMMON": [
+          "349",
+          "Table List"
+        ],
+        "MMANTFXG5000A_LOG": [
+          "352",
+          "Table List"
+        ],
+        "MMANTFXG5000B_LOG": [
+          "353",
+          "Table List"
+        ],
+        "MMANTFXG5000_EBILL": [
+          "351",
+          "Table List"
+        ],
+        "MMANTFXJQ_GOLD": [
+          "360",
+          "Table List"
+        ],
+        "MMANTFXPK_CARD": [
+          "363",
+          "Table List"
+        ],
+        "MMANTFXPK_PHONE": [
+          "365",
+          "Table List"
+        ],
+        "MMANTFXPK_PRE": [
+          "366",
+          "Table List"
+        ],
+        "MMANTFXPK_PRECARD": [
+          "367",
+          "Table List"
+        ],
+        "MMANTFXPK_RED": [
+          "368",
+          "Table List"
+        ],
+        "MMANTFXPK_TAX": [
+          "369",
+          "Table List"
+        ],
+        "MMAQ_SERVERLIST": [
+          "377",
+          "Table List"
+        ],
+        "MMA_ACCT_CLOSE_TX": [
+          "314",
+          "Table List"
+        ],
+        "MMA_ADV_BOND": [
+          "315",
+          "Table List"
+        ],
+        "MMA_ADV_BOND_UPDLOG": [
+          "316",
+          "Table List"
+        ],
+        "MMA_BRANCHSERVICE_XML": [
+          "317",
+          "Table List"
+        ],
+        "MMA_CARDLESSNO": [
+          "320",
+          "Table List"
+        ],
+        "MMA_CARDLESSTXN": [
+          "321",
+          "Table List"
+        ],
+        "MMA_CARDLESSTXN_FEPLOG": [
+          "322",
+          "Table List"
+        ],
+        "MMA_CARDLESSTXN_HISTORY": [
+          "323",
+          "Table List"
+        ],
+        "MMA_CARDLESSTXN_TEMPLOG": [
+          "325",
+          "Table List"
+        ],
+        "MMA_CREDITBANK_PAYBILL": [
+          "559",
+          "Table List"
+        ],
+        "MMA_CUSTID": [
+          "172"
+        ],
+        "MMA_E2EINFO": [
+          "326",
+          "Table List"
+        ],
+        "MMA_EXCHANGEFIX": [
+          "327",
+          "Table List"
+        ],
+        "MMA_FATCA_TX": [
+          "328",
+          "Table List"
+        ],
+        "MMA_FXORDER_PRECURR": [
+          "329",
+          "Table List"
+        ],
+        "MMA_H6000_EVT_GOLD": [
+          "330",
+          "Table List"
+        ],
+        "MMA_LINE_CASH": [
+          "75"
+        ],
+        "MMA_NOTUSER": [
+          "331",
+          "Table List"
+        ],
+        "MMA_PREFOREIGNCASH": [
+          "332",
+          "Table List"
+        ],
+        "MMA_QUERYLOGINSERVICE": [
+          "333",
+          "Table List"
+        ],
+        "MMA_SINOTRADE_API": [
+          "560",
+          "Table List"
+        ],
+        "MMA_SYPARAM": [
+          "561",
+          "Table List"
+        ],
+        "MMA_TRUST_INSURANCE": [
+          "334",
+          "Table List"
+        ],
+        "MN_ABRNO": [
+          "265"
+        ],
+        "MN_RBRCOD": [
+          "265"
+        ],
+        "MODIFY_TYPE": [
+          "562"
+        ],
+        "MSG_BODY": [
+          "147",
+          "155"
+        ],
+        "MSG_CATEGORY": [
+          "147",
+          "155"
+        ],
+        "MSG_DATE": [
+          "147",
+          "155"
+        ],
+        "MSG_FORMAT": [
+          "147",
+          "155"
+        ],
+        "MSG_FUND": [
+          "138"
+        ],
+        "MSG_LOGIN": [
+          "138"
+        ],
+        "MSG_MEMO": [
+          "147",
+          "155"
+        ],
+        "MSG_NOTIFY": [
+          "138"
+        ],
+        "MSG_TEXT": [
+          "309",
+          "310"
+        ],
+        "MSG_TITLE": [
+          "147",
+          "155"
+        ],
+        "MSG_TRADE": [
+          "138"
+        ],
+        "MSG_TRADE_NOW": [
+          "138"
+        ],
+        "MSG_TYPE": [
+          "309",
+          "310"
+        ],
+        "MSG_VALUE": [
+          "81",
+          "85"
+        ],
+        "MSG_WEIGHT_LEVEL": [
+          "147",
+          "155"
+        ],
+        "MTP_UNREGISTER_RCODE": [
+          "314"
+        ],
+        "MTP_UNREGISTER_RSPCODE": [
+          "314"
+        ],
+        "MTP_UNREGISTER_RSPMSG": [
+          "314"
+        ],
+        "MYVOICE_RECORD": [
+          "381",
+          "Table List"
+        ],
+        "M_PREFOREIGNCASH_COUNTRY": [
+          "293",
+          "Table List"
+        ],
+        "NATIONALITY_ORG": [
+          "328"
+        ],
+        "NEW_CHITEM": [
+          "351",
+          "352",
+          "353"
+        ],
+        "NEW_DD_ACCT": [
+          "167"
+        ],
+        "NEW_DD_BANKCODE": [
+          "167"
+        ],
+        "NEW_DD_IND": [
+          "167",
+          "169"
+        ],
+        "NEXT_DEDU_DATE": [
+          "19"
+        ],
+        "NEXT_SCHEDULE": [
+          "147",
+          "155"
+        ],
+        "NO": [
+          "133"
+        ],
+        "NOT_MARGIN": [
+          "108",
+          "112"
+        ],
+        "NO_HOUSEHOLD": [
+          "176",
+          "491"
+        ],
+        "NTFXPK_TAX": [
+          "Table List"
+        ],
+        "NT_CURRBAL": [
+          "73"
+        ],
+        "NUMBER_LOGIN": [
+          "176",
+          "491"
+        ],
+        "NUMBER_R": [
+          "345"
+        ],
+        "ODS_MOBILE": [
+          "416",
+          "418",
+          "419"
+        ],
+        "OD_SUMMARY": [
+          "61"
+        ],
+        "OFFICE_WIFI_IP": [
+          "132"
+        ],
+        "OLD_CHITEM": [
+          "351",
+          "352",
+          "353"
+        ],
+        "OPEN_GL": [
+          "110"
+        ],
+        "OPEN_GL_TWD": [
+          "108",
+          "110"
+        ],
+        "OPTION_URL": [
+          "309",
+          "310"
+        ],
+        "ORG_AMOUNT": [
+          "152"
+        ],
+        "ORG_AMOUNT_CUR": [
+          "152"
+        ],
+        "ORG_CURRENCY": [
+          "149",
+          "15",
+          "67",
+          "68"
+        ],
+        "ORG_UNIT_PRICE": [
+          "152"
+        ],
+        "ORIGINAL_RISKLEVEL": [
+          "215"
+        ],
+        "OTHER_SUMMARY": [
+          "61"
+        ],
+        "OTP_STATE": [
+          "560"
+        ],
+        "OUTSTANDING_PE": [
+          "337"
+        ],
+        "OUTSTAND_OD_AC": [
+          "337"
+        ],
+        "OUTSTAND_PD": [
+          "337"
+        ],
+        "OUT_CERT": [
+          "219"
+        ],
+        "OUT_DOLLAR": [
+          "219"
+        ],
+        "OUT_UNIT": [
+          "219"
+        ],
+        "OWNER_SID": [
+          "67"
+        ],
+        "P4000_FUNCTION_TYPE": [
+          "314"
+        ],
+        "P4000_RSPCODE": [
+          "314"
+        ],
+        "P4000_RSPMSG": [
+          "314"
+        ],
+        "PASSWORD_LEN": [
+          "476"
+        ],
+        "PAYEECURR_C": [
+          "327",
+          "345",
+          "358",
+          "360"
+        ],
+        "PAYMENT_TYPE": [
+          "334"
+        ],
+        "PMT_PREFERENCE": [
+          "175",
+          "474"
+        ],
+        "POINTS_EVENT_LOG": [
+          "553",
+          "Table List"
+        ],
+        "POINTS_TERMS_AGREE_LOG": [
+          "554",
+          "Table List"
+        ],
+        "POLICY_STATUS": [
+          "334"
+        ],
+        "PORTAL_IP": [
+          "442"
+        ],
+        "PORTAL_URL": [
+          "442"
+        ],
+        "PRE_PYMT_DATE": [
+          "73"
+        ],
+        "PRICE_DATE": [
+          "83"
+        ],
+        "PURCHASE_DATE": [
+          "152",
+          "154"
+        ],
+        "PWDCHG_TIMESTAMP": [
+          "175",
+          "474"
+        ],
+        "PWD_REVOKE_LOG": [
+          "399",
+          "Table List"
+        ],
+        "PWD_REVOKE_LOG_SMS": [
+          "400",
+          "Table List"
+        ],
+        "P_VALUE": [
+          "134"
+        ],
+        "QTY_WAY": [
+          "83"
+        ],
+        "RECV_DATA": [
+          "413"
+        ],
+        "REDEM_SUBS_MARK": [
+          "235"
+        ],
+        "REGISTERFLAG_R": [
+          "345"
+        ],
+        "REMAINING_DOLLAR": [
+          "219"
+        ],
+        "REMAINING_UNIT": [
+          "219"
+        ],
+        "REMIT_STATUS": [
+          "406",
+          "Table List"
+        ],
+        "REPAYMENT_ACNO": [
+          "99"
+        ],
+        "REPAYMENT_DATE": [
+          "99"
+        ],
+        "RESPONSE_URL": [
+          "445"
+        ],
+        "RES_DATE": [
+          "560"
+        ],
+        "RISK_PREFERENCE": [
+          "176",
+          "491"
+        ],
+        "ROIRATE_D": [
+          "216"
+        ],
+        "RQ_EDATE": [
+          "355"
+        ],
+        "RQ_PRDCD": [
+          "327",
+          "355"
+        ],
+        "RQ_PRDCDD": [
+          "327",
+          "355"
+        ],
+        "RQ_RATETYPE": [
+          "361"
+        ],
+        "RQ_XPERIODTYPE": [
+          "361"
+        ],
+        "RSP_DOLLAR": [
+          "19"
+        ],
+        "RS_EDATE": [
+          "327",
+          "355"
+        ],
+        "RS_PRDCD": [
+          "327",
+          "355"
+        ],
+        "RS_PRDCDD": [
+          "355"
+        ],
+        "RS_RATETYPE": [
+          "361"
+        ],
+        "RS_XPERIODTYPE": [
+          "361"
+        ],
+        "SATUS": [
+          "406"
+        ],
+        "SAVING_SUMMARY": [
+          "61"
+        ],
+        "SCHEDULE_TEXT": [
+          "495"
+        ],
+        "SCHEDULE_TYPE": [
+          "495"
+        ],
+        "SECURITIES_SUMMARY": [
+          "61"
+        ],
+        "SELL_PRICE": [
+          "83"
+        ],
+        "SELL_QTY_WAY": [
+          "83"
+        ],
+        "SELL_TRUSTAMT": [
+          "83"
+        ],
+        "SELL_TRUSTAMT_PRICE": [
+          "83"
+        ],
+        "SEND_DATA": [
+          "413"
+        ],
+        "SEND_EMAIL": [
+          "495"
+        ],
+        "SETTLEMENT_ACCT": [
+          "314"
+        ],
+        "SETTMENT_PRICE": [
+          "110"
+        ],
+        "SINOTRADE_API_RESULT": [
+          "560"
+        ],
+        "SINOTRADE_CBURL": [
+          "560"
+        ],
+        "SMSD15_REMIND_LOG": [
+          "416",
+          "Table List"
+        ],
+        "SMSFUND_REMIND_LOG": [
+          "418",
+          "Table List"
+        ],
+        "SMSFUND_REMIND_TMP": [
+          "419",
+          "Table List"
+        ],
+        "SMS_MODIFYLOG": [
+          "411",
+          "Table List"
+        ],
+        "SMS_MSGLOG": [
+          "413",
+          "Table List"
+        ],
+        "SMS_REMIND": [
+          "Table List"
+        ],
+        "SMS_SENDFLAG": [
+          "416",
+          "418",
+          "419"
+        ],
+        "SMS_STATUS": [
+          "486"
+        ],
+        "SMS_VERIFY": [
+          "415",
+          "Table List"
+        ],
+        "SOURCE_2": [
+          "519"
+        ],
+        "SP_BANK_IPIGCASHBALNOTIFY_PUSH_117667": [
+          "95"
+        ],
+        "SP_CREDIT_ACT": [
+          "61"
+        ],
+        "SP_EBANK_NODM": [
+          "55"
+        ],
+        "SP_EMAIL_MSG_TYPE": [
+          "81"
+        ],
+        "SP_FAVORITE_MSG_TYPE": [
+          "85"
+        ],
+        "SP_FUND_ACT": [
+          "61"
+        ],
+        "SP_MMA_ACT": [
+          "61"
+        ],
+        "SP_NON_RAISE": [
+          "176",
+          "491"
+        ],
+        "SP_RAISE_CHILD": [
+          "176",
+          "491"
+        ],
+        "SP_RAISE_NUM": [
+          "176",
+          "491"
+        ],
+        "SP_RAISE_PARENT": [
+          "176",
+          "491"
+        ],
+        "SP_SAVING_ACT": [
+          "61"
+        ],
+        "SP_SECURITIES_ACT": [
+          "61"
+        ],
+        "SP_TEACHER_EMAIL_SMS": [
+          "Table List"
+        ],
+        "SS_BUY": [
+          "428",
+          "Table List"
+        ],
+        "SS_MODIFY": [
+          "429",
+          "Table List"
+        ],
+        "SS_SELL": [
+          "430",
+          "Table List"
+        ],
+        "START_DATE": [
+          "151",
+          "561"
+        ],
+        "START_DATETIME": [
+          "134"
+        ],
+        "STATEMENT_DATE": [
+          "71"
+        ],
+        "STATUS_1": [
+          "144"
+        ],
+        "STATUS_2": [
+          "144"
+        ],
+        "STATUS_R": [
+          "345"
+        ],
+        "STATUS_X000D_": [
+          "328"
+        ],
+        "STMT_DUEDATE": [
+          "168"
+        ],
+        "STOCKA_RATIO": [
+          "20",
+          "555"
+        ],
+        "STOCKB_RATIO": [
+          "20",
+          "555"
+        ],
+        "STOCKC_RATIO": [
+          "20",
+          "555"
+        ],
+        "STOCK_ACCOMMODATION": [
+          "139"
+        ],
+        "STOCK_COLLAT": [
+          "139"
+        ],
+        "STOCK_FUTURE": [
+          "139"
+        ],
+        "STOCK_LOAN": [
+          "139"
+        ],
+        "STOCK_LOT": [
+          "139"
+        ],
+        "STOCK_RATIO": [
+          "20",
+          "555"
+        ],
+        "STOCK_RP": [
+          "139"
+        ],
+        "STOCK_RS": [
+          "139"
+        ],
+        "STOCK_SYMBOL": [
+          "114",
+          "116",
+          "118",
+          "120",
+          "122",
+          "124",
+          "126"
+        ],
+        "STOCK_TOTAL": [
+          "139"
+        ],
+        "STOCK_UPDATE_DATE": [
+          "41"
+        ],
+        "STOCK_VALUE": [
+          "114",
+          "116",
+          "118",
+          "120",
+          "139"
+        ],
+        "STOCK_WAY": [
+          "139"
+        ],
+        "STOP_GAIN_POINT1": [
+          "215"
+        ],
+        "STOP_GAIN_POINT2": [
+          "215"
+        ],
+        "STOP_GAIN_POINT3": [
+          "215"
+        ],
+        "STOP_GAIN_TYPE": [
+          "215"
+        ],
+        "STOP_LOSS_POINT": [
+          "215"
+        ],
+        "STOP_LOSS_TYPE": [
+          "215"
+        ],
+        "ST_DESC": [
+          "406"
+        ],
+        "SUB_AREA": [
+          "271"
+        ],
+        "SUSPENSE_MARK": [
+          "219"
+        ],
+        "SYSSAMPLECHK_D": [
+          "436",
+          "Table List"
+        ],
+        "T24_BEFORE_CHANGE": [
+          "493"
+        ],
+        "T24_CUSTID": [
+          "343"
+        ],
+        "T24_PHONE_MAP_MNEMONIC": [
+          "314"
+        ],
+        "T24_PHONE_MAP_RSPCODE": [
+          "314"
+        ],
+        "T24_PHONE_MAP_RSPMSG": [
+          "314"
+        ],
+        "T24_PHONE_MAP_SMS": [
+          "314"
+        ],
+        "T24_PHONE_MAP_STOP_FLG": [
+          "314"
+        ],
+        "T24_PHONE_MAP_TOKEN": [
+          "314"
+        ],
+        "T24_TMBI_P1200_CURR": [
+          "439",
+          "Table List"
+        ],
+        "T24_TMB_AIO_ACCT": [
+          "438",
+          "Table List"
+        ],
+        "TARGET_TYPE": [
+          "151",
+          "152"
+        ],
+        "TAX_CLASS": [
+          "270"
+        ],
+        "TAX_FOR_CUST_LCY": [
+          "314"
+        ],
+        "TAX_SUBCLASS": [
+          "270"
+        ],
+        "TC_ACC_RANGE": [
+          "441",
+          "Table List"
+        ],
+        "TC_API_1": [
+          "442",
+          "Table List"
+        ],
+        "TC_API_2": [
+          "443",
+          "Table List"
+        ],
+        "TC_BANKKEY": [
+          "444",
+          "Table List"
+        ],
+        "TC_SERVER": [
+          "445",
+          "Table List"
+        ],
+        "TERM_AMOUNT": [
+          "334"
+        ],
+        "TFRIN_NOPACT": [
+          "462",
+          "Table List"
+        ],
+        "TFRIN_NOPACT_LIMIT": [
+          "562",
+          "Table List"
+        ],
+        "TI.CHNN.CODE": [
+          "133"
+        ],
+        "TIMESTAMP_AFTER": [
+          "144",
+          "15",
+          "167",
+          "168",
+          "169",
+          "19",
+          "20",
+          "209",
+          "21",
+          "214",
+          "215",
+          "216",
+          "217",
+          "218",
+          "219",
+          "22",
+          "220",
+          "221",
+          "222",
+          "223",
+          "224",
+          "225",
+          "226",
+          "23",
+          "231",
+          "232",
+          "233",
+          "234",
+          "235",
+          "238",
+          "239",
+          "24",
+          "240",
+          "25",
+          "314",
+          "328",
+          "330",
+          "332",
+          "337",
+          "338",
+          "339",
+          "341",
+          "343",
+          "345",
+          "354",
+          "355",
+          "356",
+          "357",
+          "358",
+          "360",
+          "361",
+          "362",
+          "363",
+          "365",
+          "366",
+          "367",
+          "368",
+          "369",
+          "370",
+          "371",
+          "372",
+          "373",
+          "374",
+          "375",
+          "376",
+          "428",
+          "429",
+          "430",
+          "438",
+          "439",
+          "519",
+          "54",
+          "555",
+          "56",
+          "562",
+          "57",
+          "58",
+          "59"
+        ],
+        "TIMESTAMP_D": [
+          "329"
+        ],
+        "TOTAL_CLOSE_AMT_LCY": [
+          "314"
+        ],
+        "TOTAL_COUNT": [
+          "144"
+        ],
+        "TOTAL_STOCK": [
+          "83"
+        ],
+        "TOTAL_WAY": [
+          "83"
+        ],
+        "TRADE_ACCOUNT": [
+          "334"
+        ],
+        "TRADE_DATE": [
+          "110"
+        ],
+        "TRADE_SEQNO": [
+          "560"
+        ],
+        "TRADE_STOCK": [
+          "138"
+        ],
+        "TRADE_TYPE": [
+          "152",
+          "154"
+        ],
+        "TRANSFER_TAX": [
+          "Table List"
+        ],
+        "TRANS_TYPE": [
+          "334"
+        ],
+        "TREASURY_RATE": [
+          "332"
+        ],
+        "TRUSTAMT_WAY": [
+          "83"
+        ],
+        "TRUSTAMT_WAY_TWD": [
+          "83"
+        ],
+        "TRUST_AMOUNT": [
+          "152"
+        ],
+        "TRUST_AMT_TWD": [
+          "83"
+        ],
+        "TRUST_CUR": [
+          "152",
+          "154"
+        ],
+        "TWD_AMOUNT": [
+          "152",
+          "154"
+        ],
+        "TWID_TOKEN": [
+          "25"
+        ],
+        "TXN_DATE": [
+          "493"
+        ],
+        "TX_MAPPING": [
+          "471",
+          "Table List"
+        ],
+        "TX_STATISTIC": [
+          "472",
+          "Table List"
+        ],
+        "T_ADDR2": [
+          "207"
+        ],
+        "T_AUTHORISER": [
+          "332"
+        ],
+        "T_BR_SEQNO": [
+          "332"
+        ],
+        "T_CBR_EX_RATE": [
+          "332"
+        ],
+        "T_CLASS": [
+          "332"
+        ],
+        "T_CNTRY": [
+          "332"
+        ],
+        "T_COST_RATE": [
+          "332"
+        ],
+        "T_CR_KPI_BR": [
+          "332"
+        ],
+        "T_CS_DENOM": [
+          "332"
+        ],
+        "T_CS_PHONE": [
+          "332"
+        ],
+        "T_CS_QUANTITY": [
+          "332"
+        ],
+        "T_CS_SETT_DATE": [
+          "332"
+        ],
+        "T_DATA_KIND": [
+          "332"
+        ],
+        "T_EMAIL": [
+          "207"
+        ],
+        "T_FX_RATE": [
+          "332"
+        ],
+        "T_FX_TXN_REF": [
+          "332"
+        ],
+        "T_KPI_BR": [
+          "332"
+        ],
+        "T_LISTRATE": [
+          "332"
+        ],
+        "T_MNEMONIC": [
+          "483"
+        ],
+        "T_PHONE_TYPE": [
+          "207"
+        ],
+        "T_PSB_MEMO_C": [
+          "332"
+        ],
+        "T_PYMT_MODE": [
+          "314"
+        ],
+        "T_REF_EXRATE": [
+          "332"
+        ],
+        "T_REMARK": [
+          "332"
+        ],
+        "T_TX_O_ACCT_D": [
+          "314"
+        ],
+        "UNCLAMP_R": [
+          "345"
+        ],
+        "UPDATE_DATE": [
+          "334"
+        ],
+        "UPDATE_DATE_BANK": [
+          "149",
+          "67"
+        ],
+        "UPDATE_DATE_CARD": [
+          "71"
+        ],
+        "UPDATE_DATE_FUND": [
+          "150",
+          "153"
+        ],
+        "UPDATE_DATE_STOCK": [
+          "156"
+        ],
+        "UPDATE_USERID": [
+          "26"
+        ],
+        "UPL_FC_DIVIDEND": [
+          "83"
+        ],
+        "URETURN_FC_DIVIDEND": [
+          "83"
+        ],
+        "USERCODE_LEN": [
+          "476"
+        ],
+        "USER_AUTHLOG": [
+          "475",
+          "Table List"
+        ],
+        "USER_CHANGE_LOG": [
+          "476",
+          "Table List"
+        ],
+        "USER_CREATEMMAMEMBER_LOG": [
+          "478",
+          "Table List"
+        ],
+        "USER_EDIT_EMAIL_LOG": [
+          "481",
+          "Table List"
+        ],
+        "USER_FAVORITE_LINK": [
+          "482",
+          "Table List"
+        ],
+        "USER_FOREIGNER_LIST": [
+          "483",
+          "Table List"
+        ],
+        "USER_ICCARDAPPLYMEMBER_LOG": [
+          "484",
+          "Table List"
+        ],
+        "USER_IP": [
+          "443"
+        ],
+        "USER_LOGIN_LOG": [
+          "485",
+          "Table List"
+        ],
+        "USER_ONLINEAPPLYMEMBER_LOG": [
+          "486",
+          "Table List"
+        ],
+        "USER_ONLINEAPPLYMEMBER_RESET": [
+          "487",
+          "Table List"
+        ],
+        "USER_OTHER_ACCOUNT_BALANCE": [
+          "488",
+          "Table List"
+        ],
+        "USER_PASSWORD_CHANGE": [
+          "489",
+          "Table List"
+        ],
+        "USER_PROFILE": [
+          "491",
+          "Table List"
+        ],
+        "USER_PROFILE_CHANGLOG": [
+          "493",
+          "Table List"
+        ],
+        "USER_SCHEDULE": [
+          "495",
+          "Table List"
+        ],
+        "USER_STATE": [
+          "175",
+          "474"
+        ],
+        "USER_STATUS": [
+          "496",
+          "Table List"
+        ],
+        "USER_STATUS_LOG": [
+          "499",
+          "Table List"
+        ],
+        "USE_VALID_TYPE": [
+          "46"
+        ],
+        "VAILIDATE_STATUS": [
+          "486"
+        ],
+        "VALI_DATE": [
+          "334"
+        ],
+        "VALUE_TWD": [
+          "83"
+        ],
+        "VALUE_WAY_TWD": [
+          "83"
+        ],
+        "VAL_CUR": [
+          "214",
+          "217",
+          "219"
+        ],
+        "VD_OCT_1": [
+          "519",
+          "Table List"
+        ],
+        "WANT_MESSAGE": [
+          "61"
+        ],
+        "WAY_AMOUNT": [
+          "154"
+        ],
+        "WEBATMLOG_DAILY": [
+          "132"
+        ]
+      },
+      "sectionMatchKeys": {},
+      "pageMatchKeys": {}
+    },
+    {
+      "refId": "db.b2c-sendmail.dbrelational.18cc41e0",
+      "category": "db_schema",
+      "title": "DB Relational",
+      "relativePath": "reference/global/raw/db-schema/DB Relational.xlsx",
+      "checksum": "sha256:518b5f13063cd5f6beebd6b02338a12ef724f9a9d8b5156335fbb97ec8431685",
+      "fileType": "xlsx",
+      "versionDateToken": null,
+      "sourceLabel": "db-workbook",
+      "keywords": [],
+      "matchKeys": [
+        "B2C_SENDMAIL",
+        "DAWHO_HISTORY",
+        "DB_AI",
+        "DB_SECBANK",
+        "MMA_FUNDSEARCH",
+        "MMA_NCB",
+        "MMA_SENDMAIL_NOW",
+        "MMA_SENDMAIL_TXN",
+        "MMA_VIP",
+        "PAYBILL_UAT",
+        "VCS_DB"
+      ],
+      "apiCodes": [],
+      "tableNames": [
+        "B2C_SENDMAIL",
+        "DAWHO_HISTORY",
+        "DB_AI",
+        "DB_SECBANK",
+        "MMA_FUNDSEARCH",
+        "MMA_NCB",
+        "MMA_SENDMAIL_NOW",
+        "MMA_SENDMAIL_TXN",
+        "MMA_VIP",
+        "PAYBILL_UAT",
+        "VCS_DB"
+      ],
+      "fieldNames": [
+        "B2C_SENDMAIL",
+        "DAWHO_HISTORY",
+        "DB_AI",
+        "DB_SecBank",
+        "MMA_FUNDSEARCH",
+        "MMA_NCB",
+        "MMA_SENDMAIL_NOW",
+        "MMA_SENDMAIL_TXN",
+        "MMA_VIP",
+        "PayBill_UAT",
+        "VCS_DB",
+        "dbo"
+      ],
+      "sheetNames": [
+        "大戶APP關連DB",
+        "EAINET"
+      ],
+      "sheetMatchKeys": {
+        "B2C_SENDMAIL": [
+          "大戶APP關連DB"
+        ],
+        "DAWHO_HISTORY": [
+          "大戶APP關連DB"
+        ],
+        "DB_AI": [
+          "大戶APP關連DB"
+        ],
+        "DB_SECBANK": [
+          "大戶APP關連DB"
+        ],
+        "MMA_FUNDSEARCH": [
+          "大戶APP關連DB"
+        ],
+        "MMA_NCB": [
+          "大戶APP關連DB"
+        ],
+        "MMA_SENDMAIL_NOW": [
+          "大戶APP關連DB"
+        ],
+        "MMA_SENDMAIL_TXN": [
+          "大戶APP關連DB"
+        ],
+        "MMA_VIP": [
+          "大戶APP關連DB"
+        ],
+        "PAYBILL_UAT": [
+          "大戶APP關連DB"
+        ],
+        "VCS_DB": [
+          "大戶APP關連DB"
+        ]
+      },
+      "sectionMatchKeys": {},
+      "pageMatchKeys": {}
+    },
+    {
+      "refId": "db.frontcontent-announcement.unnamed.59afe0c5",
+      "category": "db_schema",
+      "title": "停機公告",
+      "relativePath": "reference/global/raw/db-schema/停機公告.xlsx",
+      "checksum": "sha256:07850baddc68ab631baff9b37e926862a41bafc6bf5f03201a1ddbb7f151cc51",
+      "fileType": "xlsx",
+      "versionDateToken": null,
+      "sourceLabel": "db-workbook",
+      "keywords": [],
+      "matchKeys": [
+        "FRONTCONTENT_ANNOUNCEMENT",
+        "FRONTCONTENT__ANNOUNCEMENT"
+      ],
+      "apiCodes": [],
+      "tableNames": [
+        "FRONTCONTENT_ANNOUNCEMENT",
+        "FRONTCONTENT__ANNOUNCEMENT"
+      ],
+      "fieldNames": [
+        "FrontContent_Announcement",
+        "FrontContent__Announcement",
+        "bit",
+        "column",
+        "comment",
+        "datatype",
+        "default",
+        "getdate",
+        "integer",
+        "length",
+        "nulls",
+        "nvarchar",
+        "uniqueidentifier",
+        "yes"
+      ],
+      "sheetNames": [
+        "FrontContent__Announcement"
+      ],
+      "sheetMatchKeys": {
+        "FRONTCONTENT_ANNOUNCEMENT": [
+          "FrontContent__Announcement"
+        ],
+        "FRONTCONTENT__ANNOUNCEMENT": [
+          "FrontContent__Announcement"
+        ]
+      },
+      "sectionMatchKeys": {},
+      "pageMatchKeys": {}
+    },
+    {
+      "refId": "db.recacnostro-m.mmab2c.72a2b4f5",
+      "category": "db_schema",
+      "title": "MMAB2C",
+      "relativePath": "reference/global/raw/db-schema/MMAB2C.xlsx",
+      "checksum": "sha256:926ee337321d3db128023c6a2b754ee03b6429ed372466888c0aa24be6e8b446",
+      "fileType": "xlsx",
+      "versionDateToken": null,
+      "sourceLabel": "db-workbook",
+      "keywords": [],
+      "matchKeys": [
+        "RECACNOSTRO_M"
+      ],
+      "apiCodes": [],
+      "tableNames": [
+        "RECACNOSTRO_M"
+      ],
+      "fieldNames": [
+        "RECACNOSTRO_M",
+        "bigint",
+        "char",
+        "date",
+        "identity",
+        "list",
+        "numeric",
+        "nvarchar",
+        "smallint"
+      ],
+      "sheetNames": [
+        "Table List",
+        "FXDECLARE",
+        "FXDETAIL",
+        "FXREM",
+        "FXWU11"
+      ],
+      "sheetMatchKeys": {
+        "RECACNOSTRO_M": [
+          "FXDETAIL"
+        ]
+      },
+      "sectionMatchKeys": {},
+      "pageMatchKeys": {}
+    }
+  ]
+}

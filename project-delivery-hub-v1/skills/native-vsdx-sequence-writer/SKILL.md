@@ -1,9 +1,9 @@
 ---
-name: 专案原生 VSDX 时序图生成器
+name: 【交付文件】专案原生 VSDX 时序图生成器
 description: 生成或修正正式交付用的原生可编辑 Visio VSDX 时序图。按冻版 PRD、TSD、API Detail 产出 native VSDX，并保留 PlantUML/SVG 作为文本草稿、视觉参考或降级输出；重点验证 native shapes、lifeline、alt/ref/opt/group 与可编辑性。关键词：VSDX、Visio、sequence diagram、PlantUML、native validation。
 ---
 
-# 专案原生 VSDX 时序图生成器
+# 【交付文件】专案原生 VSDX 时序图生成器
 
 ## 上下文策略
 
@@ -16,7 +16,7 @@ description: 生成或修正正式交付用的原生可编辑 Visio VSDX 时序�
 正式 VSDX 交付或修图时，必须先运行规则包解析脚本：
 
 ```powershell
-python "C:\Users\<username>\plugins\project-delivery-hub-v1\references\resolve_project_rule_pack.py" `
+python "<pluginRoot>\references\resolve_project_rule_pack.py" `
   --pack sequenceDiagram `
   --workspace-key "<workspaceKey>"
 ```
@@ -24,7 +24,7 @@ python "C:\Users\<username>\plugins\project-delivery-hub-v1\references\resolve_p
 若用户提供了明确规则库，使用 `--rules-root`：
 
 ```powershell
-python "C:\Users\<username>\plugins\project-delivery-hub-v1\references\resolve_project_rule_pack.py" `
+python "<pluginRoot>\references\resolve_project_rule_pack.py" `
   --pack sequenceDiagram `
   --rules-root "<rulesRoot>"
 ```
@@ -99,7 +99,7 @@ output/sequence_diagram/{functionCode}/
 - 每个正式 tab 必须有可见用户入口，通常是 `User -> APP: 點擊...`。
 - 若 PRD/TSD 没给明确拆分，默认一个 tab，并在落版说明记录缺少拆分依据。
 - 默认不要创建或刷新 `svg/`、`png/`。用户明确要求图片输出时，才生成并与正式 VSDX 验收分开说明。
-- `vsdx/` 内只保留最终 `{functionCode}_01.vsdx`；如需备份，最多保留一个相邻 `.bak`。
+- `vsdx/` 内只保留最终 `{functionCode}_01.vsdx`；默认不创建 `.bak`、`.before_*`、时间戳备份或其他交付目录相邻备份。确需安全副本时使用版本控制或工具临时目录，并在交付前清理。
 
 ## 核心流程
 
@@ -176,7 +176,7 @@ output/sequence_diagram/{functionCode}/
 正式 VSDX 存在时，始终执行 native 验证：
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File C:\Users\<username>\plugins\project-delivery-hub-v1\skills\native-vsdx-sequence-writer\scripts\validate_native_visio_output.ps1 -VsdxPath path\to\file.vsdx
+powershell -NoProfile -ExecutionPolicy Bypass -File <pluginRoot>\skills\native-vsdx-sequence-writer\scripts\validate_native_visio_output.ps1 -VsdxPath path\to\file.vsdx
 ```
 
 验收重点：

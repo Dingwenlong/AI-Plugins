@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "4.1.0",
+  "skillName": "api-sql-fixture-preparer",
+  "manifestType": "db-fixture-report",
+  "updatedAt": "2026-05-23T17:55:53+08:00",
+  "executionId": "Common",
+  "apiId": "COMMON.commonutil.checkprelogindevicestatus",
+  "status": "skipped",
+  "phase": "no_sql",
+  "executionMode": "prepare",
+  "dbTarget": "ConnectionStrings.Report",
+  "authorityRoot": null,
+  "sqlFixtureRequired": false,
+  "sourcesUsed": [],
+  "tableRefs": [],
+  "summary": {
+    "tableCount": 0,
+    "blockingTableCount": 0,
+    "queryTextCount": 0
+  },
+  "message": "COMMON.commonutil.checkprelogindevicestatus fixture skipped: no SQL dependency.",
+  "findings": []
+}

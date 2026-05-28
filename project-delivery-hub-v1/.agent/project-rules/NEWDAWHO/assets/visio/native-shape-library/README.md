@@ -29,6 +29,7 @@ Current templates:
 Native self-call label rule:
 
 - `Self Message` labels default to a left-aligned text block immediately to the right of the folded arrow. Keep small technical parameter snippets in the same character color/style as the surrounding Chinese label.
+- A normal self-message consumes one participant connection-point interval for the folded arrow and reserves one connection-point interval to the next message arrow; ref-only CommonFunc/CommonUtil self-calls keep the compact ref layout.
 
 Default message style profile:
 

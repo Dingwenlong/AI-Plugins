@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "1.0.0",
+  "skillName": "code-style-reviewer",
+  "status": "blocked",
+  "updatedAt": "2026-05-28T18:39:06+08:00",
+  "functionCode": "D.004",
+  "projectRoot": "D:/Devs/NEWDAWHO/D.004/P240301Git",
+  "scope": "context",
+  "targetFiles": [],
+  "summary": {
+    "findingCount": 1,
+    "bySeverity": {
+      "blocking": 1
+    },
+    "highestSeverity": "blocking"
+  },
+  "findings": [
+    {
+      "severity": "blocking",
+      "category": "scope",
+      "ruleId": "missing_authoritative_function_context",
+      "source": "project-delivery-hub-v1:code-style-reviewer",
+      "file": null,
+      "line": null,
+      "message": "D.004 缺少可信功能代码边界，无法对猜测文件输出正式代码规范结论。",
+      "evidence": "共享 .agent/context/D.004 不存在；分支内无旧版分支本地 context；HEAD 与近期提交主要为 SonarQube.yml；仅在 Common handoff 中发现 TSD.D.004.001_新增外幣定存 引用，无法定位本分支功能相关 C# 文件。",
+      "expected": "提供 D.004 对应的 change-plan、API handoff、执行批次或明确功能文件清单后再审查。",
+      "actual": "无权威 context，无法确认 targetFiles。",
+      "fixHint": "先补 D.004 的正式 .agent/context 或指定功能相关生产 C# 文件；不要用大范围历史 C# 文件冒充功能审查。",
+      "confidence": "high"
+    }
+  ]
+}

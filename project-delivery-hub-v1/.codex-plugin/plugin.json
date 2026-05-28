@@ -1,7 +1,7 @@
 {
   "name": "project-delivery-hub-v1",
-  "version": "1.1.0",
-  "description": "整合专案设计与 API 交付流程：从 PRD/TSD/API Detail 梳理，到原生 VSDX 时序图、交付格式检查、API 规格、代码写入、SQL 测试资料、UT 报告生成与企业微信智能表格异动记录同步。",
+  "version": "1.2.12",
+  "description": "Project delivery hub for PRD/TSD/API Detail alignment, design feedback fixes, Office deliverable editing, native VSDX, delivery formatting, API spec, SQL fixture, business code, code style review, UT report, WeDoc change records, and explicit leader/sub-agent orchestration.",
   "author": {
     "name": "Jimmy Local"
   },
@@ -10,8 +10,17 @@
     "project-delivery",
     "project-rules",
     "api-design",
+    "design-leader",
+    "design-feedback",
+    "office-edit-plan",
+    "office-deliverable",
     "api-delivery",
     "api-spec",
+    "code-style-review",
+    "multi-api-leader",
+    "sub-agent",
+    "orchestration",
+    "file-claims",
     "tsd",
     "vsdx",
     "delivery-format",
@@ -23,9 +32,9 @@
   ],
   "skills": "./skills/",
   "interface": {
-    "displayName": "专案交付中枢",
-    "shortDescription": "规则驱动的专案设计、API 规格、代码落地与测试报告交付工作台",
-    "longDescription": "本地 Codex 插件，用于整合专案从规则库、设计梳理到交付的完整流程：PRD/TSD/API Detail 同步、专案规则分析、原生 VSDX 时序图生成、交付格式检查、参考资料索引导入、API 规格生成、可选 SQL 测试资料准备、API 代码写入、DOCX 单元测试报告生成，以及按项目 .agent 私有配置同步企业微信智能表格异动记录。",
+    "displayName": "\u4e13\u6848\u4ea4\u4ed8\u4e2d\u67a2",
+    "shortDescription": "PRD/TSD/API Detail \u5bf9\u9f50\u3001\u8bbe\u8ba1\u53cd\u9988\u3001Office \u4ea4\u4ed8\u3001VSDX\u3001API \u5f00\u53d1\u843d\u5730\u3001UT \u62a5\u544a\u4e0e\u591a\u63a5\u53e3\u7f16\u6392\u3002",
+    "longDescription": "Codex \u4e13\u6848\u4ea4\u4ed8\u4e2d\u67a2\u63d2\u4ef6\uff0c\u63d0\u4f9b\u8d44\u6599\u51c6\u5907\u3001\u8bbe\u8ba1\u68b3\u7406\u3001\u4ea4\u4ed8\u6587\u4ef6\u3001\u5f00\u53d1\u843d\u5730\u3001\u6d4b\u8bd5\u9a8c\u6536\u3001\u6d41\u7a0b\u7f16\u6392\u3001\u8fd0\u8425\u540c\u6b65\u4e0e\u63d2\u4ef6\u8fd0\u7ef4\u6280\u80fd\uff0c\u8986\u76d6 PRD/TSD/API Detail \u68b3\u7406\u3001Office/VSDX \u4ea4\u4ed8\u3001API Spec\u3001SQL fixture\u3001.NET \u4e1a\u52a1\u4ee3\u7801\u3001\u4ee3\u7801\u89c4\u8303\u5ba1\u67e5\u3001UT \u62a5\u544a\u4e0e\u4f01\u4e1a\u5fae\u4fe1\u667a\u80fd\u8868\u683c\u5f02\u52a8\u8bb0\u5f55\u3002",
     "developerName": "Jimmy Local",
     "category": "Productivity",
     "capabilities": [
@@ -34,11 +43,14 @@
       "Write"
     ],
     "defaultPrompt": [
-      "同步 PRD/TSD/API Detail",
-      "生成原生 VSDX 时序图",
-      "分析专案规则文件",
-      "同步异动记录到企业微信智能表格",
-      "执行专案交付中枢"
+      "\u3010\u8d44\u6599\u51c6\u5907\u3011\u5bfc\u5165\u53c2\u8003\u8d44\u6599\u7d22\u5f15\u6216\u5206\u6790\u4e13\u6848\u89c4\u5219",
+      "\u3010\u8bbe\u8ba1\u68b3\u7406\u3011\u68b3\u7406 PRD/TSD/API Detail \u5e76\u4ea7\u51fa\u5f00\u53d1\u4ea4\u63a5",
+      "\u3010\u4ea4\u4ed8\u6587\u4ef6\u3011\u68c0\u67e5\u683c\u5f0f\u3001\u7f16\u8f91 Office \u6587\u4ef6\u3001\u751f\u6210 VSDX \u6216\u6536\u96c6\u4ea4\u4ed8\u5305",
+      "\u3010\u5f00\u53d1\u843d\u5730\u3011\u751f\u6210 API Spec\u3001\u51c6\u5907 SQL fixture\u3001\u5199\u5165\u4e1a\u52a1\u4ee3\u7801\u6216\u5ba1\u67e5\u4ee3\u7801\u89c4\u8303",
+      "\u3010\u6d4b\u8bd5\u9a8c\u6536\u3011\u751f\u6210 API \u6d4b\u8bd5\u4ee3\u7801\u4e0e DOCX UT \u62a5\u544a",
+      "\u3010\u6d41\u7a0b\u7f16\u6392\u3011\u7edf\u7b79\u5355\u529f\u80fd\u591a\u63a5\u53e3\u5e76\u884c\u4ea4\u4ed8",
+      "\u3010\u8fd0\u8425\u540c\u6b65\u3011\u5199\u5165\u4f01\u4e1a\u5fae\u4fe1\u667a\u80fd\u8868\u683c\u5f02\u52a8\u8bb0\u5f55",
+      "\u3010\u63d2\u4ef6\u8fd0\u7ef4\u3011\u6253\u5305\u5e76\u540c\u6b65 project-delivery-hub-v1 \u63d2\u4ef6"
     ],
     "brandColor": "#0F766E",
     "screenshots": []

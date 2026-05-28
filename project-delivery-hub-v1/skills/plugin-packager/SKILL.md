@@ -1,9 +1,9 @@
 ---
-name: 专案交付中枢插件打包器
-description: 打包、发布并同步 `project-delivery-hub-v1` 插件。用于刷新 `company-jimmy` 本机维护版、`company-dev` 开发测试版与 Codex 缓存，套用固定 plugin URI 和 marketplace 规则，并随包携带集中 `.agent`、主流程图、技能/.agent 架构图与工作区结构树；不处理客户 TSD 交付包。关键词：plugin package、company-jimmy、company-dev、agent bundle、cache sync。
+name: 【插件运维】专案交付中枢插件打包器
+description: 打包、发布并同步 `project-delivery-hub-v1` 插件。仅用于插件维护任务：刷新 `company-jimmy` 本机维护版、`company-dev` 开发测试版或显式配置的 Codex 缓存，套用 `references/package-targets.json` 中的 plugin URI 与 marketplace 规则，并随包携带集中 `.agent`、主流程图、技能/.agent 架构图与工作区结构树；不处理客户 TSD 交付包。关键词：plugin package、company-jimmy、company-dev、agent bundle、cache sync。
 ---
 
-# 专案交付中枢插件打包器
+# 【插件运维】专案交付中枢插件打包器
 
 用于维护 `project-delivery-hub-v1` 的本机维护版、开发测试版与 Codex 缓存同步规则。本技能只处理插件自身打包发布，不处理 TSD 客户交付包。
 
@@ -17,11 +17,12 @@ description: 打包、发布并同步 `project-delivery-hub-v1` 插件。用于�
 - 插件根目录必须带 `USAGE.md`，用于给接收插件包的同事安装、初始化项目工作区 `.agent` 与配置 `local-workspaces.json`。
 - `company-jimmy` 指向 Jimmy 本机维护市场：`C:\Users\<username>\.agents\plugins\marketplace.json`。
 - `company-dev` 指向开发测试打包市场：`C:\Users\<username>\plugin-marketplaces\company-dev\.agents\plugins\marketplace.json`。
-- 旧插件 ID 与旧个人 marketplace 只视为历史兼容来源，不再作为 active 打包目标；不要在新包里重新写入旧 URI。
+- 旧插件 ID 与旧个人 marketplace 组合只视为历史兼容来源，不再作为 active 打包目标；不要在新包里重新写入旧 URI。若 `references/package-targets.json` 仍保留 `personal` target，只能按该配置用于当前安装诊断或显式维护，不作为默认打包目标。
 - 打包时必须把 `agentBundle` 指向的 `.agent` 同步进包和缓存；随包 `.agent` 只作为初始化快照，正式运行位置必须是项目工作区根目录，例如 `<workspaceRoot>\.agent`。
 - 工作区解析快照只允许存在于 `.agent/config/chain-workspace.json`；不要生成或携带 `.agent/workspaces/<workspaceKey>.json`。
 - `.agent` 内的 `.bak`、`__pycache__`、`.tmp`、`.log`、`.pyc` 不得进入打包产物。
 - 企业微信智能表格真实配置属于个人/项目私有配置，`.agent/config/wedoc-smartsheet-targets.json` 与 `.agent/config/wedoc-smartsheet-targets.local.json` 不得进入插件源、打包产物或 cache；只允许 `references/wedoc-smartsheet-targets.example.json` 模板随包。
+- SQL fixture 数据库连接真实配置属于个人/项目私有配置，`.agent/config/sql-fixture-targets.local.json` 不得进入插件源、打包产物或 cache；技能文档只能保留无密码示例或字段说明。
 - 企业微信智能表格新增回执属于项目运行资料，`.agent/wedoc-smartsheet-receipts/` 不得进入插件源、打包产物或 cache。
 - 打包扫描若发现真实 `qyapi.weixin.qq.com/cgi-bin/wedoc/smartsheet/webhook?key=` URL、上述私有配置文件或智能表格回执目录，必须失败并先清理。
 - 打包时必须携带 `references/artifact-naming-standard.json`、`references/artifact-naming-standard.md` 与 `skills/plugin-packager/scripts/check_artifact_names.ps1`；命名检查脚本只读报告旧名，不负责迁移。
@@ -35,7 +36,7 @@ description: 打包、发布并同步 `project-delivery-hub-v1` 插件。用于�
 
 ## 打包流程
 
-1. 读取 `references/package-targets.json`，确认 `pluginId`、本机 URI、默认打包 URI 与目标市场路径。
+1. 读取 `references/package-targets.json`，确认 `pluginId`、本机 URI、默认打包 URI、可用 target 与目标市场路径；路径不得凭记忆或旧会话推断。
 2. 校验 `.codex-plugin/plugin.json` 中的 `name` 与 `version`。
 3. 若用户未指定目标，选择 `company-dev`；若用户要求刷新本机维护版，选择 `company-jimmy`；若要完整同步，选择 `both`。
 4. 校验插件根目录 `USAGE.md` 存在，并写明 `.agent` 正式运行位置是项目工作区 `<workspaceRoot>\.agent`。
@@ -49,23 +50,34 @@ description: 打包、发布并同步 `project-delivery-hub-v1` 插件。用于�
 
 ## 推荐命令
 
-默认打包到 `company-dev`：
+默认打包到配置指定的默认 target。当前配置默认是 `company-dev`；若只是检查目标、排除项与 agentBundle 来源，先用 `-DryRun`：
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File "C:\Users\<username>\plugins\project-delivery-hub-v1\skills\plugin-packager\scripts\package_project_delivery_hub.ps1"
+powershell -NoProfile -ExecutionPolicy Bypass -File "<pluginRoot>\skills\plugin-packager\scripts\package_project_delivery_hub.ps1" -DryRun
+```
+
+确认 dry-run 输出后，正式打包到默认 target：
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File "<pluginRoot>\skills\plugin-packager\scripts\package_project_delivery_hub.ps1"
 ```
 
 完整刷新本机维护版、开发测试版与缓存：
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File "C:\Users\<username>\plugins\project-delivery-hub-v1\skills\plugin-packager\scripts\package_project_delivery_hub.ps1" -Target both
+powershell -NoProfile -ExecutionPolicy Bypass -File "<pluginRoot>\skills\plugin-packager\scripts\package_project_delivery_hub.ps1" -Target both
 ```
 
-只看计划不写入：
+`-DryRun` 只验证配置、必要资产、目标路径与 mirror 计划，不写入 marketplace、cache 或插件根目录的 `.agent` snapshot；正式同步必须去掉 `-DryRun`。
 
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File "C:\Users\<username>\plugins\project-delivery-hub-v1\skills\plugin-packager\scripts\package_project_delivery_hub.ps1" -DryRun
-```
+## 脚本与资产索引
+
+- `agents/openai.yaml`
+- `scripts/package_project_delivery_hub.ps1`
+- `scripts/check_artifact_names.ps1`
+- `assets/diagrams/专案交付中枢_主流程图.svg`
+- `assets/diagrams/专案交付中枢_技能与agent架构图.svg`
+- `assets/diagrams/专案交付中枢_工作区与agent结构树.svg`
 
 ## 验收口径
 
@@ -83,5 +95,36 @@ powershell -NoProfile -ExecutionPolicy Bypass -File "C:\Users\<username>\plugins
   - `skills/plugin-packager/assets/diagrams/专案交付中枢_工作区与agent结构树.svg`
 - 若本次包含结构型变动，上述三张图必须已经反映最新技能关系、`.agent` 职责、工作区/分支代码位置与打包/cache 流向。
 - 新缓存内没有 `.bak` 与 `__pycache__`。
-- 新包与新缓存内没有 `wedoc-smartsheet-targets.json`、`wedoc-smartsheet-targets.local.json`、`.agent/wedoc-smartsheet-receipts/` 或真实企业微信智能表格 WebHook URL；但必须包含 `references/wedoc-smartsheet-targets.example.json`。
+- 新包与新缓存内没有 `sql-fixture-targets.local.json`、`wedoc-smartsheet-targets.json`、`wedoc-smartsheet-targets.local.json`、`.agent/wedoc-smartsheet-receipts/` 或真实企业微信智能表格 WebHook URL；但必须包含 `references/wedoc-smartsheet-targets.example.json`。
 - 新包内不得出现旧插件 ID 与旧个人 marketplace 的 active 组合。
+
+## Multi API Leader Packaging
+
+`multi-api-leader` 是结构性插件能力，打包时必须一起校验：
+
+- `skills/multi-api-leader/SKILL.md`
+- `skills/multi-api-leader/agents/openai.yaml`
+- `skills/multi-api-leader/scripts/orchestrate_multi_api.py`
+- `skills/multi-api-leader/tests/run_regressions.py`
+- `schemas/leader-run.schema.json`
+- `schemas/api-workgroups.schema.json`
+- `schemas/file-claims.schema.json`
+- `schemas/final-assessment.schema.json`
+
+如果 orchestration 状态面、file claim、final assessment 或 worker 分工规则有变化，必须同步更新 `USAGE.md`、命名标准、三张架构 SVG 与 package dry-run 校验。
+
+## Design Leader Packaging
+
+`api-detail-tsd-sync` 的 Design Leader Mode、`design-feedback-fix-coordinator` 与 `office-deliverable-editor` 是设计阶段结构性能力，打包时必须一起校验：
+
+- `references/design-leader-protocol.md`
+- `references/office-deliverable-edit-protocol.md`
+- `skills/api-detail-tsd-sync/SKILL.md`
+- `skills/api-detail-tsd-sync/agents/openai.yaml`
+- `skills/design-feedback-fix-coordinator/SKILL.md`
+- `skills/design-feedback-fix-coordinator/agents/openai.yaml`
+- `skills/office-deliverable-editor/SKILL.md`
+- `skills/office-deliverable-editor/agents/openai.yaml`
+- `references/artifact-naming-standard.json` 中的 `00-design-leader-*` 与 `00-office-edit-*` mappings
+
+如果设计阶段 orchestration 状态面、feedback entrypoint、Office edit plan、file claim 或 handoff 写入规则有变化，必须同步更新 `USAGE.md`、命名标准、三张架构 SVG 与 package dry-run 校验。

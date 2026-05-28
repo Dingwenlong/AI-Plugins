@@ -1,0 +1,775 @@
+{
+  "schemaVersion": "4.2.0",
+  "apiId": "COMMON.commonfunc.addiristransactionrecord",
+  "newAuthor": "Jimmy",
+  "functionCode": "Common",
+  "version": "1.0",
+  "apiCategory": "CommonFunc",
+  "apiName": "AddIrisTransactionRecord",
+  "source": {
+    "tsdFile": "TSD.Common_封存TSD共用开发链路_v1.0_20260523.docx",
+    "workbookFile": "NEWDA_Method_DETAIL_ExchangeCommonFunc_20260522.xlsx",
+    "sheetNames": [
+      "AddIrisTransactionRecord新增新大戶IR"
+    ]
+  },
+  "request": [
+    {
+      "rowKey": "1",
+      "fieldName": "transSeq",
+      "dataType": "string",
+      "required": false,
+      "description": "流水號",
+      "example": "\"transSeq\":\"8938462777\""
+    },
+    {
+      "rowKey": "2",
+      "fieldName": "irisNo",
+      "dataType": "string",
+      "required": false,
+      "description": "呼叫的IRIS編號",
+      "example": "\"irisNo\":\"8938462777\""
+    },
+    {
+      "rowKey": "3",
+      "fieldName": "acct",
+      "dataType": "string",
+      "required": false,
+      "description": "帳號",
+      "example": "\"acct\":\"\""
+    },
+    {
+      "rowKey": "4",
+      "fieldName": "request",
+      "dataType": "string",
+      "required": false,
+      "description": "上送json格式資料",
+      "example": "\"request\":\"\""
+    },
+    {
+      "rowKey": "5",
+      "fieldName": "tranId",
+      "dataType": "string",
+      "required": false,
+      "description": "交易序號",
+      "example": "\"tranId\":\"\""
+    },
+    {
+      "rowKey": "6",
+      "fieldName": "result",
+      "dataType": "string",
+      "required": false,
+      "description": "請求結果",
+      "example": "\"result\":\"\""
+    },
+    {
+      "rowKey": "7",
+      "fieldName": "rspCode",
+      "dataType": "string",
+      "required": false,
+      "description": "請求結果Code",
+      "example": "\"rspCode\":\"\""
+    },
+    {
+      "rowKey": "8",
+      "fieldName": "rspMsg",
+      "dataType": "string",
+      "required": false,
+      "description": "請求結果描述",
+      "example": "\"rspMsg\":\"\""
+    }
+  ],
+  "response": [
+    {
+      "rowKey": "1",
+      "fieldName": "isSuccess",
+      "dataType": "boolean",
+      "required": true,
+      "description": "API成功與否",
+      "example": "true",
+      "notes": "true ; false"
+    },
+    {
+      "rowKey": "2",
+      "fieldName": "responseCode",
+      "dataType": "string",
+      "required": true,
+      "description": "回應代碼",
+      "example": "0000",
+      "notes": "成功:0000其餘狀況為失敗"
+    },
+    {
+      "rowKey": "3",
+      "fieldName": "responseMessage",
+      "dataType": "string",
+      "required": true,
+      "description": "回應訊息",
+      "notes": "失敗狀況下回傳錯誤訊息"
+    },
+    {
+      "rowKey": "4",
+      "fieldName": "responseDT",
+      "dataType": "string",
+      "required": true,
+      "description": "系統回應時間",
+      "notes": "yyyy/MM/dd HH:mm:ss"
+    },
+    {
+      "rowKey": "5",
+      "fieldName": "responseData",
+      "dataType": "json",
+      "required": true,
+      "description": "回應資料框",
+      "example": "\"responseData\":{}"
+    }
+  ],
+  "mockExamples": [
+    {
+      "scenario": "獲取成功結果示例",
+      "requestPayload": {
+        "transSeq": "202603130001",
+        "irisNo": "IRIS001",
+        "acct": "123456789012",
+        "request": "{\"amount\":1000,\"currency\":\"TWD\"}",
+        "tranId": "TXN202603130001",
+        "result": "SUCCESS",
+        "rspCode": "0000",
+        "rspMsg": "交易成功"
+      },
+      "responsePayload": {
+        "isSuccess": true,
+        "responseCode": "0000",
+        "responseMessage": "執行成功",
+        "responseDT": "2026/02/02 14:35:20",
+        "responseData": {}
+      }
+    }
+  ],
+  "backendApis": {
+    "DB": [
+      "DaWho.dbo.IRISTransactionRecord",
+      "DAWHO.DBO.IRISTRANSACTIONRECORD"
+    ]
+  },
+  "businessLogic": {
+    "steps": [
+      {
+        "step": 1,
+        "title": "參數與初始化",
+        "details": "1.custId從Redis獲取;custIp 從Redis獲取"
+      },
+      {
+        "step": 2,
+        "title": "增加新大戶IRIS交易記錄",
+        "details": "1.執行SQL新增交易記錄\nINSERT INTO  DaWho.dbo.IRISTransactionRecord\n(\nTRANSSEQ,\nIRISNO,\nCUSTID,\nACCT,\nTIMESTAMP,\nTIMESTAMP_AFTER,\nCUSTIP,\nTRANID\n)\nVALUES\n(\n@transSeq,\n@irisNo,\n@custId,\n@acct,\n@當前時間,\n@custIp,\n@tranId\n);\n可读取外援：TW T24 IRIS_OpenAPI_Summary_20231212 -> reference/global/raw/external-api/IRIS/TW T24 IRIS_OpenAPI_Summary_20231212.xlsx#sheetName=IRIS；ED0019_OpenAPI_spec_Enquiry_20260213 -> reference/global/raw/external-api/IRIS/ED0019_OpenAPI_spec_Enquiry_20260213.xlsx#sheetName=JSON Request-Response；EC0002_OpenAPI_spec_Enquiry_20260213 -> reference/global/raw/external-api/IRIS/EC0002_OpenAPI_spec_Enquiry_20260213.xlsx#sheetName=JSON Request-Response",
+        "referenceHints": [
+          {
+            "id": "external.iris.twt24iris-openapi-summary-20231212",
+            "category": "external_api",
+            "matchSource": "iris_keyword",
+            "matchKey": "IRIS",
+            "title": "TW T24 IRIS_OpenAPI_Summary_20231212",
+            "relativePath": "reference/global/raw/external-api/IRIS/TW T24 IRIS_OpenAPI_Summary_20231212.xlsx",
+            "locator": {
+              "sheetName": "IRIS"
+            },
+            "reason": "命中外部接口关键词 IRIS，可读取 IRIS/OpenAPI 设计",
+            "authority": "reference_imported"
+          },
+          {
+            "id": "external.iris.ed0019-openapi-spec-enquiry-20260213",
+            "category": "external_api",
+            "matchSource": "iris_keyword",
+            "matchKey": "IRIS",
+            "title": "ED0019_OpenAPI_spec_Enquiry_20260213",
+            "relativePath": "reference/global/raw/external-api/IRIS/ED0019_OpenAPI_spec_Enquiry_20260213.xlsx",
+            "locator": {
+              "sheetName": "JSON Request-Response"
+            },
+            "reason": "命中外部接口关键词 IRIS，可读取 IRIS/OpenAPI 设计",
+            "authority": "reference_imported"
+          },
+          {
+            "id": "external.iris.ec0002-openapi-spec-enquiry-20260213",
+            "category": "external_api",
+            "matchSource": "iris_keyword",
+            "matchKey": "IRIS",
+            "title": "EC0002_OpenAPI_spec_Enquiry_20260213",
+            "relativePath": "reference/global/raw/external-api/IRIS/EC0002_OpenAPI_spec_Enquiry_20260213.xlsx",
+            "locator": {
+              "sheetName": "JSON Request-Response"
+            },
+            "reason": "命中外部接口关键词 IRIS，可读取 IRIS/OpenAPI 设计",
+            "authority": "reference_imported"
+          }
+        ]
+      },
+      {
+        "step": 3,
+        "title": "回傳結果",
+        "details": "3.回傳結果"
+      },
+      {
+        "step": 4,
+        "title": "流水號",
+        "details": "流水號"
+      },
+      {
+        "step": 5,
+        "title": "呼叫的IRIS編號",
+        "details": "呼叫的IRIS編號\n可读取外援：TW T24 IRIS_OpenAPI_Summary_20231212 -> reference/global/raw/external-api/IRIS/TW T24 IRIS_OpenAPI_Summary_20231212.xlsx#sheetName=IRIS；ED0019_OpenAPI_spec_Enquiry_20260213 -> reference/global/raw/external-api/IRIS/ED0019_OpenAPI_spec_Enquiry_20260213.xlsx#sheetName=JSON Request-Response；EC0002_OpenAPI_spec_Enquiry_20260213 -> reference/global/raw/external-api/IRIS/EC0002_OpenAPI_spec_Enquiry_20260213.xlsx#sheetName=JSON Request-Response",
+        "referenceHints": [
+          {
+            "id": "external.iris.twt24iris-openapi-summary-20231212",
+            "category": "external_api",
+            "matchSource": "iris_keyword",
+            "matchKey": "IRIS",
+            "title": "TW T24 IRIS_OpenAPI_Summary_20231212",
+            "relativePath": "reference/global/raw/external-api/IRIS/TW T24 IRIS_OpenAPI_Summary_20231212.xlsx",
+            "locator": {
+              "sheetName": "IRIS"
+            },
+            "reason": "命中外部接口关键词 IRIS，可读取 IRIS/OpenAPI 设计",
+            "authority": "reference_imported"
+          },
+          {
+            "id": "external.iris.ed0019-openapi-spec-enquiry-20260213",
+            "category": "external_api",
+            "matchSource": "iris_keyword",
+            "matchKey": "IRIS",
+            "title": "ED0019_OpenAPI_spec_Enquiry_20260213",
+            "relativePath": "reference/global/raw/external-api/IRIS/ED0019_OpenAPI_spec_Enquiry_20260213.xlsx",
+            "locator": {
+              "sheetName": "JSON Request-Response"
+            },
+            "reason": "命中外部接口关键词 IRIS，可读取 IRIS/OpenAPI 设计",
+            "authority": "reference_imported"
+          },
+          {
+            "id": "external.iris.ec0002-openapi-spec-enquiry-20260213",
+            "category": "external_api",
+            "matchSource": "iris_keyword",
+            "matchKey": "IRIS",
+            "title": "EC0002_OpenAPI_spec_Enquiry_20260213",
+            "relativePath": "reference/global/raw/external-api/IRIS/EC0002_OpenAPI_spec_Enquiry_20260213.xlsx",
+            "locator": {
+              "sheetName": "JSON Request-Response"
+            },
+            "reason": "命中外部接口关键词 IRIS，可读取 IRIS/OpenAPI 设计",
+            "authority": "reference_imported"
+          }
+        ]
+      },
+      {
+        "step": 6,
+        "title": "帳號",
+        "details": "帳號"
+      },
+      {
+        "step": 7,
+        "title": "上送Json格式資料",
+        "details": "上送Json格式資料"
+      },
+      {
+        "step": 8,
+        "title": "IRIS回覆成功或失敗",
+        "details": "IRIS回覆成功或失敗\n可读取外援：TW T24 IRIS_OpenAPI_Summary_20231212 -> reference/global/raw/external-api/IRIS/TW T24 IRIS_OpenAPI_Summary_20231212.xlsx#sheetName=IRIS；ED0019_OpenAPI_spec_Enquiry_20260213 -> reference/global/raw/external-api/IRIS/ED0019_OpenAPI_spec_Enquiry_20260213.xlsx#sheetName=JSON Request-Response；EC0002_OpenAPI_spec_Enquiry_20260213 -> reference/global/raw/external-api/IRIS/EC0002_OpenAPI_spec_Enquiry_20260213.xlsx#sheetName=JSON Request-Response",
+        "referenceHints": [
+          {
+            "id": "external.iris.twt24iris-openapi-summary-20231212",
+            "category": "external_api",
+            "matchSource": "iris_keyword",
+            "matchKey": "IRIS",
+            "title": "TW T24 IRIS_OpenAPI_Summary_20231212",
+            "relativePath": "reference/global/raw/external-api/IRIS/TW T24 IRIS_OpenAPI_Summary_20231212.xlsx",
+            "locator": {
+              "sheetName": "IRIS"
+            },
+            "reason": "命中外部接口关键词 IRIS，可读取 IRIS/OpenAPI 设计",
+            "authority": "reference_imported"
+          },
+          {
+            "id": "external.iris.ed0019-openapi-spec-enquiry-20260213",
+            "category": "external_api",
+            "matchSource": "iris_keyword",
+            "matchKey": "IRIS",
+            "title": "ED0019_OpenAPI_spec_Enquiry_20260213",
+            "relativePath": "reference/global/raw/external-api/IRIS/ED0019_OpenAPI_spec_Enquiry_20260213.xlsx",
+            "locator": {
+              "sheetName": "JSON Request-Response"
+            },
+            "reason": "命中外部接口关键词 IRIS，可读取 IRIS/OpenAPI 设计",
+            "authority": "reference_imported"
+          },
+          {
+            "id": "external.iris.ec0002-openapi-spec-enquiry-20260213",
+            "category": "external_api",
+            "matchSource": "iris_keyword",
+            "matchKey": "IRIS",
+            "title": "EC0002_OpenAPI_spec_Enquiry_20260213",
+            "relativePath": "reference/global/raw/external-api/IRIS/EC0002_OpenAPI_spec_Enquiry_20260213.xlsx",
+            "locator": {
+              "sheetName": "JSON Request-Response"
+            },
+            "reason": "命中外部接口关键词 IRIS，可读取 IRIS/OpenAPI 设计",
+            "authority": "reference_imported"
+          }
+        ]
+      },
+      {
+        "step": 9,
+        "title": "錯誤代碼",
+        "details": "錯誤代碼"
+      },
+      {
+        "step": 10,
+        "title": "錯誤訊息",
+        "details": "錯誤訊息"
+      },
+      {
+        "step": 11,
+        "title": "交易序號",
+        "details": "交易序號"
+      }
+    ],
+    "fieldMappings": [],
+    "errorCodeRules": [],
+    "runtimeDependencies": [
+      {
+        "id": "current_customer_context",
+        "type": "service",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "Resolve keyId/custId from the current request context and Redis."
+      },
+      {
+        "id": "mma_sql_connection",
+        "type": "service",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "Execute authoritative SQL declared in the workbook for DAWHO.DBO.IRISTRANSACTIONRECORD."
+      },
+      {
+        "id": "sql_table_db_dawho_dbo_iristransactionrecord",
+        "type": "sql_table",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "业务逻辑正文提到 DB->DaWho.dbo.IRISTransactionRecord 依赖。"
+      }
+    ],
+    "dataSources": [
+      {
+        "name": "DAWHO.DBO.IRISTRANSACTIONRECORD",
+        "type": "sql_table",
+        "authority": "backend_contract",
+        "required": true
+      }
+    ],
+    "sqlSpecs": [
+      {
+        "id": "2_iris",
+        "title": "2.增加新大戶IRIS交易記錄",
+        "authority": "backend_contract",
+        "required": true,
+        "dataSources": [
+          "DAWHO.DBO.IRISTRANSACTIONRECORD"
+        ],
+        "mustContain": [
+          "DAWHO.DBO.IRISTRANSACTIONRECORD",
+          "@transSeq",
+          "@irisNo",
+          "@custId",
+          "@acct",
+          "@custIp",
+          "@tranId",
+          "INSERT",
+          "VALUES"
+        ],
+        "queryText": "1.執行SQL新增交易記錄\nINSERT INTO  DaWho.dbo.IRISTransactionRecord\n(\nTRANSSEQ,\nIRISNO,\nCUSTID,\nACCT,\nTIMESTAMP,\nTIMESTAMP_AFTER,\nCUSTIP,\nTRANID\n)\nVALUES\n(\n@transSeq,\n@irisNo,\n@custId,\n@acct,\n@當前時間,\n@custIp,\n@tranId\n);\n可读取外援：MMA -> reference/global/raw/db-schema/MMA.xlsx#sheetName=144",
+        "referenceHints": [
+          {
+            "id": "db.timestamp-after.mma",
+            "category": "db_schema",
+            "matchSource": "sql_keyword",
+            "matchKey": "TIMESTAMP_AFTER",
+            "title": "MMA",
+            "relativePath": "reference/global/raw/db-schema/MMA.xlsx",
+            "locator": {
+              "sheetName": "144"
+            },
+            "reason": "命中 SQL 表 TIMESTAMP_AFTER，可读取数据库参考资料",
+            "authority": "reference_imported"
+          }
+        ]
+      }
+    ],
+    "legacyReferences": [],
+    "prohibitedShortcuts": [
+      "mock_response_payload",
+      "hardcoded_custid",
+      "block_comment_header_substitution"
+    ],
+    "referenceHints": [
+      {
+        "id": "db.timestamp-after.mma",
+        "category": "db_schema",
+        "matchSource": "sql_keyword",
+        "matchKey": "TIMESTAMP_AFTER",
+        "title": "MMA",
+        "relativePath": "reference/global/raw/db-schema/MMA.xlsx",
+        "locator": {
+          "sheetName": "144"
+        },
+        "reason": "命中 SQL 表 TIMESTAMP_AFTER，可读取数据库参考资料",
+        "authority": "reference_imported"
+      },
+      {
+        "id": "external.iris.twt24iris-openapi-summary-20231212",
+        "category": "external_api",
+        "matchSource": "iris_keyword",
+        "matchKey": "IRIS",
+        "title": "TW T24 IRIS_OpenAPI_Summary_20231212",
+        "relativePath": "reference/global/raw/external-api/IRIS/TW T24 IRIS_OpenAPI_Summary_20231212.xlsx",
+        "locator": {
+          "sheetName": "IRIS"
+        },
+        "reason": "命中外部接口关键词 IRIS，可读取 IRIS/OpenAPI 设计",
+        "authority": "reference_imported"
+      },
+      {
+        "id": "external.iris.ed0019-openapi-spec-enquiry-20260213",
+        "category": "external_api",
+        "matchSource": "iris_keyword",
+        "matchKey": "IRIS",
+        "title": "ED0019_OpenAPI_spec_Enquiry_20260213",
+        "relativePath": "reference/global/raw/external-api/IRIS/ED0019_OpenAPI_spec_Enquiry_20260213.xlsx",
+        "locator": {
+          "sheetName": "JSON Request-Response"
+        },
+        "reason": "命中外部接口关键词 IRIS，可读取 IRIS/OpenAPI 设计",
+        "authority": "reference_imported"
+      },
+      {
+        "id": "external.iris.ec0002-openapi-spec-enquiry-20260213",
+        "category": "external_api",
+        "matchSource": "iris_keyword",
+        "matchKey": "IRIS",
+        "title": "EC0002_OpenAPI_spec_Enquiry_20260213",
+        "relativePath": "reference/global/raw/external-api/IRIS/EC0002_OpenAPI_spec_Enquiry_20260213.xlsx",
+        "locator": {
+          "sheetName": "JSON Request-Response"
+        },
+        "reason": "命中外部接口关键词 IRIS，可读取 IRIS/OpenAPI 设计",
+        "authority": "reference_imported"
+      }
+    ]
+  },
+  "codeHandoff": {
+    "schemaVersion": "1.0.0",
+    "logicSummary": {
+      "stepCount": 11,
+      "queryContractCount": 1,
+      "mappingRuleCount": 0,
+      "legacyEvidenceCount": 0,
+      "dependencyHintCount": 4,
+      "constraintCount": 3,
+      "unresolvedCount": 0,
+      "primarySource": "businessLogic"
+    },
+    "logicFlow": [
+      {
+        "stepId": "step_1",
+        "title": "參數與初始化",
+        "actionType": "process",
+        "inputs": [
+          "transSeq",
+          "irisNo",
+          "acct",
+          "request"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_2",
+        "title": "增加新大戶IRIS交易記錄",
+        "actionType": "query",
+        "inputs": [
+          "transSeq",
+          "irisNo",
+          "acct",
+          "request"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_3",
+        "title": "回傳結果",
+        "actionType": "return",
+        "inputs": [
+          "transSeq",
+          "irisNo",
+          "acct",
+          "request"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_4",
+        "title": "流水號",
+        "actionType": "process",
+        "inputs": [
+          "transSeq",
+          "irisNo",
+          "acct",
+          "request"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_5",
+        "title": "呼叫的IRIS編號",
+        "actionType": "return",
+        "inputs": [
+          "transSeq",
+          "irisNo",
+          "acct",
+          "request"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_6",
+        "title": "帳號",
+        "actionType": "process",
+        "inputs": [
+          "transSeq",
+          "irisNo",
+          "acct",
+          "request"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_7",
+        "title": "上送Json格式資料",
+        "actionType": "process",
+        "inputs": [
+          "transSeq",
+          "irisNo",
+          "acct",
+          "request"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_8",
+        "title": "IRIS回覆成功或失敗",
+        "actionType": "return",
+        "inputs": [
+          "transSeq",
+          "irisNo",
+          "acct",
+          "request"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_9",
+        "title": "錯誤代碼",
+        "actionType": "process",
+        "inputs": [
+          "transSeq",
+          "irisNo",
+          "acct",
+          "request"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_10",
+        "title": "錯誤訊息",
+        "actionType": "process",
+        "inputs": [
+          "transSeq",
+          "irisNo",
+          "acct",
+          "request"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_11",
+        "title": "交易序號",
+        "actionType": "process",
+        "inputs": [
+          "transSeq",
+          "irisNo",
+          "acct",
+          "request"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      }
+    ],
+    "legacyEvidence": [],
+    "queryContracts": [
+      {
+        "contractId": "2_iris",
+        "purpose": "2.增加新大戶IRIS交易記錄",
+        "dataSources": [
+          "DAWHO.DBO.IRISTRANSACTIONRECORD"
+        ],
+        "mustContain": [
+          "DAWHO.DBO.IRISTRANSACTIONRECORD",
+          "@transSeq",
+          "@irisNo",
+          "@custId",
+          "@acct",
+          "@custIp",
+          "@tranId",
+          "INSERT",
+          "VALUES"
+        ],
+        "sqlText": "1.執行SQL新增交易記錄\nINSERT INTO  DaWho.dbo.IRISTransactionRecord\n(\nTRANSSEQ,\nIRISNO,\nCUSTID,\nACCT,\nTIMESTAMP,\nTIMESTAMP_AFTER,\nCUSTIP,\nTRANID\n)\nVALUES\n(\n@transSeq,\n@irisNo,\n@custId,\n@acct,\n@當前時間,\n@custIp,\n@tranId\n);\n可读取外援：MMA -> reference/global/raw/db-schema/MMA.xlsx#sheetName=144",
+        "parameterHints": [
+          "@transSeq",
+          "@irisNo",
+          "@custId",
+          "@acct",
+          "@custIp",
+          "@tranId"
+        ],
+        "resultShape": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT",
+          "responseData"
+        ],
+        "evidenceIds": []
+      }
+    ],
+    "mappingRules": [],
+    "dependencyHints": [
+      {
+        "dependencyType": "service",
+        "preferredAbstractions": [
+          "ICurrentRuntimeContextAccessor",
+          "IRedisService"
+        ],
+        "purpose": "Resolve keyId/custId from the current request context and Redis.",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "service",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor"
+        ],
+        "purpose": "Execute authoritative SQL declared in the workbook for DAWHO.DBO.IRISTRANSACTIONRECORD.",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "sql_table",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor"
+        ],
+        "purpose": "业务逻辑正文提到 DB->DaWho.dbo.IRISTransactionRecord 依赖。",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "sql_table",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor"
+        ],
+        "purpose": "Read from DAWHO.DBO.IRISTRANSACTIONRECORD",
+        "evidenceIds": []
+      }
+    ],
+    "constraints": [
+      {
+        "constraintType": "prohibited_shortcut",
+        "rule": "mock_response_payload",
+        "severity": "error",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "prohibited_shortcut",
+        "rule": "hardcoded_custid",
+        "severity": "error",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "prohibited_shortcut",
+        "rule": "block_comment_header_substitution",
+        "severity": "error",
+        "evidenceIds": []
+      }
+    ],
+    "unresolved": []
+  }
+}

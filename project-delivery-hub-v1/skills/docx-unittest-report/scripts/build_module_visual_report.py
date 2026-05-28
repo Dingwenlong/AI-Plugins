@@ -14,14 +14,26 @@ from datetime import date
 from pathlib import Path
 from typing import Any
 
-from docx import Document
-from docx.enum.table import WD_CELL_VERTICAL_ALIGNMENT, WD_TABLE_ALIGNMENT
-from docx.enum.text import WD_ALIGN_PARAGRAPH
-from docx.oxml import OxmlElement
-from docx.oxml.ns import qn
-from docx.shared import Inches, Pt
-from docx.table import Table
-from PIL import Image, ImageDraw, ImageFont
+try:
+    from docx import Document
+    from docx.enum.table import WD_CELL_VERTICAL_ALIGNMENT, WD_TABLE_ALIGNMENT
+    from docx.enum.text import WD_ALIGN_PARAGRAPH
+    from docx.oxml import OxmlElement
+    from docx.oxml.ns import qn
+    from docx.shared import Inches, Pt
+    from docx.table import Table
+    from PIL import Image, ImageDraw, ImageFont
+except ImportError as exc:
+    missing_module = (getattr(exc, "name", "") or "").split(".", 1)[0]
+    package_name = {
+        "docx": "python-docx",
+        "PIL": "Pillow",
+    }.get(missing_module, missing_module or "required package")
+    raise SystemExit(
+        "docx-unittest-report 缺少 Python 依赖："
+        f"{package_name}。请在当前解释器安装后重试，例如："
+        f"python -m pip install {package_name}"
+    ) from exc
 
 from chain_workspace import resolve_chain_workspace, update_chain_status, write_workspace_snapshot
 from docx_report_utils import resolve_current_login_display_name, today_slash
@@ -198,13 +210,24 @@ def find_latest_ut_template_docx(repo_root: Path) -> Path:
     return max(candidates, key=rank_template_docx)
 
 
-def resolve_template_docx(raw_path: str | None, repo_root: Path) -> Path:
+def resolve_template_docx(
+    raw_path: str | None,
+    repo_root: Path,
+    *,
+    rules_root_arg: str | None = None,
+    workspace_key: str | None = None,
+) -> Path:
     if normalize_text(raw_path):
         path = Path(raw_path).expanduser().resolve()
         if not path.exists():
             raise SystemExit(f"template DOCX not found: {path.as_posix()}")
         return path
-    project_template = resolve_asset_path("utReportTemplate", fallback=DEFAULT_TEMPLATE_DOCX)
+    project_template = resolve_asset_path(
+        "utReportTemplate",
+        rules_root_arg=rules_root_arg,
+        workspace_key=workspace_key,
+        fallback=DEFAULT_TEMPLATE_DOCX,
+    )
     if project_template is not None:
         return project_template
     if DEFAULT_TEMPLATE_DOCX.exists():
@@ -2293,7 +2316,12 @@ def main() -> None:
 
     context_root = resolve_central_context_root(args)
     repo_root = infer_repo_root(context_root)
-    template_docx = resolve_template_docx(args.template_docx, repo_root)
+    template_docx = resolve_template_docx(
+        args.template_docx,
+        repo_root,
+        rules_root_arg=args.rules_root,
+        workspace_key=args.workspace_key,
+    )
     output_docx = Path(args.output_docx).expanduser().resolve() if args.output_docx else default_output_docx(context_root, template_docx)
     assets_dir = Path(args.assets_dir).expanduser().resolve() if args.assets_dir else default_assets_dir(output_docx)
 

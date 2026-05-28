@@ -1,0 +1,65 @@
+{
+  "schemaVersion": "4.1.0",
+  "skillName": "api-code-writer",
+  "manifestType": "change-plan",
+  "status": "planned",
+  "updatedAt": "2026-05-28T18:39:06+08:00",
+  "executionId": "D.007",
+  "apiId": "D.007.review-scope",
+  "projectRoot": ".",
+  "solutionPath": "Sinopac.EnterpriseAPI/Sinopac.EnterpriseAPI.slnx",
+  "scopeNote": "Minimal context for code-style-reviewer only. Scope derived from feature/D.007 functional commits 77b25e0 and f3efd8c over c337410.",
+  "analysis": {
+    "frameworkProfile": "enterpriseapi",
+    "moduleName": "Deposit",
+    "controllerFile": "Sinopac.EnterpriseAPI/Sinopac.EnterpriseAPI/Controllers/DepositController.cs",
+    "interfaceFile": "Sinopac.EnterpriseAPI/EnterpriseApiBusiness.Interface/IDepositService.cs",
+    "serviceFiles": [
+      "Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonFunc/CommonFuncService.GetAccountListByTransCode.cs",
+      "Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonFunc/CommonFuncService.GetCustIDFormat.cs",
+      "Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonFunc/CommonFuncService.GetEC0001.cs",
+      "Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonFunc/CommonFuncService.GetFixBusinessDate.cs",
+      "Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonFunc/CommonFuncService.GetOperationHour.cs",
+      "Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonFunc/CommonFuncService.SendToMonitorMailPush.cs",
+      "Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonFunc/CommonFuncService.cs",
+      "Sinopac.EnterpriseAPI/EnterpriseApiBusiness/Deposit/DepositService.CancelFixedDepositDetails.cs",
+      "Sinopac.EnterpriseAPI/EnterpriseApiBusiness/Deposit/DepositService.GetFixedDepositDetailInit.cs",
+      "Sinopac.EnterpriseAPI/EnterpriseApiBusiness/Deposit/DepositService.GetSkdFixedDepositDetail.cs",
+      "Sinopac.EnterpriseAPI/EnterpriseApiBusiness/Deposit/DepositService.cs"
+    ],
+    "entityFiles": [
+      "Sinopac.EnterpriseAPI/EnterpriseApiEntity/Deposit/DepositInfo.cs",
+      "Sinopac.EnterpriseAPI/EnterpriseApiEntity/ResponseCodes/D_DepositCodes.cs"
+    ],
+    "codeTargetFiles": [
+      "Sinopac.EnterpriseAPI/EnterpriseApiBusiness.Interface/ICommonFuncService.cs",
+      "Sinopac.EnterpriseAPI/EnterpriseApiBusiness.Interface/IDepositService.cs",
+      "Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonFunc/CommonFuncService.GetAccountListByTransCode.cs",
+      "Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonFunc/CommonFuncService.GetCustIDFormat.cs",
+      "Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonFunc/CommonFuncService.GetEC0001.cs",
+      "Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonFunc/CommonFuncService.GetFixBusinessDate.cs",
+      "Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonFunc/CommonFuncService.GetOperationHour.cs",
+      "Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonFunc/CommonFuncService.SendToMonitorMailPush.cs",
+      "Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonFunc/CommonFuncService.cs",
+      "Sinopac.EnterpriseAPI/EnterpriseApiBusiness/Deposit/DepositService.CancelFixedDepositDetails.cs",
+      "Sinopac.EnterpriseAPI/EnterpriseApiBusiness/Deposit/DepositService.GetFixedDepositDetailInit.cs",
+      "Sinopac.EnterpriseAPI/EnterpriseApiBusiness/Deposit/DepositService.GetSkdFixedDepositDetail.cs",
+      "Sinopac.EnterpriseAPI/EnterpriseApiBusiness/Deposit/DepositService.cs",
+      "Sinopac.EnterpriseAPI/EnterpriseApiEntity/Deposit/DepositInfo.cs",
+      "Sinopac.EnterpriseAPI/EnterpriseApiEntity/ResponseCodes/D_DepositCodes.cs",
+      "Sinopac.EnterpriseAPI/Sinopac.EnterpriseAPI/Controllers/DepositController.cs"
+    ],
+    "unitTestTargetFiles": [],
+    "integrationTestTargetFiles": [],
+    "excludedFiles": [
+      "Sinopac.EnterpriseAPI/Sinopac.EnterpriseAPI.sln"
+    ]
+  },
+  "steps": [
+    {
+      "id": "code_style_review",
+      "status": "pending",
+      "note": "Run code-style-reviewer with --scope context; do not modify business code."
+    }
+  ]
+}

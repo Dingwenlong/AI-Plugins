@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "4.1.0",
+  "skillName": "api-sql-fixture-preparer",
+  "manifestType": "db-fixture-report",
+  "updatedAt": "2026-05-23T19:43:41+08:00",
+  "executionId": "Common",
+  "apiId": "COMMON.exchangecommonfunc.gethistbillboardrate",
+  "status": "blocked",
+  "phase": "inspection_blocked",
+  "executionMode": "prepare",
+  "dbTarget": "connection-name:Report",
+  "authorityRoot": "../../.agent/reference/global",
+  "sqlFixtureRequired": true,
+  "sourcesUsed": [
+    "backendApis"
+  ],
+  "tableRefs": [
+    "[DAWHO].[dbo].[ETS_vSPListHist]",
+    "DAWHO.DBO.ETS_VSPLISTHIST"
+  ],
+  "summary": {
+    "tableCount": 2,
+    "blockingTableCount": 2,
+    "queryTextCount": 0
+  },
+  "message": "COMMON.exchangecommonfunc.gethistbillboardrate fixture blocked: missing_schema_authority",
+  "findings": [
+    {
+      "tableRef": "[DAWHO].[dbo].[ETS_vSPListHist]",
+      "action": "create",
+      "blockReason": "missing_schema_authority"
+    },
+    {
+      "tableRef": "DAWHO.DBO.ETS_VSPLISTHIST",
+      "action": "create",
+      "blockReason": "missing_schema_authority"
+    }
+  ]
+}

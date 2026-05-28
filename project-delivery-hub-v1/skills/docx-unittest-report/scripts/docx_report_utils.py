@@ -10,12 +10,18 @@ from datetime import date
 from pathlib import Path
 from typing import Any, Iterator
 
-from docx import Document
-from docx.document import Document as DocumentObject
-from docx.oxml.table import CT_Tbl
-from docx.oxml.text.paragraph import CT_P
-from docx.table import Table, _Cell
-from docx.text.paragraph import Paragraph
+try:
+    from docx import Document
+    from docx.document import Document as DocumentObject
+    from docx.oxml.table import CT_Tbl
+    from docx.oxml.text.paragraph import CT_P
+    from docx.table import Table, _Cell
+    from docx.text.paragraph import Paragraph
+except ImportError as exc:
+    raise SystemExit(
+        "docx-unittest-report 缺少 Python 依赖：python-docx。"
+        "请在当前解释器安装后重试，例如：python -m pip install python-docx"
+    ) from exc
 
 SECTION_RE = re.compile(r"^(UT-\d{2})\s*(.*)$", re.IGNORECASE)
 AUTO_STATUS_RE = re.compile(r"\n?狀態：.*$", re.MULTILINE)

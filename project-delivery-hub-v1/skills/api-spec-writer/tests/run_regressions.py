@@ -26,6 +26,7 @@ from write_api_spec import (
     load_project_hard_constraints,
     select_representative_mock_examples,
 )
+from sequence_diagrams import build_sequence_context
 
 
 def load_json(path: Path) -> dict:
@@ -254,7 +255,7 @@ def test_shared_context_generation_with_batch() -> None:
         batch = load_json(paths["batch_file"])
 
         assert_true(paths["api_spec_path"].exists(), "spec writer should emit API_Spec.json into shared context execution")
-        assert_true(api_spec["schemaVersion"] == "4.2.0", "spec writer should emit the upgraded API_Spec schemaVersion")
+        assert_true(api_spec["schemaVersion"] == "4.3.0", "spec writer should emit the upgraded API_Spec schemaVersion")
         assert_true("codeHandoff" in api_spec, "spec writer should emit machine-readable codeHandoff")
         assert_true("logicFlow" in api_spec["codeHandoff"], "codeHandoff should expose ordered logic flow")
         assert_true("queryContracts" in api_spec["codeHandoff"], "codeHandoff should expose query contracts")
@@ -267,6 +268,141 @@ def test_shared_context_generation_with_batch() -> None:
         assert_true(manifest["specStatus"] == "done", "merged manifest should expose specStatus")
         assert_true("codeArtifacts" in manifest, "merged manifest should preserve codeArtifacts envelope")
         assert_true(batch["activeFunctionCode"] == EXECUTION_ID, "batch file should stay pinned to the current execution")
+
+
+def test_sequence_diagram_native_spec_enriches_shared_generation() -> None:
+    with tempfile.TemporaryDirectory() as temp_dir:
+        paths = setup_project(Path(temp_dir))
+        sequence_dir = paths["project_root"] / ".agent" / "functions" / EXECUTION_ID / "analysis" / "sequence-diagrams"
+        sequence_dir.mkdir(parents=True, exist_ok=True)
+        dump_json(
+            sequence_dir / "D.006_native_visio_spec.json",
+            {
+                "participants": [
+                    {"id": "APP", "label": "APP"},
+                    {"id": "Ent", "label": "Enterprise"},
+                    {"id": "IRIS", "label": "IRIS"},
+                ],
+                "sections": [{"label": "AddExchangeDepositInit 初始化流程"}],
+                "frames": [{"kind": "alt", "condition": "[查詢成功]"}],
+                "messages": [
+                    {"kind": "message", "from": "APP", "to": "Ent", "text": "AddExchangeDepositInit 呼叫 CommonFunc.GenFntTranSeq 取得交易序號"},
+                    {"kind": "message", "from": "Ent", "to": "IRIS", "text": "AddExchangeDepositInit 呼叫 IRIS.EC0001 取得試算資料"},
+                ],
+            },
+        )
+
+        completed = run_command(
+            [
+                sys.executable,
+                str(WRITE_API_SPEC),
+                "--project-root",
+                str(paths["project_root"]),
+                "--function-code",
+                EXECUTION_ID,
+                "--api-id",
+                API_ID_READY,
+            ]
+        )
+        assert_true(completed.returncode == 0, completed.stdout + completed.stderr)
+
+        api_spec = load_json(paths["api_spec_path"])
+        manifest = load_json(paths["manifest_path"])
+
+        assert_true(api_spec["source"]["sequenceDiagrams"], "API Spec source should include matched sequence diagram files")
+        assert_true(manifest["specSource"]["sequenceDiagrams"], "manifest specSource should include sequence diagram hashes")
+        assert_true(
+            any(item.get("appliedToApi") for item in api_spec.get("rawAppendix", {}).get("sequenceDiagramExtracts", [])),
+            "rawAppendix should retain applied sequence diagram extracts",
+        )
+        assert_true(
+            any(item.get("kind") == "sequenceDiagram" for item in api_spec["codeHandoff"]["legacyEvidence"]),
+            "codeHandoff legacyEvidence should include sequenceDiagram evidence",
+        )
+        assert_true(
+            api_spec["codeHandoff"]["logicSummary"]["primarySource"] == "businessLogic+sequenceDiagram",
+            "sequence evidence should be visible in logicSummary primarySource",
+        )
+        assert_true(
+            any("commonfunc" in item.get("purpose", "").casefold() or "iris" in item.get("purpose", "").casefold() for item in api_spec["codeHandoff"]["dependencyHints"]),
+            "sequence dependencies should enrich dependencyHints",
+        )
+
+
+def test_external_sequence_root_svg_and_vsdx_are_discoverable() -> None:
+    with tempfile.TemporaryDirectory() as temp_dir:
+        temp_path = Path(temp_dir)
+        agent_dir = temp_path / ".agent"
+        agent_dir.mkdir()
+        sequence_root = temp_path / "external-sequence"
+        sequence_root.mkdir()
+        (sequence_root / "E.999_01.svg").write_text(
+            "<svg xmlns=\"http://www.w3.org/2000/svg\"><title>E.999</title><text>AddWidgetFlow 呼叫 CommonUtil/GetFoo</text></svg>",
+            encoding="utf-8",
+        )
+        vsdx_path = sequence_root / "E.999_01.vsdx"
+        with __import__("zipfile").ZipFile(vsdx_path, "w") as archive:
+            archive.writestr("visio/pages/page1.xml", "<Page><Text>AddWidgetFlow 呼叫 Backend/GetRate</Text></Page>")
+
+        context = build_sequence_context(
+            agent_dir=agent_dir,
+            function_code="E.999",
+            api_name="AddWidgetFlow",
+            request_fields=[],
+            response_fields=[],
+            known_response_codes=[],
+            sequence_root=sequence_root,
+        )
+
+        kinds = {item["kind"] for item in context["sourceEntries"]}
+        assert_true({"svg", "vsdx"}.issubset(kinds), "explicit sequence root should discover matching SVG and VSDX files")
+        assert_true(any(item.get("appliedToApi") for item in context["extracts"]), "external sequence text should apply to matching apiName")
+
+
+def test_sequence_diagram_contract_conflicts_are_blocking_unresolved() -> None:
+    with tempfile.TemporaryDirectory() as temp_dir:
+        temp_path = Path(temp_dir)
+        agent_dir = temp_path / ".agent"
+        sequence_dir = agent_dir / "functions" / "B.001" / "analysis" / "sequence-diagrams"
+        sequence_dir.mkdir(parents=True)
+        dump_json(
+            sequence_dir / "B.001_native_visio_spec.json",
+            {
+                "sections": [{"label": "ConflictApi 流程"}],
+                "messages": [{"text": "ConflictApi 使用 missingField 並回傳 Response 7777"}],
+            },
+        )
+
+        context = build_sequence_context(
+            agent_dir=agent_dir,
+            function_code="B.001",
+            api_name="ConflictApi",
+            request_fields=[{"fieldName": "knownField"}],
+            response_fields=[],
+            known_response_codes=["0000"],
+        )
+
+        topics = {item.get("topic") for item in context["unresolved"]}
+        assert_true("sequenceDiagram.fieldContract" in topics, "unknown sequence field should become blocking unresolved")
+        assert_true("sequenceDiagram.responseCodeContract" in topics, "unknown sequence response code should become blocking unresolved")
+
+
+def test_missing_sequence_diagram_is_review_note_not_blocking() -> None:
+    with tempfile.TemporaryDirectory() as temp_dir:
+        agent_dir = Path(temp_dir) / ".agent"
+        agent_dir.mkdir()
+        context = build_sequence_context(
+            agent_dir=agent_dir,
+            function_code="Z.999",
+            api_name="NoDiagramApi",
+            request_fields=[],
+            response_fields=[],
+            known_response_codes=[],
+        )
+
+        assert_true(not context["sourceEntries"], "missing sequence diagram should not create sources")
+        assert_true(not context["unresolved"], "missing sequence diagram should not block spec generation")
+        assert_true(context["notes"], "missing sequence diagram should leave a review note")
 
 
 def test_extract_function_code_preserves_full_tsd_code() -> None:
@@ -387,6 +523,14 @@ def main() -> int:
     print("[pass] test_business_logic_body_dependencies_are_structured_and_uncertain_db_is_unresolved")
     test_shared_context_generation_with_batch()
     print("[pass] test_shared_context_generation_with_batch")
+    test_sequence_diagram_native_spec_enriches_shared_generation()
+    print("[pass] test_sequence_diagram_native_spec_enriches_shared_generation")
+    test_external_sequence_root_svg_and_vsdx_are_discoverable()
+    print("[pass] test_external_sequence_root_svg_and_vsdx_are_discoverable")
+    test_sequence_diagram_contract_conflicts_are_blocking_unresolved()
+    print("[pass] test_sequence_diagram_contract_conflicts_are_blocking_unresolved")
+    test_missing_sequence_diagram_is_review_note_not_blocking()
+    print("[pass] test_missing_sequence_diagram_is_review_note_not_blocking")
     test_source_change_resets_code_manifest_and_execution_state()
     print("[pass] test_source_change_resets_code_manifest_and_execution_state")
     return 0

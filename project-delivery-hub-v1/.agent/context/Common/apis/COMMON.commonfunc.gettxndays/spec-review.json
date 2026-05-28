@@ -1,0 +1,41 @@
+{
+  "reviewStatus": "blocked",
+  "checkedAt": "2026-05-23T19:40:45+08:00",
+  "apiId": "COMMON.commonfunc.gettxndays",
+  "source": {
+    "tsdFile": "TSD.Common_封存TSD共用开发链路_v1.0_20260523.docx",
+    "workbookFile": "NEWDA_Method_DETAIL_ExchangeCommonFunc_20260522.xlsx",
+    "sheetNames": [
+      "GetTxnDays取得交易日期"
+    ]
+  },
+  "summary": {
+    "checks": 60,
+    "matched": 58,
+    "matchPct": 96.7,
+    "blockingCount": 2,
+    "warningCount": 0
+  },
+  "findings": [
+    {
+      "severity": "blocking",
+      "kind": "code_handoff_unresolved",
+      "path": "codeHandoff.unresolved.0",
+      "expected": "no blocking unresolved items",
+      "actual": {
+        "topic": "dependency.db_ods2_dbu_dbo_z_tbdaytodo",
+        "reason": "业务逻辑正文提到依赖 DB->ODS2_DBU.dbo.Z_TBDAY todo 未找到表結構，請提供一下，但同一段存在 todo / 待确认语义，不能作为已确认实现或 fixture 需求。"
+      }
+    },
+    {
+      "severity": "blocking",
+      "kind": "code_handoff_unresolved",
+      "path": "codeHandoff.unresolved.1",
+      "expected": "no blocking unresolved items",
+      "actual": {
+        "topic": "dependency.db.ods2_dbu_dbo_z_tbday",
+        "reason": "业务逻辑正文提到 DB 表 ODS2_DBU.DBO.Z_TBDAY，但同一段存在 todo / 待确认语义，不能作为已确认 SQL fixture 需求。"
+      }
+    }
+  ]
+}

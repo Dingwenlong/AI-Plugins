@@ -1,0 +1,63 @@
+{
+  "schemaVersion": "4.1.0",
+  "manifestType": "api",
+  "executionId": "Common",
+  "apiId": "COMMON.commonutil.getdevicebinding",
+  "apiCategory": "CommonUtil",
+  "apiName": "GetDeviceBinding",
+  "status": "pending",
+  "phase": "planned",
+  "updatedAt": "2026-05-23T22:18:09+08:00",
+  "newAuthor": "Jimmy",
+  "specStatus": "done",
+  "specUpdatedAt": "2026-05-23T17:45:41+08:00",
+  "specBlockReason": null,
+  "specSourceFingerprint": "sha256:1f2c3407ce98d37b33e95eadf444f036f47c3f43ad2ec0afe3b3b0185be4a14b",
+  "specSource": {
+    "tsdFile": "TSD.Common_封存TSD共用开发链路_v1.0_20260523.docx",
+    "workbookFile": "NEWDA_API_DETAIL_CommonUtil_20260522.xlsx",
+    "sheetNames": [
+      "GetDeviceBinding 查詢裝置綁定",
+      "GetDeviceBindingStatus 查詢裝置綁定狀態"
+    ]
+  },
+  "specArtifacts": {
+    "apiSpec": "../../../.agent/context/Common/apis/COMMON.commonutil.getdevicebinding/Common_API_Spec.json"
+  },
+  "fixtureStatus": "skipped",
+  "fixturePhase": "no_sql",
+  "fixtureUpdatedAt": "2026-05-23T17:56:08+08:00",
+  "fixtureBlockReason": null,
+  "fixtureSourceFingerprint": "sha256:1f2c3407ce98d37b33e95eadf444f036f47c3f43ad2ec0afe3b3b0185be4a14b",
+  "fixtureArtifacts": {
+    "dbFixtureReport": "../../.agent/context/Common/apis/COMMON.commonutil.getdevicebinding/db-fixture-report.json",
+    "tableChecks": "../../.agent/context/Common/apis/COMMON.commonutil.getdevicebinding/table-checks.json",
+    "seedPlan": null,
+    "seedExecuted": null,
+    "seedManifest": null
+  },
+  "codeStatus": "pending",
+  "codePhase": "planned",
+  "codeUpdatedAt": "2026-05-23T22:18:09+08:00",
+  "codeBlockReason": null,
+  "codeProjectRoot": ".",
+  "codeSolutionPath": "Sinopac.EnterpriseAPI.slnx",
+  "inputHashes": {
+    "upstreamManifest": "sha256:d9f5d22f07fa3c334f1bd582d5a9411f404afdbd053244808eda4f07cdf88758",
+    "apiSpec": "sha256:9c5302e2d340b6fc4f9e1242f6b84fb60a04d99094d0c9bf9b2c5d49df879bc0"
+  },
+  "modifiedFiles": [],
+  "validationChecks": [
+    "dotnet build \"Sinopac.EnterpriseAPI/Sinopac.EnterpriseAPI.csproj\" -m:1",
+    "dotnet test \"Test/EnterpriseApi.Unit/EnterpriseApi.Unit.csproj\" -m:1",
+    "dotnet test \"Test/EnterpriseApi.Integration/EnterpriseApi.Integration.csproj\" -m:1"
+  ],
+  "validationResults": [],
+  "repoDriftFiles": [],
+  "codeArtifacts": {
+    "changePlan": "../../../.agent/context/Common/apis/COMMON.commonutil.getdevicebinding/change-plan.json",
+    "implementationReport": null,
+    "diagnosisReport": null
+  },
+  "lastMessage": "COMMON.commonutil.getdevicebinding change-plan generated for EnterpriseApiBusiness/CommonUtil/CommonUtilService.GetDeviceBinding.cs; waiting for AI-authored code changes."
+}

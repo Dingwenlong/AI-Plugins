@@ -1,28 +1,29 @@
 # DAWHO API Detail Workbook Rules
 
-Use these rules when editing API Detail workbooks, syncing Api_List, preserving workbook structure, handling backups, fonts, formatting handoff, and final workbook validation.
+Use these rules when planning API Detail workbook edits, syncing Api_List, preserving workbook structure, controlling fonts, handing off to the Office editor, and validating the final workbook.
 
 > Extracted from the former heavy `SKILL.md` so the entrypoint can stay lightweight. Load this file only when the matching workflow is active.
 
 ## API Detail 工作簿格式交接
 
-当本技能在已保存的 `NEWDA_API_DETAIL_*.xlsx` 中创建、重命名、删除或编辑任何 API Detail 工作表、`Api_List` 行、request/response 表、范例区块、后端来源文本、业务逻辑文本、返回链接或其他内容时，最终用户报告前必须接续下游 `专案交付文件格式检查器`。
+当本技能裁决要在 `NEWDA_API_DETAIL_*.xlsx` 中创建、重命名、删除或编辑任何 API Detail 工作表、`Api_List` 行、request/response 表、范例区块、后端来源文本、业务逻辑文本、返回链接或其他内容时，必须先形成明确 edit plan/file claim，再交由 `专案 Office 交付文件编辑器` 执行物理写入；最终用户报告前必须接续下游 `专案交付文件格式检查器` 验收。
 
 必要交接闭环：
 
-1. 写回前依单一备份规则，刷新目标工作簿唯一 `.bak` 备份。
-2. 先完成语义/API 设计编辑；不得用格式脚本补造缺失的 API 内容。
-3. 载入并遵循 `delivery-format-checker`。
-4. 执行 Excel 格式修复/检查顺序：确认本次变更范围 -> 只修变更范围格式 -> 只对变更范围执行字体槽位 -> 结构复验 -> artifact-tool inspect/render。
-5. 最终报告需同时说明 `Must fix`、`Should fix`、`Naming`、`Visual risk`、`Covered` 状态与 API 设计发现。
+1. 不默认创建 `.bak`、`.before_*` 或时间戳备份；若用户或工作区规则明确要求，按 `office-deliverable-edit-protocol.md` 处理临时副本与清理。
+2. 先完成语义/API 设计裁决；不得用格式脚本补造缺失的 API 内容。
+3. 产出 `office-edit-plan`：明确 sheet、row、cell、range、before/after、字体/行高要求、禁止扩散范围与验证命令。
+4. 交由 `专案 Office 交付文件编辑器` 保存 workbook 并回报 `modifiedFiles`、验证命令与风险。
+5. 载入并遵循 `delivery-format-checker` 验收；若检查器要求格式写入，生成后续 `office-edit-plan`，仍由 Office 编辑器执行。
+6. 最终报告需同时说明 `Must fix`、`Should fix`、`Naming`、`Visual risk`、`Covered` 状态与 API 设计发现。
 
-若用户只要求只读分析，不要写回工作簿；以检查/只报告模式运行或建议运行格式检查器，并把格式问题列为后续风险。若本技能已经写回工作簿，在格式检查器显示 `Must fix = 0` 且 `Visual risk = 0` 前，不得宣称工作簿完成；对于用户要求的修复任务，也应尽量把 `Should fix` 推进到 `0`，除非剩余项是明确延后且已说明原因。
+若用户只要求只读分析，不要写回工作簿；以检查/只报告模式运行或建议运行格式检查器，并把格式问题列为后续风险。若 Office 编辑器已经写回工作簿，在格式检查器显示 `Must fix = 0` 且 `Visual risk = 0` 前，不得宣称工作簿完成；对于用户要求的修复任务，也应尽量把 `Should fix` 推进到 `0`，除非剩余项是明确延后且已说明原因。
 
-格式检查器负责行高、字体槽位、边框、合并单元格、返回链接、打印/渲染问题与右侧空白区污染等视觉/版面事项。本技能负责 PRD/TSD/API 语义、标准命名、工作簿内容与开发就绪度判断。
+格式检查器负责行高、字体槽位、边框、合并单元格、返回链接、打印/渲染问题与右侧空白区污染等视觉/版面事项的判断与验收。Office 编辑器负责保存 `.xlsx`。本技能负责 PRD/TSD/API 语义、标准命名、工作簿内容与开发就绪度判断。
 
 ## 字体与格式范围护栏
 
-本技能修改 Excel 内容时，必须把字体和格式影响范围限制在本次业务变更范围内。
+本技能规划 Excel 内容写入时，必须把字体和格式影响范围限制在本次业务变更范围内。
 
 范围规则：
 
@@ -30,7 +31,7 @@ Use these rules when editing API Detail workbooks, syncing Api_List, preserving 
 - 新增行、插入列、复制模板时，只从相邻同类行/列复制样式到新增或被改动的单元格。
 - 同步 `Api_List` 的 `後端來源` 时，只改对应行的目标单元格；不得重设整张 `Api_List` 字体。
 - 修改一个 API sheet 的字段、范例或业务逻辑时，只改该 sheet 的可视语义范围；不得遍历所有 API Detail sheets 做字体修复。
-- 若需要调用下游格式检查器或字体槽位脚本，必须显式交接 sheet 名、`Api_List` 行号或单元格范围；不得使用会扫描全 workbook 或所有 API Detail sheets 的默认模式。
+- 若需要调用 Office 编辑器、下游格式检查器或字体槽位脚本，必须显式交接 sheet 名、`Api_List` 行号或单元格范围；不得使用会扫描全 workbook 或所有 API Detail sheets 的默认模式。
 - 若无法确定受影响范围，先做只读检查并报告 `Visual risk`，不要为了保险对全 workbook 套字体。
 - 只有用户明确要求“全工作簿统一字体/全 sheets 修格式”，才可扩大到全 workbook；最终回复必须说明这是用户明确授权的范围。
 
@@ -115,23 +116,23 @@ Known Deposit workbook mismatch:
 - Treat it as the same sheet when syncing `後端來源`.
 
 
-## 工作簿编辑
+## 工作簿编辑计划
 
-除非当前工作区规则要求其他保存方式，直接更新工作簿时可使用 `openpyxl`。若当前工作区 `AGENTS.md` 或项目级指令要求用 Excel COM 保存 API Detail 工作簿，则项目规则优先于本技能默认 `openpyxl` 写回建议。对于可能包含 OLE/EMF 或其他内嵌对象的既有交付 `.xlsx` 文件，`openpyxl` 只用于只读检查/不保存分析；修改保存需使用 Excel COM。
+本技能不直接保存工作簿。需要写入时，生成 `office-edit-plan` 并交给 `专案 Office 交付文件编辑器`。对于可能包含 OLE/EMF、媒体、控制项、批注、外部链接或复杂富文本的既有交付 `.xlsx` 文件，计划中应要求优先 Excel COM 保存；`openpyxl` 只用于只读检查，除非计划和文件内容已确认保存安全。
 
-对于已经使用 rich text 的工作簿，载入方式：
+若 Office 编辑器需要读取已经使用 rich text 的工作簿，可参考载入方式：
 
 ```python
 load_workbook(path, rich_text=True)
 ```
 
-插入列时：
+计划包含插入列时，要求 Office 编辑器：
 
 - Copy style, border, fill, alignment, protection, number format, and row height from a nearby row.
 - Preserve existing combined PRD rows.
 - Write new cells with the workbook's existing rich-text font pattern if the user asked for aggressive mixed fonts.
 
-编辑后：
+保存后验证要求：
 
 - Unhide all `Api_List` rows.
 - Set `ws.auto_filter.ref = f"A1:K{ws.max_row}"`.
@@ -139,17 +140,17 @@ load_workbook(path, rich_text=True)
 - Verify that unrelated worksheets were not modified when the task only changed scoped API content.
 
 
-## 备份
+## 备份与临时副本
 
 不要每次操作都创建新备份。用户指定的源文件保持为当前有效目标。
 
-仅在以下情况创建备份：
+默认不要在项目、程序或交付目录生成 `.bak`、`.before_*`、时间戳备份等副本。仅在以下情况考虑临时副本：
 
 - The user asks.
 - A destructive broad change is requested.
 - You are about to repair or overwrite a file that Excel may have modified.
 
-如需备份，只保留一个清楚命名的源文件备份，不要每一步都创建备份。
+如需临时副本，优先使用工具临时目录或非交付区域，并在交付或提交前清理；不要每一步都创建备份。
 
 
 ## 字体处理
@@ -160,7 +161,7 @@ load_workbook(path, rich_text=True)
 - 用户明确要求修复当前变更范围的字体。
 - 下游格式检查器在本次变更范围内报告字体问题。
 
-若用户要求当前范围字体：
+若用户要求当前范围字体，在 `office-edit-plan` 中写明：
 
 - Chinese: `微軟正黑體`
 - Other text: `Times New Roman`
@@ -176,7 +177,7 @@ Warn that aggressive rich text can trigger Excel's "repair content" prompt even 
 
 - 只处理本次实际编辑的 cells/ranges，或用户明确点名的 sheet/range。
 - 对 API Detail sheets，默认语义可视范围是 `A:G` 到最后内容列/行；对 `Api_List`，默认只处理本次涉及的行和列。
-- 若调用 `delivery-format-checker` 的字体脚本，必须传入明确 `-Sheets` / 范围参数；不要使用会处理所有 API Detail worksheets 的默认命令。
+- 若调用 Office 编辑器执行 `delivery-format-checker` 的字体脚本，必须传入明确 `-Sheets` / 范围参数；不要使用会处理所有 API Detail worksheets 的默认命令。
 - 不要对 workbook 每张 sheet 做“补一遍字体”的收尾动作。
 
 
@@ -184,10 +185,10 @@ Warn that aggressive rich text can trigger Excel's "repair content" prompt even 
 
 最终回复前：
 
-- Reopen the exact target workbook.
+- Confirm the Office editor reopened the exact target workbook.
 - Confirm `Api_List` rows are visible (`row_dimensions[r].hidden == False`).
 - Confirm expected PRD/API rows exist.
 - Confirm `後端來源` for changed rows equals the matching sheet's `涉及BackendAPI` text.
 - Confirm category field KB was checked and updated when new or inconsistent field names were found.
 - Confirm unrelated sheets' fonts/styles were not changed when the task scope was limited to specific sheets or rows.
-- Mention if the target file was locked and an alternate filename was created.
+- Mention if the target file was locked and no write was performed, or if the user explicitly approved an alternate output file.

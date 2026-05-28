@@ -1,22 +1,35 @@
 ---
-name: SQL 测试资料准备器
-description: 为依赖 SQL 的 API 准备本地或测试库的表结构与最小测试数据。可选第 03 步：读取 `*_API_Spec.json` 与 `codeHandoff.queryContracts`，识别 SQL 表依赖，检查或补齐 schema/seed；无权威 schema、连接或安全边界不清时阻塞，供第 04 步接续执行。关键词：SQL fixture、queryContracts、schema、seed、fixtureStatus。
+name: 【开发落地】SQL 测试资料准备器
+description: 为依赖 SQL 的 API 按 `.agent` 私有 SQL Server 目标配置准备表结构与最小测试数据。可选第 03 步：读取 `*_API_Spec.json` 与 `codeHandoff.queryContracts`，识别 SQL 表依赖，检查或补齐 schema/seed；无权威 schema、连接或安全边界不清时阻塞，供第 04 步接续执行。关键词：SQL fixture、queryContracts、schema、seed、fixtureStatus。
 ---
 
-# 03 可选 SQL 测试资料准备器
+# 【开发落地】SQL 测试资料准备器
 
-使用这个可选第 03 步技能在目标项目的 `.agent/context` 下补一层独立的 SQL fixture 准备执行面。它的职责不是生成 spec，也不是修改业务代码，而是判断当前 API 是否依赖 SQL 表，并为本地/测试库准备最小可运行的表结构与测试数据，供第 04 步 [$api-code-writer](C:/Users/<username>/plugins/project-delivery-hub-v1/skills/api-code-writer/SKILL.md) 后续 build、test、integration test 使用。推荐链路是先 01，再 02，再 03（如需），再 04，最后 05（如需）。
+使用这个可选第 03 步技能在目标项目的 `.agent/context` 下补一层独立的 SQL fixture 准备执行面。它的职责不是生成 spec，也不是修改业务代码，而是判断当前 API 是否依赖 SQL 表，并按 `.agent/config/sql-fixture-targets.local.json` 指定的 SQL Server fixture 目标准备最小可运行的表结构与测试数据，供第 04 步 [$api-code-writer](<pluginRoot>/skills/api-code-writer/SKILL.md) 后续 build、test、integration test 使用。推荐链路是先 01，再 02，再 03（如需），再 04，最后 05（如需）。
 
 默认优先解析插件本地 `references/local-workspaces.json`，可按 `workspaceKey` 指向对应集中 `.agent`。`project-root` 仍是实际代码分支目录，`agent-root` 是共享链路资料库。参数优先级为 `--agent-root/--workspace-root` > 环境变量 > 插件本地配置 > 旧逻辑 `<project-root>\.agent`。
 
 SQL fixture 的专案默认值从规则库读取：`--rules-root` > `PROJECT_RULES_ROOT` / 专案环境变量 > `references/local-workspaces.json.rulesRoot` > `<agentRoot>/project-rules/<workspaceKey>`。若 `<rulesRoot>/catalog.json` 指向 `rules/sql-fixture/defaults.json`，本技能使用其中的默认数据库、环境标签与 sample literal。找不到规则库时只执行通用 fixture 判断，并把专案默认 DB/seed 规则缺口写入阻塞原因；不得从插件内旧个案 reference 偷读默认数据库名。
+
+## SQL 连接目标配置
+
+第 03 步默认只从共享 `.agent` 的私有配置读取数据库目标：
+
+- 配置文件固定为 `.agent/config/sql-fixture-targets.local.json`
+- 支持字段：`defaultTarget`、`targets.<name>.provider=sqlserver`、`environment`、`connectionString`、`targetDatabase`、`allowCreateTable`、`allowSeed`
+- `connectionString` 可以是完整 SQL Server 连接串，但属于本机/项目私有配置；不得写入插件源码、交付包、打包产物、报告或聊天回报
+- `targetDatabase` 必须匹配专案规则库 `rules/sql-fixture/defaults.json.defaultSqlServerDatabase` 或显式允许库；NEWDAWHO 当前目标库为 `DAWHO`
+- 连接串中的 `Initial Catalog` 只用于连接来源，不决定建表/seed 目标库
+- 缺少配置时，SQL 依赖 API 必须阻塞为 `missing_db_target`
+- `sqlite:///...` 目标已禁用，传入时必须阻塞为 `sqlite_target_disabled`，不得创建本地 `.sqlite` 文件
+- `--db-target` 仅可用于选择 `.agent` 已配置目标，例如 `agent-config:develop`；不得直接传完整连接串、appsettings connection name 或 SQLite 路径来绕过 `.agent` 私有配置
 
 ## 规则包启动检查
 
 正式第 03 步判断 SQL fixture、补 schema 或 seed 前，必须先解析 `sqlFixture` 规则包：
 
 ```powershell
-python "C:\Users\<username>\plugins\project-delivery-hub-v1\references\resolve_project_rule_pack.py" `
+python "<pluginRoot>\references\resolve_project_rule_pack.py" `
   --pack sqlFixture `
   --workspace-key "<workspaceKey>"
 ```
@@ -28,7 +41,7 @@ python "C:\Users\<username>\plugins\project-delivery-hub-v1\references\resolve_p
 1. 读取共享 `execution-state.json`、`api-checklist.json`、API 级 `manifest.json` 与 `*_API_Spec.json`
 2. 优先消费 `codeHandoff.queryContracts`、`constraints`、`unresolved`，兼容旧 spec 的 `businessLogic.sqlSpecs` / `backendApis`
 3. 识别当前 API 是否存在 SQL fixture 需求
-4. 检查本地/测试库是否已存在目标表与最小测试数据
+4. 按 `.agent/config/sql-fixture-targets.local.json` 检查 SQL Server fixture 目标是否已存在目标表与最小测试数据
 5. 只有在存在权威 schema 来源时才允许创建表
 6. 对缺失数据执行幂等 seed；重复运行不能造成脏数据膨胀
 7. 只更新共享状态中的 `fixture*` 字段，保留 `spec*` 与 `code*` 历史
@@ -39,7 +52,7 @@ python "C:\Users\<username>\plugins\project-delivery-hub-v1\references\resolve_p
 
 这个可选第 03 步技能不绑定固定前置步骤名称。只要共享 `.agent/context` 中已经存在 `specStatus=done`、`manifest.json` 与 `*_API_Spec.json`，就可以在第 02 步之后、或第 04 步 `apply` 前按需进入 fixture 准备；不要求调用者必须先显式经过某个特定命名的上游 workflow / skill。
 
-本技能不是进入 [`api-code-writer`](C:/Users/<username>/plugins/project-delivery-hub-v1/skills/api-code-writer/SKILL.md) 的硬前提。默认允许 code writer 先执行 `prepare` 与 AI 改码；只有当目标 API 的 `apply` / 验证阶段确实依赖 SQL fixture，且 `fixtureStatus` 仍非 `done|skipped` 时，才需要先补执行本技能。
+本技能不是进入 [`api-code-writer`](<pluginRoot>/skills/api-code-writer/SKILL.md) 的硬前提。默认允许 code writer 先执行 `prepare` 与 AI 改码；只有当目标 API 的 `apply` / 验证阶段确实依赖 SQL fixture，且 `fixtureStatus` 仍非 `done|skipped` 时，才需要先补执行本技能。
 
 只有当 `fixtureStatus=done|skipped` 时，依赖 SQL fixture 的 code writer `apply` 才应继续推进。
 
@@ -47,12 +60,13 @@ python "C:\Users\<username>\plugins\project-delivery-hub-v1\references\resolve_p
 
 1. 先调用 `scripts/prepare_sql_fixture.py --execution-mode prepare`
 2. 默认读取集中 `.agent/context/execution-batch.json`；未配置集中 `.agent` 时回退 `<project-root>/.agent/context/execution-batch.json`
-3. 默认落到 `.agent/context/<functionCode>/`
-4. 若未指定 `--api-id`，一次只推进一支 `specStatus=done` 且 `fixtureStatus` eligible 的 API
-5. 读取 `*_API_Spec.json` 后，先判断是否存在 SQL fixture 需求
-6. 若存在 SQL fixture 需求，再解析 schema authority、表存在性与 seed 需求
-7. 若允许执行，再调用 `scripts/prepare_sql_fixture.py --execution-mode apply`
-8. 每次运行结束后，必须读取共享 `execution-state.json` 与 `api-checklist.json` 汇报结果
+3. 默认读取 `.agent/config/sql-fixture-targets.local.json` 的 `defaultTarget`；需要切换目标时只允许 `--db-target agent-config:<targetName>`
+4. 默认落到 `.agent/context/<functionCode>/`
+5. 若未指定 `--api-id`，一次只推进一支 `specStatus=done` 且 `fixtureStatus` eligible 的 API
+6. 读取 `*_API_Spec.json` 后，先判断是否存在 SQL fixture 需求
+7. 若存在 SQL fixture 需求，再解析 schema authority、表存在性与 seed 需求
+8. 若允许执行，再调用 `scripts/prepare_sql_fixture.py --execution-mode apply`
+9. 每次运行结束后，必须读取共享 `execution-state.json` 与 `api-checklist.json` 汇报结果
 
 ## SQL 识别规则
 
@@ -89,11 +103,7 @@ python "C:\Users\<username>\plugins\project-delivery-hub-v1\references\resolve_p
 
 ## 环境规则
 
-此技能只允许操作：
-
-- 本地开发数据库
-- 自动化测试数据库
-- 明确标记为 fixture / sandbox / integration 的数据库
+此技能只允许操作 `.agent/config/sql-fixture-targets.local.json` 中明确配置的 SQL Server fixture 目标。`environment` 必须标记为 `local`、`test`、`fixture`、`sandbox`、`integration` 或 `develop`。
 
 禁止默认操作：
 
@@ -101,7 +111,7 @@ python "C:\Users\<username>\plugins\project-delivery-hub-v1\references\resolve_p
 - UAT / SIT / Staging，除非当前 skill 配置明确允许
 - 无环境标签的共享数据库
 
-若无法证明当前连接是 local/test fixture 环境，必须阻塞，并写入 `fixtureBlockReason=unsafe_database_target`。
+若无法证明当前连接来自 `.agent` 私有配置，或 `targetDatabase` 不符合专案规则默认/允许库，必须阻塞，并写入 `fixtureBlockReason=unsafe_database_target`。
 
 ## 表规则
 
@@ -306,7 +316,7 @@ python ".\scripts\prepare_sql_fixture.py" `
 - `--function-code`
 - `--api-id`
 - `--execution-mode`
-- `--db-target`
+- `--db-target`（仅支持 `agent-config:<targetName>`；不传时使用 `.agent/config/sql-fixture-targets.local.json.defaultTarget`）
 - `--schema-authority-root`
 - `--allow-create-table`
 - `--allow-seed`
@@ -318,3 +328,12 @@ python ".\scripts\prepare_sql_fixture.py" `
 - `schemas/db-fixture-report.schema.json`
 - `schemas/table-checks.schema.json`
 - `schemas/seed-manifest.schema.json`
+
+## Leader Mode
+
+当由 `multi-api-leader` 显式编排时：
+
+- 03 SQL fixture 的状态写入由 leader 串行完成。
+- 子 agent 只能只读检查 schema、seed、queryContracts 与 SQL 安全边界。
+- 无权威 schema、连接信息或安全边界不清时必须阻塞，不能让 worker 自行补写 fixture 状态。
+- `fixtureStatus` 必须由 leader 最终标记为 `done`、`skipped` 或 `not_required` 后，第 04 步才可继续。

@@ -1,0 +1,2130 @@
+{
+  "schemaVersion": "4.2.0",
+  "apiId": "COMMON.commonfunc.getec0001",
+  "newAuthor": "Jimmy",
+  "functionCode": "Common",
+  "version": "1.0",
+  "apiCategory": "CommonFunc",
+  "apiName": "GetEC0001",
+  "source": {
+    "tsdFile": "TSD.Common_封存TSD共用开发链路_v1.0_20260523.docx",
+    "workbookFile": "NEWDA_Method_DETAIL_ExchangeCommonFunc_20260522.xlsx",
+    "sheetNames": [
+      "GetEC0001取帳戶信息"
+    ]
+  },
+  "request": [
+    {
+      "rowKey": "1",
+      "fieldName": "refreshFromIris",
+      "dataType": "boolean",
+      "required": true,
+      "notes": "此參數=false表示先去Redis取資料，若沒有資料才去呼叫Iris (默認值)；\n若此參數=true，表示無論如何，一定要先呼叫Iris，將資料寫回Redis來取得資料；"
+    }
+  ],
+  "response": [
+    {
+      "rowKey": "1",
+      "fieldName": "isSuccess",
+      "dataType": "boolean",
+      "required": true,
+      "description": "API成功與否",
+      "example": "True",
+      "notes": "true ; false"
+    },
+    {
+      "rowKey": "2",
+      "fieldName": "responseCode",
+      "dataType": "string",
+      "required": true,
+      "description": "回應代碼",
+      "example": "0",
+      "notes": "成功:0000其餘狀況為失敗"
+    },
+    {
+      "rowKey": "3",
+      "fieldName": "responseMessage",
+      "dataType": "string",
+      "required": true,
+      "description": "回應訊息",
+      "notes": "失敗狀況下回傳錯誤訊息"
+    },
+    {
+      "rowKey": "4",
+      "fieldName": "responseDT",
+      "dataType": "string",
+      "required": true,
+      "description": "系統回應時間",
+      "notes": "yyyy/MM/dd HH:mm:ss"
+    },
+    {
+      "rowKey": "5",
+      "fieldName": "responseData",
+      "dataType": "array",
+      "required": true,
+      "description": "回應資料框",
+      "example": "\"responseData\":[]",
+      "properties": [
+        {
+          "rowKey": "5.01",
+          "fieldName": "accountList",
+          "dataType": "list",
+          "required": true,
+          "description": "帳號清單",
+          "notes": "由 EC0001 回傳資料逐筆組成",
+          "properties": [
+            {
+              "rowKey": "5.01.01",
+              "fieldName": "accountNumber",
+              "dataType": "string",
+              "required": true,
+              "description": "帳號；新臺幣回傳14碼帳號，外幣回傳外幣主帳號",
+              "example": "\"accountNumber\":\"02400400131758\"",
+              "notes": "新臺幣：EC0001.EnqEAcctId；外幣：EC0001.EnqEMainAcctId。舊欄位 acctValue。"
+            },
+            {
+              "rowKey": "5.01.02",
+              "fieldName": "accountName",
+              "dataType": "string",
+              "required": true,
+              "description": "帳號名稱",
+              "example": "\"accountName\":\"中文姓名1662683\"",
+              "notes": "EC0001.EnqEAcctTitle1 / BP_BANK_BAL.ACCOUNT_NAME；舊欄位 acctCName。"
+            },
+            {
+              "rowKey": "5.01.03",
+              "fieldName": "accountDisplayName",
+              "dataType": "string",
+              "required": true,
+              "description": "帳號顯示名稱",
+              "example": "\"accountDisplayName\":\"中文姓名1662683\"",
+              "notes": "畫面顯示用帳號名稱；預設同 accountName。舊欄位 acctText。"
+            },
+            {
+              "rowKey": "5.01.04",
+              "fieldName": "subAccountNumber",
+              "dataType": "string",
+              "required": true,
+              "description": "外幣子帳號；新臺幣為空字串，外幣回傳該幣別子帳號",
+              "example": "\"subAccountNumber\":\"02400801030332\"",
+              "notes": "外幣：EC0001.EnqEAcctId；新臺幣/無子帳號：空字串。呼叫端可依 accountNumber + currencyCode 對應取得該幣別 subAccountNumber。舊欄位 subAcct。"
+            },
+            {
+              "rowKey": "5.01.05",
+              "fieldName": "currencyCode",
+              "dataType": "string",
+              "required": true,
+              "description": "幣別代碼；與 accountNumber 共同定位外幣子帳號",
+              "example": "\"currencyCode\":\"USD\"",
+              "notes": "EC0001.EnqEAcctCurr；外幣帳號以 accountNumber + currencyCode 對應唯一 subAccountNumber。舊欄位 curr。"
+            },
+            {
+              "rowKey": "5.01.06",
+              "fieldName": "currencyName",
+              "dataType": "string",
+              "required": true,
+              "description": "幣別中文名稱",
+              "example": "\"currencyName\":\"新臺幣\"",
+              "notes": "J_CURR.CURRCNAME；舊欄位 curText。"
+            },
+            {
+              "rowKey": "5.01.07",
+              "fieldName": "workingBalance",
+              "dataType": "decimal",
+              "required": true,
+              "description": "帳戶餘額",
+              "example": "\"workingBalance\":677675",
+              "notes": "EC0001.EnqEAcctWkBal；舊欄位 availBalance。"
+            },
+            {
+              "rowKey": "5.01.08",
+              "fieldName": "accountCategoryCode",
+              "dataType": "string",
+              "required": true,
+              "description": "帳戶種類代碼",
+              "example": "\"accountCategoryCode\":\"6001\"",
+              "notes": "EC0001.EnqEAcctCatg；舊欄位 acctCategory。"
+            },
+            {
+              "rowKey": "5.01.09",
+              "fieldName": "digitalAccountFlag",
+              "dataType": "string",
+              "required": true,
+              "description": "數位帳號註記",
+              "example": "\"digitalAccountFlag\":\"\"",
+              "notes": "EC0001.EnqEDigitalFg；空值表示一般帳戶。舊欄位 digitalFg。"
+            },
+            {
+              "rowKey": "5.01.10",
+              "fieldName": "foreignExchangeStopFlag",
+              "dataType": "string",
+              "required": true,
+              "description": "暫停外匯交易註記",
+              "example": "\"foreignExchangeStopFlag\":\"Y\"",
+              "notes": "EC0001.EnqEMemo15；舊欄位 foreignStop。"
+            },
+            {
+              "rowKey": "5.01.11",
+              "fieldName": "foreignExchangeAlertFlag",
+              "dataType": "string",
+              "required": true,
+              "description": "外匯疑似化整為零註記",
+              "example": "\"foreignExchangeAlertFlag\":\"Y\"",
+              "notes": "EC0001.EnqEMemo14；舊欄位 foreignAlert。"
+            },
+            {
+              "rowKey": "5.01.12",
+              "fieldName": "mobilePhone",
+              "dataType": "string",
+              "required": true,
+              "description": "聯絡電話",
+              "example": "\"mobilePhone\":\"886-09-11222333\"",
+              "notes": "EC0001.EnqECustSms1；舊欄位 enqECustSms1。"
+            },
+            {
+              "rowKey": "5.01.13",
+              "fieldName": "email",
+              "dataType": "string",
+              "required": true,
+              "description": "電子郵件",
+              "example": "\"email\":\"BANK@SINOPAC.COM\"",
+              "notes": "EC0001.EnqECustEmail；舊欄位 enqECustEmail。"
+            },
+            {
+              "rowKey": "5.01.14",
+              "fieldName": "generalQuotaFlag",
+              "dataType": "int",
+              "required": true,
+              "description": "綜合額度註記",
+              "example": "\"generalQuotaFlag\":1",
+              "notes": "固定值 1；舊欄位 genQuotaMark。"
+            },
+            {
+              "rowKey": "5.01.15",
+              "fieldName": "generalAccountFlag",
+              "dataType": "string",
+              "required": true,
+              "description": "綜存戶註記",
+              "example": "\"generalAccountFlag\":\"1\"",
+              "notes": "EC0001.EnqELinkAioAc==Y，或 accountTypeCode 為外幣/數位外幣，或 subAccountNumber.Length==6 時為 1；舊欄位 genAcctMark。"
+            },
+            {
+              "rowKey": "5.01.16",
+              "fieldName": "inactiveAccountFlag",
+              "dataType": "string",
+              "required": true,
+              "description": "久未往來戶註記",
+              "example": "\"inactiveAccountFlag\":\"Y\"",
+              "notes": "EC0001.EnqEInactiveFlag；舊欄位 acctStat。"
+            },
+            {
+              "rowKey": "5.01.17",
+              "fieldName": "nonTransferFlag",
+              "dataType": "string",
+              "required": true,
+              "description": "禁止轉出註記",
+              "example": "\"nonTransferFlag\":\"0\"",
+              "notes": "依 ACCT_NOTRANSFER 與 EC0001 帳號狀態判斷；1 表示禁止轉出。舊欄位 nonTrxferFlg。"
+            },
+            {
+              "rowKey": "5.01.18",
+              "fieldName": "performanceBranchCode",
+              "dataType": "string",
+              "required": true,
+              "description": "績效行代碼",
+              "example": "\"performanceBranchCode\":\"BR0024\"",
+              "notes": "EC0001.EnqEAcctKpiBr；舊欄位 goalbr。"
+            },
+            {
+              "rowKey": "5.01.19",
+              "fieldName": "accountTypeCode",
+              "dataType": "string",
+              "required": true,
+              "description": "帳號類型代碼；用於判斷台幣/外幣/數位外幣與帳號可交易狀態",
+              "example": "\"accountTypeCode\":\"01\"",
+              "notes": "帳號類型，01：臺幣、02：支存、03：儲值支付帳號、04：行儲、11：外組、12：002、21：信用卡、22：GIFTCARD、23：598、30：虛擬帳號、80：有無單定存、05：數位帳號(台)、13：數位帳號(外)、14：外匯授信目的帳戶(不計息)。舊欄位 accType。"
+            },
+            {
+              "rowKey": "5.01.20",
+              "fieldName": "timeDepositBalance",
+              "dataType": "decimal",
+              "required": true,
+              "description": "AIO 定存單金額",
+              "example": "\"timeDepositBalance\":0",
+              "notes": "EC0001.EnqEAioTdBalTot；舊欄位 fixBalance。"
+            },
+            {
+              "rowKey": "5.01.21",
+              "fieldName": "availableAmount",
+              "dataType": "decimal",
+              "required": true,
+              "description": "最高可使用額",
+              "example": "\"availableAmount\":677675",
+              "notes": "EC0001.EnqEAcctAvlAmt；舊欄位 maxAvail。"
+            },
+            {
+              "rowKey": "5.01.22",
+              "fieldName": "lockedAmount",
+              "dataType": "decimal",
+              "required": true,
+              "description": "只扣金額",
+              "example": "\"lockedAmount\":0",
+              "notes": "EC0001.EnqEAcctBlkAmt；舊欄位 blkAmt。"
+            },
+            {
+              "rowKey": "5.01.23",
+              "fieldName": "overdraftLimitAmount",
+              "dataType": "decimal",
+              "required": true,
+              "description": "透支額度",
+              "example": "\"overdraftLimitAmount\":0",
+              "notes": "EC0001.EnqEAcctLmAmt；舊欄位 outStdLmt。"
+            },
+            {
+              "rowKey": "5.01.24",
+              "fieldName": "pledgeAllowedFlag",
+              "dataType": "string",
+              "required": true,
+              "description": "質借註記",
+              "example": "\"pledgeAllowedFlag\":\"N\"",
+              "notes": "EC0001.EnqEAllowPledge；舊欄位 allowPledge。"
+            },
+            {
+              "rowKey": "5.01.25",
+              "fieldName": "smartPiggyBankFlag",
+              "dataType": "string",
+              "required": true,
+              "description": "智能撲滿註記",
+              "example": "\"smartPiggyBankFlag\":\"N\"",
+              "notes": "EC0001.EnqEIpigFg；舊欄位 ipIGFg。"
+            },
+            {
+              "rowKey": "5.01.26",
+              "fieldName": "pocketMoneyFlag",
+              "dataType": "string",
+              "required": true,
+              "description": "私房錢綁定註記",
+              "example": "\"pocketMoneyFlag\":\"N\"",
+              "notes": "EC0001.EnqEPockeyFg；舊欄位 pockeyFg。"
+            },
+            {
+              "rowKey": "5.01.27",
+              "fieldName": "debitStopFlag",
+              "dataType": "string",
+              "required": true,
+              "description": "止扣註記",
+              "example": "\"debitStopFlag\":\"N\"",
+              "notes": "EC0001.EnqEEvtType；舊欄位 evtFg。"
+            },
+            {
+              "rowKey": "5.01.28",
+              "fieldName": "nonAgreedDailyLimitAmount",
+              "dataType": "decimal",
+              "required": true,
+              "description": "非約轉日限額",
+              "example": "\"nonAgreedDailyLimitAmount\":100000",
+              "notes": "EC0001.EnqEQuotaTotD；舊欄位 eQuotaTotD。"
+            },
+            {
+              "rowKey": "5.01.29",
+              "fieldName": "foreignCurrencyProjectFlag",
+              "dataType": "string",
+              "required": true,
+              "description": "外幣階梯活期存款專案註記",
+              "example": "\"foreignCurrencyProjectFlag\":\"N\"",
+              "notes": "EC0001.EnqEProject；舊欄位 applyCCYProject。"
+            },
+            {
+              "rowKey": "5.01.30",
+              "fieldName": "foreignCurrencyProjectMaturityDate",
+              "dataType": "string",
+              "required": true,
+              "description": "外幣階梯活期存款專案到期日",
+              "example": "\"foreignCurrencyProjectMaturityDate\":\"\"",
+              "notes": "EC0001.EnqEProjectMdate；舊欄位 applyCCYProjectMDATE。"
+            },
+            {
+              "rowKey": "5.01.31",
+              "fieldName": "foreignCurrencyStairRateFlag",
+              "dataType": "string",
+              "required": true,
+              "description": "外幣階梯活期存款階梯存款註記",
+              "example": "\"foreignCurrencyStairRateFlag\":\"N\"",
+              "notes": "EC0001.EnqEStairateFg；舊欄位 applyCCYStairateFG。"
+            },
+            {
+              "rowKey": "5.01.32",
+              "fieldName": "isStaff",
+              "dataType": "boolean",
+              "required": true,
+              "description": "是否行員",
+              "example": "\"isStaff\":false",
+              "notes": "由客戶/員工狀態資料判斷。"
+            },
+            {
+              "rowKey": "5.01.33",
+              "fieldName": "isObuCustomer",
+              "dataType": "boolean",
+              "required": true,
+              "description": "是否 OBU 身分",
+              "example": "\"isObuCustomer\":false",
+              "notes": "由 OBU 身分資料判斷；修正舊欄位 isOBUCustome 拼字。"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "mockExamples": [
+    {
+      "scenario": "帳戶訊息結果",
+      "requestPayload": {
+        "EC0001QuerySamples": [
+          {
+            "queryType": "ALL",
+            "EnqCustId": "H1561288310",
+            "EnqAcType": "ALL"
+          },
+          {
+            "queryType": "SINGLE",
+            "EnqAcctId": "02401800035803",
+            "EnqAcType": "SINGLE"
+          }
+        ]
+      },
+      "responsePayload": {
+        "isSuccess": true,
+        "responseCode": "0000",
+        "responseMessage": "查詢成功",
+        "responseDT": "2026/03/11 11:20:30",
+        "responseData": [
+          {
+            "accountList": [
+              {
+                "accountNumber": "02400400131758",
+                "accountName": "中文姓名1662683",
+                "accountDisplayName": "中文姓名1662683",
+                "subAccountNumber": "",
+                "currencyCode": "TWD",
+                "currencyName": "新臺幣",
+                "workingBalance": 677675,
+                "accountCategoryCode": "6001",
+                "digitalAccountFlag": "",
+                "foreignExchangeStopFlag": "",
+                "foreignExchangeAlertFlag": "",
+                "mobilePhone": "",
+                "email": "BANK@SINOPAC.COM",
+                "generalQuotaFlag": 1,
+                "generalAccountFlag": "1",
+                "inactiveAccountFlag": "",
+                "nonTransferFlag": "0",
+                "performanceBranchCode": "BR0024",
+                "accountTypeCode": "01",
+                "timeDepositBalance": 0,
+                "availableAmount": 677675,
+                "lockedAmount": 0,
+                "overdraftLimitAmount": 0,
+                "pledgeAllowedFlag": "N",
+                "smartPiggyBankFlag": "",
+                "pocketMoneyFlag": "",
+                "debitStopFlag": "",
+                "nonAgreedDailyLimitAmount": 100000,
+                "foreignCurrencyProjectFlag": "",
+                "foreignCurrencyProjectMaturityDate": "",
+                "foreignCurrencyStairRateFlag": "",
+                "isStaff": false,
+                "isObuCustomer": false
+              },
+              {
+                "accountNumber": "02400800030335",
+                "accountName": "中文姓名1662683",
+                "accountDisplayName": "中文姓名1662683",
+                "subAccountNumber": "02400801030332",
+                "currencyCode": "USD",
+                "currencyName": "美元",
+                "workingBalance": 3369.87,
+                "accountCategoryCode": "1081",
+                "digitalAccountFlag": "",
+                "foreignExchangeStopFlag": "",
+                "foreignExchangeAlertFlag": "",
+                "mobilePhone": "",
+                "email": "BANK@SINOPAC.COM",
+                "generalQuotaFlag": 1,
+                "generalAccountFlag": "1",
+                "inactiveAccountFlag": "",
+                "nonTransferFlag": "0",
+                "performanceBranchCode": "BR0024",
+                "accountTypeCode": "13",
+                "timeDepositBalance": 0,
+                "availableAmount": 3369.87,
+                "lockedAmount": 0,
+                "overdraftLimitAmount": 0,
+                "pledgeAllowedFlag": "N",
+                "smartPiggyBankFlag": "",
+                "pocketMoneyFlag": "",
+                "debitStopFlag": "",
+                "nonAgreedDailyLimitAmount": 100000,
+                "foreignCurrencyProjectFlag": "",
+                "foreignCurrencyProjectMaturityDate": "",
+                "foreignCurrencyStairRateFlag": "",
+                "isStaff": false,
+                "isObuCustomer": false
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "scenario": "查詢數據庫失敗",
+      "responsePayload": {
+        "isSuccess": false,
+        "responseCode": "9001",
+        "responseMessage": "系統繁忙,請稍後再試",
+        "responseDT": "2026/02/24 10:30:25",
+        "responseData": []
+      }
+    },
+    {
+      "scenario": "IRIS帳戶資料查詢失敗",
+      "responsePayload": {
+        "isSuccess": false,
+        "responseCode": "9001",
+        "responseMessage": "系統繁忙,請稍後再試",
+        "responseDT": "2026/02/24 10:30:25",
+        "responseData": []
+      }
+    },
+    {
+      "scenario": "EC0001集合count=0",
+      "responsePayload": {
+        "isSuccess": false,
+        "responseCode": "0200",
+        "responseMessage": "未查詢到可用帳號",
+        "responseDT": "2026/02/24 10:30:25",
+        "responseData": []
+      }
+    }
+  ],
+  "backendApis": {
+    "MMA": [
+      "[USER_FOREIGNER_LIST] 取得外籍客戶資料",
+      "ACCT_NOTRANSFER 取得禁止轉出帳號",
+      "J_CURR 取得幣別中文名稱"
+    ],
+    "IRIS": [
+      "EC0001 帳戶總覽餘額查詢；提供 EnqEAcctId、EnqEMainAcctId、EnqEAcctCurr 等帳號/子帳號資料",
+      "EC0001 帳戶總覽餘額查詢",
+      "EC0001"
+    ],
+    "MMADB": [
+      "[L_EAINET].[EAINET].[TBDAY] 取得營業日資料"
+    ],
+    "Redis": [
+      "Ent:Com:{CustId}:AccountInfo 快取帳戶總覽結果"
+    ],
+    "CommonFunc": [
+      "GetCustIDFormat() custId 正規化；GetAccTypebyCategory() 取帳號類型；GetAcctCName() 取得帳號中文名稱",
+      "GetCustIDFormat() custId 正規化",
+      "GetCustIDFormat()",
+      "GetAccTypebyCategory()",
+      "GetAcctCName()"
+    ],
+    "DB": [
+      "L_EAINET.EAINET.TBDAY",
+      "ACCT_NOTRANSFER",
+      "EC0001.ENQEACCTID.LENGTH",
+      "EC0001.ENQEACCTID.SUBSTRING"
+    ]
+  },
+  "businessLogic": {
+    "steps": [
+      {
+        "step": 1,
+        "title": "初始化與參數處理",
+        "details": "1. 從 Redis（Share:Data:Sn:{access_token.auth_sn}:Member.EC0001）取得帳戶總覽；\nif(refreshFromIris == false)若快取存在，直接回傳已組好的 accountList（需包含 accountNumber、currencyCode、subAccountNumber）。\nelse if(refreshFromIris == true)先呼叫Iris，並將資料寫回Redis\n2. CustID 從框架取得；B2CCustID 從 Redis 取得，若 B2CCustID 為 null 或長度為 0，則以 CustID 代入。\n3. 呼叫 CommonFunc.GetCustIDFormat() 將 CustID 格式化為 11 碼。\n4. 定義 acctNotransferList，用於存放客戶禁止轉出帳號。\n5. 定義帳號類型常量：ACCTLOAN=\"50\"、ACCTOUTCURRMULTI=\"11\"、ACCTOUTCURROBU=\"14\"、ACCTOUTCURRSINGLE=\"12\"、ACCTSINOPAY=\"03\"。\n可读取外援：EC0001_OpenAPI_spec_Enquiry_20260213 -> reference/global/raw/external-api/IRIS/EC0001_OpenAPI_spec_Enquiry_20260213.xlsx#sheetName=JSON Request-Response；TW T24 IRIS_OpenAPI_Summary_20231212 -> reference/global/raw/external-api/IRIS/TW T24 IRIS_OpenAPI_Summary_20231212.xlsx#sheetName=IRIS；TW T24 IRIS_OpenAPI_Summary_20231212 -> reference/global/raw/external-api/IRIS/TW T24 IRIS_OpenAPI_Summary_20231212.xlsx#sheetName=IRIS",
+        "referenceHints": [
+          {
+            "id": "external.ec0001.ec0001-openapi-spec-enquiry-20260213",
+            "category": "external_api",
+            "matchSource": "api_code",
+            "matchKey": "EC0001",
+            "title": "EC0001_OpenAPI_spec_Enquiry_20260213",
+            "relativePath": "reference/global/raw/external-api/IRIS/EC0001_OpenAPI_spec_Enquiry_20260213.xlsx",
+            "locator": {
+              "sheetName": "JSON Request-Response"
+            },
+            "reason": "命中外部接口代号 EC0001，可读取 IRIS/OpenAPI 设计",
+            "authority": "reference_imported"
+          },
+          {
+            "id": "external.ec0001.twt24iris-openapi-summary-20231212",
+            "category": "external_api",
+            "matchSource": "api_code",
+            "matchKey": "EC0001",
+            "title": "TW T24 IRIS_OpenAPI_Summary_20231212",
+            "relativePath": "reference/global/raw/external-api/IRIS/TW T24 IRIS_OpenAPI_Summary_20231212.xlsx",
+            "locator": {
+              "sheetName": "IRIS"
+            },
+            "reason": "命中外部接口代号 EC0001，可读取 IRIS/OpenAPI 设计",
+            "authority": "reference_imported"
+          },
+          {
+            "id": "external.iris.twt24iris-openapi-summary-20231212",
+            "category": "external_api",
+            "matchSource": "iris_keyword",
+            "matchKey": "IRIS",
+            "title": "TW T24 IRIS_OpenAPI_Summary_20231212",
+            "relativePath": "reference/global/raw/external-api/IRIS/TW T24 IRIS_OpenAPI_Summary_20231212.xlsx",
+            "locator": {
+              "sheetName": "IRIS"
+            },
+            "reason": "命中外部接口关键词 IRIS，可读取 IRIS/OpenAPI 设计",
+            "authority": "reference_imported"
+          }
+        ]
+      },
+      {
+        "step": 2,
+        "title": "獲取禁止轉出帳號",
+        "details": "1. 執行取得客戶禁止轉出帳號：\nSELECT\n[ACCT_NOTRANSFER ].[CUSTID]\n, [ACCT_NOTRANSFER ].[NONTRANSFERACCT]\nFROM\nACCT_NOTRANSFER\nWHERE\nCUSTID=@CUSTID。\n2. 若查詢結果 count > 0，僅保留 NONTRANSFERACCT 長度為 14 的帳號。\n3. 若查詢失敗，回傳 false 並記錄錯誤訊息。"
+      },
+      {
+        "step": 3,
+        "title": "請求IRIS.EC0001取帳號訊息",
+        "details": "1. 請求 /api/v1.0.0/party/EC0001 帳戶總覽餘額查詢。\n1.1 若請求失敗，回傳系統錯誤提示。\n1.2 若 EC0001.count = 0，回傳未查詢到可用帳號。\n1.3 若 EC0001 回傳帳號訊息，逐筆處理 EnqEAcctId、EnqEMainAcctId、EnqEAcctCurr、EnqEAcctCatg 等欄位。\n可读取外援：EC0001_OpenAPI_spec_Enquiry_20260213 -> reference/global/raw/external-api/IRIS/EC0001_OpenAPI_spec_Enquiry_20260213.xlsx#sheetName=JSON Request-Response；TW T24 IRIS_OpenAPI_Summary_20231212 -> reference/global/raw/external-api/IRIS/TW T24 IRIS_OpenAPI_Summary_20231212.xlsx#sheetName=IRIS；TW T24 IRIS_OpenAPI_Summary_20231212 -> reference/global/raw/external-api/IRIS/TW T24 IRIS_OpenAPI_Summary_20231212.xlsx#sheetName=IRIS",
+        "referenceHints": [
+          {
+            "id": "external.ec0001.ec0001-openapi-spec-enquiry-20260213",
+            "category": "external_api",
+            "matchSource": "api_code",
+            "matchKey": "EC0001",
+            "title": "EC0001_OpenAPI_spec_Enquiry_20260213",
+            "relativePath": "reference/global/raw/external-api/IRIS/EC0001_OpenAPI_spec_Enquiry_20260213.xlsx",
+            "locator": {
+              "sheetName": "JSON Request-Response"
+            },
+            "reason": "命中外部接口代号 EC0001，可读取 IRIS/OpenAPI 设计",
+            "authority": "reference_imported"
+          },
+          {
+            "id": "external.ec0001.twt24iris-openapi-summary-20231212",
+            "category": "external_api",
+            "matchSource": "api_code",
+            "matchKey": "EC0001",
+            "title": "TW T24 IRIS_OpenAPI_Summary_20231212",
+            "relativePath": "reference/global/raw/external-api/IRIS/TW T24 IRIS_OpenAPI_Summary_20231212.xlsx",
+            "locator": {
+              "sheetName": "IRIS"
+            },
+            "reason": "命中外部接口代号 EC0001，可读取 IRIS/OpenAPI 设计",
+            "authority": "reference_imported"
+          },
+          {
+            "id": "external.iris.twt24iris-openapi-summary-20231212",
+            "category": "external_api",
+            "matchSource": "iris_keyword",
+            "matchKey": "IRIS",
+            "title": "TW T24 IRIS_OpenAPI_Summary_20231212",
+            "relativePath": "reference/global/raw/external-api/IRIS/TW T24 IRIS_OpenAPI_Summary_20231212.xlsx",
+            "locator": {
+              "sheetName": "IRIS"
+            },
+            "reason": "命中外部接口关键词 IRIS，可读取 IRIS/OpenAPI 设计",
+            "authority": "reference_imported"
+          }
+        ]
+      },
+      {
+        "step": 4,
+        "title": "獲取帳號類型",
+        "details": "1. 逐筆處理 EC0001 帳號資料。\n2. 呼叫 CommonFunc.GetAccTypebyCategory() 取得帳號類型，回填 Response.accountTypeCode。\n3. 數位外幣帳號後續依 digitalAccountFlag 規則調整為 accountTypeCode=\"13\"。\n可读取外援：EC0001_OpenAPI_spec_Enquiry_20260213 -> reference/global/raw/external-api/IRIS/EC0001_OpenAPI_spec_Enquiry_20260213.xlsx#sheetName=JSON Request-Response；TW T24 IRIS_OpenAPI_Summary_20231212 -> reference/global/raw/external-api/IRIS/TW T24 IRIS_OpenAPI_Summary_20231212.xlsx#sheetName=IRIS",
+        "referenceHints": [
+          {
+            "id": "external.ec0001.ec0001-openapi-spec-enquiry-20260213",
+            "category": "external_api",
+            "matchSource": "api_code",
+            "matchKey": "EC0001",
+            "title": "EC0001_OpenAPI_spec_Enquiry_20260213",
+            "relativePath": "reference/global/raw/external-api/IRIS/EC0001_OpenAPI_spec_Enquiry_20260213.xlsx",
+            "locator": {
+              "sheetName": "JSON Request-Response"
+            },
+            "reason": "命中外部接口代号 EC0001，可读取 IRIS/OpenAPI 设计",
+            "authority": "reference_imported"
+          },
+          {
+            "id": "external.ec0001.twt24iris-openapi-summary-20231212",
+            "category": "external_api",
+            "matchSource": "api_code",
+            "matchKey": "EC0001",
+            "title": "TW T24 IRIS_OpenAPI_Summary_20231212",
+            "relativePath": "reference/global/raw/external-api/IRIS/TW T24 IRIS_OpenAPI_Summary_20231212.xlsx",
+            "locator": {
+              "sheetName": "IRIS"
+            },
+            "reason": "命中外部接口代号 EC0001，可读取 IRIS/OpenAPI 设计",
+            "authority": "reference_imported"
+          }
+        ]
+      },
+      {
+        "step": 5,
+        "title": "驗證帳號",
+        "details": "帳號需符合既有驗證條件才繼續處理：EC0001.EnqEActiveCode == \"1\"、帳戶種類不為 1140/1141、EC0001.EnqEMmaAc 為空、且帳號長度為 14；或帳號長度為 6；或帳號類型為 ACCTLOAN。\n可读取外援：EC0001_OpenAPI_spec_Enquiry_20260213 -> reference/global/raw/external-api/IRIS/EC0001_OpenAPI_spec_Enquiry_20260213.xlsx#sheetName=JSON Request-Response；TW T24 IRIS_OpenAPI_Summary_20231212 -> reference/global/raw/external-api/IRIS/TW T24 IRIS_OpenAPI_Summary_20231212.xlsx#sheetName=IRIS",
+        "referenceHints": [
+          {
+            "id": "external.ec0001.ec0001-openapi-spec-enquiry-20260213",
+            "category": "external_api",
+            "matchSource": "api_code",
+            "matchKey": "EC0001",
+            "title": "EC0001_OpenAPI_spec_Enquiry_20260213",
+            "relativePath": "reference/global/raw/external-api/IRIS/EC0001_OpenAPI_spec_Enquiry_20260213.xlsx",
+            "locator": {
+              "sheetName": "JSON Request-Response"
+            },
+            "reason": "命中外部接口代号 EC0001，可读取 IRIS/OpenAPI 设计",
+            "authority": "reference_imported"
+          },
+          {
+            "id": "external.ec0001.twt24iris-openapi-summary-20231212",
+            "category": "external_api",
+            "matchSource": "api_code",
+            "matchKey": "EC0001",
+            "title": "TW T24 IRIS_OpenAPI_Summary_20231212",
+            "relativePath": "reference/global/raw/external-api/IRIS/TW T24 IRIS_OpenAPI_Summary_20231212.xlsx",
+            "locator": {
+              "sheetName": "IRIS"
+            },
+            "reason": "命中外部接口代号 EC0001，可读取 IRIS/OpenAPI 设计",
+            "authority": "reference_imported"
+          }
+        ]
+      },
+      {
+        "step": 6,
+        "title": "一般帳號處理邏輯 EC0001.EnqEAcctId.Length == 14",
+        "details": "1. 先依 EC0001.EnqEAcctCatg / CommonFunc.GetAccTypebyCategory() 判斷帳號類型 accountTypeCode。\n2. 若為外幣帳號（ACCTOUTCURRMULTI=\"11\"、ACCTOUTCURROBU=\"14\"，或數位外幣調整後 accountTypeCode=\"13\"）：\n2.1 Response.accountNumber = EC0001.EnqEMainAcctId（外幣主帳號）。\n2.2 Response.subAccountNumber = EC0001.EnqEAcctId（該幣別子帳號）。\n2.3 Response.currencyCode = EC0001.EnqEAcctCurr；呼叫端以 accountNumber + currencyCode 對應唯一 subAccountNumber。\n3. 若非外幣帳號：Response.accountNumber = EC0001.EnqEAcctId，Response.subAccountNumber = 空字串。\n4. 數位帳號判斷維持既有規則：外幣數位帳號調整為 accountTypeCode=\"13\"；台幣數位帳號調整為 accountTypeCode=\"05\"。\n5. 後續依 accountName、currencyName、workingBalance、foreignExchangeStopFlag、foreignExchangeAlertFlag、generalAccountFlag、nonTransferFlag 等欄位組合帳戶顯示與交易控制資訊。\n可读取外援：EC0001_OpenAPI_spec_Enquiry_20260213 -> reference/global/raw/external-api/IRIS/EC0001_OpenAPI_spec_Enquiry_20260213.xlsx#sheetName=JSON Request-Response；TW T24 IRIS_OpenAPI_Summary_20231212 -> reference/global/raw/external-api/IRIS/TW T24 IRIS_OpenAPI_Summary_20231212.xlsx#sheetName=IRIS",
+        "referenceHints": [
+          {
+            "id": "external.ec0001.ec0001-openapi-spec-enquiry-20260213",
+            "category": "external_api",
+            "matchSource": "api_code",
+            "matchKey": "EC0001",
+            "title": "EC0001_OpenAPI_spec_Enquiry_20260213",
+            "relativePath": "reference/global/raw/external-api/IRIS/EC0001_OpenAPI_spec_Enquiry_20260213.xlsx",
+            "locator": {
+              "sheetName": "JSON Request-Response"
+            },
+            "reason": "命中外部接口代号 EC0001，可读取 IRIS/OpenAPI 设计",
+            "authority": "reference_imported"
+          },
+          {
+            "id": "external.ec0001.twt24iris-openapi-summary-20231212",
+            "category": "external_api",
+            "matchSource": "api_code",
+            "matchKey": "EC0001",
+            "title": "TW T24 IRIS_OpenAPI_Summary_20231212",
+            "relativePath": "reference/global/raw/external-api/IRIS/TW T24 IRIS_OpenAPI_Summary_20231212.xlsx",
+            "locator": {
+              "sheetName": "IRIS"
+            },
+            "reason": "命中外部接口代号 EC0001，可读取 IRIS/OpenAPI 设计",
+            "authority": "reference_imported"
+          }
+        ]
+      },
+      {
+        "step": 6,
+        "title": "01. 取帳號中文名稱",
+        "details": "1. 調用 CommonFunc.GetAcctCName() 取得帳號中文名稱。"
+      },
+      {
+        "step": 6,
+        "title": "02. 判斷禁止轉出邏輯",
+        "details": "1. 依 EC0001 帳號狀態、外幣複委託、久未往來、私人銀行註記與禁止轉出帳號清單，判斷 Response.nonTransferFlag。\n可读取外援：EC0001_OpenAPI_spec_Enquiry_20260213 -> reference/global/raw/external-api/IRIS/EC0001_OpenAPI_spec_Enquiry_20260213.xlsx#sheetName=JSON Request-Response；TW T24 IRIS_OpenAPI_Summary_20231212 -> reference/global/raw/external-api/IRIS/TW T24 IRIS_OpenAPI_Summary_20231212.xlsx#sheetName=IRIS",
+        "referenceHints": [
+          {
+            "id": "external.ec0001.ec0001-openapi-spec-enquiry-20260213",
+            "category": "external_api",
+            "matchSource": "api_code",
+            "matchKey": "EC0001",
+            "title": "EC0001_OpenAPI_spec_Enquiry_20260213",
+            "relativePath": "reference/global/raw/external-api/IRIS/EC0001_OpenAPI_spec_Enquiry_20260213.xlsx",
+            "locator": {
+              "sheetName": "JSON Request-Response"
+            },
+            "reason": "命中外部接口代号 EC0001，可读取 IRIS/OpenAPI 设计",
+            "authority": "reference_imported"
+          },
+          {
+            "id": "external.ec0001.twt24iris-openapi-summary-20231212",
+            "category": "external_api",
+            "matchSource": "api_code",
+            "matchKey": "EC0001",
+            "title": "TW T24 IRIS_OpenAPI_Summary_20231212",
+            "relativePath": "reference/global/raw/external-api/IRIS/TW T24 IRIS_OpenAPI_Summary_20231212.xlsx",
+            "locator": {
+              "sheetName": "IRIS"
+            },
+            "reason": "命中外部接口代号 EC0001，可读取 IRIS/OpenAPI 设计",
+            "authority": "reference_imported"
+          }
+        ]
+      },
+      {
+        "step": 7,
+        "title": "EC0001.EnqEAcctId.Length == 6 有無單定存邏輯",
+        "details": "1. EC0001.EnqEAcctId.Length == 6 時視為有/無單定存處理。\n2. Response.nonTrxferFlg 固定為 \"0\"。\n3. 若 EC0001.EnqEAcctId 前綴為 \"TD-\"，Response.subAcct = EC0001.EnqEAcctId.Substring(3, 3)。\n4. Response.acctText = \"有/無單定存\"。\n可读取外援：EC0001_OpenAPI_spec_Enquiry_20260213 -> reference/global/raw/external-api/IRIS/EC0001_OpenAPI_spec_Enquiry_20260213.xlsx#sheetName=JSON Request-Response；TW T24 IRIS_OpenAPI_Summary_20231212 -> reference/global/raw/external-api/IRIS/TW T24 IRIS_OpenAPI_Summary_20231212.xlsx#sheetName=IRIS",
+        "referenceHints": [
+          {
+            "id": "external.ec0001.ec0001-openapi-spec-enquiry-20260213",
+            "category": "external_api",
+            "matchSource": "api_code",
+            "matchKey": "EC0001",
+            "title": "EC0001_OpenAPI_spec_Enquiry_20260213",
+            "relativePath": "reference/global/raw/external-api/IRIS/EC0001_OpenAPI_spec_Enquiry_20260213.xlsx",
+            "locator": {
+              "sheetName": "JSON Request-Response"
+            },
+            "reason": "命中外部接口代号 EC0001，可读取 IRIS/OpenAPI 设计",
+            "authority": "reference_imported"
+          },
+          {
+            "id": "external.ec0001.twt24iris-openapi-summary-20231212",
+            "category": "external_api",
+            "matchSource": "api_code",
+            "matchKey": "EC0001",
+            "title": "TW T24 IRIS_OpenAPI_Summary_20231212",
+            "relativePath": "reference/global/raw/external-api/IRIS/TW T24 IRIS_OpenAPI_Summary_20231212.xlsx",
+            "locator": {
+              "sheetName": "IRIS"
+            },
+            "reason": "命中外部接口代号 EC0001，可读取 IRIS/OpenAPI 设计",
+            "authority": "reference_imported"
+          }
+        ]
+      },
+      {
+        "step": 8,
+        "title": "組合回傳數據",
+        "details": "1. 組合 Response.accountList 回傳結果。\n2. 外幣帳號需同時保留 accountNumber（外幣主帳號）、currencyCode（幣別代碼）、subAccountNumber（該幣別子帳號）。\n3. 將結果存入 Redis Share:Data:Sn:{access_token.auth_sn}:Member.EC0001。\n可读取外援：EC0001_OpenAPI_spec_Enquiry_20260213 -> reference/global/raw/external-api/IRIS/EC0001_OpenAPI_spec_Enquiry_20260213.xlsx#sheetName=JSON Request-Response；TW T24 IRIS_OpenAPI_Summary_20231212 -> reference/global/raw/external-api/IRIS/TW T24 IRIS_OpenAPI_Summary_20231212.xlsx#sheetName=IRIS",
+        "referenceHints": [
+          {
+            "id": "external.ec0001.ec0001-openapi-spec-enquiry-20260213",
+            "category": "external_api",
+            "matchSource": "api_code",
+            "matchKey": "EC0001",
+            "title": "EC0001_OpenAPI_spec_Enquiry_20260213",
+            "relativePath": "reference/global/raw/external-api/IRIS/EC0001_OpenAPI_spec_Enquiry_20260213.xlsx",
+            "locator": {
+              "sheetName": "JSON Request-Response"
+            },
+            "reason": "命中外部接口代号 EC0001，可读取 IRIS/OpenAPI 设计",
+            "authority": "reference_imported"
+          },
+          {
+            "id": "external.ec0001.twt24iris-openapi-summary-20231212",
+            "category": "external_api",
+            "matchSource": "api_code",
+            "matchKey": "EC0001",
+            "title": "TW T24 IRIS_OpenAPI_Summary_20231212",
+            "relativePath": "reference/global/raw/external-api/IRIS/TW T24 IRIS_OpenAPI_Summary_20231212.xlsx",
+            "locator": {
+              "sheetName": "IRIS"
+            },
+            "reason": "命中外部接口代号 EC0001，可读取 IRIS/OpenAPI 设计",
+            "authority": "reference_imported"
+          }
+        ]
+      },
+      {
+        "step": 9,
+        "title": "回傳結果",
+        "details": "將查詢結果回傳給呼叫端。"
+      },
+      {
+        "step": 9,
+        "title": "回傳結果",
+        "details": "將查詢結果回傳給前端"
+      }
+    ],
+    "fieldMappings": [
+      {
+        "target": "accountList",
+        "source": "由 EC0001 回傳資料逐筆組成",
+        "rule": "帳號清單",
+        "fields": [
+          {
+            "field": "accountNumber",
+            "source": "新臺幣：EC0001.EnqEAcctId；外幣：EC0001.EnqEMainAcctId。舊欄位 acctValue。",
+            "rule": "帳號；新臺幣回傳14碼帳號，外幣回傳外幣主帳號"
+          },
+          {
+            "field": "accountName",
+            "source": "EC0001.EnqEAcctTitle1",
+            "rule": "帳號名稱"
+          },
+          {
+            "field": "accountDisplayName",
+            "source": "畫面顯示用帳號名稱；預設同 accountName。舊欄位 acctText。",
+            "rule": "帳號顯示名稱"
+          },
+          {
+            "field": "subAccountNumber",
+            "source": "外幣：EC0001.EnqEAcctId；新臺幣/無子帳號：空字串。呼叫端可依 accountNumber + currencyCode 對應取得該幣別 subAccountNumber。舊欄位 subAcct。",
+            "rule": "外幣子帳號；新臺幣為空字串，外幣回傳該幣別子帳號"
+          },
+          {
+            "field": "currencyCode",
+            "source": "EC0001.EnqEAcctCurr",
+            "rule": "幣別代碼；與 accountNumber 共同定位外幣子帳號"
+          },
+          {
+            "field": "currencyName",
+            "source": "J_CURR.CURRCNAME",
+            "rule": "幣別中文名稱"
+          },
+          {
+            "field": "workingBalance",
+            "source": "EC0001.EnqEAcctWkBal",
+            "rule": "帳戶餘額"
+          },
+          {
+            "field": "accountCategoryCode",
+            "source": "EC0001.EnqEAcctCatg",
+            "rule": "帳戶種類代碼"
+          },
+          {
+            "field": "digitalAccountFlag",
+            "source": "EC0001.EnqEDigitalFg",
+            "rule": "數位帳號註記"
+          },
+          {
+            "field": "foreignExchangeStopFlag",
+            "source": "EC0001.EnqEMemo15",
+            "rule": "暫停外匯交易註記"
+          },
+          {
+            "field": "foreignExchangeAlertFlag",
+            "source": "EC0001.EnqEMemo14",
+            "rule": "外匯疑似化整為零註記"
+          },
+          {
+            "field": "mobilePhone",
+            "source": "EC0001.EnqECustSms1",
+            "rule": "聯絡電話"
+          },
+          {
+            "field": "email",
+            "source": "EC0001.EnqECustEmail",
+            "rule": "電子郵件"
+          },
+          {
+            "field": "generalQuotaFlag",
+            "source": "固定值 1；舊欄位 genQuotaMark。",
+            "rule": "綜合額度註記"
+          },
+          {
+            "field": "generalAccountFlag",
+            "source": "EC0001.EnqELinkAioAc==Y，或 accountTypeCode 為外幣/數位外幣，或 subAccountNumber.Length==6 時為 1；舊欄位 genAcctMark。",
+            "rule": "綜存戶註記"
+          },
+          {
+            "field": "inactiveAccountFlag",
+            "source": "EC0001.EnqEInactiveFlag",
+            "rule": "久未往來戶註記"
+          },
+          {
+            "field": "nonTransferFlag",
+            "source": "依 ACCT_NOTRANSFER 與 EC0001 帳號狀態判斷；1 表示禁止轉出。舊欄位 nonTrxferFlg。",
+            "rule": "禁止轉出註記"
+          },
+          {
+            "field": "performanceBranchCode",
+            "source": "EC0001.EnqEAcctKpiBr",
+            "rule": "績效行代碼"
+          },
+          {
+            "field": "accountTypeCode",
+            "source": "帳號類型，01：臺幣、02：支存、03：儲值支付帳號、04：行儲、11：外組、12：002、21：信用卡、22：GIFTCARD、23：598、30：虛擬帳號、80：有無單定存、05：數位帳號(台)、13：數位帳號(外)、14：外匯授信目的帳戶(不計息)。舊欄位 accType。",
+            "rule": "帳號類型代碼；用於判斷台幣/外幣/數位外幣與帳號可交易狀態"
+          },
+          {
+            "field": "timeDepositBalance",
+            "source": "EC0001.EnqEAioTdBalTot",
+            "rule": "AIO 定存單金額"
+          },
+          {
+            "field": "availableAmount",
+            "source": "EC0001.EnqEAcctAvlAmt",
+            "rule": "最高可使用額"
+          },
+          {
+            "field": "lockedAmount",
+            "source": "EC0001.EnqEAcctBlkAmt",
+            "rule": "只扣金額"
+          },
+          {
+            "field": "overdraftLimitAmount",
+            "source": "EC0001.EnqEAcctLmAmt",
+            "rule": "透支額度"
+          },
+          {
+            "field": "pledgeAllowedFlag",
+            "source": "EC0001.EnqEAllowPledge",
+            "rule": "質借註記"
+          },
+          {
+            "field": "smartPiggyBankFlag",
+            "source": "EC0001.EnqEIpigFg",
+            "rule": "智能撲滿註記"
+          },
+          {
+            "field": "pocketMoneyFlag",
+            "source": "EC0001.EnqEPockeyFg",
+            "rule": "私房錢綁定註記"
+          },
+          {
+            "field": "debitStopFlag",
+            "source": "EC0001.EnqEEvtType",
+            "rule": "止扣註記"
+          },
+          {
+            "field": "nonAgreedDailyLimitAmount",
+            "source": "EC0001.EnqEQuotaTotD",
+            "rule": "非約轉日限額"
+          },
+          {
+            "field": "foreignCurrencyProjectFlag",
+            "source": "EC0001.EnqEProject",
+            "rule": "外幣階梯活期存款專案註記"
+          },
+          {
+            "field": "foreignCurrencyProjectMaturityDate",
+            "source": "EC0001.EnqEProjectMdate",
+            "rule": "外幣階梯活期存款專案到期日"
+          },
+          {
+            "field": "foreignCurrencyStairRateFlag",
+            "source": "EC0001.EnqEStairateFg",
+            "rule": "外幣階梯活期存款階梯存款註記"
+          },
+          {
+            "field": "isStaff",
+            "source": "由客戶/員工狀態資料判斷。",
+            "rule": "是否行員"
+          },
+          {
+            "field": "isObuCustomer",
+            "source": "由 OBU 身分資料判斷；修正舊欄位 isOBUCustome 拼字。",
+            "rule": "是否 OBU 身分"
+          }
+        ]
+      }
+    ],
+    "errorCodeRules": [
+      {
+        "code": "9001",
+        "scenario": "查詢數據庫失敗",
+        "message": "系統繁忙,請稍後再試"
+      },
+      {
+        "code": "9001",
+        "scenario": "IRIS帳戶資料查詢失敗",
+        "message": "系統繁忙,請稍後再試"
+      },
+      {
+        "code": "0200",
+        "scenario": "EC0001集合count=0",
+        "message": "未查詢到可用帳號"
+      },
+      {
+        "code": "9999",
+        "scenario": "未輸入必填請求參數",
+        "message": "請輸入{Request參數}！"
+      }
+    ],
+    "runtimeDependencies": [
+      {
+        "id": "current_customer_context",
+        "type": "service",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "Resolve keyId/custId from the current request context and Redis."
+      },
+      {
+        "id": "external_api_commonfunc_getacctcname",
+        "type": "external_api",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "业务逻辑正文提到 CommonFunc->GetAcctCName() 依赖。"
+      },
+      {
+        "id": "external_api_commonfunc_getacctypebycategory",
+        "type": "external_api",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "业务逻辑正文提到 CommonFunc->GetAccTypebyCategory() 依赖。"
+      },
+      {
+        "id": "external_api_commonfunc_getcustidformat",
+        "type": "external_api",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "业务逻辑正文提到 CommonFunc->GetCustIDFormat() 依赖。"
+      },
+      {
+        "id": "external_api_commonfunc_getcustidformat_custid",
+        "type": "external_api",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "业务逻辑正文提到 CommonFunc->GetCustIDFormat() custId 正規化 依赖。"
+      },
+      {
+        "id": "external_api_commonfunc_getcustidformat_custid_getacctypebycategory_getacctcname",
+        "type": "external_api",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "Excel 依赖声明提到 CommonFunc->GetCustIDFormat() custId 正規化；GetAccTypebyCategory() 取帳號類型；GetAcctCName() 取得帳號中文名稱。"
+      },
+      {
+        "id": "external_api_iris_ec0001",
+        "type": "external_api",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "业务逻辑正文提到 IRIS->EC0001 依赖。"
+      },
+      {
+        "id": "external_api_iris_ec0001_enqeacctid_enqemainacctid_enqeacctcurr",
+        "type": "external_api",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "Excel 依赖声明提到 IRIS->EC0001 帳戶總覽餘額查詢；提供 EnqEAcctId、EnqEMainAcctId、EnqEAcctCurr 等帳號/子帳號資料。"
+      },
+      {
+        "id": "external_api_mma_acct_notransfer",
+        "type": "external_api",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "Excel 依赖声明提到 MMA->ACCT_NOTRANSFER 取得禁止轉出帳號。"
+      },
+      {
+        "id": "external_api_mma_j_curr",
+        "type": "external_api",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "Excel 依赖声明提到 MMA->J_CURR 取得幣別中文名稱。"
+      },
+      {
+        "id": "external_api_mma_user_foreigner_list",
+        "type": "external_api",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "Excel 依赖声明提到 MMA->[USER_FOREIGNER_LIST] 取得外籍客戶資料。"
+      },
+      {
+        "id": "mma_sql_connection",
+        "type": "service",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "Execute authoritative SQL declared in the workbook for EC0001.ENQEACCTID.LENGTH, EC0001.ENQEACCTID.SUBSTRING."
+      },
+      {
+        "id": "runtime_context_redis_ent_com_custid_accountinfo",
+        "type": "runtime_context",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "业务逻辑正文提到 Redis->Ent:Com:{CustId}:AccountInfo 快取帳戶總覽結果 依赖。"
+      },
+      {
+        "id": "sql_table_db_acct_notransfer",
+        "type": "sql_table",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "Excel 依赖声明提到 DB->ACCT_NOTRANSFER。"
+      },
+      {
+        "id": "sql_table_db_ec0001_enqeacctid_length",
+        "type": "sql_table",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "Excel 依赖声明提到 DB->EC0001.ENQEACCTID.LENGTH。"
+      },
+      {
+        "id": "sql_table_db_ec0001_enqeacctid_substring",
+        "type": "sql_table",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "Excel 依赖声明提到 DB->EC0001.ENQEACCTID.SUBSTRING。"
+      },
+      {
+        "id": "sql_table_db_l_eainet_eainet_tbday",
+        "type": "sql_table",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "Excel 依赖声明提到 DB->L_EAINET.EAINET.TBDAY。"
+      },
+      {
+        "id": "sql_table_mmadb_l_eainet_eainet_tbday",
+        "type": "sql_table",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "Excel 依赖声明提到 MMADB->[L_EAINET].[EAINET].[TBDAY] 取得營業日資料。"
+      }
+    ],
+    "dataSources": [
+      {
+        "name": "ACCT_NOTRANSFER",
+        "type": "sql_table",
+        "authority": "backend_contract",
+        "required": true
+      },
+      {
+        "name": "EC0001.ENQEACCTID.LENGTH",
+        "type": "sql_table",
+        "authority": "backend_contract",
+        "required": true
+      },
+      {
+        "name": "EC0001.ENQEACCTID.SUBSTRING",
+        "type": "sql_table",
+        "authority": "backend_contract",
+        "required": true
+      },
+      {
+        "name": "L_EAINET.EAINET.TBDAY",
+        "type": "sql_table",
+        "authority": "backend_contract",
+        "required": true
+      }
+    ],
+    "sqlSpecs": [
+      {
+        "id": "2",
+        "title": "2.獲取禁止轉出帳號",
+        "authority": "backend_contract",
+        "required": true,
+        "dataSources": [
+          "ACCT_NOTRANSFER"
+        ],
+        "mustContain": [
+          "ACCT_NOTRANSFER",
+          "@CUSTID",
+          "SELECT",
+          "FROM",
+          "WHERE"
+        ],
+        "queryText": "1. 執行取得客戶禁止轉出帳號：\nSELECT\n[ACCT_NOTRANSFER ].[CUSTID]\n, [ACCT_NOTRANSFER ].[NONTRANSFERACCT]\nFROM\nACCT_NOTRANSFER\nWHERE\nCUSTID=@CUSTID。\n2. 若查詢結果 count > 0，僅保留 NONTRANSFERACCT 長度為 14 的帳號。\n3. 若查詢失敗，回傳 false 並記錄錯誤訊息。\n可读取外援：MMA -> reference/global/raw/db-schema/MMA.xlsx#sheetName=16",
+        "referenceHints": [
+          {
+            "id": "db.acct-notransfer.mma",
+            "category": "db_schema",
+            "matchSource": "sql_keyword",
+            "matchKey": "ACCT_NOTRANSFER",
+            "title": "MMA",
+            "relativePath": "reference/global/raw/db-schema/MMA.xlsx",
+            "locator": {
+              "sheetName": "16"
+            },
+            "reason": "命中 SQL 表 ACCT_NOTRANSFER，可读取数据库参考资料",
+            "authority": "reference_imported"
+          }
+        ]
+      }
+    ],
+    "legacyReferences": [],
+    "prohibitedShortcuts": [
+      "mock_response_payload",
+      "hardcoded_custid",
+      "block_comment_header_substitution"
+    ],
+    "referenceHints": [
+      {
+        "id": "db.acct-notransfer.mma",
+        "category": "db_schema",
+        "matchSource": "sql_keyword",
+        "matchKey": "ACCT_NOTRANSFER",
+        "title": "MMA",
+        "relativePath": "reference/global/raw/db-schema/MMA.xlsx",
+        "locator": {
+          "sheetName": "16"
+        },
+        "reason": "命中 SQL 表 ACCT_NOTRANSFER，可读取数据库参考资料",
+        "authority": "reference_imported"
+      },
+      {
+        "id": "external.ec0001.ec0001-openapi-spec-enquiry-20260213",
+        "category": "external_api",
+        "matchSource": "api_code",
+        "matchKey": "EC0001",
+        "title": "EC0001_OpenAPI_spec_Enquiry_20260213",
+        "relativePath": "reference/global/raw/external-api/IRIS/EC0001_OpenAPI_spec_Enquiry_20260213.xlsx",
+        "locator": {
+          "sheetName": "JSON Request-Response"
+        },
+        "reason": "命中外部接口代号 EC0001，可读取 IRIS/OpenAPI 设计",
+        "authority": "reference_imported"
+      },
+      {
+        "id": "external.ec0001.twt24iris-openapi-summary-20231212",
+        "category": "external_api",
+        "matchSource": "api_code",
+        "matchKey": "EC0001",
+        "title": "TW T24 IRIS_OpenAPI_Summary_20231212",
+        "relativePath": "reference/global/raw/external-api/IRIS/TW T24 IRIS_OpenAPI_Summary_20231212.xlsx",
+        "locator": {
+          "sheetName": "IRIS"
+        },
+        "reason": "命中外部接口代号 EC0001，可读取 IRIS/OpenAPI 设计",
+        "authority": "reference_imported"
+      },
+      {
+        "id": "external.iris.twt24iris-openapi-summary-20231212",
+        "category": "external_api",
+        "matchSource": "iris_keyword",
+        "matchKey": "IRIS",
+        "title": "TW T24 IRIS_OpenAPI_Summary_20231212",
+        "relativePath": "reference/global/raw/external-api/IRIS/TW T24 IRIS_OpenAPI_Summary_20231212.xlsx",
+        "locator": {
+          "sheetName": "IRIS"
+        },
+        "reason": "命中外部接口关键词 IRIS，可读取 IRIS/OpenAPI 设计",
+        "authority": "reference_imported"
+      }
+    ]
+  },
+  "codeHandoff": {
+    "schemaVersion": "1.0.0",
+    "logicSummary": {
+      "stepCount": 12,
+      "queryContractCount": 1,
+      "mappingRuleCount": 33,
+      "legacyEvidenceCount": 2,
+      "dependencyHintCount": 22,
+      "constraintCount": 7,
+      "unresolvedCount": 1,
+      "primarySource": "businessLogic"
+    },
+    "logicFlow": [
+      {
+        "stepId": "step_1",
+        "title": "初始化與參數處理",
+        "actionType": "mapping",
+        "inputs": [
+          "refreshFromIris"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_2",
+        "title": "獲取禁止轉出帳號",
+        "actionType": "query",
+        "inputs": [
+          "refreshFromIris"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_3",
+        "title": "請求IRIS.EC0001取帳號訊息",
+        "actionType": "query",
+        "inputs": [
+          "refreshFromIris"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_4",
+        "title": "獲取帳號類型",
+        "actionType": "return",
+        "inputs": [
+          "refreshFromIris"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_5",
+        "title": "驗證帳號",
+        "actionType": "validation",
+        "inputs": [
+          "refreshFromIris"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_6",
+        "title": "一般帳號處理邏輯 EC0001.EnqEAcctId.Length == 14",
+        "actionType": "mapping",
+        "inputs": [
+          "refreshFromIris"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_6",
+        "title": "01. 取帳號中文名稱",
+        "actionType": "process",
+        "inputs": [
+          "refreshFromIris"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_6",
+        "title": "02. 判斷禁止轉出邏輯",
+        "actionType": "mapping",
+        "inputs": [
+          "refreshFromIris"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_7",
+        "title": "EC0001.EnqEAcctId.Length == 6 有無單定存邏輯",
+        "actionType": "return",
+        "inputs": [
+          "refreshFromIris"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_8",
+        "title": "組合回傳數據",
+        "actionType": "return",
+        "inputs": [
+          "refreshFromIris"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_9",
+        "title": "回傳結果",
+        "actionType": "query",
+        "inputs": [
+          "refreshFromIris"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_9",
+        "title": "回傳結果",
+        "actionType": "query",
+        "inputs": [
+          "refreshFromIris"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      }
+    ],
+    "legacyEvidence": [
+      {
+        "evidenceId": "response_code.o_common.9999",
+        "kind": "responseCodeCatalog",
+        "origin": "feature_common/P240301Git/Sinopac.EnterpriseAPI/EnterpriseApiEntity/ResponseCodes/O_Common.resx",
+        "authority": "existing_code",
+        "symbols": [
+          "O_Common.Code_9999"
+        ],
+        "summary": "公共必填参数错误码 9999 = 請輸入{Request參數}！",
+        "snippet": "Code_9999: 請輸入{Request參數}！"
+      },
+      {
+        "evidenceId": "external_api.iris.ec0001",
+        "kind": "externalApiReference",
+        "origin": "reference/global/raw/external-api/IRIS/EC0001_OpenAPI_spec_Enquiry_20260213.xlsx",
+        "authority": "reference_imported",
+        "symbols": [
+          "EC0001"
+        ],
+        "summary": "01 external API index match for IRIS EC0001 account enquiry."
+      }
+    ],
+    "queryContracts": [
+      {
+        "contractId": "2",
+        "purpose": "2.獲取禁止轉出帳號",
+        "dataSources": [
+          "ACCT_NOTRANSFER"
+        ],
+        "mustContain": [
+          "ACCT_NOTRANSFER",
+          "@CUSTID",
+          "SELECT",
+          "FROM",
+          "WHERE"
+        ],
+        "sqlText": "1. 執行取得客戶禁止轉出帳號：\nSELECT\n[ACCT_NOTRANSFER ].[CUSTID]\n, [ACCT_NOTRANSFER ].[NONTRANSFERACCT]\nFROM\nACCT_NOTRANSFER\nWHERE\nCUSTID=@CUSTID。\n2. 若查詢結果 count > 0，僅保留 NONTRANSFERACCT 長度為 14 的帳號。\n3. 若查詢失敗，回傳 false 並記錄錯誤訊息。\n可读取外援：MMA -> reference/global/raw/db-schema/MMA.xlsx#sheetName=16",
+        "parameterHints": [
+          "@CUSTID"
+        ],
+        "resultShape": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT",
+          "responseData",
+          "accountList",
+          "accountNumber",
+          "accountName",
+          "accountDisplayName",
+          "subAccountNumber",
+          "currencyCode",
+          "currencyName",
+          "workingBalance",
+          "accountCategoryCode",
+          "digitalAccountFlag",
+          "foreignExchangeStopFlag",
+          "foreignExchangeAlertFlag",
+          "mobilePhone",
+          "email",
+          "generalQuotaFlag",
+          "generalAccountFlag",
+          "inactiveAccountFlag",
+          "nonTransferFlag",
+          "performanceBranchCode",
+          "accountTypeCode",
+          "timeDepositBalance",
+          "availableAmount",
+          "lockedAmount",
+          "overdraftLimitAmount",
+          "pledgeAllowedFlag",
+          "smartPiggyBankFlag",
+          "pocketMoneyFlag",
+          "debitStopFlag",
+          "nonAgreedDailyLimitAmount",
+          "foreignCurrencyProjectFlag",
+          "foreignCurrencyProjectMaturityDate",
+          "foreignCurrencyStairRateFlag",
+          "isStaff",
+          "isObuCustomer"
+        ],
+        "evidenceIds": []
+      }
+    ],
+    "mappingRules": [
+      {
+        "ruleId": "map_ec0001_enqeacctid_ec0001_enqemainacctid_acctvalue_accountnumber",
+        "sourceField": "新臺幣：EC0001.EnqEAcctId；外幣：EC0001.EnqEMainAcctId。舊欄位 acctValue。",
+        "targetField": "accountNumber",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "帳號；新臺幣回傳14碼帳號，外幣回傳外幣主帳號",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ec0001_enqeaccttitle1_accountname",
+        "sourceField": "EC0001.EnqEAcctTitle1",
+        "targetField": "accountName",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "帳號名稱",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_accountname_accttext_accountdisplayname",
+        "sourceField": "畫面顯示用帳號名稱；預設同 accountName。舊欄位 acctText。",
+        "targetField": "accountDisplayName",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "帳號顯示名稱",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ec0001_enqeacctid_accountnumber_currencycode_subaccountnumber_subacct_subaccountnumber",
+        "sourceField": "外幣：EC0001.EnqEAcctId；新臺幣/無子帳號：空字串。呼叫端可依 accountNumber + currencyCode 對應取得該幣別 subAccountNumber。舊欄位 subAcct。",
+        "targetField": "subAccountNumber",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "外幣子帳號；新臺幣為空字串，外幣回傳該幣別子帳號",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ec0001_enqeacctcurr_currencycode",
+        "sourceField": "EC0001.EnqEAcctCurr",
+        "targetField": "currencyCode",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "幣別代碼；與 accountNumber 共同定位外幣子帳號",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_j_curr_currcname_currencyname",
+        "sourceField": "J_CURR.CURRCNAME",
+        "targetField": "currencyName",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "幣別中文名稱",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ec0001_enqeacctwkbal_workingbalance",
+        "sourceField": "EC0001.EnqEAcctWkBal",
+        "targetField": "workingBalance",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "帳戶餘額",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ec0001_enqeacctcatg_accountcategorycode",
+        "sourceField": "EC0001.EnqEAcctCatg",
+        "targetField": "accountCategoryCode",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "帳戶種類代碼",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ec0001_enqedigitalfg_digitalaccountflag",
+        "sourceField": "EC0001.EnqEDigitalFg",
+        "targetField": "digitalAccountFlag",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "數位帳號註記",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ec0001_enqememo15_foreignexchangestopflag",
+        "sourceField": "EC0001.EnqEMemo15",
+        "targetField": "foreignExchangeStopFlag",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "暫停外匯交易註記",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ec0001_enqememo14_foreignexchangealertflag",
+        "sourceField": "EC0001.EnqEMemo14",
+        "targetField": "foreignExchangeAlertFlag",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "外匯疑似化整為零註記",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ec0001_enqecustsms1_mobilephone",
+        "sourceField": "EC0001.EnqECustSms1",
+        "targetField": "mobilePhone",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "聯絡電話",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ec0001_enqecustemail_email",
+        "sourceField": "EC0001.EnqECustEmail",
+        "targetField": "email",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "電子郵件",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_1_genquotamark_generalquotaflag",
+        "sourceField": "固定值 1；舊欄位 genQuotaMark。",
+        "targetField": "generalQuotaFlag",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "綜合額度註記",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ec0001_enqelinkaioac_y_accounttypecode_subaccountnumber_length_6_1_genacctmark_generalaccountflag",
+        "sourceField": "EC0001.EnqELinkAioAc==Y，或 accountTypeCode 為外幣/數位外幣，或 subAccountNumber.Length==6 時為 1；舊欄位 genAcctMark。",
+        "targetField": "generalAccountFlag",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "綜存戶註記",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ec0001_enqeinactiveflag_inactiveaccountflag",
+        "sourceField": "EC0001.EnqEInactiveFlag",
+        "targetField": "inactiveAccountFlag",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "久未往來戶註記",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_acct_notransfer_ec0001_1_nontrxferflg_nontransferflag",
+        "sourceField": "依 ACCT_NOTRANSFER 與 EC0001 帳號狀態判斷；1 表示禁止轉出。舊欄位 nonTrxferFlg。",
+        "targetField": "nonTransferFlag",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "禁止轉出註記",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ec0001_enqeacctkpibr_performancebranchcode",
+        "sourceField": "EC0001.EnqEAcctKpiBr",
+        "targetField": "performanceBranchCode",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "績效行代碼",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_01_02_03_04_11_12_002_21_22_giftcard_23_598_30_80_05_13_14_acctype_accounttypecode",
+        "sourceField": "帳號類型，01：臺幣、02：支存、03：儲值支付帳號、04：行儲、11：外組、12：002、21：信用卡、22：GIFTCARD、23：598、30：虛擬帳號、80：有無單定存、05：數位帳號(台)、13：數位帳號(外)、14：外匯授信目的帳戶(不計息)。舊欄位 accType。",
+        "targetField": "accountTypeCode",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "帳號類型代碼；用於判斷台幣/外幣/數位外幣與帳號可交易狀態",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ec0001_enqeaiotdbaltot_timedepositbalance",
+        "sourceField": "EC0001.EnqEAioTdBalTot",
+        "targetField": "timeDepositBalance",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "AIO 定存單金額",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ec0001_enqeacctavlamt_availableamount",
+        "sourceField": "EC0001.EnqEAcctAvlAmt",
+        "targetField": "availableAmount",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "最高可使用額",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ec0001_enqeacctblkamt_lockedamount",
+        "sourceField": "EC0001.EnqEAcctBlkAmt",
+        "targetField": "lockedAmount",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "只扣金額",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ec0001_enqeacctlmamt_overdraftlimitamount",
+        "sourceField": "EC0001.EnqEAcctLmAmt",
+        "targetField": "overdraftLimitAmount",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "透支額度",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ec0001_enqeallowpledge_pledgeallowedflag",
+        "sourceField": "EC0001.EnqEAllowPledge",
+        "targetField": "pledgeAllowedFlag",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "質借註記",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ec0001_enqeipigfg_smartpiggybankflag",
+        "sourceField": "EC0001.EnqEIpigFg",
+        "targetField": "smartPiggyBankFlag",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "智能撲滿註記",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ec0001_enqepockeyfg_pocketmoneyflag",
+        "sourceField": "EC0001.EnqEPockeyFg",
+        "targetField": "pocketMoneyFlag",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "私房錢綁定註記",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ec0001_enqeevttype_debitstopflag",
+        "sourceField": "EC0001.EnqEEvtType",
+        "targetField": "debitStopFlag",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "止扣註記",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ec0001_enqequotatotd_nonagreeddailylimitamount",
+        "sourceField": "EC0001.EnqEQuotaTotD",
+        "targetField": "nonAgreedDailyLimitAmount",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "非約轉日限額",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ec0001_enqeproject_foreigncurrencyprojectflag",
+        "sourceField": "EC0001.EnqEProject",
+        "targetField": "foreignCurrencyProjectFlag",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "外幣階梯活期存款專案註記",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ec0001_enqeprojectmdate_foreigncurrencyprojectmaturitydate",
+        "sourceField": "EC0001.EnqEProjectMdate",
+        "targetField": "foreignCurrencyProjectMaturityDate",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "外幣階梯活期存款專案到期日",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_ec0001_enqestairatefg_foreigncurrencystairrateflag",
+        "sourceField": "EC0001.EnqEStairateFg",
+        "targetField": "foreignCurrencyStairRateFlag",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "外幣階梯活期存款階梯存款註記",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_isstaff",
+        "sourceField": "由客戶/員工狀態資料判斷。",
+        "targetField": "isStaff",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "是否行員",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_obu_isobucustome_isobucustomer",
+        "sourceField": "由 OBU 身分資料判斷；修正舊欄位 isOBUCustome 拼字。",
+        "targetField": "isObuCustomer",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "是否 OBU 身分",
+        "evidenceIds": []
+      }
+    ],
+    "dependencyHints": [
+      {
+        "dependencyType": "service",
+        "preferredAbstractions": [
+          "ICurrentRuntimeContextAccessor",
+          "IRedisService"
+        ],
+        "purpose": "Resolve keyId/custId from the current request context and Redis.",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "external_api",
+        "preferredAbstractions": [
+          "IApiRequestService"
+        ],
+        "purpose": "业务逻辑正文提到 CommonFunc->GetAcctCName() 依赖。",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "external_api",
+        "preferredAbstractions": [
+          "IApiRequestService"
+        ],
+        "purpose": "业务逻辑正文提到 CommonFunc->GetAccTypebyCategory() 依赖。",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "external_api",
+        "preferredAbstractions": [
+          "ICurrentRuntimeContextAccessor",
+          "IRedisService",
+          "IApiRequestService"
+        ],
+        "purpose": "业务逻辑正文提到 CommonFunc->GetCustIDFormat() 依赖。",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "external_api",
+        "preferredAbstractions": [
+          "ICurrentRuntimeContextAccessor",
+          "IRedisService",
+          "IApiRequestService"
+        ],
+        "purpose": "业务逻辑正文提到 CommonFunc->GetCustIDFormat() custId 正規化 依赖。",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "external_api",
+        "preferredAbstractions": [
+          "ICurrentRuntimeContextAccessor",
+          "IRedisService",
+          "IApiRequestService"
+        ],
+        "purpose": "Excel 依赖声明提到 CommonFunc->GetCustIDFormat() custId 正規化；GetAccTypebyCategory() 取帳號類型；GetAcctCName() 取得帳號中文名稱。",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "external_api",
+        "preferredAbstractions": [
+          "IApiRequestService"
+        ],
+        "purpose": "业务逻辑正文提到 IRIS->EC0001 依赖。",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "external_api",
+        "preferredAbstractions": [
+          "IApiRequestService"
+        ],
+        "purpose": "Excel 依赖声明提到 IRIS->EC0001 帳戶總覽餘額查詢；提供 EnqEAcctId、EnqEMainAcctId、EnqEAcctCurr 等帳號/子帳號資料。",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "external_api",
+        "preferredAbstractions": [
+          "IApiRequestService"
+        ],
+        "purpose": "Excel 依赖声明提到 MMA->ACCT_NOTRANSFER 取得禁止轉出帳號。",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "external_api",
+        "preferredAbstractions": [
+          "IApiRequestService"
+        ],
+        "purpose": "Excel 依赖声明提到 MMA->J_CURR 取得幣別中文名稱。",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "external_api",
+        "preferredAbstractions": [
+          "IApiRequestService"
+        ],
+        "purpose": "Excel 依赖声明提到 MMA->[USER_FOREIGNER_LIST] 取得外籍客戶資料。",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "service",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor"
+        ],
+        "purpose": "Execute authoritative SQL declared in the workbook for EC0001.ENQEACCTID.LENGTH, EC0001.ENQEACCTID.SUBSTRING.",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "runtime_context",
+        "preferredAbstractions": [
+          "ICurrentRuntimeContextAccessor",
+          "IRedisService"
+        ],
+        "purpose": "业务逻辑正文提到 Redis->Ent:Com:{CustId}:AccountInfo 快取帳戶總覽結果 依赖。",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "sql_table",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor"
+        ],
+        "purpose": "Excel 依赖声明提到 DB->ACCT_NOTRANSFER。",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "sql_table",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor"
+        ],
+        "purpose": "Excel 依赖声明提到 DB->EC0001.ENQEACCTID.LENGTH。",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "sql_table",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor"
+        ],
+        "purpose": "Excel 依赖声明提到 DB->EC0001.ENQEACCTID.SUBSTRING。",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "sql_table",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor"
+        ],
+        "purpose": "Excel 依赖声明提到 DB->L_EAINET.EAINET.TBDAY。",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "sql_table",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor"
+        ],
+        "purpose": "Excel 依赖声明提到 MMADB->[L_EAINET].[EAINET].[TBDAY] 取得營業日資料。",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "sql_table",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor"
+        ],
+        "purpose": "Read from ACCT_NOTRANSFER",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "sql_table",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor"
+        ],
+        "purpose": "Read from EC0001.ENQEACCTID.LENGTH",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "sql_table",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor"
+        ],
+        "purpose": "Read from EC0001.ENQEACCTID.SUBSTRING",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "sql_table",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor"
+        ],
+        "purpose": "Read from L_EAINET.EAINET.TBDAY",
+        "evidenceIds": []
+      }
+    ],
+    "constraints": [
+      {
+        "constraintType": "prohibited_shortcut",
+        "rule": "mock_response_payload",
+        "severity": "error",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "prohibited_shortcut",
+        "rule": "hardcoded_custid",
+        "severity": "error",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "prohibited_shortcut",
+        "rule": "block_comment_header_substitution",
+        "severity": "error",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "error_code_rule",
+        "rule": "9001 | 查詢數據庫失敗 | 系統繁忙,請稍後再試",
+        "severity": "warning",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "error_code_rule",
+        "rule": "9001 | IRIS帳戶資料查詢失敗 | 系統繁忙,請稍後再試",
+        "severity": "warning",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "error_code_rule",
+        "rule": "0200 | EC0001集合count=0 | 未查詢到可用帳號",
+        "severity": "warning",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "request_field_validation",
+        "field": "refreshFromIris",
+        "validationLayer": "dto_attribute",
+        "validationType": "required",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸入{Request參數}！",
+        "customValidationAttributeNeeded": false,
+        "rule": "refreshFromIris | dto_attribute | required | 9999 | 請輸入{Request參數}！",
+        "severity": "warning",
+        "evidenceIds": [
+          "response_code.o_common.9999"
+        ]
+      }
+    ],
+    "unresolved": [
+      {
+        "topic": "identity.current_customer_context",
+        "reason": "Workbook references authenticated/session identity details, but the business-logic sheet does not fully define the request-side identity contract.",
+        "blocking": true,
+        "blockedReason": "identity model blocked",
+        "missingFacts": [
+          "authenticated identity source for the current request",
+          "session scope / lifecycle for the resolved customer context",
+          "exact Redis key or claim chain that turns current login state into CustId"
+        ],
+        "suggestedOwner": "upstream auth",
+        "nextDecisionNeeded": "Confirm how the authenticated request resolves to CustId before code implementation."
+      }
+    ]
+  }
+}

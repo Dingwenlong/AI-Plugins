@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "4.1.0",
+  "skillName": "api-sql-fixture-preparer",
+  "manifestType": "table-checks",
+  "updatedAt": "2026-05-23T19:42:19+08:00",
+  "executionId": "Common",
+  "apiId": "COMMON.commonfunc.getcustidformat",
+  "dbTarget": "connection-name:Report",
+  "authorityRoot": "../../.agent/reference/global",
+  "tables": [
+    {
+      "tableRef": "MMA.dbo.USER_FOREIGNER_LIST",
+      "resolvedTableName": "MMA.dbo.USER_FOREIGNER_LIST",
+      "exists": true,
+      "rowCount": 10,
+      "action": "reuse",
+      "blockReason": null,
+      "schemaSql": null,
+      "seedSql": null
+    },
+    {
+      "tableRef": "MMA.DBO.USER_FOREIGNER_LIST",
+      "resolvedTableName": "MMA.dbo.USER_FOREIGNER_LIST",
+      "exists": true,
+      "rowCount": 10,
+      "action": "reuse",
+      "blockReason": null,
+      "schemaSql": null,
+      "seedSql": null
+    }
+  ]
+}

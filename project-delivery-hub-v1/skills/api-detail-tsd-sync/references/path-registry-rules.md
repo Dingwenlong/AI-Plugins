@@ -59,7 +59,7 @@ Registry 结构：
    - CommonUtil：在 `directories.common` 中搜索 `NEWDA_API_DETAIL_CommonUtil*.xlsx`，优先最后修改时间最新者。
    - CommonFunc：在 `directories.common` 中搜索 `NEWDA_API_DETAIL_CommonFunc*.xlsx`，优先最后修改时间最新者。
    - Response Codes：在 `directories.tsdApiSpec` 中搜索 `Api_Response_Codes*.xlsx`，优先最后修改时间最新者。
-   - Customer IT SPEC: when `directories.customerItSpec` exists, search the business-domain subfolder matching the function-code prefix first, for example `L.*` -> `L 繳費`; then search root-level common files; use `APIDoc 參考 20251231` only as historical fallback. Prefer exact function-code filename matches, then newest version/date in filename, then latest modified time.
+   - Customer IT SPEC: when `directories.customerItSpec` exists, search the business-domain subfolder matching the function-code prefix first, for example `L.*` -> `L 繳費`; then search root-level common files; use `APIDoc 參考 20251231` only as historical fallback. Prefer exact function-code filename matches, then newest version/date in filename, then latest modified time. This search is required for every interface-design summary; if no file is found, keep going only after recording `Customer IT SPEC | 未找到 | 已搜索 customerItSpec 目录；作为显式风险，不自动阻塞 developmentReady` in the evidence table and risk section.
    - Legacy project: when `directories.legacyProject` exists, use it as the old DAWHO program/code evidence root for legacy method names, code-behind references, SQL/SP clues, request/response mapping, and old business-flow confirmation. Prefer exact function-code, API name, screen name, or legacy method-name matches; keep old program names as evidence/alias only, not as formal `BackendAPI` names.
 8. 若只有一个 registry 条目且必要文件均可解析，直接使用并简要说明已解析的条目。
 9. 若多个 registry 条目匹配，请用户选择目标功能组。

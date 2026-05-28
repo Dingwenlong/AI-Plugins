@@ -1,0 +1,639 @@
+{
+  "schemaVersion": "4.2.0",
+  "apiId": "COMMON.commonfunc.getdevicebinding",
+  "newAuthor": "Jimmy",
+  "functionCode": "Common",
+  "version": "1.0",
+  "apiCategory": "CommonFunc",
+  "apiName": "GetDeviceBinding",
+  "source": {
+    "tsdFile": "TSD.Common_封存TSD共用开发链路_v1.0_20260523.docx",
+    "workbookFile": "NEWDA_Method_DETAIL_ExchangeCommonFunc_20260522.xlsx",
+    "sheetNames": [
+      "GetDeviceBindingFunc 查詢裝置綁定"
+    ]
+  },
+  "request": [
+    {
+      "rowKey": "1",
+      "fieldName": "udid",
+      "dataType": "string",
+      "required": true,
+      "description": "裝置唯一識別碼",
+      "notes": "前端userAgent切出來"
+    },
+    {
+      "rowKey": "2",
+      "fieldName": "custId",
+      "dataType": "string",
+      "required": false,
+      "description": "客戶唯一標識"
+    }
+  ],
+  "response": [
+    {
+      "rowKey": "1",
+      "fieldName": "isSuccess",
+      "dataType": "boolean",
+      "required": true,
+      "description": "API成功與否",
+      "example": "True",
+      "notes": "true ; false"
+    },
+    {
+      "rowKey": "2",
+      "fieldName": "responseCode",
+      "dataType": "string",
+      "required": true,
+      "description": "回應代碼",
+      "example": "0",
+      "notes": "成功:0000其餘狀況為失敗"
+    },
+    {
+      "rowKey": "3",
+      "fieldName": "responseMessage",
+      "dataType": "string",
+      "required": true,
+      "description": "回應訊息",
+      "notes": "失敗狀況下回傳錯誤訊息"
+    },
+    {
+      "rowKey": "4",
+      "fieldName": "responseDT",
+      "dataType": "string",
+      "required": true,
+      "description": "系統回應時間",
+      "notes": "yyyy/MM/dd HH:mm:ss"
+    },
+    {
+      "rowKey": "5",
+      "fieldName": "responseData",
+      "dataType": "json",
+      "required": true,
+      "description": "回應資料框",
+      "example": "\"responseData\": {}",
+      "properties": [
+        {
+          "rowKey": "5.1",
+          "fieldName": "udId",
+          "dataType": "string",
+          "required": true,
+          "description": "裝置唯一識別碼",
+          "example": "\"udid\":\"xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx\"",
+          "notes": "Dawho.DeviceBinding.Udid"
+        },
+        {
+          "rowKey": "5.2",
+          "fieldName": "mPhoneName",
+          "dataType": "string",
+          "required": true,
+          "description": "裝置名稱",
+          "example": "\"mphonename\":\"iPhone 15 Pro\"",
+          "notes": "Dawho.DeviceBinding.DeviceName"
+        },
+        {
+          "rowKey": "5.3",
+          "fieldName": "timestamp",
+          "dataType": "string",
+          "required": true,
+          "description": "綁定時間",
+          "example": "\"timestamp\":\"2026-04-01 10:30:00\"",
+          "notes": "Dawho.DeviceBinding.CreateDate"
+        },
+        {
+          "rowKey": "5.4",
+          "fieldName": "midType",
+          "dataType": "string",
+          "required": false,
+          "description": "綁定方式",
+          "example": "\"midtype\":\"VIDEO\"",
+          "notes": "Dawho.DeviceBinding.MidType"
+        },
+        {
+          "rowKey": "5.5",
+          "fieldName": "fidoFlag",
+          "dataType": "string",
+          "required": false,
+          "description": "FIDO旗標",
+          "example": "\"fidoflag\":\"\"",
+          "notes": "Dawho.DeviceBinding.FidoQrid"
+        },
+        {
+          "rowKey": "5.6",
+          "fieldName": "totpSecret",
+          "dataType": "string",
+          "required": false,
+          "description": "totp密碼",
+          "example": "\"totpSecret\":\"\"",
+          "notes": "Dawho.DeviceBinding.TotpSecret"
+        },
+        {
+          "rowKey": "5.7",
+          "fieldName": "custId",
+          "dataType": "string",
+          "required": true,
+          "description": "綁定人ID",
+          "example": "\"custId\":\"\"",
+          "notes": "Dawho.DeviceBinding.CustId"
+        },
+        {
+          "rowKey": "5.8",
+          "fieldName": "newDaFastflag",
+          "dataType": "string",
+          "required": true,
+          "description": "快登狀態(空白=關閉快登、G=圖形、T=生物辨識、F=生物辨識)",
+          "example": "\"newDaFastflag\":\"T\"",
+          "notes": "MMA.User.NEWDAFASTFLAG"
+        }
+      ]
+    }
+  ],
+  "mockExamples": [
+    {
+      "scenario": "存在裝置綁定",
+      "responsePayload": {
+        "isSuccess": true,
+        "responseCode": "0000",
+        "responseMessage": "查詢成功",
+        "responseDT": "2026-04-15 14:30:00",
+        "responseData": {
+          "udId": "550e8400-e29b-41d4-a716-446655440000",
+          "mPhoneName": "iPhone 15 Pro",
+          "timestamp": "2026-04-01 10:30:00",
+          "midType": "VIDEO",
+          "fidoFlag": "",
+          "totpSecret": "",
+          "custId": ""
+        }
+      }
+    },
+    {
+      "scenario": "裝置被他人綁定",
+      "responsePayload": {
+        "isSuccess": false,
+        "responseCode": "9024",
+        "responseMessage": "此行動裝置已有其他使用者綁定，請您點選「立即設定」解除前使用者於此行動裝置之授權，並重新進行授權裝置流程。",
+        "responseDT": "2026/04/15 14:30:00",
+        "responseData": null
+      }
+    },
+    {
+      "scenario": "不存在裝置綁定",
+      "responsePayload": {
+        "isSuccess": false,
+        "responseCode": "9020",
+        "responseMessage": "尚未啟用裝置綁定",
+        "responseDT": "2026/04/15 14:30:00",
+        "responseData": null
+      }
+    },
+    {
+      "scenario": "未輸入必填請求參數",
+      "responsePayload": {
+        "isSuccess": false,
+        "responseCode": "9999",
+        "responseMessage": "請輸入{Request參數}！",
+        "responseDT": "2026/02/24 15:59:24",
+        "responseData": {}
+      }
+    }
+  ],
+  "backendApis": {
+    "DB": [
+      "Dawho.DeviceBinding",
+      "MMA.User"
+    ],
+    "CommonFunc": [
+      "GetIC0001()取客戶資料",
+      "GetIC0001()"
+    ]
+  },
+  "businessLogic": {
+    "steps": [
+      {
+        "step": 1,
+        "title": "撈取客戶是否有裝置綁定紀錄",
+        "details": "1.執行\nSELECT\nCustId\n,Udid\n,DeviceName\n,CreateDate\n, MidType\n, FidoFlag\n,TotpSecret\nFROM [DeviceBinding]\nWHERE\nDB.Udid = @Request.udid\nAND\n(@Request.custId IS NULL OR @Request.custId = '' OR DB.CustId = @Request.custId)\nORDER BY DB.createdts DESC\n1.1、依customerId （客戶ID）查詢該客戶所有已綁定的裝置\n2.執行\nSELECT\nUSERID\n,NEWDAFASTFLAG\nFROM [MMA].[USER] WHERE (CUSTID=@CUSTID) 查詢設置快登類型和UserID"
+      },
+      {
+        "step": 2,
+        "title": "檢查手機號碼，若無則在跟主機要一次",
+        "details": "無手機號碼→\n呼叫 CommonFunc.GetIC0001(freshFromIris=true) →\n從回傳的資料中讀取 key=\"SMS.1:1:1\" →\n拆分 \"-\" 取 sms[1]+sms[2] 組合為手機號碼→\n寫回 member.T24Sms\n可读取外援：TW T24 IRIS_OpenAPI_Summary_20231212 -> reference/global/raw/external-api/IRIS/TW T24 IRIS_OpenAPI_Summary_20231212.xlsx#sheetName=IRIS；ED0019_OpenAPI_spec_Enquiry_20260213 -> reference/global/raw/external-api/IRIS/ED0019_OpenAPI_spec_Enquiry_20260213.xlsx#sheetName=JSON Request-Response；EC0002_OpenAPI_spec_Enquiry_20260213 -> reference/global/raw/external-api/IRIS/EC0002_OpenAPI_spec_Enquiry_20260213.xlsx#sheetName=JSON Request-Response",
+        "referenceHints": [
+          {
+            "id": "external.iris.twt24iris-openapi-summary-20231212",
+            "category": "external_api",
+            "matchSource": "iris_keyword",
+            "matchKey": "IRIS",
+            "title": "TW T24 IRIS_OpenAPI_Summary_20231212",
+            "relativePath": "reference/global/raw/external-api/IRIS/TW T24 IRIS_OpenAPI_Summary_20231212.xlsx",
+            "locator": {
+              "sheetName": "IRIS"
+            },
+            "reason": "命中外部接口关键词 IRIS，可读取 IRIS/OpenAPI 设计",
+            "authority": "reference_imported"
+          },
+          {
+            "id": "external.iris.ed0019-openapi-spec-enquiry-20260213",
+            "category": "external_api",
+            "matchSource": "iris_keyword",
+            "matchKey": "IRIS",
+            "title": "ED0019_OpenAPI_spec_Enquiry_20260213",
+            "relativePath": "reference/global/raw/external-api/IRIS/ED0019_OpenAPI_spec_Enquiry_20260213.xlsx",
+            "locator": {
+              "sheetName": "JSON Request-Response"
+            },
+            "reason": "命中外部接口关键词 IRIS，可读取 IRIS/OpenAPI 设计",
+            "authority": "reference_imported"
+          },
+          {
+            "id": "external.iris.ec0002-openapi-spec-enquiry-20260213",
+            "category": "external_api",
+            "matchSource": "iris_keyword",
+            "matchKey": "IRIS",
+            "title": "EC0002_OpenAPI_spec_Enquiry_20260213",
+            "relativePath": "reference/global/raw/external-api/IRIS/EC0002_OpenAPI_spec_Enquiry_20260213.xlsx",
+            "locator": {
+              "sheetName": "JSON Request-Response"
+            },
+            "reason": "命中外部接口关键词 IRIS，可读取 IRIS/OpenAPI 设计",
+            "authority": "reference_imported"
+          }
+        ]
+      }
+    ],
+    "fieldMappings": [
+      {
+        "target": "udId",
+        "source": "Dawho.DeviceBinding.Udid",
+        "rule": "裝置唯一識別碼",
+        "fields": [
+          {
+            "field": "udId",
+            "source": "Dawho.DeviceBinding.Udid",
+            "rule": "裝置唯一識別碼"
+          }
+        ]
+      },
+      {
+        "target": "mPhoneName",
+        "source": "Dawho.DeviceBinding.DeviceName",
+        "rule": "裝置名稱",
+        "fields": [
+          {
+            "field": "mPhoneName",
+            "source": "Dawho.DeviceBinding.DeviceName",
+            "rule": "裝置名稱"
+          }
+        ]
+      },
+      {
+        "target": "timestamp",
+        "source": "Dawho.DeviceBinding.CreateDate",
+        "rule": "綁定時間",
+        "fields": [
+          {
+            "field": "timestamp",
+            "source": "Dawho.DeviceBinding.CreateDate",
+            "rule": "綁定時間"
+          }
+        ]
+      },
+      {
+        "target": "midType",
+        "source": "Dawho.DeviceBinding.MidType",
+        "rule": "綁定方式",
+        "fields": [
+          {
+            "field": "midType",
+            "source": "Dawho.DeviceBinding.MidType",
+            "rule": "綁定方式"
+          }
+        ]
+      },
+      {
+        "target": "fidoFlag",
+        "source": "Dawho.DeviceBinding.FidoQrid",
+        "rule": "FIDO旗標",
+        "fields": [
+          {
+            "field": "fidoFlag",
+            "source": "Dawho.DeviceBinding.FidoQrid",
+            "rule": "FIDO旗標"
+          }
+        ]
+      },
+      {
+        "target": "totpSecret",
+        "source": "Dawho.DeviceBinding.TotpSecret",
+        "rule": "totp密碼",
+        "fields": [
+          {
+            "field": "totpSecret",
+            "source": "Dawho.DeviceBinding.TotpSecret",
+            "rule": "totp密碼"
+          }
+        ]
+      },
+      {
+        "target": "custId",
+        "source": "Dawho.DeviceBinding.CustId",
+        "rule": "綁定人ID",
+        "fields": [
+          {
+            "field": "custId",
+            "source": "Dawho.DeviceBinding.CustId",
+            "rule": "綁定人ID"
+          }
+        ]
+      },
+      {
+        "target": "newDaFastflag",
+        "source": "MMA.User.NEWDAFASTFLAG",
+        "rule": "快登狀態(空白=關閉快登、G=圖形、T=生物辨識、F=生物辨識)",
+        "fields": [
+          {
+            "field": "newDaFastflag",
+            "source": "MMA.User.NEWDAFASTFLAG",
+            "rule": "快登狀態(空白=關閉快登、G=圖形、T=生物辨識、F=生物辨識)"
+          }
+        ]
+      }
+    ],
+    "errorCodeRules": [
+      {
+        "code": "9024",
+        "scenario": "裝置被他人綁定",
+        "message": "此行動裝置已有其他使用者綁定，請您點選「立即設定」解除前使用者於此行動裝置之授權，並重新進行授權裝置流程。"
+      },
+      {
+        "code": "9020",
+        "scenario": "不存在裝置綁定",
+        "message": "尚未啟用裝置綁定"
+      },
+      {
+        "code": "9999",
+        "scenario": "未輸入必填請求參數",
+        "message": "請輸入{Request參數}！"
+      }
+    ],
+    "runtimeDependencies": [
+      {
+        "id": "external_api_commonfunc_getic0001",
+        "type": "external_api",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "业务逻辑正文提到 CommonFunc->GetIC0001() 依赖。"
+      },
+      {
+        "id": "sql_table_db_dawho_devicebinding",
+        "type": "sql_table",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "业务逻辑正文提到 DB->Dawho.DeviceBinding 依赖。"
+      },
+      {
+        "id": "sql_table_db_mma_user",
+        "type": "sql_table",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "业务逻辑正文提到 DB->MMA.User 依赖。"
+      }
+    ],
+    "dataSources": [],
+    "sqlSpecs": [],
+    "legacyReferences": [],
+    "prohibitedShortcuts": [
+      "block_comment_header_substitution"
+    ],
+    "referenceHints": [
+      {
+        "id": "external.iris.twt24iris-openapi-summary-20231212",
+        "category": "external_api",
+        "matchSource": "iris_keyword",
+        "matchKey": "IRIS",
+        "title": "TW T24 IRIS_OpenAPI_Summary_20231212",
+        "relativePath": "reference/global/raw/external-api/IRIS/TW T24 IRIS_OpenAPI_Summary_20231212.xlsx",
+        "locator": {
+          "sheetName": "IRIS"
+        },
+        "reason": "命中外部接口关键词 IRIS，可读取 IRIS/OpenAPI 设计",
+        "authority": "reference_imported"
+      },
+      {
+        "id": "external.iris.ed0019-openapi-spec-enquiry-20260213",
+        "category": "external_api",
+        "matchSource": "iris_keyword",
+        "matchKey": "IRIS",
+        "title": "ED0019_OpenAPI_spec_Enquiry_20260213",
+        "relativePath": "reference/global/raw/external-api/IRIS/ED0019_OpenAPI_spec_Enquiry_20260213.xlsx",
+        "locator": {
+          "sheetName": "JSON Request-Response"
+        },
+        "reason": "命中外部接口关键词 IRIS，可读取 IRIS/OpenAPI 设计",
+        "authority": "reference_imported"
+      },
+      {
+        "id": "external.iris.ec0002-openapi-spec-enquiry-20260213",
+        "category": "external_api",
+        "matchSource": "iris_keyword",
+        "matchKey": "IRIS",
+        "title": "EC0002_OpenAPI_spec_Enquiry_20260213",
+        "relativePath": "reference/global/raw/external-api/IRIS/EC0002_OpenAPI_spec_Enquiry_20260213.xlsx",
+        "locator": {
+          "sheetName": "JSON Request-Response"
+        },
+        "reason": "命中外部接口关键词 IRIS，可读取 IRIS/OpenAPI 设计",
+        "authority": "reference_imported"
+      }
+    ]
+  },
+  "codeHandoff": {
+    "schemaVersion": "1.0.0",
+    "logicSummary": {
+      "stepCount": 2,
+      "queryContractCount": 0,
+      "mappingRuleCount": 8,
+      "legacyEvidenceCount": 0,
+      "dependencyHintCount": 3,
+      "constraintCount": 5,
+      "unresolvedCount": 0,
+      "primarySource": "businessLogic"
+    },
+    "logicFlow": [
+      {
+        "stepId": "step_1",
+        "title": "撈取客戶是否有裝置綁定紀錄",
+        "actionType": "query",
+        "inputs": [
+          "udid",
+          "custId"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_2",
+        "title": "檢查手機號碼，若無則在跟主機要一次",
+        "actionType": "return",
+        "inputs": [
+          "udid",
+          "custId"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      }
+    ],
+    "legacyEvidence": [],
+    "queryContracts": [],
+    "mappingRules": [
+      {
+        "ruleId": "map_dawho_devicebinding_udid_udid",
+        "sourceField": "Dawho.DeviceBinding.Udid",
+        "targetField": "udId",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "裝置唯一識別碼",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_dawho_devicebinding_devicename_mphonename",
+        "sourceField": "Dawho.DeviceBinding.DeviceName",
+        "targetField": "mPhoneName",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "裝置名稱",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_dawho_devicebinding_createdate_timestamp",
+        "sourceField": "Dawho.DeviceBinding.CreateDate",
+        "targetField": "timestamp",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "綁定時間",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_dawho_devicebinding_midtype_midtype",
+        "sourceField": "Dawho.DeviceBinding.MidType",
+        "targetField": "midType",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "綁定方式",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_dawho_devicebinding_fidoqrid_fidoflag",
+        "sourceField": "Dawho.DeviceBinding.FidoQrid",
+        "targetField": "fidoFlag",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "FIDO旗標",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_dawho_devicebinding_totpsecret_totpsecret",
+        "sourceField": "Dawho.DeviceBinding.TotpSecret",
+        "targetField": "totpSecret",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "totp密碼",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_dawho_devicebinding_custid_custid",
+        "sourceField": "Dawho.DeviceBinding.CustId",
+        "targetField": "custId",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "綁定人ID",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_mma_user_newdafastflag_newdafastflag",
+        "sourceField": "MMA.User.NEWDAFASTFLAG",
+        "targetField": "newDaFastflag",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "快登狀態(空白=關閉快登、G=圖形、T=生物辨識、F=生物辨識)",
+        "evidenceIds": []
+      }
+    ],
+    "dependencyHints": [
+      {
+        "dependencyType": "external_api",
+        "preferredAbstractions": [
+          "IApiRequestService"
+        ],
+        "purpose": "业务逻辑正文提到 CommonFunc->GetIC0001() 依赖。",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "sql_table",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor"
+        ],
+        "purpose": "业务逻辑正文提到 DB->Dawho.DeviceBinding 依赖。",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "sql_table",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor"
+        ],
+        "purpose": "业务逻辑正文提到 DB->MMA.User 依赖。",
+        "evidenceIds": []
+      }
+    ],
+    "constraints": [
+      {
+        "constraintType": "prohibited_shortcut",
+        "rule": "block_comment_header_substitution",
+        "severity": "error",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "error_code_rule",
+        "rule": "9024 | 裝置被他人綁定 | 此行動裝置已有其他使用者綁定，請您點選「立即設定」解除前使用者於此行動裝置之授權，並重新進行授權裝置流程。",
+        "severity": "warning",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "error_code_rule",
+        "rule": "9020 | 不存在裝置綁定 | 尚未啟用裝置綁定",
+        "severity": "warning",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "error_code_rule",
+        "rule": "9999 | 未輸入必填請求參數 | 請輸入{Request參數}！",
+        "severity": "warning",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "request_field_validation",
+        "field": "udid",
+        "validationLayer": "dto_attribute",
+        "validationType": "required",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸入{Request參數}！",
+        "customValidationAttributeNeeded": false,
+        "rule": "udid | dto_attribute | required | 9999 | 請輸入{Request參數}！",
+        "severity": "warning",
+        "evidenceIds": []
+      }
+    ],
+    "unresolved": []
+  }
+}

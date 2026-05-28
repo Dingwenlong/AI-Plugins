@@ -1,0 +1,31 @@
+{
+  "reviewStatus": "blocked",
+  "checkedAt": "2026-05-23T19:40:50+08:00",
+  "apiId": "COMMON.commonfunc.sendtomonitormail-push",
+  "source": {
+    "tsdFile": "TSD.Common_封存TSD共用开发链路_v1.0_20260523.docx",
+    "workbookFile": "NEWDA_Method_DETAIL_ExchangeCommonFunc_20260522.xlsx",
+    "sheetNames": [
+      "SendToMonitorMail_Push新版MAIL機制 "
+    ]
+  },
+  "summary": {
+    "checks": 95,
+    "matched": 94,
+    "matchPct": 98.9,
+    "blockingCount": 1,
+    "warningCount": 0
+  },
+  "findings": [
+    {
+      "severity": "blocking",
+      "kind": "code_handoff_unresolved",
+      "path": "codeHandoff.unresolved.0",
+      "expected": "no blocking unresolved items",
+      "actual": {
+        "topic": "dependency.db_b2c_customertodo",
+        "reason": "业务逻辑正文提到依赖 DB->B2C_CUSTOMER todo 未找到資料表的說明和數據結構，麻煩告知屬於哪個資料庫以及數據結構，但同一段存在 todo / 待确认语义，不能作为已确认实现或 fixture 需求。"
+      }
+    }
+  ]
+}

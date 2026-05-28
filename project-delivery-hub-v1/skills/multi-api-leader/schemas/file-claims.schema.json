@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Multi API File Claims",
+  "type": "object",
+  "required": ["schemaVersion", "functionCode", "claims"],
+  "properties": {
+    "schemaVersion": { "type": "string" },
+    "functionCode": { "type": "string" },
+    "generatedAt": { "type": "string" },
+    "claims": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["filePath", "owner", "workGroupId", "apiIds", "status", "claimedAt", "expiresAt"],
+        "properties": {
+          "filePath": { "type": "string" },
+          "owner": { "type": "string" },
+          "workGroupId": { "type": "string" },
+          "apiIds": { "type": "array", "items": { "type": "string" } },
+          "status": { "type": "string" },
+          "claimedAt": { "type": "string" },
+          "expiresAt": { "type": "string" }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true
+}

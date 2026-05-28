@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "4.1.0",
+  "skillName": "api-sql-fixture-preparer",
+  "manifestType": "db-fixture-report",
+  "updatedAt": "2026-05-23T19:45:43+08:00",
+  "executionId": "Common",
+  "apiId": "COMMON.commonfunc.checkvip",
+  "status": "blocked",
+  "phase": "inspection_blocked",
+  "executionMode": "prepare",
+  "dbTarget": "connection-name:Report",
+  "authorityRoot": "../../.agent/reference/global",
+  "sqlFixtureRequired": true,
+  "sourcesUsed": [
+    "backendApis"
+  ],
+  "tableRefs": [
+    "dbo.SP_EXRATE"
+  ],
+  "summary": {
+    "tableCount": 1,
+    "blockingTableCount": 1,
+    "queryTextCount": 0
+  },
+  "message": "COMMON.commonfunc.checkvip fixture blocked: missing_schema_authority",
+  "findings": [
+    {
+      "tableRef": "dbo.SP_EXRATE",
+      "action": "create",
+      "blockReason": "missing_schema_authority"
+    }
+  ]
+}

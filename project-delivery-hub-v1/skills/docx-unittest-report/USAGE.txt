@@ -63,39 +63,39 @@ API 测试代码与单元测试报告生成器 - 使用说明
 六、常用运行方法
 1. 从 Word 报告生成 manifest
 
-python "C:\Users\<username>\plugins\project-delivery-hub-v1\skills\docx-unittest-report\scripts\bootstrap_manifest.py" "D:\Path\To\Report.docx"
+python "<pluginRoot>\skills\docx-unittest-report\scripts\bootstrap_manifest.py" "D:\Path\To\Report.docx"
 
 2. 跑完整流程
 
-python "C:\Users\<username>\plugins\project-delivery-hub-v1\skills\docx-unittest-report\scripts\run_report_job.py" "D:\Path\To\Report.job.json"
+python "<pluginRoot>\skills\docx-unittest-report\scripts\run_report_job.py" "D:\Path\To\Report.job.json"
 
 2.1 模块级需求先回溯范围
 
-python "C:\Users\<username>\plugins\project-delivery-hub-v1\skills\docx-unittest-report\scripts\analyze_module_scope.py" "D:\Path\To\.agent\context\N.001.001"
+python "<pluginRoot>\skills\docx-unittest-report\scripts\analyze_module_scope.py" "D:\Path\To\.agent\context\N.001.001"
 
 2.2 按模块范围判定模板适用性
 
-python "C:\Users\<username>\plugins\project-delivery-hub-v1\skills\docx-unittest-report\scripts\classify_template_items.py" "D:\Path\To\module-scope.json" "D:\Path\To\template-outline.json"
+python "<pluginRoot>\skills\docx-unittest-report\scripts\classify_template_items.py" "D:\Path\To\module-scope.json" "D:\Path\To\template-outline.json"
 
 2.3 产出模块测试缺口清单
 
-python "C:\Users\<username>\plugins\project-delivery-hub-v1\skills\docx-unittest-report\scripts\build_coverage_gap.py" "D:\Path\To\template-classification.json" --manifest "D:\Path\To\Report.job.json" --results "D:\Path\To\Report.results.json"
+python "<pluginRoot>\skills\docx-unittest-report\scripts\build_coverage_gap.py" "D:\Path\To\template-classification.json" --manifest "D:\Path\To\Report.job.json" --results "D:\Path\To\Report.results.json"
 
 2.4 应用安全自动修正
 
-python "C:\Users\<username>\plugins\project-delivery-hub-v1\skills\docx-unittest-report\scripts\apply_manifest_gap_fixes.py" "D:\Path\To\coverage-gap.json" "D:\Path\To\Report.job.json" "D:\Path\To\Report.results.json"
+python "<pluginRoot>\skills\docx-unittest-report\scripts\apply_manifest_gap_fixes.py" "D:\Path\To\coverage-gap.json" "D:\Path\To\Report.job.json" "D:\Path\To\Report.results.json"
 
 2.5 正式交付收口，清理中间件
 
-python "C:\Users\<username>\plugins\project-delivery-hub-v1\skills\docx-unittest-report\scripts\compact_report_outputs.py" "D:\Path\To\Report.autofixed.job.json" "D:\Path\To\Report.autofixed.results.json"
+python "<pluginRoot>\skills\docx-unittest-report\scripts\compact_report_outputs.py" "D:\Path\To\Report.autofixed.job.json" "D:\Path\To\Report.autofixed.results.json"
 
 2.6 为无界面 Postman MCP 调用补状态截图
 
-python "C:\Users\<username>\plugins\project-delivery-hub-v1\skills\docx-unittest-report\scripts\postman_mcp_evidence.py" render-status --request ".agent\context\<functionCode>\ut-report\postman-mcp\<apiId>\<scenarioId>\request.json" --response ".agent\context\<functionCode>\ut-report\postman-mcp\<apiId>\<scenarioId>\response.json" --output ".agent\context\<functionCode>\ut-report\postman-mcp\<apiId>\<scenarioId>\status.png" --expected-status 200
+python "<pluginRoot>\skills\docx-unittest-report\scripts\postman_mcp_evidence.py" render-status --request ".agent\context\<functionCode>\ut-report\postman-mcp\<apiId>\<scenarioId>\request.json" --response ".agent\context\<functionCode>\ut-report\postman-mcp\<apiId>\<scenarioId>\response.json" --output ".agent\context\<functionCode>\ut-report\postman-mcp\<apiId>\<scenarioId>\status.png" --expected-status 200
 
 3. 已经有 results.json，只做 Word 回填
 
-python "C:\Users\<username>\plugins\project-delivery-hub-v1\skills\docx-unittest-report\scripts\apply_report_results.py" "D:\Path\To\Report.job.json" "D:\Path\To\Report.results.json"
+python "<pluginRoot>\skills\docx-unittest-report\scripts\apply_report_results.py" "D:\Path\To\Report.job.json" "D:\Path\To\Report.results.json"
 
 4. 跑技能自测
 

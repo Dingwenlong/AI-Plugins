@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "4.1.0",
+  "skillName": "api-sql-fixture-preparer",
+  "manifestType": "table-checks",
+  "updatedAt": "2026-05-23T19:43:13+08:00",
+  "executionId": "Common",
+  "apiId": "COMMON.exchangecommonfunc.editcommoncurrency",
+  "dbTarget": "connection-name:Report",
+  "authorityRoot": "../../.agent/reference/global",
+  "tables": [
+    {
+      "tableRef": "CommonCurrencyList",
+      "resolvedTableName": null,
+      "exists": false,
+      "rowCount": null,
+      "action": "create",
+      "blockReason": "missing_schema_authority",
+      "schemaSql": null,
+      "seedSql": null
+    },
+    {
+      "tableRef": "DaWho.dbo.CommonCurrencyList",
+      "resolvedTableName": null,
+      "exists": false,
+      "rowCount": null,
+      "action": "create",
+      "blockReason": "missing_schema_authority",
+      "schemaSql": null,
+      "seedSql": null
+    },
+    {
+      "tableRef": "DAWHO.DBO.COMMONCURRENCYLIST",
+      "resolvedTableName": null,
+      "exists": false,
+      "rowCount": null,
+      "action": "create",
+      "blockReason": "missing_schema_authority",
+      "schemaSql": null,
+      "seedSql": null
+    }
+  ]
+}

@@ -1,0 +1,1024 @@
+{
+  "schemaVersion": "4.1.0",
+  "skillName": "api-code-writer",
+  "manifestType": "change-plan",
+  "status": "tests_passed",
+  "updatedAt": "2026-05-23T18:13:27+08:00",
+  "executionId": "Common",
+  "apiId": "COMMON.commonutil.checkprelogindevicestatus",
+  "projectRoot": ".",
+  "solutionPath": "Sinopac.EnterpriseAPI/Sinopac.EnterpriseAPI.slnx",
+  "upstream": {
+    "manifest": "../../.agent/context/Common/apis/COMMON.commonutil.checkprelogindevicestatus/manifest.json",
+    "apiSpec": "../../.agent/context/Common/apis/COMMON.commonutil.checkprelogindevicestatus/Common_API_Spec.json",
+    "sourceFingerprint": "sha256:f6e77228d46c0a28033b9dc2e6eb65d53850ba0f45b5be3218a50ca45d3bf43f",
+    "source": {
+      "tsdFile": "TSD.Common_封存TSD共用开发链路_v1.0_20260523.docx",
+      "workbookFile": "NEWDA_API_DETAIL_CommonUtil_20260522.xlsx",
+      "sheetNames": [
+        "CheckPreLoginDeviceStatus 裝置綁定"
+      ]
+    }
+  },
+  "sourceCandidates": [
+    "Sinopac.EnterpriseAPI/Sinopac.EnterpriseAPI/Controllers/CommonUtilController.cs",
+    "Sinopac.EnterpriseAPI/EnterpriseApiBusiness.Interface/ICommonUtilService.cs",
+    "Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonUtil/CommonUtilService.cs",
+    "Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonUtil/CommonUtilService.CheckPreLoginDeviceStatus.cs",
+    "Libray/Sinopac.CommonFunc/Dto/CheckPreLoginDeviceStatusInfo.cs",
+    "Sinopac.EnterpriseAPI/Test/EnterpriseApi.Unit/CommonUtilControllerTest.cs",
+    "Sinopac.EnterpriseAPI/Test/EnterpriseApi.Unit/CommonUtilServiceTests.cs",
+    "Sinopac.EnterpriseAPI/Test/EnterpriseApi.Integration/CommonUtilControllerTests.cs"
+  ],
+  "repoDriftDetected": false,
+  "repoDriftFiles": [],
+  "beforeHashes": {
+    "Sinopac.EnterpriseAPI/Sinopac.EnterpriseAPI/Controllers/CommonUtilController.cs": "sha256:e66eb1a2008763609d2941cf6f6007e85728e7b30a11005998ae78834b7e961c",
+    "Sinopac.EnterpriseAPI/EnterpriseApiBusiness.Interface/ICommonUtilService.cs": "sha256:670c02cfd9caa3adfa7a0b3f02a48174dd8c7ac469f876f73503cd6f42118fe1",
+    "Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonUtil/CommonUtilService.cs": "sha256:f70a8ecab2c1d3a6fad5f1dbd1d65b0cd5c739a3c03795d9ab457aec982963be",
+    "Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonUtil/CommonUtilService.CheckPreLoginDeviceStatus.cs": "sha256:5ea8141ea4cf4ac2f78bfeaee3cbc75299284a5f0ff2d92bd7b0bf18460015d5",
+    "Libray/Sinopac.CommonFunc/Dto/CheckPreLoginDeviceStatusInfo.cs": "sha256:c68b9dbe783df08f02823afd8ee65ea4d930a8b353595be54aab6172531bcb5c"
+  },
+  "analysis": {
+    "frameworkProfile": "enterpriseapi",
+    "guidelineAuthority": "新大戶框架説明 V2.0 20260203.docx",
+    "repoRoot": "Sinopac.EnterpriseAPI",
+    "moduleName": "CommonUtil",
+    "controllerFile": "Sinopac.EnterpriseAPI/Sinopac.EnterpriseAPI/Controllers/CommonUtilController.cs",
+    "interfaceFile": "Sinopac.EnterpriseAPI/EnterpriseApiBusiness.Interface/ICommonUtilService.cs",
+    "serviceFiles": [
+      "Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonUtil/CommonUtilService.cs",
+      "Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonUtil/CommonUtilService.CheckPreLoginDeviceStatus.cs"
+    ],
+    "entityFiles": [
+      "Libray/Sinopac.CommonFunc/Dto/CheckPreLoginDeviceStatusInfo.cs"
+    ],
+    "codeTargetFiles": [
+      "Sinopac.EnterpriseAPI/Sinopac.EnterpriseAPI/Controllers/CommonUtilController.cs",
+      "Sinopac.EnterpriseAPI/EnterpriseApiBusiness.Interface/ICommonUtilService.cs",
+      "Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonUtil/CommonUtilService.CheckPreLoginDeviceStatus.cs",
+      "Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonUtil/CommonUtilService.cs",
+      "Libray/Sinopac.CommonFunc/Dto/CheckPreLoginDeviceStatusInfo.cs"
+    ],
+    "unitTestTargetFiles": [
+      "Sinopac.EnterpriseAPI/Test/EnterpriseApi.Unit/CommonUtilControllerTest.cs",
+      "Sinopac.EnterpriseAPI/Test/EnterpriseApi.Unit/CommonUtilServiceTests.cs"
+    ],
+    "integrationTestTargetFiles": [
+      "Sinopac.EnterpriseAPI/Test/EnterpriseApi.Integration/CommonUtilControllerTests.cs"
+    ],
+    "testTargetFiles": [
+      "Sinopac.EnterpriseAPI/Test/EnterpriseApi.Unit/CommonUtilControllerTest.cs",
+      "Sinopac.EnterpriseAPI/Test/EnterpriseApi.Unit/CommonUtilServiceTests.cs",
+      "Sinopac.EnterpriseAPI/Test/EnterpriseApi.Integration/CommonUtilControllerTests.cs"
+    ],
+    "testCodeHandoff": {
+      "ownerStep": "05 docx-unittest-report",
+      "writerPolicy": "handoff_only",
+      "unitTestTargetFiles": [
+        "Sinopac.EnterpriseAPI/Test/EnterpriseApi.Unit/CommonUtilControllerTest.cs",
+        "Sinopac.EnterpriseAPI/Test/EnterpriseApi.Unit/CommonUtilServiceTests.cs"
+      ],
+      "integrationTestTargetFiles": [
+        "Sinopac.EnterpriseAPI/Test/EnterpriseApi.Integration/CommonUtilControllerTests.cs"
+      ],
+      "note": "Step 04 records test targets and scenarios only; UnitTest, IntegrationTest, and service runtime validation source code belong to step 05."
+    },
+    "creationMode": "extend_partial",
+    "registrationStrategy": "manual_registration_review",
+    "targetFile": "Sinopac.EnterpriseAPI/EnterpriseApiBusiness/CommonUtil/CommonUtilService.CheckPreLoginDeviceStatus.cs",
+    "targetClass": "CommonUtilService",
+    "targetMethod": "CheckPreLoginDeviceStatusAsync",
+    "action": "ai_orchestrated_implementation",
+    "requestFields": [
+      {
+        "path": "custId",
+        "dataType": "string",
+        "required": true,
+        "description": "當前用戶ID",
+        "notes": "來源Redis"
+      },
+      {
+        "path": "uuid",
+        "dataType": "string",
+        "required": true,
+        "description": "裝置唯一標識",
+        "notes": ""
+      },
+      {
+        "path": "verifyType",
+        "dataType": "string",
+        "required": false,
+        "description": "驗證方式",
+        "notes": ""
+      }
+    ],
+    "responseFields": [
+      {
+        "path": "isSuccess",
+        "dataType": "boolean",
+        "required": true,
+        "description": "API成功與否",
+        "notes": "true ; false"
+      },
+      {
+        "path": "responseCode",
+        "dataType": "string",
+        "required": true,
+        "description": "回應代碼",
+        "notes": "成功:0000其餘狀況為失敗"
+      },
+      {
+        "path": "responseMessage",
+        "dataType": "string",
+        "required": true,
+        "description": "回應訊息",
+        "notes": "失敗狀況下回傳錯誤訊息"
+      },
+      {
+        "path": "responseDT",
+        "dataType": "string",
+        "required": true,
+        "description": "系統回應時間",
+        "notes": "yyyy/MM/dd HH:mm:ss"
+      },
+      {
+        "path": "responseData",
+        "dataType": "json",
+        "required": true,
+        "description": "回應資料框",
+        "notes": ""
+      },
+      {
+        "path": "responseData.verifyResult",
+        "dataType": "int",
+        "required": true,
+        "description": "返回 0  核驗通過\n返回 1、檢查裝置近 90 天是否被4 名以上不同使用者綁定過\n返回 2、檢查這台裝置是否已被其他 ID 綁定返回 3、檢查此 ID 是否已綁定其他裝置",
+        "notes": "CheckDeviceBindingFunc().responseData.verifyResult"
+      }
+    ],
+    "businessSteps": [
+      {
+        "step": 1,
+        "title": "裝置綁定前核驗",
+        "details": "1.請求CommonFunc.CheckDeviceBindingFunc(new{custId=Request.custId,uuid=Request.uuid}) 裝置綁定前核驗"
+      },
+      {
+        "step": 2,
+        "title": "組裝數據並返回",
+        "details": "返回核驗結果"
+      }
+    ],
+    "fieldMappings": [
+      {
+        "target": "verifyResult",
+        "source": "CheckDeviceBindingFunc().responseData.verifyResult",
+        "rule": "返回 0  核驗通過\n返回 1、檢查裝置近 90 天是否被4 名以上不同使用者綁定過\n返回 2、檢查這台裝置是否已被其他 ID 綁定返回 3、檢查此 ID 是否已綁定其他裝置",
+        "fields": [
+          {
+            "field": "verifyResult",
+            "source": "CheckDeviceBindingFunc().responseData.verifyResult",
+            "rule": "返回 0  核驗通過\n返回 1、檢查裝置近 90 天是否被4 名以上不同使用者綁定過\n返回 2、檢查這台裝置是否已被其他 ID 綁定返回 3、檢查此 ID 是否已綁定其他裝置"
+          }
+        ]
+      }
+    ],
+    "errorCodes": [
+      {
+        "code": "9998",
+        "scenario": "查詢失敗",
+        "message": "發生意外的錯誤，請洽客服人員。"
+      },
+      {
+        "code": "9999",
+        "scenario": "未輸入必填請求參數",
+        "message": "請輸入{Request參數}！"
+      }
+    ],
+    "runtimeDependencies": [
+      {
+        "id": "external_api_commonfunc_checkdevicebindingfunc",
+        "type": "external_api",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "业务逻辑正文提到 CommonFunc->CheckDeviceBindingFunc() 依赖。"
+      }
+    ],
+    "referenceHints": [],
+    "backendApis": [
+      "CommonFunc -> CheckDeviceBindingFunc()"
+    ],
+    "mockExamples": [
+      {
+        "scenario": "核驗成功",
+        "responsePayload": {
+          "isSuccess": true,
+          "responseCode": "0000",
+          "responseMessage": "",
+          "responseDT": "2026/03/10 14:30:00",
+          "responseData": {
+            "verifyResult": 0
+          }
+        }
+      },
+      {
+        "scenario": "查詢失敗",
+        "responsePayload": {
+          "isSuccess": false,
+          "responseCode": "9998",
+          "responseMessage": "發生意外的錯誤，請洽客服人員。",
+          "responseDT": "2026/02/24 15:59:24",
+          "responseData": {}
+        }
+      },
+      {
+        "scenario": "未輸入必填請求參數",
+        "responsePayload": {
+          "isSuccess": false,
+          "responseCode": "9999",
+          "responseMessage": "請輸入{Request參數}！",
+          "responseDT": "2026/02/24 15:59:24",
+          "responseData": {}
+        }
+      }
+    ],
+    "handoffSource": "codeHandoff",
+    "logicSummary": {
+      "stepCount": 2,
+      "queryContractCount": 0,
+      "mappingRuleCount": 1,
+      "legacyEvidenceCount": 0,
+      "dependencyHintCount": 1,
+      "constraintCount": 5,
+      "unresolvedCount": 0,
+      "primarySource": "businessLogic"
+    },
+    "logicFlow": [
+      {
+        "stepId": "step_1",
+        "title": "裝置綁定前核驗",
+        "actionType": "validation",
+        "inputs": [
+          "custId",
+          "uuid",
+          "verifyType"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_2",
+        "title": "組裝數據並返回",
+        "actionType": "process",
+        "inputs": [
+          "custId",
+          "uuid",
+          "verifyType"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      }
+    ],
+    "audienceProfile": {
+      "scope": "shared",
+      "confidence": "high",
+      "scores": {
+        "frontstage": 2,
+        "midBackoffice": 0,
+        "shared": 12
+      },
+      "evidence": [
+        {
+          "scope": "frontstage",
+          "keyword": "cust",
+          "weight": 1
+        },
+        {
+          "scope": "frontstage",
+          "keyword": "login",
+          "weight": 1
+        },
+        {
+          "scope": "shared",
+          "keyword": "common",
+          "weight": 2
+        },
+        {
+          "scope": "shared",
+          "keyword": "commonfunc",
+          "weight": 3
+        },
+        {
+          "scope": "shared",
+          "keyword": "commonutil",
+          "weight": 3
+        },
+        {
+          "scope": "shared",
+          "keyword": "framework",
+          "weight": 1
+        },
+        {
+          "scope": "shared",
+          "keyword": "共用",
+          "weight": 3
+        }
+      ],
+      "unresolved": []
+    },
+    "devGuidelineProfile": {
+      "sourceName": "P240301 永豐商銀新大戶程式開發規範",
+      "version": "6.2",
+      "catalogPath": "rules/code-guidelines/p240301-v6.2/catalog.json",
+      "rulesRoot": "D:/Devs/NEWDAWHO/.agent/project-rules/NEWDAWHO",
+      "sourceStatus": "converted_reference_required"
+    },
+    "devGuidelineRulesSelected": [
+      {
+        "ruleId": "common-style",
+        "title": "共同落碼風格與可維護性",
+        "category": "common-style",
+        "direction": "production-code",
+        "ruleType": "style_only",
+        "audienceScopes": [
+          "frontstage",
+          "midBackoffice",
+          "shared",
+          "unknown"
+        ],
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/common-style.md",
+        "action": "load_on_demand"
+      },
+      {
+        "ruleId": "data-access",
+        "title": "DB / SQL / 資料檢索規範",
+        "category": "data-access",
+        "direction": "production-code",
+        "ruleType": "blocking_gap",
+        "audienceScopes": [
+          "frontstage",
+          "midBackoffice",
+          "shared",
+          "unknown"
+        ],
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/data-access.md",
+        "action": "select_and_check_gaps"
+      },
+      {
+        "ruleId": "validation",
+        "title": "Request DTO 驗證與錯誤映射規範",
+        "category": "validation",
+        "direction": "production-code",
+        "ruleType": "blocking_gap",
+        "audienceScopes": [
+          "frontstage",
+          "midBackoffice",
+          "shared",
+          "unknown"
+        ],
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/validation.md",
+        "action": "select_and_check_gaps"
+      },
+      {
+        "ruleId": "config",
+        "title": "AppSettings / 外部服務設定規範",
+        "category": "config",
+        "direction": "production-code",
+        "ruleType": "blocking_gap",
+        "audienceScopes": [
+          "frontstage",
+          "midBackoffice",
+          "shared",
+          "unknown"
+        ],
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/config.md",
+        "action": "select_and_check_gaps"
+      },
+      {
+        "ruleId": "logging-exception",
+        "title": "Log / Exception / 失敗處理規範",
+        "category": "logging-exception",
+        "direction": "production-code",
+        "ruleType": "style_only",
+        "audienceScopes": [
+          "frontstage",
+          "midBackoffice",
+          "shared",
+          "unknown"
+        ],
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/logging-exception.md",
+        "action": "load_on_demand"
+      },
+      {
+        "ruleId": "test-handoff",
+        "title": "第 05 步測試交接規範",
+        "category": "test-handoff",
+        "direction": "handoff-only",
+        "ruleType": "handoff_only",
+        "audienceScopes": [
+          "frontstage",
+          "midBackoffice",
+          "shared",
+          "unknown"
+        ],
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/test-handoff.md",
+        "action": "handoff_only"
+      }
+    ],
+    "devGuidelineLoadHints": [
+      {
+        "ruleId": "common-style",
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/common-style.md",
+        "reason": "Every API implementation needs only the lightweight shared coding conventions."
+      },
+      {
+        "ruleId": "data-access",
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/data-access.md",
+        "reason": "Load only when the API has queryContracts, SQL dependencies, DB backend APIs, or table evidence."
+      },
+      {
+        "ruleId": "validation",
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/validation.md",
+        "reason": "Load only when request fields, required fields, custom validation, or validation response mapping is relevant."
+      },
+      {
+        "ruleId": "config",
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/config.md",
+        "reason": "Load only for appsettings, external endpoint, third-party service, or environment config changes."
+      },
+      {
+        "ruleId": "logging-exception",
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/logging-exception.md",
+        "reason": "Load only when the API touches exception handling, logging, or failure disposition."
+      },
+      {
+        "ruleId": "test-handoff",
+        "loadPath": "rules/code-guidelines/p240301-v6.2/rules/test-handoff.md",
+        "reason": "Load only to describe step-05 UnitTest / IntegrationTest / runtime validation handoff; step 04 must not write test source."
+      }
+    ],
+    "devGuidelineGaps": [],
+    "logicSourcesUsed": [
+      "codeHandoff",
+      "mappingRules",
+      "dependencyHints",
+      "constraints",
+      "mockExamples"
+    ],
+    "queryContractsSelected": [],
+    "mappingRulesSelected": [
+      {
+        "ruleId": "map_checkdevicebindingfunc_responsedata_verifyresult_verifyresult",
+        "sourceField": "CheckDeviceBindingFunc().responseData.verifyResult",
+        "targetField": "verifyResult",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "返回 0  核驗通過\n返回 1、檢查裝置近 90 天是否被4 名以上不同使用者綁定過\n返回 2、檢查這台裝置是否已被其他 ID 綁定返回 3、檢查此 ID 是否已綁定其他裝置",
+        "evidenceIds": []
+      }
+    ],
+    "dependencyHintsSelected": [
+      {
+        "dependencyType": "external_api",
+        "preferredAbstractions": [
+          "IApiRequestService"
+        ],
+        "purpose": "业务逻辑正文提到 CommonFunc->CheckDeviceBindingFunc() 依赖。",
+        "evidenceIds": []
+      }
+    ],
+    "legacyEvidenceUsed": [],
+    "constraintsApplied": [
+      {
+        "constraintType": "prohibited_shortcut",
+        "rule": "block_comment_header_substitution",
+        "severity": "error",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "error_code_rule",
+        "rule": "9998 | 查詢失敗 | 發生意外的錯誤，請洽客服人員。",
+        "severity": "warning",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "error_code_rule",
+        "rule": "9999 | 未輸入必填請求參數 | 請輸入{Request參數}！",
+        "severity": "warning",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "request_field_validation",
+        "field": "custId",
+        "validationLayer": "dto_attribute",
+        "validationType": "required",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸入{Request參數}！",
+        "customValidationAttributeNeeded": false,
+        "rule": "custId | dto_attribute | required | 9999 | 請輸入{Request參數}！",
+        "severity": "warning",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "request_field_validation",
+        "field": "uuid",
+        "validationLayer": "dto_attribute",
+        "validationType": "required",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸入{Request參數}！",
+        "customValidationAttributeNeeded": false,
+        "rule": "uuid | dto_attribute | required | 9999 | 請輸入{Request參數}！",
+        "severity": "warning",
+        "evidenceIds": []
+      }
+    ],
+    "unresolvedLogic": [],
+    "testScenarioPlan": [
+      {
+        "source": "mockExamples",
+        "sourceIndex": 1,
+        "scenario": "核驗成功",
+        "requestPayload": {},
+        "expectedResponsePayload": {
+          "isSuccess": true,
+          "responseCode": "0000",
+          "responseMessage": "",
+          "responseDT": "2026/03/10 14:30:00",
+          "responseData": {
+            "verifyResult": 0
+          }
+        },
+        "expectedResponseCode": "0000",
+        "expectedResponseMessage": "",
+        "expectedIsSuccess": true,
+        "coverageTargets": [
+          "unit_test",
+          "integration_test"
+        ],
+        "preserveScenarioName": true
+      },
+      {
+        "source": "mockExamples",
+        "sourceIndex": 2,
+        "scenario": "查詢失敗",
+        "requestPayload": {},
+        "expectedResponsePayload": {
+          "isSuccess": false,
+          "responseCode": "9998",
+          "responseMessage": "發生意外的錯誤，請洽客服人員。",
+          "responseDT": "2026/02/24 15:59:24",
+          "responseData": {}
+        },
+        "expectedResponseCode": "9998",
+        "expectedResponseMessage": "發生意外的錯誤，請洽客服人員。",
+        "expectedIsSuccess": false,
+        "coverageTargets": [
+          "unit_test",
+          "integration_test"
+        ],
+        "preserveScenarioName": true
+      },
+      {
+        "source": "mockExamples",
+        "sourceIndex": 3,
+        "scenario": "未輸入必填請求參數",
+        "requestPayload": {},
+        "expectedResponsePayload": {
+          "isSuccess": false,
+          "responseCode": "9999",
+          "responseMessage": "請輸入{Request參數}！",
+          "responseDT": "2026/02/24 15:59:24",
+          "responseData": {}
+        },
+        "expectedResponseCode": "9999",
+        "expectedResponseMessage": "請輸入{Request參數}！",
+        "expectedIsSuccess": false,
+        "coverageTargets": [
+          "unit_test",
+          "integration_test"
+        ],
+        "preserveScenarioName": true
+      }
+    ],
+    "testScenarioSource": "mockExamples",
+    "testScenarioCoverageRequired": true,
+    "requestValidationPlan": [
+      {
+        "field": "custId",
+        "validationType": "required",
+        "validationLayer": "dto_attribute",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸入{Request參數}！",
+        "customValidationAttributeNeeded": false
+      },
+      {
+        "field": "uuid",
+        "validationType": "required",
+        "validationLayer": "dto_attribute",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸入{Request參數}！",
+        "customValidationAttributeNeeded": false
+      }
+    ],
+    "dtoAttributeRules": [
+      {
+        "field": "custId",
+        "validationType": "required",
+        "validationLayer": "dto_attribute",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸入{Request參數}！",
+        "customValidationAttributeNeeded": false
+      },
+      {
+        "field": "uuid",
+        "validationType": "required",
+        "validationLayer": "dto_attribute",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸入{Request參數}！",
+        "customValidationAttributeNeeded": false
+      }
+    ],
+    "customValidationAttributesNeeded": [],
+    "validationResponseMappingMode": "spec_code_message",
+    "serviceValidationsRetained": [],
+    "validationInfrastructureGap": [
+      {
+        "topic": "validation_response_mapping",
+        "requiredCapability": "attribute_validation_to_spec_transaction_result",
+        "mode": "shared_commonstatic"
+      }
+    ],
+    "reviewSources": [],
+    "reviewConstraintsSelected": [
+      {
+        "reviewId": "default_external_api_name",
+        "scope": "global_skill",
+        "fileRole": "shared",
+        "ruleType": "naming",
+        "instruction": "對外 API 名稱、route 與需求說明必須沿用 CheckPreLoginDeviceStatus，不得額外追加 Async。",
+        "severity": "warning",
+        "blocking": true,
+        "appliesTo": [
+          "apiName"
+        ],
+        "examples": [
+          "CheckPreLoginDeviceStatus"
+        ],
+        "source": "default_policy"
+      },
+      {
+        "reviewId": "default_traditional_chinese_code",
+        "scope": "global_skill",
+        "fileRole": "shared",
+        "ruleType": "language",
+        "instruction": "AI 寫入的中文註解、字串、檔案說明與角色要求統一使用繁體中文。",
+        "severity": "warning",
+        "blocking": false,
+        "appliesTo": [
+          "code_comments",
+          "code_strings",
+          "file_headers"
+        ],
+        "examples": [
+          "繁體中文"
+        ],
+        "source": "default_policy"
+      },
+      {
+        "reviewId": "default_dependency_field_naming",
+        "scope": "global_skill",
+        "fileRole": "shared",
+        "ruleType": "naming_style",
+        "instruction": "凡是依賴注入後賦值到欄位的成員，命名一律使用 _camelCase，首字固定底線，例如 _service、_ctxAccessor、_sqlExecutor、_logger；不得使用 CtxAccessor、Logger 這類 PascalCase 欄位名。",
+        "severity": "warning",
+        "blocking": false,
+        "appliesTo": [
+          "constructor_injected_fields",
+          "controller_fields",
+          "service_fields",
+          "fixture_fields"
+        ],
+        "examples": [
+          "_service",
+          "_ctxAccessor",
+          "_sqlExecutor",
+          "_logger"
+        ],
+        "source": "default_policy"
+      }
+    ],
+    "fileRequirements": {
+      "controller": [
+        {
+          "reviewId": "default_external_api_name",
+          "ruleType": "naming",
+          "instruction": "對外 API 名稱、route 與需求說明必須沿用 CheckPreLoginDeviceStatus，不得額外追加 Async。",
+          "severity": "warning",
+          "blocking": true,
+          "appliesTo": [
+            "apiName"
+          ],
+          "examples": [
+            "CheckPreLoginDeviceStatus"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_traditional_chinese_code",
+          "ruleType": "language",
+          "instruction": "AI 寫入的中文註解、字串、檔案說明與角色要求統一使用繁體中文。",
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "code_comments",
+            "code_strings",
+            "file_headers"
+          ],
+          "examples": [
+            "繁體中文"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_dependency_field_naming",
+          "ruleType": "naming_style",
+          "instruction": "凡是依賴注入後賦值到欄位的成員，命名一律使用 _camelCase，首字固定底線，例如 _service、_ctxAccessor、_sqlExecutor、_logger；不得使用 CtxAccessor、Logger 這類 PascalCase 欄位名。",
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "constructor_injected_fields",
+            "controller_fields",
+            "service_fields",
+            "fixture_fields"
+          ],
+          "examples": [
+            "_service",
+            "_ctxAccessor",
+            "_sqlExecutor",
+            "_logger"
+          ],
+          "source": "default_policy"
+        }
+      ],
+      "service": [
+        {
+          "reviewId": "default_external_api_name",
+          "ruleType": "naming",
+          "instruction": "對外 API 名稱、route 與需求說明必須沿用 CheckPreLoginDeviceStatus，不得額外追加 Async。",
+          "severity": "warning",
+          "blocking": true,
+          "appliesTo": [
+            "apiName"
+          ],
+          "examples": [
+            "CheckPreLoginDeviceStatus"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_traditional_chinese_code",
+          "ruleType": "language",
+          "instruction": "AI 寫入的中文註解、字串、檔案說明與角色要求統一使用繁體中文。",
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "code_comments",
+            "code_strings",
+            "file_headers"
+          ],
+          "examples": [
+            "繁體中文"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_dependency_field_naming",
+          "ruleType": "naming_style",
+          "instruction": "凡是依賴注入後賦值到欄位的成員，命名一律使用 _camelCase，首字固定底線，例如 _service、_ctxAccessor、_sqlExecutor、_logger；不得使用 CtxAccessor、Logger 這類 PascalCase 欄位名。",
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "constructor_injected_fields",
+            "controller_fields",
+            "service_fields",
+            "fixture_fields"
+          ],
+          "examples": [
+            "_service",
+            "_ctxAccessor",
+            "_sqlExecutor",
+            "_logger"
+          ],
+          "source": "default_policy"
+        }
+      ],
+      "entity": [
+        {
+          "reviewId": "default_external_api_name",
+          "ruleType": "naming",
+          "instruction": "對外 API 名稱、route 與需求說明必須沿用 CheckPreLoginDeviceStatus，不得額外追加 Async。",
+          "severity": "warning",
+          "blocking": true,
+          "appliesTo": [
+            "apiName"
+          ],
+          "examples": [
+            "CheckPreLoginDeviceStatus"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_traditional_chinese_code",
+          "ruleType": "language",
+          "instruction": "AI 寫入的中文註解、字串、檔案說明與角色要求統一使用繁體中文。",
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "code_comments",
+            "code_strings",
+            "file_headers"
+          ],
+          "examples": [
+            "繁體中文"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_dependency_field_naming",
+          "ruleType": "naming_style",
+          "instruction": "凡是依賴注入後賦值到欄位的成員，命名一律使用 _camelCase，首字固定底線，例如 _service、_ctxAccessor、_sqlExecutor、_logger；不得使用 CtxAccessor、Logger 這類 PascalCase 欄位名。",
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "constructor_injected_fields",
+            "controller_fields",
+            "service_fields",
+            "fixture_fields"
+          ],
+          "examples": [
+            "_service",
+            "_ctxAccessor",
+            "_sqlExecutor",
+            "_logger"
+          ],
+          "source": "default_policy"
+        }
+      ],
+      "unitTest": [
+        {
+          "reviewId": "default_external_api_name",
+          "ruleType": "naming",
+          "instruction": "對外 API 名稱、route 與需求說明必須沿用 CheckPreLoginDeviceStatus，不得額外追加 Async。",
+          "severity": "warning",
+          "blocking": true,
+          "appliesTo": [
+            "apiName"
+          ],
+          "examples": [
+            "CheckPreLoginDeviceStatus"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_traditional_chinese_code",
+          "ruleType": "language",
+          "instruction": "AI 寫入的中文註解、字串、檔案說明與角色要求統一使用繁體中文。",
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "code_comments",
+            "code_strings",
+            "file_headers"
+          ],
+          "examples": [
+            "繁體中文"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_dependency_field_naming",
+          "ruleType": "naming_style",
+          "instruction": "凡是依賴注入後賦值到欄位的成員，命名一律使用 _camelCase，首字固定底線，例如 _service、_ctxAccessor、_sqlExecutor、_logger；不得使用 CtxAccessor、Logger 這類 PascalCase 欄位名。",
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "constructor_injected_fields",
+            "controller_fields",
+            "service_fields",
+            "fixture_fields"
+          ],
+          "examples": [
+            "_service",
+            "_ctxAccessor",
+            "_sqlExecutor",
+            "_logger"
+          ],
+          "source": "default_policy"
+        }
+      ],
+      "integrationTest": [
+        {
+          "reviewId": "default_external_api_name",
+          "ruleType": "naming",
+          "instruction": "對外 API 名稱、route 與需求說明必須沿用 CheckPreLoginDeviceStatus，不得額外追加 Async。",
+          "severity": "warning",
+          "blocking": true,
+          "appliesTo": [
+            "apiName"
+          ],
+          "examples": [
+            "CheckPreLoginDeviceStatus"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_traditional_chinese_code",
+          "ruleType": "language",
+          "instruction": "AI 寫入的中文註解、字串、檔案說明與角色要求統一使用繁體中文。",
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "code_comments",
+            "code_strings",
+            "file_headers"
+          ],
+          "examples": [
+            "繁體中文"
+          ],
+          "source": "default_policy"
+        },
+        {
+          "reviewId": "default_dependency_field_naming",
+          "ruleType": "naming_style",
+          "instruction": "凡是依賴注入後賦值到欄位的成員，命名一律使用 _camelCase，首字固定底線，例如 _service、_ctxAccessor、_sqlExecutor、_logger；不得使用 CtxAccessor、Logger 這類 PascalCase 欄位名。",
+          "severity": "warning",
+          "blocking": false,
+          "appliesTo": [
+            "constructor_injected_fields",
+            "controller_fields",
+            "service_fields",
+            "fixture_fields"
+          ],
+          "examples": [
+            "_service",
+            "_ctxAccessor",
+            "_sqlExecutor",
+            "_logger"
+          ],
+          "source": "default_policy"
+        }
+      ]
+    },
+    "responseLifecycleRules": [],
+    "failureDisposition": {
+      "mode": "rollback_after_validation_failure",
+      "preserveFailedCode": false,
+      "resumeStrategy": "retry_from_prepare",
+      "source": "default_policy"
+    },
+    "languagePolicy": {
+      "mode": "traditional_chinese_for_ai_code",
+      "appliesTo": [
+        "code_comments",
+        "code_strings",
+        "file_headers",
+        "file_requirements"
+      ],
+      "source": "default_policy"
+    },
+    "externalApiName": "CheckPreLoginDeviceStatus",
+    "internalAsyncMethod": "CheckPreLoginDeviceStatusAsync",
+    "resumedFromPhase": "blocked"
+  },
+  "validationChecks": [
+    "dotnet build \"D:\\Devs\\NEWDAWHO\\feature_common\\P240301Git\\Sinopac.EnterpriseAPI\\Sinopac.EnterpriseAPI.slnx\" -m:1",
+    "dotnet test \"D:\\Devs\\NEWDAWHO\\feature_common\\P240301Git\\Sinopac.EnterpriseAPI\\Sinopac.EnterpriseAPI.slnx\" -m:1"
+  ],
+  "steps": [
+    {
+      "id": "precheck",
+      "status": "done",
+      "note": "Resolved EnterpriseAPI framework profile and module slots."
+    },
+    {
+      "id": "write_code",
+      "status": "done",
+      "note": "AI must directly modify controller/interface/service/entity business files for CommonUtil; test targets are handoff-only for step 05 and the script must not generate stubs."
+    },
+    {
+      "id": "validate",
+      "status": "done",
+      "note": "After real code is written, run EnterpriseAPI build, unit test, and integration test validation."
+    }
+  ]
+}

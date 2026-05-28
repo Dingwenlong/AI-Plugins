@@ -38,6 +38,10 @@ Evidence and honesty rules:
 
 - Do not invent sequence diagrams, Response Code workbooks, IT SPEC files, DB/SP names, BackendAPI sources, field mappings, popup wording, or completion percentages to fill the template.
 - If evidence is not found, write `待确认` or `未发现`, and explain the impact in `开发前收敛状态`.
+- Customer IT SPEC is a required analysis target for interface-design summaries. The `依据文件` table must include a `Customer IT SPEC` row; if no matching file is found, write `Customer IT SPEC | 未找到 | 已搜索 customerItSpec 目录；作为显式风险，不自动阻塞 developmentReady`.
+- A missing Customer IT SPEC is an explicit risk by default, not an automatic readiness blocker. Block development only when the missing customer evidence leaves API coverage, backend source, field mapping, or error behavior undecidable.
+- When a Customer IT SPEC file exists, the note must include a `Customer IT SPEC 差异矩阵` subsection under `开发前收敛状态`, and the centralized analysis folder must include `it-spec-diff-matrix.md` plus `it-spec-diff-matrix.json`.
+- Each matrix item must record `Customer IT SPEC 口径`, `现行 TSD/API Detail 口径`, `差异类型`, `影响等级`, `裁决结论`, `裁决理由`, and `ready 影响`. High-impact differences may be development-ready only after an explicit decision and reason are recorded; unresolved or customer-confirmation items block `developmentReady`.
 - If only historical/reference sequence diagrams exist, label them as reference material, not current frozen output.
 - Do not include historical reference diagrams or visual QA artifacts in `已确认交付物` by default. Mention them only when the user explicitly asks for historical comparison, visual QA evidence, or layout validation details.
 - Keep the note practical for developers: prefer concise tables and concrete field/API names over narrative audit prose.

@@ -16,7 +16,7 @@
 
 ## 先替换这些变量
 
-- `<CODEX_HOME>`：默认通常是 `C:\Users\<你的用户名>\.codex`
+- `<pluginRoot>`：当前已安装插件根目录，目录下应包含 `.codex-plugin\plugin.json`
 - `<PROJECT_ROOT>`：项目根目录
 - `<WORKSPACE_KEY>`：集中 `.agent` 的工作区 key，例如 `PROJECT`
 - `<EXTERNAL_API_DIR>`：外部 API 资料目录
@@ -36,7 +36,7 @@
 把下面整段发给 Codex：
 
 ```text
-[$api-detail-tsd-sync](<CODEX_HOME>\skills\api-detail-tsd-sync\SKILL.md)
+[$api-detail-tsd-sync](<pluginRoot>\skills\api-detail-tsd-sync\SKILL.md)
 请梳理 <FUNCTION_CODE> 功能设计，并在可进入开发时物化 handoff
 project-root: <PROJECT_ROOT>
 workspace-key: <WORKSPACE_KEY>
@@ -49,7 +49,7 @@ workspace-key: <WORKSPACE_KEY>
 把下面整段发给 Codex：
 
 ```text
-[$reference-index-importer](<CODEX_HOME>\skills\reference-index-importer\SKILL.md)
+[$reference-index-importer](<pluginRoot>\skills\reference-index-importer\SKILL.md)
 请重建集中 .agent\reference\global
 project-root: <PROJECT_ROOT>
 external-api-dir: <EXTERNAL_API_DIR>
@@ -59,7 +59,7 @@ db-schema-dir: <DB_SCHEMA_DIR>
 开发规范不要放在 01。需要接给第 04 步时，另跑 `$project-rule-analyzer`：
 
 ```text
-[$project-rule-analyzer](<CODEX_HOME>\skills\project-rule-analyzer\SKILL.md)
+[$project-rule-analyzer](<pluginRoot>\skills\project-rule-analyzer\SKILL.md)
 请把开发规范转成 project-rules
 project-root: <PROJECT_ROOT>
 workspace-key: <WORKSPACE_KEY>
@@ -75,7 +75,7 @@ approve: true
 把下面整段发给 Codex：
 
 ```text
-[$api-spec-writer](<CODEX_HOME>\skills\api-spec-writer\SKILL.md) <FUNCTION_CODE>
+[$api-spec-writer](<pluginRoot>\skills\api-spec-writer\SKILL.md) <FUNCTION_CODE>
 ```
 
 ## 3. 03 Optional SQL Fixture Preparer：按需准备 SQL fixture
@@ -93,7 +93,7 @@ approve: true
 把下面整段发给 Codex：
 
 ```text
-[$api-code-writer](<CODEX_HOME>\skills\api-code-writer\SKILL.md) <FUNCTION_CODE>
+[$api-code-writer](<pluginRoot>\skills\api-code-writer\SKILL.md) <FUNCTION_CODE>
 ```
 
 ## 5. 05 Optional DOCX UnitTest Report：产出单元测试 UT 测试报告
@@ -108,20 +108,20 @@ approve: true
 
 ```text
 0.
-[$api-detail-tsd-sync](C:\Users\<username>\plugins\project-delivery-hub-v1\skills\api-detail-tsd-sync\SKILL.md)
+[$api-detail-tsd-sync](<pluginRoot>\skills\api-detail-tsd-sync\SKILL.md)
 请梳理 D.006 功能设计，并在可进入开发时物化 handoff
 project-root: D:\Repo\Project
 workspace-key: PROJECT
 
 1.
-[$reference-index-importer](C:\Users\<username>\plugins\project-delivery-hub-v1\skills\reference-index-importer\SKILL.md)
+[$reference-index-importer](<pluginRoot>\skills\reference-index-importer\SKILL.md)
 请重建集中 .agent\reference\global
 project-root: D:\Repo\Project
 external-api-dir: D:\Refs\ExternalApi
 db-schema-dir: D:\Refs\DbSchema
 
 1.5.
-[$project-rule-analyzer](C:\Users\<username>\plugins\project-delivery-hub-v1\skills\project-rule-analyzer\SKILL.md)
+[$project-rule-analyzer](<pluginRoot>\skills\project-rule-analyzer\SKILL.md)
 请把开发规范转成 project-rules
 project-root: D:\Repo\Project
 workspace-key: PROJECT
@@ -132,13 +132,13 @@ source:
 approve: true
 
 2.
-[$api-spec-writer](C:\Users\<username>\plugins\project-delivery-hub-v1\skills\api-spec-writer\SKILL.md) D.006
+[$api-spec-writer](<pluginRoot>\skills\api-spec-writer\SKILL.md) D.006
 
 3.
-[$api-sql-fixture-preparer](C:\Users\<username>\plugins\project-delivery-hub-v1\skills\api-sql-fixture-preparer\SKILL.md) D.006
+[$api-sql-fixture-preparer](<pluginRoot>\skills\api-sql-fixture-preparer\SKILL.md) D.006
 
 4.
-[$api-code-writer](C:\Users\<username>\plugins\project-delivery-hub-v1\skills\api-code-writer\SKILL.md) D.006
+[$api-code-writer](<pluginRoot>\skills\api-code-writer\SKILL.md) D.006
 
 5.
 [$docx-unittest-report](<安装后的 docx-unittest-report\SKILL.md 路径>) D:\Repo\Project\docs\D.006_UT_Report.docx

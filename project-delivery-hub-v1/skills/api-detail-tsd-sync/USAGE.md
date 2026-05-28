@@ -42,7 +42,7 @@
 
 固定收尾順序：
 
-1. 刷新同名 `.bak`，同一 workbook 只保留一份備份。
+1. 完成接口語義裁決，形成 file claim 與 `office-edit-plan`，不在交付目錄預設建立 `.bak`、`.before_*` 或時間戳備份。
 2. 完成接口語義與 workbook 內容修復。
 3. 交給 `專案交付文件格式檢查器` 執行格式閉環：檢查範圍 -> 修格式 -> 最後執行字型槽位 -> 結構復驗 -> artifact-tool inspect/render。
 4. 最終回報需包含 `Must fix / Should fix / Naming / Visual risk / Covered`。
@@ -77,7 +77,7 @@ API 類別：Exchange
 ### 比對 PRD / TSD / API Detail
 
 ```text
-[$專案需求接口設計梳理](C:\Users\<username>\plugins\project-delivery-hub-v1\skills\api-detail-tsd-sync\SKILL.md)
+[$專案需求接口設計梳理](<pluginRoot>\skills\api-detail-tsd-sync\SKILL.md)
 請幫我檢查 D.001 D.002 的 PRD、TSD、API Detail 是否一致，列出開發前需要修正的接口問題。
 PRD：D:\Workspace\PRD\D.001 活存查詢.docx
 TSD：D:\Workspace\TSD\TSD_D.001_D.002.docx
@@ -87,7 +87,7 @@ API Detail：D:\Workspace\API\NEWDA_API_DETAIL_Deposit_being processed.xlsx
 ### 只給功能編號
 
 ```text
-[$專案需求接口設計梳理](C:\Users\<username>\plugins\project-delivery-hub-v1\skills\api-detail-tsd-sync\SKILL.md)
+[$專案需求接口設計梳理](<pluginRoot>\skills\api-detail-tsd-sync\SKILL.md)
 請檢查 D.001 D.002 是否可進入開發。
 ```
 
@@ -96,7 +96,7 @@ API Detail：D:\Workspace\API\NEWDA_API_DETAIL_Deposit_being processed.xlsx
 ### 同步 Api_List
 
 ```text
-[$專案需求接口設計梳理](C:\Users\<username>\plugins\project-delivery-hub-v1\skills\api-detail-tsd-sync\SKILL.md)
+[$專案需求接口設計梳理](<pluginRoot>\skills\api-detail-tsd-sync\SKILL.md)
 請依 TSD 5. API清單 更新這份 API Detail 的 Api_List，並同步每個 API sheet 的 涉及BackendAPI 到 後端來源。
 D:\Workspace\API\NEWDA_API_DETAIL_Deposit_being processed.xlsx
 ```
@@ -104,7 +104,7 @@ D:\Workspace\API\NEWDA_API_DETAIL_Deposit_being processed.xlsx
 ### 優化接口命名
 
 ```text
-[$專案需求接口設計梳理](C:\Users\<username>\plugins\project-delivery-hub-v1\skills\api-detail-tsd-sync\SKILL.md)
+[$專案需求接口設計梳理](<pluginRoot>\skills\api-detail-tsd-sync\SKILL.md)
 請檢查這份 API Detail 裡是否有舊系統欄位名或命名不清楚的 API，提出 canonical field name 與 API name 修改建議。
 ```
 

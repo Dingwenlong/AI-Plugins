@@ -3,10 +3,10 @@
   "defaultWorkspace": "NEWDAWHO",
   "workspaces": {
     "NEWDAWHO": {
-      "workspaceRoot": "D:\\Devs\\<PROJECT>",
-      "agentRoot": "D:\\Devs\\<PROJECT>\\.agent",
-      "rulesRoot": "D:\\Devs\\<PROJECT>\\.agent\\project-rules\\NEWDAWHO",
-      "defaultCodeRoot": "D:\\Devs\\<PROJECT>\\feature_common",
+      "workspaceRoot": "D:\\Devs\\NEWDAWHO",
+      "agentRoot": "D:\\Devs\\NEWDAWHO\\.agent",
+      "rulesRoot": "D:\\Devs\\NEWDAWHO\\.agent\\project-rules\\NEWDAWHO",
+      "defaultCodeRoot": "D:\\Devs\\NEWDAWHO\\feature_common",
       "notes": "Example project workspace. Design source directories live in .agent/config/design-source-registry.json."
     },
     "PROJECT": {

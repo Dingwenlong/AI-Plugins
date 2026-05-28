@@ -1,0 +1,61 @@
+{
+  "schemaVersion": "4.1.0",
+  "executionId": "Common",
+  "functionCode": "Common",
+  "status": "blocked",
+  "phase": "validated",
+  "updatedAt": "2026-05-23T22:18:13+08:00",
+  "specStatus": "blocked",
+  "specUpdatedAt": "2026-05-23T19:28:08+08:00",
+  "specSummary": {
+    "total": 33,
+    "pending": 0,
+    "in_progress": 0,
+    "done": 28,
+    "blocked": 5,
+    "error": 0,
+    "retired": 0
+  },
+  "specDocxPath": "../../.agent/functions/Common/inputs/tsd/TSD.Common_封存TSD共用开发链路_v1.0_20260523.docx",
+  "specLastMessage": "",
+  "codeStatus": "waiting_resume",
+  "codePhase": "validated",
+  "codeUpdatedAt": "2026-05-23T22:18:13+08:00",
+  "codeCurrentApiId": "COMMON.commonutil.checkprelogindevicestatus",
+  "codeSummary": {
+    "total": 33,
+    "pending": 19,
+    "waiting_fixture": 0,
+    "in_progress": 0,
+    "tests_passed": 6,
+    "tests_failed": 0,
+    "blocked": 3,
+    "error": 0,
+    "upstream_not_ready": 0
+  },
+  "codeProjectRoot": "D:/Devs/NEWDAWHO/feature_common/P240301Git/Sinopac.EnterpriseAPI",
+  "codeSolutionPath": "Sinopac.EnterpriseAPI.slnx",
+  "codeLastMessage": "COMMON.commonutil.checkprelogindevicestatus => tests_passed",
+  "fixtureStatus": "blocked",
+  "fixturePhase": "inspection_blocked",
+  "fixtureUpdatedAt": "2026-05-23T19:45:43+08:00",
+  "fixtureCurrentApiId": "COMMON.commonfunc.checkvip",
+  "fixtureSummary": {
+    "total": 33,
+    "pending": 0,
+    "in_progress": 0,
+    "done": 3,
+    "skipped": 12,
+    "blocked": 13,
+    "error": 0,
+    "waiting_spec": 5
+  },
+  "fixtureLastMessage": "Common 03 closure complete: done/skipped/blocked/waiting_spec reconciled.",
+  "artifacts": {
+    "batchFile": "../../../.agent/context/execution-batch.json",
+    "checklist": "../../../.agent/context/Common/api-checklist.json",
+    "specProgress": "../../../.agent/context/Common/spec-progress.md",
+    "codeProgress": "../../../.agent/context/Common/code-progress.md",
+    "repoSnapshot": "../../../.agent/context/Common/repo-snapshot.json"
+  }
+}

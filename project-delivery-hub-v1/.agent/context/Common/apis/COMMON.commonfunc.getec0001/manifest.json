@@ -1,0 +1,58 @@
+{
+  "schemaVersion": "4.1.0",
+  "manifestType": "api",
+  "executionId": "Common",
+  "apiId": "COMMON.commonfunc.getec0001",
+  "apiCategory": "CommonFunc",
+  "apiName": "GetEC0001",
+  "status": "blocked",
+  "phase": "waiting_spec",
+  "updatedAt": "2026-05-23T22:18:09+08:00",
+  "newAuthor": "Jimmy",
+  "specStatus": "blocked",
+  "specUpdatedAt": "2026-05-23T19:40:43+08:00",
+  "specBlockReason": "AI review gate found 1 blocking drift(s): codeHandoff.unresolved.0 (code_handoff_unresolved)",
+  "specSourceFingerprint": "sha256:f1c02e0f55e32118f415831e9477fff61c7bdaaca9c322cd2c16b45fc4f7174c",
+  "specSource": {
+    "tsdFile": "TSD.Common_封存TSD共用开发链路_v1.0_20260523.docx",
+    "workbookFile": "NEWDA_Method_DETAIL_ExchangeCommonFunc_20260522.xlsx",
+    "sheetNames": [
+      "GetEC0001取帳戶信息"
+    ]
+  },
+  "specArtifacts": {
+    "apiSpec": null
+  },
+  "fixtureStatus": "waiting_spec",
+  "fixturePhase": "waiting_spec",
+  "fixtureUpdatedAt": "2026-05-23T19:47:00+08:00",
+  "fixtureBlockReason": "AI review gate found 1 blocking drift(s): codeHandoff.unresolved.0 (code_handoff_unresolved)",
+  "fixtureSourceFingerprint": "sha256:f1c02e0f55e32118f415831e9477fff61c7bdaaca9c322cd2c16b45fc4f7174c",
+  "fixtureArtifacts": {
+    "dbFixtureReport": null,
+    "tableChecks": null,
+    "seedPlan": null,
+    "seedExecuted": null,
+    "seedManifest": null
+  },
+  "codeStatus": "waiting_spec",
+  "codePhase": "waiting_spec",
+  "codeUpdatedAt": "2026-05-23T22:18:09+08:00",
+  "codeBlockReason": "AI review gate found 1 blocking drift(s): codeHandoff.unresolved.0 (code_handoff_unresolved)",
+  "codeProjectRoot": ".",
+  "codeSolutionPath": "Sinopac.EnterpriseAPI.slnx",
+  "inputHashes": {
+    "upstreamManifest": "sha256:0312522d883e795169438480bea3fd8740ea273b9d9ca577d93b4fe80ef2c348",
+    "apiSpec": null
+  },
+  "modifiedFiles": [],
+  "validationChecks": [],
+  "validationResults": [],
+  "repoDriftFiles": [],
+  "codeArtifacts": {
+    "changePlan": null,
+    "implementationReport": null,
+    "diagnosisReport": null
+  },
+  "lastMessage": null
+}

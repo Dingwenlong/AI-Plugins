@@ -183,7 +183,8 @@ API Excel 文件主要檢查：
 - 使用最小必要變更。
 - 保留無關內容與既有格式。
 - 術語修正可將 `校驗` 改成 `驗證` 或 `檢核`：流程/結果/規則偏向 `驗證`，項目/清單/人工核對偏向 `檢核`。
-- API XLSX 修復固定走閉環：檢查範圍 -> 備份/複製 -> 修格式 -> 最後執行字型槽位 -> 結構復驗 -> artifact-tool inspect/render -> 回報。
+- API XLSX 修復固定走閉環：檢查範圍 -> office-edit-plan -> Office 編輯器保存 -> 最後執行字型槽位 -> 結構復驗 -> artifact-tool inspect/render -> 回報。
+- `office-edit-plan` 需包含 `schemaVersion: "1.0.0"`、唯一 `claimId`、整檔 claim、允許/禁止操作與驗證要求；Office 編輯器回報需包含相同 `claimId`、`modifiedFiles`、`changeSummary`、`validationCommands`、`blockers` 與 `risks`。
 - 字型槽位腳本預設只修 API Detail worksheets 的 `A:G` 語義範圍，並排除 `Api_List`；要修整本 workbook 時必須明確要求 `-AllSheets`。
 - 只修 `API 內部業務邏輯` 右側空白小格/直線與 `A` 欄步驟欄對齊/底色時，可用 `scripts/repair_api_xlsx_internal_logic_merges.ps1`；它預設只處理 API Detail worksheets，將邏輯說明列修成 `B:F` 合併格，並將步驟欄修成靠左、垂直置中、與 `# / 邏輯說明` 表頭列一致的淡綠色，不處理 `H:AZ`、不碰 `Api_List` 內容。
 - 只修 `範例` 區 Response/Request 合併、`A` 欄情境說明對齊與列高時，可用 `scripts/repair_api_xlsx_example_merges_and_row_heights.ps1`；它預設只處理 API Detail worksheets，將情境列修成 `B:C` / `D:F` 合併格，將情境說明修成靠左且垂直置中，並重算 `A:G` 所有有內容列自適應高度。

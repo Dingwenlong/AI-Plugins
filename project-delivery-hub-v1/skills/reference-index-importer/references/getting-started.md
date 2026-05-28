@@ -20,7 +20,7 @@
 先进入 skill 目录，再执行脚本：
 
 ```powershell
-Set-Location "<你的 CODEX_HOME>\\skills\\reference-index-importer"
+Set-Location "<pluginRoot>\\skills\\reference-index-importer"
 
 python ".\\scripts\\import_reference_indexes.py" `
   --project-root "D:\Repo\Project" `

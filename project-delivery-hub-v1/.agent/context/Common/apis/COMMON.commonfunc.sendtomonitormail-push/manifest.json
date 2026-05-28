@@ -1,0 +1,58 @@
+{
+  "schemaVersion": "4.1.0",
+  "manifestType": "api",
+  "executionId": "Common",
+  "apiId": "COMMON.commonfunc.sendtomonitormail-push",
+  "apiCategory": "CommonFunc",
+  "apiName": "SendToMonitorMail_Push",
+  "status": "blocked",
+  "phase": "waiting_spec",
+  "updatedAt": "2026-05-23T22:18:09+08:00",
+  "newAuthor": "Jimmy",
+  "specStatus": "blocked",
+  "specUpdatedAt": "2026-05-23T19:40:50+08:00",
+  "specBlockReason": "AI review gate found 1 blocking drift(s): codeHandoff.unresolved.0 (code_handoff_unresolved)",
+  "specSourceFingerprint": "sha256:58f9ade968492174f4b42bccf9bfc2363357f7d1c56e9cc3d6b7c461f971b6e5",
+  "specSource": {
+    "tsdFile": "TSD.Common_封存TSD共用开发链路_v1.0_20260523.docx",
+    "workbookFile": "NEWDA_Method_DETAIL_ExchangeCommonFunc_20260522.xlsx",
+    "sheetNames": [
+      "SendToMonitorMail_Push新版MAIL機制 "
+    ]
+  },
+  "specArtifacts": {
+    "apiSpec": null
+  },
+  "fixtureStatus": "waiting_spec",
+  "fixturePhase": "waiting_spec",
+  "fixtureUpdatedAt": "2026-05-23T19:47:00+08:00",
+  "fixtureBlockReason": "AI review gate found 1 blocking drift(s): codeHandoff.unresolved.0 (code_handoff_unresolved)",
+  "fixtureSourceFingerprint": "sha256:58f9ade968492174f4b42bccf9bfc2363357f7d1c56e9cc3d6b7c461f971b6e5",
+  "fixtureArtifacts": {
+    "dbFixtureReport": null,
+    "tableChecks": null,
+    "seedPlan": null,
+    "seedExecuted": null,
+    "seedManifest": null
+  },
+  "codeStatus": "waiting_spec",
+  "codePhase": "waiting_spec",
+  "codeUpdatedAt": "2026-05-23T22:18:09+08:00",
+  "codeBlockReason": "AI review gate found 1 blocking drift(s): codeHandoff.unresolved.0 (code_handoff_unresolved)",
+  "codeProjectRoot": ".",
+  "codeSolutionPath": "Sinopac.EnterpriseAPI.slnx",
+  "inputHashes": {
+    "upstreamManifest": "sha256:3b126951e1f60f2382e076319469dd7b107a7ceb45887f8564eaa80b3c8c64f6",
+    "apiSpec": null
+  },
+  "modifiedFiles": [],
+  "validationChecks": [],
+  "validationResults": [],
+  "repoDriftFiles": [],
+  "codeArtifacts": {
+    "changePlan": null,
+    "implementationReport": null,
+    "diagnosisReport": null
+  },
+  "lastMessage": null
+}

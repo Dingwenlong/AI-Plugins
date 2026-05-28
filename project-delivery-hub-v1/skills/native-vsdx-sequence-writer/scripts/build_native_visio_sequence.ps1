@@ -2902,11 +2902,8 @@ if ($previewFull -ne $null) {
   New-Item -ItemType Directory -Force -Path $previewDir | Out-Null
 }
 
-if ((Test-Path -LiteralPath $outputFull) -and -not $NoBackup) {
-  $backup = $outputFull + '.bak'
-  Remove-Item -LiteralPath $backup -Force -ErrorAction SilentlyContinue
-  Copy-Item -LiteralPath $outputFull -Destination $backup -Force
-}
+# -NoBackup is retained for backward-compatible invocations; this builder no
+# longer creates same-directory .bak files by default or by option.
 
 try {
   Copy-Item -LiteralPath $templateFull -Destination $outputFull -Force

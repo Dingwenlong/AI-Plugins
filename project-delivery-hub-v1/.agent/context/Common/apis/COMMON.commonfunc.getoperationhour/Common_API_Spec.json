@@ -1,0 +1,667 @@
+{
+  "schemaVersion": "4.2.0",
+  "apiId": "COMMON.commonfunc.getoperationhour",
+  "newAuthor": "Jimmy",
+  "functionCode": "Common",
+  "version": "1.0",
+  "apiCategory": "CommonFunc",
+  "apiName": "GetOperationHour",
+  "source": {
+    "tsdFile": "TSD.Common_封存TSD共用开发链路_v1.0_20260523.docx",
+    "workbookFile": "NEWDA_Method_DETAIL_ExchangeCommonFunc_20260522.xlsx",
+    "sheetNames": [
+      "GetOperationHour 取得營業日"
+    ]
+  },
+  "request": [],
+  "response": [
+    {
+      "rowKey": "1",
+      "fieldName": "isSuccess",
+      "dataType": "boolean",
+      "required": true,
+      "description": "API成功與否",
+      "example": "true",
+      "notes": "true ; false"
+    },
+    {
+      "rowKey": "2",
+      "fieldName": "responseCode",
+      "dataType": "string",
+      "required": true,
+      "description": "回應代碼",
+      "example": "0000",
+      "notes": "成功:0000其餘狀況為失敗"
+    },
+    {
+      "rowKey": "3",
+      "fieldName": "responseMessage",
+      "dataType": "string",
+      "required": true,
+      "description": "回應訊息",
+      "notes": "失敗狀況下回傳錯誤訊息"
+    },
+    {
+      "rowKey": "4",
+      "fieldName": "responseDT",
+      "dataType": "string",
+      "required": true,
+      "description": "系統回應時間",
+      "notes": "yyyy/MM/dd HH:mm:ss"
+    },
+    {
+      "rowKey": "5",
+      "fieldName": "responseData",
+      "dataType": "json",
+      "required": true,
+      "description": "回應資料框",
+      "example": "\"responseData\":{}"
+    },
+    {
+      "rowKey": "5.0.1",
+      "fieldName": "t24Tbsdy",
+      "dataType": "string",
+      "required": true,
+      "description": "T24 交易日",
+      "example": "\"t24Tbsdy \":\"20250416\"",
+      "notes": "sRespJson.T24_TBSDY"
+    },
+    {
+      "rowKey": "5.0.2",
+      "fieldName": "t24Nbsdy",
+      "dataType": "string",
+      "required": true,
+      "description": "T24 新交易日",
+      "example": "\"t24Nbsdy\":\"20250326\"",
+      "notes": "sRespJson.t24 NBSDY"
+    },
+    {
+      "rowKey": "5.0.3",
+      "fieldName": "t24Lbsdy",
+      "dataType": "string",
+      "required": true,
+      "description": "T24 前一个交易日",
+      "example": "\"t24Lbsdy\":\"20250227\"",
+      "notes": "sRespJson.T24_LBSDY"
+    },
+    {
+      "rowKey": "5.0.4",
+      "fieldName": "t24LLbsdy",
+      "dataType": "string",
+      "required": true,
+      "description": "T24 前两个交易日",
+      "example": "\"t24LLbsdy\":\"20240131\"",
+      "notes": "sRespJson.T24_LLBSDY"
+    },
+    {
+      "rowKey": "5.0.5",
+      "fieldName": "t24Mode",
+      "dataType": "string",
+      "required": true,
+      "description": "T24 系统模式",
+      "example": "\"t24Mode\":\"B\"",
+      "notes": "sRespJson.T24_MODE"
+    },
+    {
+      "rowKey": "5.0.6",
+      "fieldName": "t24TbsdyCob",
+      "dataType": "string",
+      "required": true,
+      "description": "T24 营业日日终结账",
+      "example": "\"t24TbsdyCob \":\"20250303\"",
+      "notes": "sRespJson.T24_TBSDYCOB"
+    },
+    {
+      "rowKey": "5.0.7",
+      "fieldName": "t24NbsdyCob",
+      "dataType": "string",
+      "required": true,
+      "description": "T24 新交易日结",
+      "example": "\"t24NbsdyCob \" :\"20250304\"",
+      "notes": "sRespJson.T24_NBSDYCOB"
+    },
+    {
+      "rowKey": "5.0.8",
+      "fieldName": "t24BR121Open",
+      "dataType": "string",
+      "required": true,
+      "description": "台北分行是否營業",
+      "example": "\"t24BR121Open\" :\"N\"",
+      "notes": "sRespJson.T24_BR1210pen"
+    },
+    {
+      "rowKey": "5.0.9",
+      "fieldName": "t24UpdTime",
+      "dataType": "string",
+      "required": true,
+      "description": "更新時間",
+      "example": "\"t24UpdTime\" :\"20260202\"",
+      "notes": "sRespJson.T24_UpdTime"
+    },
+    {
+      "rowKey": "5.0.10",
+      "fieldName": "fiscTbsdy",
+      "dataType": "string",
+      "required": true,
+      "description": "会计营业日",
+      "example": "\"fiscTbsdy \" :\"20250414\"",
+      "notes": "sRespJson.fisc_TBSDY"
+    },
+    {
+      "rowKey": "5.0.11",
+      "fieldName": "fiscNbsdy",
+      "dataType": "string",
+      "required": true,
+      "description": "财务新交易日",
+      "example": "\"fiscNbsdy \" :\"20250326\"",
+      "notes": "sRespJson.fisc_NBSDY"
+    },
+    {
+      "rowKey": "5.0.12",
+      "fieldName": "fiscLbsdy",
+      "dataType": "string",
+      "required": true,
+      "example": "\"fiscLbsdy \" :\"20260202\"",
+      "notes": "sRespJson.fisc_LBSDY"
+    },
+    {
+      "rowKey": "5.0.13",
+      "fieldName": "fiscMode",
+      "dataType": "string",
+      "required": true,
+      "description": "财政会计",
+      "example": "\"fiscMODE \":\"1\"",
+      "notes": "sRespJson.fisc_MODE"
+    },
+    {
+      "rowKey": "5.0.14",
+      "fieldName": "rmMode",
+      "dataType": "string",
+      "required": true,
+      "description": "风险管理",
+      "example": "\"rmMode\":\"Y\"",
+      "notes": "sRespJson.rm_Mode"
+    }
+  ],
+  "mockExamples": [
+    {
+      "scenario": "獲取成功結果示例",
+      "responsePayload": {
+        "isSuccess": true,
+        "responseCode": "0000",
+        "responseMessage": "查詢成功",
+        "responseDT": "2026-02-02 10:15:30",
+        "responseData": {
+          "t24Tbsdy": "20250416",
+          "t24Nbsdy": "20250326",
+          "t24Lbsdy": "20250227",
+          "t24LLbsdy": "20240131",
+          "t24Mode": "B",
+          "t24TbsdyCob": "20250303",
+          "t24NbsdyCob": "20250304",
+          "t24BR121Open": "N",
+          "t24UpdTime": "20260202",
+          "fiscTbsdy": "20250414",
+          "fiscNbsdy": "20250326",
+          "fiscLbsdy": "20260202",
+          "fiscMODE": "1",
+          "rmMode": "Y"
+        }
+      }
+    },
+    {
+      "scenario": "請求失敗",
+      "responsePayload": {
+        "isSuccess": false,
+        "responseCode": "9001",
+        "responseMessage": "系統繁忙,請稍後再試！",
+        "responseDT": "2026/02/24 10:30:25",
+        "responseData": {}
+      }
+    }
+  ],
+  "backendApis": {
+    "DB": [
+      "TBDAY"
+    ]
+  },
+  "businessLogic": {
+    "steps": [
+      {
+        "step": 1,
+        "title": "查詢資料庫",
+        "details": "1.執行SELECT T24_TBSDY ,t24 NBSDY,  t24 NBSDY,  T24_LBSDY,  T24_LLBSDY,  T24_MODE  , T24_TBSDYCOB , T24_NBSDYCOB  , T24_BR1210pen,  T24_UpdTime, fisc_TBSDY ,fisc_NBSDY , fisc_LBSDY , fisc_MODE ,rm_Mode  FROM [L_EAINET].[EAINET].[dbo].[TBDAY]\n2.定義 sRespJson保存查詢結果"
+      },
+      {
+        "step": 2,
+        "title": "判斷結果",
+        "details": "如果數據庫查詢失敗，ResponseCode回傳:9001"
+      },
+      {
+        "step": 3,
+        "title": "回傳結果",
+        "details": "如果請求成功，解析回傳結果，並回傳給前端"
+      }
+    ],
+    "fieldMappings": [
+      {
+        "target": "responseData",
+        "source": "sRespJson.T24_TBSDY",
+        "rule": "T24 交易日；T24 新交易日；T24 前一个交易日；T24 前两个交易日；T24 系统模式；T24 营业日日终结账；T24 新交易日结；台北分行是否營業；更新時間；会计营业日；财务新交易日；财政会计；风险管理",
+        "fields": [
+          {
+            "field": "t24Tbsdy",
+            "source": "sRespJson.T24_TBSDY",
+            "rule": "T24 交易日"
+          },
+          {
+            "field": "t24Nbsdy",
+            "source": "sRespJson.t24",
+            "rule": "T24 新交易日"
+          },
+          {
+            "field": "t24Lbsdy",
+            "source": "sRespJson.T24_LBSDY",
+            "rule": "T24 前一个交易日"
+          },
+          {
+            "field": "t24LLbsdy",
+            "source": "sRespJson.T24_LLBSDY",
+            "rule": "T24 前两个交易日"
+          },
+          {
+            "field": "t24Mode",
+            "source": "sRespJson.T24_MODE",
+            "rule": "T24 系统模式"
+          },
+          {
+            "field": "t24TbsdyCob",
+            "source": "sRespJson.T24_TBSDYCOB",
+            "rule": "T24 营业日日终结账"
+          },
+          {
+            "field": "t24NbsdyCob",
+            "source": "sRespJson.T24_NBSDYCOB",
+            "rule": "T24 新交易日结"
+          },
+          {
+            "field": "t24BR121Open",
+            "source": "sRespJson.T24_BR1210pen",
+            "rule": "台北分行是否營業"
+          },
+          {
+            "field": "t24UpdTime",
+            "source": "sRespJson.T24_UpdTime",
+            "rule": "更新時間"
+          },
+          {
+            "field": "fiscTbsdy",
+            "source": "sRespJson.fisc_TBSDY",
+            "rule": "会计营业日"
+          },
+          {
+            "field": "fiscNbsdy",
+            "source": "sRespJson.fisc_NBSDY",
+            "rule": "财务新交易日"
+          },
+          {
+            "field": "fiscLbsdy",
+            "source": "sRespJson.fisc_LBSDY",
+            "rule": ""
+          },
+          {
+            "field": "fiscMode",
+            "source": "sRespJson.fisc_MODE",
+            "rule": "财政会计"
+          },
+          {
+            "field": "rmMode",
+            "source": "sRespJson.rm_Mode",
+            "rule": "风险管理"
+          }
+        ]
+      }
+    ],
+    "errorCodeRules": [
+      {
+        "code": "9001",
+        "scenario": "請求失敗",
+        "message": "系統繁忙,請稍後再試！"
+      }
+    ],
+    "runtimeDependencies": [
+      {
+        "id": "mma_sql_connection",
+        "type": "service",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "Execute authoritative SQL declared in the workbook for L_EAINET.EAINET.DBO."
+      },
+      {
+        "id": "sql_table_db_l_eainet_eainet_dbo",
+        "type": "sql_table",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "Excel 依赖声明提到 DB->L_EAINET.EAINET.DBO。"
+      },
+      {
+        "id": "sql_table_db_l_eainet_eainet_dbo_tbday",
+        "type": "sql_table",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "业务逻辑正文提到 DB->[L_EAINET].[EAINET].[dbo].[TBDAY] 依赖。"
+      }
+    ],
+    "dataSources": [
+      {
+        "name": "L_EAINET.EAINET.DBO",
+        "type": "sql_table",
+        "authority": "backend_contract",
+        "required": true
+      }
+    ],
+    "sqlSpecs": [
+      {
+        "id": "1",
+        "title": "1.查詢資料庫",
+        "authority": "backend_contract",
+        "required": true,
+        "dataSources": [
+          "L_EAINET.EAINET.DBO"
+        ],
+        "mustContain": [
+          "L_EAINET.EAINET.DBO",
+          "FROM"
+        ],
+        "queryText": "1.執行SELECT T24_TBSDY ,t24 NBSDY,  t24 NBSDY,  T24_LBSDY,  T24_LLBSDY,  T24_MODE  , T24_TBSDYCOB , T24_NBSDYCOB  , T24_BR1210pen,  T24_UpdTime, fisc_TBSDY ,fisc_NBSDY , fisc_LBSDY , fisc_MODE ,rm_Mode  FROM TBDAY\n2.定義 sRespJson保存查詢結果"
+      }
+    ],
+    "legacyReferences": [],
+    "prohibitedShortcuts": [
+      "mock_response_payload",
+      "hardcoded_custid",
+      "block_comment_header_substitution"
+    ]
+  },
+  "codeHandoff": {
+    "schemaVersion": "1.0.0",
+    "logicSummary": {
+      "stepCount": 3,
+      "queryContractCount": 1,
+      "mappingRuleCount": 14,
+      "legacyEvidenceCount": 0,
+      "dependencyHintCount": 4,
+      "constraintCount": 4,
+      "unresolvedCount": 0,
+      "primarySource": "businessLogic"
+    },
+    "logicFlow": [
+      {
+        "stepId": "step_1",
+        "title": "查詢資料庫",
+        "actionType": "query",
+        "inputs": [],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_2",
+        "title": "判斷結果",
+        "actionType": "query",
+        "inputs": [],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_3",
+        "title": "回傳結果",
+        "actionType": "return",
+        "inputs": [],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      }
+    ],
+    "legacyEvidence": [],
+    "queryContracts": [
+      {
+        "contractId": "1",
+        "purpose": "1.查詢資料庫",
+        "dataSources": [
+          "L_EAINET.EAINET.DBO"
+        ],
+        "mustContain": [
+          "L_EAINET.EAINET.DBO",
+          "FROM"
+        ],
+        "sqlText": "1.執行SELECT T24_TBSDY ,t24 NBSDY,  t24 NBSDY,  T24_LBSDY,  T24_LLBSDY,  T24_MODE  , T24_TBSDYCOB , T24_NBSDYCOB  , T24_BR1210pen,  T24_UpdTime, fisc_TBSDY ,fisc_NBSDY , fisc_LBSDY , fisc_MODE ,rm_Mode  FROM TBDAY\n2.定義 sRespJson保存查詢結果",
+        "parameterHints": [],
+        "resultShape": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT",
+          "responseData",
+          "t24Tbsdy",
+          "t24Nbsdy",
+          "t24Lbsdy",
+          "t24LLbsdy",
+          "t24Mode",
+          "t24TbsdyCob",
+          "t24NbsdyCob",
+          "t24BR121Open",
+          "t24UpdTime",
+          "fiscTbsdy",
+          "fiscNbsdy",
+          "fiscLbsdy",
+          "fiscMode",
+          "rmMode"
+        ],
+        "evidenceIds": []
+      }
+    ],
+    "mappingRules": [
+      {
+        "ruleId": "map_srespjson_t24_tbsdy_t24tbsdy",
+        "sourceField": "sRespJson.T24_TBSDY",
+        "targetField": "t24Tbsdy",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "T24 交易日",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_srespjson_t24_t24nbsdy",
+        "sourceField": "sRespJson.t24",
+        "targetField": "t24Nbsdy",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "T24 新交易日",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_srespjson_t24_lbsdy_t24lbsdy",
+        "sourceField": "sRespJson.T24_LBSDY",
+        "targetField": "t24Lbsdy",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "T24 前一个交易日",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_srespjson_t24_llbsdy_t24llbsdy",
+        "sourceField": "sRespJson.T24_LLBSDY",
+        "targetField": "t24LLbsdy",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "T24 前两个交易日",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_srespjson_t24_mode_t24mode",
+        "sourceField": "sRespJson.T24_MODE",
+        "targetField": "t24Mode",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "T24 系统模式",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_srespjson_t24_tbsdycob_t24tbsdycob",
+        "sourceField": "sRespJson.T24_TBSDYCOB",
+        "targetField": "t24TbsdyCob",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "T24 营业日日终结账",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_srespjson_t24_nbsdycob_t24nbsdycob",
+        "sourceField": "sRespJson.T24_NBSDYCOB",
+        "targetField": "t24NbsdyCob",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "T24 新交易日结",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_srespjson_t24_br1210pen_t24br121open",
+        "sourceField": "sRespJson.T24_BR1210pen",
+        "targetField": "t24BR121Open",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "台北分行是否營業",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_srespjson_t24_updtime_t24updtime",
+        "sourceField": "sRespJson.T24_UpdTime",
+        "targetField": "t24UpdTime",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "更新時間",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_srespjson_fisc_tbsdy_fisctbsdy",
+        "sourceField": "sRespJson.fisc_TBSDY",
+        "targetField": "fiscTbsdy",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "会计营业日",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_srespjson_fisc_nbsdy_fiscnbsdy",
+        "sourceField": "sRespJson.fisc_NBSDY",
+        "targetField": "fiscNbsdy",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "财务新交易日",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_srespjson_fisc_lbsdy_fisclbsdy",
+        "sourceField": "sRespJson.fisc_LBSDY",
+        "targetField": "fiscLbsdy",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "T24 交易日；T24 新交易日；T24 前一个交易日；T24 前两个交易日；T24 系统模式；T24 营业日日终结账；T24 新交易日结；台北分行是否營業；更新時間；会计营业日；财务新交易日；财政会计；风险管理",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_srespjson_fisc_mode_fiscmode",
+        "sourceField": "sRespJson.fisc_MODE",
+        "targetField": "fiscMode",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "财政会计",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_srespjson_rm_mode_rmmode",
+        "sourceField": "sRespJson.rm_Mode",
+        "targetField": "rmMode",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "风险管理",
+        "evidenceIds": []
+      }
+    ],
+    "dependencyHints": [
+      {
+        "dependencyType": "service",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor"
+        ],
+        "purpose": "Execute authoritative SQL declared in the workbook for L_EAINET.EAINET.DBO.",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "sql_table",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor"
+        ],
+        "purpose": "Excel 依赖声明提到 DB->L_EAINET.EAINET.DBO。",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "sql_table",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor"
+        ],
+        "purpose": "业务逻辑正文提到 DB->[L_EAINET].[EAINET].[dbo].[TBDAY] 依赖。",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "sql_table",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor"
+        ],
+        "purpose": "Read from L_EAINET.EAINET.DBO",
+        "evidenceIds": []
+      }
+    ],
+    "constraints": [
+      {
+        "constraintType": "prohibited_shortcut",
+        "rule": "mock_response_payload",
+        "severity": "error",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "prohibited_shortcut",
+        "rule": "hardcoded_custid",
+        "severity": "error",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "prohibited_shortcut",
+        "rule": "block_comment_header_substitution",
+        "severity": "error",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "error_code_rule",
+        "rule": "9001 | 請求失敗 | 系統繁忙,請稍後再試！",
+        "severity": "warning",
+        "evidenceIds": []
+      }
+    ],
+    "unresolved": []
+  }
+}

@@ -1,0 +1,720 @@
+{
+  "schemaVersion": "4.2.0",
+  "apiId": "COMMON.commonfunc.checkamountlimit",
+  "newAuthor": "Jimmy",
+  "functionCode": "Common",
+  "version": "1.0",
+  "apiCategory": "CommonFunc",
+  "apiName": "CheckAmountLimit",
+  "source": {
+    "tsdFile": "TSD.Common_封存TSD共用开发链路_v1.0_20260523.docx",
+    "workbookFile": "NEWDA_Method_DETAIL_ExchangeCommonFunc_20260522.xlsx",
+    "sheetNames": [
+      "CheckAmountLimit買賣匯交易限額判斷"
+    ]
+  },
+  "request": [
+    {
+      "rowKey": "1",
+      "fieldName": "payeeAcct",
+      "dataType": "string",
+      "required": true,
+      "description": "轉出帳號字串",
+      "example": "\"payeeAcct\":\"8938462777\""
+    },
+    {
+      "rowKey": "2",
+      "fieldName": "debitAcct",
+      "dataType": "string",
+      "required": true,
+      "description": "轉入帳號字串",
+      "example": "\"debitAcct\":\"8938462777\""
+    },
+    {
+      "rowKey": "3",
+      "fieldName": "outCurr",
+      "dataType": "string",
+      "required": true,
+      "description": "轉出幣別",
+      "example": "\"outCurr\":\"USD\""
+    },
+    {
+      "rowKey": "4",
+      "fieldName": "inCurr",
+      "dataType": "string",
+      "required": true,
+      "description": "轉入幣別",
+      "example": "\"inCurr\":\"TWD\""
+    },
+    {
+      "rowKey": "5",
+      "fieldName": "deductionAmt",
+      "dataType": "decimal",
+      "required": true,
+      "description": "扣除金額",
+      "example": "\"deductionAmt\":670.00"
+    },
+    {
+      "rowKey": "6",
+      "fieldName": "payeeAmt",
+      "dataType": "decimal",
+      "required": true,
+      "description": "收款人金額",
+      "example": "\"payeeAmt\":1000.00"
+    },
+    {
+      "rowKey": "7",
+      "fieldName": "tradeFunc",
+      "dataType": "string",
+      "required": false,
+      "description": "交易功能",
+      "example": "\"tradeFunc\":\"m_exchange\""
+    },
+    {
+      "rowKey": "8",
+      "fieldName": "sinoPacICS",
+      "dataType": "string",
+      "required": false,
+      "description": "有效憑證",
+      "example": "\"sinoPacICS\":\"Y\""
+    },
+    {
+      "rowKey": "9",
+      "fieldName": "equvUsdAmount",
+      "dataType": "decimal",
+      "required": false,
+      "description": "等值美金",
+      "example": "\"equvUsdAmount\":60.00",
+      "notes": "配合行動銀行_換匯優利定存有軟憑情況下，開放台轉外/外轉台金額上限為美金50萬元，新增傳入欄位EquvUsdAmount(等值美金)、TradeFunc(交易功能)"
+    }
+  ],
+  "response": [
+    {
+      "rowKey": "1",
+      "fieldName": "isSuccess",
+      "dataType": "boolean",
+      "required": true,
+      "description": "API成功與否",
+      "example": "true",
+      "notes": "true ; false"
+    },
+    {
+      "rowKey": "2",
+      "fieldName": "responseCode",
+      "dataType": "string",
+      "required": true,
+      "description": "回應代碼",
+      "example": "0000",
+      "notes": "成功:0000其餘狀況為失敗"
+    },
+    {
+      "rowKey": "3",
+      "fieldName": "responseMessage",
+      "dataType": "string",
+      "required": true,
+      "description": "回應訊息",
+      "notes": "失敗狀況下回傳錯誤訊息"
+    },
+    {
+      "rowKey": "4",
+      "fieldName": "responseDT",
+      "dataType": "string",
+      "required": true,
+      "description": "系統回應時間",
+      "notes": "yyyy/MM/dd HH:mm:ss"
+    },
+    {
+      "rowKey": "5",
+      "fieldName": "responseData",
+      "dataType": "json",
+      "required": true,
+      "description": "回應資料框",
+      "example": "\"responseData\":{}"
+    },
+    {
+      "rowKey": "5.0.1",
+      "fieldName": "limitAmt",
+      "dataType": "boolean",
+      "required": true,
+      "description": "是否超出上限",
+      "example": "\"limitAmt\":true"
+    }
+  ],
+  "mockExamples": [
+    {
+      "scenario": "獲取成功結果示例",
+      "requestPayload": {
+        "payeeAcct": "8938462777",
+        "debitAcct": "1234567890",
+        "outCurr": "USD",
+        "inCurr": "TWD",
+        "deductionAmt": 670,
+        "payeeAmt": 1000,
+        "tradeFunc": "m_exchange",
+        "sinoPacICS": "Y"
+      },
+      "responsePayload": {
+        "isSuccess": true,
+        "responseCode": "0000",
+        "responseMessage": "查詢成功",
+        "responseDT": "2026/02/02 14:35:20",
+        "responseData": {
+          "limitAmt": true
+        }
+      }
+    },
+    {
+      "scenario": "人民幣限額檢核未通過",
+      "responsePayload": {
+        "isSuccess": false,
+        "responseCode": "0400",
+        "responseMessage": "金額輸入錯誤，金額上限請勿超過（含）等值人民幣2萬元。",
+        "responseDT": "2026/02/24 10:30:25",
+        "responseData": {}
+      }
+    },
+    {
+      "scenario": "金額核驗失敗",
+      "responsePayload": {
+        "isSuccess": false,
+        "responseCode": "0401",
+        "responseMessage": "目前無法取得折臺幣金額，請稍後再試！",
+        "responseDT": "2026/02/24 10:30:25",
+        "responseData": {}
+      }
+    },
+    {
+      "scenario": "限額類型為PACT 時超出限額",
+      "responsePayload": {
+        "isSuccess": false,
+        "responseCode": "0402",
+        "responseMessage": "外匯結匯每筆金額不得超過(含)等值新臺幣50萬元。",
+        "responseDT": "2026/02/24 10:30:25",
+        "responseData": {}
+      }
+    },
+    {
+      "scenario": "限額類型為PACTNEW 時超出限額",
+      "responsePayload": {
+        "isSuccess": false,
+        "responseCode": "0403",
+        "responseMessage": "金額輸入錯誤，金額下限請勿低於等值新臺幣100元，金額上限請勿超過(含)等值新臺幣200萬元。",
+        "responseDT": "2026/02/24 10:30:25",
+        "responseData": {}
+      }
+    },
+    {
+      "scenario": "未申請軟體憑證",
+      "responsePayload": {
+        "isSuccess": false,
+        "responseCode": "9028",
+        "responseMessage": "提醒！您尚未申請軟體憑證，僅限辦理新臺幣50萬元(不含)以下換匯交易。",
+        "responseDT": "2026/02/24 10:30:25",
+        "responseData": {}
+      }
+    },
+    {
+      "scenario": "請求失敗",
+      "responsePayload": {
+        "isSuccess": false,
+        "responseCode": "9001",
+        "responseMessage": "系統繁忙,請稍後再試！",
+        "responseDT": "2026/02/24 10:30:25",
+        "responseData": {}
+      }
+    }
+  ],
+  "backendApis": {
+    "sitemap": [
+      "mma_limitamt.sitemap轉帳限額配置檔"
+    ],
+    "DB": [
+      "MICROSOFT.EBANK.COMMON",
+      "UTILITIES.LOADXMLCONFIG.LOADLIMITAMT"
+    ]
+  },
+  "businessLogic": {
+    "steps": [
+      {
+        "step": 1,
+        "title": "參數與初始化",
+        "details": "1.\n定義 bool  isCNY=false;\n定義   bool isExChange=false;\n定義tmpLimitCurr=\"\";\n定義tmpTransAmt=\"\";\n//1.台外幣轉帳一律為約定轉帳，不需判斷是否本人帳號或是否為約定帳號\n//2.台外幣轉帳的限額和轉入帳號是否為本人帳號或轉入帳號是否為儲值支付帳號無關\nstring transType = \"PACT\";\nstring twdTransAmt=\"0\";"
+      },
+      {
+        "step": 2,
+        "title": "人民幣邏輯",
+        "details": "1.判斷if (OutCurr.Equals(\"CNY\") || InCurr.Equals(\"CNY\")) isCNY=true;\nif (!InCurr.Equals(OutCurr)) isExChange=true;\n2.人民幣換匯:\n2.01:組合限額判斷參數\nif (isCNY && isExChange)\n{\ntransType=\"TIMEPACT\";\ntmpLimitCurr = \"CNY\";\nif (OutCurr.Equals(\"CNY\")) {\ntmpTransAmt = deductionAmt;\n} else {\ntmpTransAmt = payeeAmt;\n}\n}\n2.02：從mma_limitamt.sitemap取得轉帳限額配置檔，檢核金額是否正常\nif (Microsoft.eBank.Common.Utilities.LoadXmlConfig.LoadLimitAmt(transType, tmpLimitCurr, out maxAmt, out minAmt, out msg))\n{\nif (int.TryParse(maxAmt, out iMaxAmt) && iMaxAmt > 0)\n{\nif (decimal.Parse(tmpTransAmt) > iMaxAmt)\n{\nlimitAmt = false;\nif (isCNY)\n{\n回傳錯誤提示：金額輸入錯誤，金額下限請勿低於等值新臺幣100元，金額上限請勿超過等值人民幣2萬元。\n}\nelse\n{\n回傳錯誤提示： \"轉出金額超過上限\" + maxAmt + \"元!\";\n}\n}\n}\n}"
+      },
+      {
+        "step": 3,
+        "title": "一般判斷限制",
+        "details": "1. 如果轉出幣別為TWD\nif (OutCurr.Equals(\"TWD\")) {\ntwdTransAmt=deductionAmt;\n}\n//如果轉入幣別為TWD\nesle if (InCurr.Equals(\"TWD\")) {\ntwdTransAmt=payeeAmt;\n}\nelse {\ndecimal decOriamt = 0m;\nif (decimal.TryParse(deductionAmt, out decOriamt))\n{\n//外轉外，折臺幣金額\n調用ETSRateService計算幣別轉換金額decimal decEquvAmt ;//舊代碼用的是eBank.AppService.DataAccess.ETSRateService.ETSRateServiceSoapClient.GetEquvAmt(),todo新大戶是否繼續使用？？\ntwdTransAmt = decEquvAmt.ToString();\n}\nelse\n{\n回傳錯誤提示：轉帳金額有誤\n}\n}\n2.判斷金額格式\nif (!decimal.TryParse(TWDTransAmt, out decTWDTransAmt) || decTWDTransAmt <= 0)\n{\nlimitAmt = false;\n回傳錯誤訊息： \"目前無法取得折臺幣金額，請稍後再試！\";\n}\n3.從mma_limitamt.sitemap取得轉帳限額配置檔，檢核金額是否正常\n3.01 如果轉換幣別是TWD：\n//排除非自然人 && 居留證不滿一年\nif (SinoPacICS == \"Y\" && !member.IsLegalPerson && !member.IsOBUCustomer && (!member.IsForeigner || (member.IsForeigner && (member.ForeignerFlag == Member.FOREIGNER.PERMANENT_RESIDENCY || member.ForeignerFlag == Member.FOREIGNER.ARC_OVER_ONE_YEAR))))\n{\n//單筆(有憑證)\nif (TradeFunc == \"m_exchange_fix\" || TradeFunc == \"m_exchange\")\n{\nif (Microsoft.eBank.Common.Utilities.LoadXmlConfig.LoadLimitAmt(\"DAWHO2\", \"OUTCURR\", out MaxAmt, out MinAmt, out Msg))\n{\nif (int.TryParse(MaxAmt, out iMaxAmt) && iMaxAmt > 0 && int.TryParse(MinAmt, out iMinAmt) && iMinAmt > 0)\n{\ndecimal decEquvUsdAmount = 0m;\nif (!decimal.TryParse(EquvUsdAmount, out decEquvUsdAmount) || decEquvUsdAmount <= 0)\n{\nlimitAmt = false;\n回傳錯誤提示： \"目前無法取得折美金金額，請稍後再試！\";\n}\nelse\n{\n//台外幣轉帳客制化訊息\nif (decEquvUsdAmount > iMaxAmt || decTWDTransAmt < iMinAmt)\n{\nlimitAmt = false;\n回傳錯誤提示：金額輸入錯誤，金額下限請勿低於等值新臺幣100元，金額上限請勿超過(含)等值美金50萬元。\n}\nelse\n{\nlimitAmt = true;\n}\n}\n}\n}\n}\nelse\n{\nif (Microsoft.eBank.Common.Utilities.LoadXmlConfig.LoadLimitAmt(\"DAWHO\", \"OUTCURR\", out MaxAmt, out MinAmt, out Msg))\n{\nif (int.TryParse(MaxAmt, out iMaxAmt) && iMaxAmt > 0 && int.TryParse(MinAmt, out iMinAmt) && iMinAmt > 0)\n{\n//台外幣轉帳客制化訊息\nif (decTWDTransAmt < iMinAmt)\n{\nlimitAmt = false;\n回傳錯誤提示：金額輸入錯誤，金額下限請勿低於等值新臺幣100元。                 }\nelse if (decTWDTransAmt > iMaxAmt)\n{\nlimitAmt = false;\n回傳錯誤提示：金額輸入錯誤，金額下限請勿低於等值新臺幣100元，金額上限請勿超過(含)等值新臺幣200萬元。\n}\nelse\n{\nlimitAmt = true;\n}\n}\n}\n//交易時間1530後，交易限額\nif (Convert.ToInt32(DateTime.Now.ToString(\"HHmm\")) >= 1530)\n{\nif (Microsoft.eBank.Common.Utilities.LoadXmlConfig.LoadLimitAmt(\"PACT\", \"OUTCURR\", out MaxAmt, out MinAmt, out Msg))\n{\nif (int.TryParse(MaxAmt, out iMaxAmt) && iMaxAmt > 0 && int.TryParse(MinAmt, out iMinAmt) && iMinAmt > 0)\n{\nif (decTWDTransAmt > iMaxAmt)\n{\nlimitAmt = false;\n回傳錯誤提示：金額輸入錯誤，金額下限請勿低於等值新臺幣100元，金額上限請勿超過(含)等值新臺幣50萬元。                     }\n}\n}\n}\n}\n}\nelse\n{\n//單筆(無憑證)\nif (Microsoft.eBank.Common.Utilities.LoadXmlConfig.LoadLimitAmt(\"PACT\", \"OUTCURR\", out MaxAmt, out MinAmt, out Msg))\n{\nif (int.TryParse(MaxAmt, out iMaxAmt) && iMaxAmt > 0 && int.TryParse(MinAmt, out iMinAmt) && iMinAmt > 0)\n{\n//台外幣轉帳客制化訊息\nif (decTWDTransAmt < iMinAmt)\n{\nlimitAmt = false;\n回傳錯誤提示：金額輸入錯誤，金額下限請勿低於等值新臺幣100元。             }\nelse if (decTWDTransAmt > iMaxAmt)\n{\nlimitAmt = false;\n//大網&&自然人提醒可安裝自然憑證\nif (Channel == \"NETBANK\" && !(decTWDTransAmt < iMinAmt) && !member.IsLegalPerson && !member.IsOBUCustomer && (!member.IsForeigner || (member.IsForeigner && (member.ForeignerFlag == Member.FOREIGNER.PERMANENT_RESIDENCY || member.ForeignerFlag == Member.FOREIGNER.ARC_OVER_ONE_YEAR))))\n{\n回傳錯誤提示：提醒！您尚未申請軟體憑證，僅限辦理新臺幣50萬元(不含)以下換匯交易。\n}\nelse if (Channel == \"NETBANK\" && decTWDTransAmt < iMinAmt && !member.IsLegalPerson && !member.IsOBUCustomer && (!member.IsForeigner || (member.IsForeigner && (member.ForeignerFlag == Member.FOREIGNER.PERMANENT_RESIDENCY || member.ForeignerFlag == Member.FOREIGNER.ARC_OVER_ONE_YEAR))))\n{\n回傳錯誤提示： \"金額輸入錯誤，金額下限請勿低於等值新臺幣100元\";\n}\nelse\n{\n回傳錯誤提示：金額輸入錯誤，金額下限請勿低於等值新臺幣100元，金額上限請勿超過(含)等值新臺幣50萬元。                 }\n}\nelse\n{\nlimitAmt = true;\n}\n}\n}\n}\n3.02 如果轉換幣別不是TWD：\n//換匯優利定存外轉外允許單筆超過TWD200萬\nif (TradeFunc == \"m_exchange_fix\" || TradeFunc == \"mma_exchange_fix\" || TradeFunc == \"m_exchange\")\n{\n//外轉外換匯交易最高限額(換匯定存單筆)\nif (Microsoft.eBank.Common.Utilities.LoadXmlConfig.LoadLimitAmt(\"PACTEXCHANGEFIX\", \"OUTCURR\", out MaxAmt, out MinAmt, out Msg))\n{\nlogger.Info(\"{0},MaxAmt={1},isInt={2},MinAmt={3},isInt={4}\", sMethodName, MaxAmt, int.TryParse(MaxAmt, out iMaxAmt), MinAmt, int.TryParse(MinAmt, out iMinAmt));\nif (int.TryParse(MaxAmt, out iMaxAmt) && iMaxAmt > 0 && int.TryParse(MinAmt, out iMinAmt) && iMinAmt > 0)\n{\ndecimal decEquvUsdAmount = 0m;\nif (!decimal.TryParse(EquvUsdAmount, out decEquvUsdAmount) || decEquvUsdAmount <= 0)\n{\nlimitAmt = false;\n回傳錯誤提示： \"目前無法取得折美金金額，請稍後再試！\";\n}\nelse\n{\n//外幣外轉帳客制化訊息\nif (decEquvUsdAmount > iMaxAmt || decTWDTransAmt < iMinAmt)\n{\nlimitAmt = false;\n回傳錯誤提示：單筆詢價金額不得逾USD499,999。\n}\nelse\n{\nlimitAmt = true;\n}\n}\n}\n}\n} else\n{\n//外轉外換匯交易最高限額\nif (Microsoft.eBank.Common.Utilities.LoadXmlConfig.LoadLimitAmt(\"PACTNEW\", \"OUTCURR\", out MaxAmt, out MinAmt, out Msg))\n{\nif (int.TryParse(MaxAmt, out iMaxAmt) && iMaxAmt > 0 && int.TryParse(MinAmt, out iMinAmt) && iMinAmt > 0)\n{\n//台外幣轉帳客制化訊息\nif (decTWDTransAmt < iMinAmt)\n{\nlimitAmt = false;\n回傳錯誤提示：金額輸入錯誤，金額下限請勿低於等值新臺幣100元。\n}\nelse if (decTWDTransAmt > iMaxAmt)\n{\nlimitAmt = false;\n回傳錯誤提示：單筆詢價金額不得逾USD499,999。\n}\nelse\n{\nlimitAmt = true;\n}\n}\n}\n}"
+      },
+      {
+        "step": 4,
+        "title": "回傳結果",
+        "details": "回傳limitAmt"
+      }
+    ],
+    "fieldMappings": [
+      {
+        "target": "responseData",
+        "source": "",
+        "rule": "是否超出上限",
+        "fields": [
+          {
+            "field": "limitAmt",
+            "source": "",
+            "rule": "是否超出上限"
+          }
+        ]
+      }
+    ],
+    "errorCodeRules": [
+      {
+        "code": "0400",
+        "scenario": "人民幣限額檢核未通過",
+        "message": "金額輸入錯誤，金額上限請勿超過（含）等值人民幣2萬元。"
+      },
+      {
+        "code": "0401",
+        "scenario": "金額核驗失敗",
+        "message": "目前無法取得折臺幣金額，請稍後再試！"
+      },
+      {
+        "code": "0402",
+        "scenario": "限額類型為PACT 時超出限額",
+        "message": "外匯結匯每筆金額不得超過(含)等值新臺幣50萬元。"
+      },
+      {
+        "code": "0403",
+        "scenario": "限額類型為PACTNEW 時超出限額",
+        "message": "金額輸入錯誤，金額下限請勿低於等值新臺幣100元，金額上限請勿超過(含)等值新臺幣200萬元。"
+      },
+      {
+        "code": "9028",
+        "scenario": "未申請軟體憑證",
+        "message": "提醒！您尚未申請軟體憑證，僅限辦理新臺幣50萬元(不含)以下換匯交易。"
+      },
+      {
+        "code": "9001",
+        "scenario": "請求失敗",
+        "message": "系統繁忙,請稍後再試！"
+      },
+      {
+        "code": "9999",
+        "scenario": "未輸入必填請求參數",
+        "message": "請輸入{Request參數}！"
+      }
+    ],
+    "runtimeDependencies": [
+      {
+        "id": "external_api_sitemap_mma_limitamt_sitemap",
+        "type": "external_api",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "Excel 依赖声明提到 sitemap->mma_limitamt.sitemap轉帳限額配置檔。"
+      },
+      {
+        "id": "mma_sql_connection",
+        "type": "service",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "Execute authoritative SQL declared in the workbook for MICROSOFT.EBANK.COMMON, UTILITIES.LOADXMLCONFIG.LOADLIMITAMT."
+      },
+      {
+        "id": "sql_table_db_microsoft_ebank_common",
+        "type": "sql_table",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "Excel 依赖声明提到 DB->MICROSOFT.EBANK.COMMON。"
+      },
+      {
+        "id": "sql_table_db_utilities_loadxmlconfig_loadlimitamt",
+        "type": "sql_table",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "Excel 依赖声明提到 DB->UTILITIES.LOADXMLCONFIG.LOADLIMITAMT。"
+      }
+    ],
+    "dataSources": [
+      {
+        "name": "MICROSOFT.EBANK.COMMON",
+        "type": "sql_table",
+        "authority": "backend_contract",
+        "required": true
+      },
+      {
+        "name": "UTILITIES.LOADXMLCONFIG.LOADLIMITAMT",
+        "type": "sql_table",
+        "authority": "backend_contract",
+        "required": true
+      }
+    ],
+    "sqlSpecs": [],
+    "legacyReferences": [],
+    "prohibitedShortcuts": [
+      "block_comment_header_substitution"
+    ]
+  },
+  "codeHandoff": {
+    "schemaVersion": "1.0.0",
+    "logicSummary": {
+      "stepCount": 4,
+      "queryContractCount": 0,
+      "mappingRuleCount": 0,
+      "legacyEvidenceCount": 3,
+      "dependencyHintCount": 6,
+      "constraintCount": 13,
+      "unresolvedCount": 5,
+      "primarySource": "businessLogic"
+    },
+    "logicFlow": [
+      {
+        "stepId": "step_1",
+        "title": "參數與初始化",
+        "actionType": "mapping",
+        "inputs": [
+          "payeeAcct",
+          "debitAcct",
+          "outCurr",
+          "inCurr"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_2",
+        "title": "人民幣邏輯",
+        "actionType": "mapping",
+        "inputs": [
+          "payeeAcct",
+          "debitAcct",
+          "outCurr",
+          "inCurr"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_3",
+        "title": "一般判斷限制",
+        "actionType": "mapping",
+        "inputs": [
+          "payeeAcct",
+          "debitAcct",
+          "outCurr",
+          "inCurr"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_4",
+        "title": "回傳結果",
+        "actionType": "return",
+        "inputs": [
+          "payeeAcct",
+          "debitAcct",
+          "outCurr",
+          "inCurr"
+        ],
+        "outputs": [
+          "isSuccess",
+          "responseCode",
+          "responseMessage",
+          "responseDT"
+        ],
+        "evidenceIds": []
+      }
+    ],
+    "legacyEvidence": [
+      {
+        "evidenceId": "legacy_step",
+        "kind": "legacyStep",
+        "origin": "一般判斷限制",
+        "authority": "legacy_step_detail",
+        "symbols": [
+          "TWD",
+          "OutCurr.Equals",
+          "twdTransAmt",
+          "deductionAmt",
+          "esle",
+          "InCurr.Equals",
+          "payeeAmt",
+          "else"
+        ],
+        "summary": "1. 如果轉出幣別為TWD",
+        "snippet": "1. 如果轉出幣別為TWD\nif (OutCurr.Equals(\"TWD\")) {\ntwdTransAmt=deductionAmt;\n}\n//如果轉入幣別為TWD\nesle if (InCurr.Equals(\"TWD\")) {\ntwdTransAmt=payeeAmt;\n}\nelse {\ndecimal decOriamt = 0m;\nif (decimal.TryParse(deductionAmt, out decOriamt))\n{\n//外轉外，折臺幣金額\n調用ETSRateService計算幣別轉換金額decimal decEquvAmt ;//舊代碼用的是eBank.AppService.DataAccess.ETSRateService.ETSRateServiceSoapClient.GetEquvAmt(),todo新大戶是否繼續使用？？\ntwdTransAmt = decEquvAmt.ToString();\n}\nelse\n{\n回傳錯誤提示：轉帳金額有誤\n}\n}\n2.判斷金額格式\nif (!decimal.TryParse(TWDTransAmt, out decTWDTransAmt) || decTWDTransAmt <= 0)\n{\nlimitAmt = false;\n回傳錯誤訊息： \"目前無法取得折臺幣金額，請稍後再試！\";\n}\n3.從mma_limitamt.sitemap取得轉帳限額配置檔，檢核金額是否正常\n3.01 如果轉換幣別是TWD：\n//排除非自然人 && 居留證不滿一年\nif (SinoPacICS == \"Y\" && !member.IsLegalPerson && !member.IsOBUCustomer && (!member.IsForeigner || (member.IsForeigner && (member.ForeignerFlag == Member.FOREIGNER.PERMANENT_RESIDENCY || member.ForeignerFlag == Member.FOREIGNER.ARC_OVER_ONE_YEAR))))\n{\n//單筆(有憑證)\nif (TradeFunc == \"m_exchange_fix\" || TradeFunc == \"m_exchange\")\n{\nif (Microsoft.eBank.Common.Utilities.LoadXmlConfig.LoadLimitAmt(\"DAWHO2\", \"OUTCURR\", out MaxAmt, out MinAmt, out Msg))\n{\nif (int.TryParse(MaxAmt, out iMaxAmt) && iMaxAmt > 0 && int.TryParse(MinAmt, out iMinAmt) && iMinAmt > 0)\n{\ndecimal decEquvUsdAmount = 0m;\nif (!decimal.TryParse(EquvUsdAmount, out decEquvUsdAmount) || decEquvUsdAmount <= 0)\n{\nlimitAmt = false;\n回傳錯誤提示： \"目前無法取得折美金金額，請稍後再試！\";\n}\nelse\n{\n//台外幣轉帳客制化訊息\nif (decEquvUsdAmount > iMaxAmt || decTWDTransAmt < iMinAmt)\n{\nlimitAmt = false;\n回傳錯誤提示：金額輸入錯誤，金額下限請勿低於等值新臺幣100元，金額上限請勿超過(含)等值美金50萬元。\n}\nelse\n{\nlimitAmt = true;\n}\n}\n}\n}\n}\nelse\n{\nif (Microsoft.eBank.Common.Utilities.LoadXmlConfig.LoadLimitAmt(\"DAWHO\", \"OUTCURR\", out MaxAmt, out MinAmt, out Msg))\n{\nif (int.TryParse(MaxAmt, out iMaxAmt) && iMaxAmt > 0 && int.TryParse(MinAmt, out iMinAmt) && iMinAmt > 0)\n{\n//台外幣轉帳客制化訊息\nif (decTWDTransAmt < iMinAmt)\n{\nlimitAmt = false;\n回傳錯誤提示：金額輸入錯誤，金額下限請勿低於等值新臺幣100元。                 }\nelse if (decTWDTransAmt > iMaxAmt)\n{\nlimitAmt = false;\n回傳錯誤提示：金額輸入錯誤，金額下限請勿低於等值新臺幣100元，金額上限請勿超過(含)等值新臺幣200萬元。\n}\nelse\n{\nlimitAmt = true;\n}\n}\n}\n//交易時間1530後，交易限額\nif (Convert.ToInt32(DateTime.Now.ToString(\"HHmm\")) >= 1530)\n{\nif (Microsoft.eBank.Common.Utilities.LoadXmlConfig.LoadLimitAmt(\"PACT\", \"OUTCURR\", out MaxAmt, out MinAmt, out Msg))\n{\nif (int.TryParse(MaxAmt, out iMaxAmt) && iMaxAmt > 0 && int.TryParse(MinAmt, out iMinAmt) && iMinAmt > 0)\n{\nif (decTWDTransAmt > iMaxAmt)\n{\nlimitAmt = false;\n回傳錯誤提示：金額輸入錯誤，金額下限請勿低於等值新臺幣100元，金額上限請勿超過(含)等值新臺幣50萬元。                     }\n}\n}\n}\n}\n}\nelse\n{\n//單筆(無憑證)\nif (Microsoft.eBank.Common.Utilities.LoadXmlConfig.LoadLimitAmt(\"PACT\", \"OUTCURR\", out MaxAmt, out MinAmt, out Msg))\n{\nif (int.TryParse(MaxAmt, out iMaxAmt) && iMaxAmt > 0 && int.TryParse(MinAmt, out iMinAmt) && iMinAmt > 0)\n{\n//台外幣轉帳客制化訊息\nif (decTWDTransAmt < iMinAmt)\n{\nlimitAmt = false;\n回傳錯誤提示：金額輸入錯誤，金額下限請勿低於等值新臺幣100元。             }\nelse if (decTWDTransAmt > iMaxAmt)\n{\nlimitAmt = false;\n//大網&&自然人提醒可安裝自然憑證\nif (Channel == \"NETBANK\" && !(decTWDTransAmt < iMinAmt) && !member.IsLegalPerson && !member.IsOBUCustomer && (!member.IsForeigner || (member.IsForeigner && (member.ForeignerFlag == Member.FOREIGNER.PERMANENT_RESIDENCY || member.ForeignerFlag == Member.FOREIGNER.ARC_OVER_ONE_YEAR))))\n{\n回傳錯誤提示：提醒！您尚未申請軟體憑證，僅限辦理新臺幣50萬元(不含)以下換匯交易。\n}\nelse if (Channel == \"NETBANK\" && decTWDTransAmt < iMinAmt && !member.IsLegalPerson && !member.IsOBUCustomer && (!member.IsForeigner || (member.IsForeigner && (member.ForeignerFlag == Member.FOREIGNER.PERMANENT_RESIDENCY || member.ForeignerFlag == Member.FOREIGNER.ARC_OVER_ONE_YEAR))))\n{\n回傳錯誤提示： \"金額輸入錯誤，金額下限請勿低於等值新臺幣100元\";\n}\nelse\n{\n回傳錯誤提示：金額輸入錯誤，金額下限請勿低於等值新臺幣100元，金額上限請勿超過(含)等值新臺幣50萬元。                 }\n}\nelse\n{\nlimitAmt = true;\n}\n}\n}\n}\n3.02 如果轉換幣別不是TWD：\n//換匯優利定存外轉外允許單筆超過TWD200萬\nif (TradeFunc == \"m_exchange_fix\" || TradeFunc == \"mma_exchange_fix\" || TradeFunc == \"m_exchange\")\n{\n//外轉外換匯交易最高限額(換匯定存單筆)\nif (Microsoft.eBank.Common.Utilities.LoadXmlConfig.LoadLimitAmt(\"PACTEXCHANGEFIX\", \"OUTCURR\", out MaxAmt, out MinAmt, out Msg))\n{\nlogger.Info(\"{0},MaxAmt={1},isInt={2},MinAmt={3},isInt={4}\", sMethodName, MaxAmt, int.TryParse(MaxAmt, out iMaxAmt), MinAmt, int.TryParse(MinAmt, out iMinAmt));\nif (int.TryParse(MaxAmt, out iMaxAmt) && iMaxAmt > 0 && int.TryParse(MinAmt, out iMinAmt) && iMinAmt > 0)\n{\ndecimal decEquvUsdAmount = 0m;\nif (!decimal.TryParse(EquvUsdAmount, out decEquvUsdAmount) || decEquvUsdAmount <= 0)\n{\nlimitAmt = false;\n回傳錯誤提示： \"目前無法取得折美金金額，請稍後再試！\";\n}\nelse\n{\n//外幣外轉帳客制化訊息\nif (decEquvUsdAmount > iMaxAmt || decTWDTransAmt < iMinAmt)\n{\nlimitAmt = false;\n回傳錯誤提示：單筆詢價金額不得逾USD499,999。\n}\nelse\n{\nlimitAmt = true;\n}\n}\n}\n}\n} else\n{\n//外轉外換匯交易最高限額\nif (Microsoft.eBank.Common.Utilities.LoadXmlConfig.LoadLimitAmt(\"PACTNEW\", \"OUTCURR\", out MaxAmt, out MinAmt, out Msg))\n{\nif (int.TryParse(MaxAmt, out iMaxAmt) && iMaxAmt > 0 && int.TryParse(MinAmt, out iMinAmt) && iMinAmt > 0)\n{\n//台外幣轉帳客制化訊息\nif (decTWDTransAmt < iMinAmt)\n{\nlimitAmt = false;\n回傳錯誤提示：金額輸入錯誤，金額下限請勿低於等值新臺幣100元。\n}\nelse if (decTWDTransAmt > iMaxAmt)\n{\nlimitAmt = false;\n回傳錯誤提示：單筆詢價金額不得逾USD499,999。\n}\nelse\n{\nlimitAmt = true;\n}\n}\n}\n}"
+      },
+      {
+        "evidenceId": "response_code.o_common.9999",
+        "kind": "responseCodeCatalog",
+        "origin": "feature_common/P240301Git/Sinopac.EnterpriseAPI/EnterpriseApiEntity/ResponseCodes/O_Common.resx",
+        "authority": "existing_code",
+        "symbols": [
+          "O_Common.Code_9999"
+        ],
+        "summary": "公共必填参数错误码 9999 = 請輸入{Request參數}！",
+        "snippet": "Code_9999: 請輸入{Request參數}！"
+      }
+    ],
+    "queryContracts": [],
+    "mappingRules": [],
+    "dependencyHints": [
+      {
+        "dependencyType": "external_api",
+        "preferredAbstractions": [
+          "IApiRequestService"
+        ],
+        "purpose": "Excel 依赖声明提到 sitemap->mma_limitamt.sitemap轉帳限額配置檔。",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "service",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor"
+        ],
+        "purpose": "Execute authoritative SQL declared in the workbook for MICROSOFT.EBANK.COMMON, UTILITIES.LOADXMLCONFIG.LOADLIMITAMT.",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "sql_table",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor"
+        ],
+        "purpose": "Excel 依赖声明提到 DB->MICROSOFT.EBANK.COMMON。",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "sql_table",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor"
+        ],
+        "purpose": "Excel 依赖声明提到 DB->UTILITIES.LOADXMLCONFIG.LOADLIMITAMT。",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "sql_table",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor"
+        ],
+        "purpose": "Read from MICROSOFT.EBANK.COMMON",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "sql_table",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor"
+        ],
+        "purpose": "Read from UTILITIES.LOADXMLCONFIG.LOADLIMITAMT",
+        "evidenceIds": []
+      }
+    ],
+    "constraints": [
+      {
+        "constraintType": "prohibited_shortcut",
+        "rule": "block_comment_header_substitution",
+        "severity": "error",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "error_code_rule",
+        "rule": "0400 | 人民幣限額檢核未通過 | 金額輸入錯誤，金額上限請勿超過（含）等值人民幣2萬元。",
+        "severity": "warning",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "error_code_rule",
+        "rule": "0401 | 金額核驗失敗 | 目前無法取得折臺幣金額，請稍後再試！",
+        "severity": "warning",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "error_code_rule",
+        "rule": "0402 | 限額類型為PACT 時超出限額 | 外匯結匯每筆金額不得超過(含)等值新臺幣50萬元。",
+        "severity": "warning",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "error_code_rule",
+        "rule": "0403 | 限額類型為PACTNEW 時超出限額 | 金額輸入錯誤，金額下限請勿低於等值新臺幣100元，金額上限請勿超過(含)等值新臺幣200萬元。",
+        "severity": "warning",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "error_code_rule",
+        "rule": "9028 | 未申請軟體憑證 | 提醒！您尚未申請軟體憑證，僅限辦理新臺幣50萬元(不含)以下換匯交易。",
+        "severity": "warning",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "error_code_rule",
+        "rule": "9001 | 請求失敗 | 系統繁忙,請稍後再試！",
+        "severity": "warning",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "request_field_validation",
+        "field": "payeeAcct",
+        "validationLayer": "dto_attribute",
+        "validationType": "required",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸入{Request參數}！",
+        "customValidationAttributeNeeded": false,
+        "rule": "payeeAcct | dto_attribute | required | 9999 | 請輸入{Request參數}！",
+        "severity": "warning",
+        "evidenceIds": [
+          "response_code.o_common.9999"
+        ]
+      },
+      {
+        "constraintType": "request_field_validation",
+        "field": "debitAcct",
+        "validationLayer": "dto_attribute",
+        "validationType": "required",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸入{Request參數}！",
+        "customValidationAttributeNeeded": false,
+        "rule": "debitAcct | dto_attribute | required | 9999 | 請輸入{Request參數}！",
+        "severity": "warning",
+        "evidenceIds": [
+          "response_code.o_common.9999"
+        ]
+      },
+      {
+        "constraintType": "request_field_validation",
+        "field": "outCurr",
+        "validationLayer": "dto_attribute",
+        "validationType": "required",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸入{Request參數}！",
+        "customValidationAttributeNeeded": false,
+        "rule": "outCurr | dto_attribute | required | 9999 | 請輸入{Request參數}！",
+        "severity": "warning",
+        "evidenceIds": [
+          "response_code.o_common.9999"
+        ]
+      },
+      {
+        "constraintType": "request_field_validation",
+        "field": "inCurr",
+        "validationLayer": "dto_attribute",
+        "validationType": "required",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸入{Request參數}！",
+        "customValidationAttributeNeeded": false,
+        "rule": "inCurr | dto_attribute | required | 9999 | 請輸入{Request參數}！",
+        "severity": "warning",
+        "evidenceIds": [
+          "response_code.o_common.9999"
+        ]
+      },
+      {
+        "constraintType": "request_field_validation",
+        "field": "deductionAmt",
+        "validationLayer": "dto_attribute",
+        "validationType": "required",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸入{Request參數}！",
+        "customValidationAttributeNeeded": false,
+        "rule": "deductionAmt | dto_attribute | required | 9999 | 請輸入{Request參數}！",
+        "severity": "warning",
+        "evidenceIds": [
+          "response_code.o_common.9999"
+        ]
+      },
+      {
+        "constraintType": "request_field_validation",
+        "field": "payeeAmt",
+        "validationLayer": "dto_attribute",
+        "validationType": "required",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸入{Request參數}！",
+        "customValidationAttributeNeeded": false,
+        "rule": "payeeAmt | dto_attribute | required | 9999 | 請輸入{Request參數}！",
+        "severity": "warning",
+        "evidenceIds": [
+          "response_code.o_common.9999"
+        ]
+      }
+    ],
+    "unresolved": [
+      {
+        "topic": "dependency.db.appservice_dataaccess_etsrateservice",
+        "reason": "业务逻辑正文提到 DB 表 APPSERVICE.DATAACCESS.ETSRATESERVICE，但同一段存在 todo / 待确认语义，不能作为已确认 SQL fixture 需求。",
+        "blocking": true,
+        "blockedReason": "db dependency unresolved",
+        "missingFacts": [
+          "APPSERVICE.DATAACCESS.ETSRATESERVICE 是否仍需读写",
+          "若需要，该表的权威 schema、读写条件与 seed 场景"
+        ],
+        "suggestedOwner": "spec",
+        "nextDecisionNeeded": "确认 APPSERVICE.DATAACCESS.ETSRATESERVICE 是实现必需表、旧逻辑遗留表，还是无需接线。"
+      },
+      {
+        "topic": "dependency.db.member_foreigner_permanent_residency",
+        "reason": "业务逻辑正文提到 DB 表 MEMBER.FOREIGNER.PERMANENT_RESIDENCY，但同一段存在 todo / 待确认语义，不能作为已确认 SQL fixture 需求。",
+        "blocking": true,
+        "blockedReason": "db dependency unresolved",
+        "missingFacts": [
+          "MEMBER.FOREIGNER.PERMANENT_RESIDENCY 是否仍需读写",
+          "若需要，该表的权威 schema、读写条件与 seed 场景"
+        ],
+        "suggestedOwner": "spec",
+        "nextDecisionNeeded": "确认 MEMBER.FOREIGNER.PERMANENT_RESIDENCY 是实现必需表、旧逻辑遗留表，还是无需接线。"
+      },
+      {
+        "topic": "dependency.db.member_foreigner_arc_over_one_year",
+        "reason": "业务逻辑正文提到 DB 表 MEMBER.FOREIGNER.ARC_OVER_ONE_YEAR，但同一段存在 todo / 待确认语义，不能作为已确认 SQL fixture 需求。",
+        "blocking": true,
+        "blockedReason": "db dependency unresolved",
+        "missingFacts": [
+          "MEMBER.FOREIGNER.ARC_OVER_ONE_YEAR 是否仍需读写",
+          "若需要，该表的权威 schema、读写条件与 seed 场景"
+        ],
+        "suggestedOwner": "spec",
+        "nextDecisionNeeded": "确认 MEMBER.FOREIGNER.ARC_OVER_ONE_YEAR 是实现必需表、旧逻辑遗留表，还是无需接线。"
+      },
+      {
+        "topic": "dependency.db.microsoft_ebank_common",
+        "reason": "业务逻辑正文提到 DB 表 MICROSOFT.EBANK.COMMON，但同一段存在 todo / 待确认语义，不能作为已确认 SQL fixture 需求。",
+        "blocking": true,
+        "blockedReason": "db dependency unresolved",
+        "missingFacts": [
+          "MICROSOFT.EBANK.COMMON 是否仍需读写",
+          "若需要，该表的权威 schema、读写条件与 seed 场景"
+        ],
+        "suggestedOwner": "spec",
+        "nextDecisionNeeded": "确认 MICROSOFT.EBANK.COMMON 是实现必需表、旧逻辑遗留表，还是无需接线。"
+      },
+      {
+        "topic": "dependency.db.utilities_loadxmlconfig_loadlimitamt",
+        "reason": "业务逻辑正文提到 DB 表 UTILITIES.LOADXMLCONFIG.LOADLIMITAMT，但同一段存在 todo / 待确认语义，不能作为已确认 SQL fixture 需求。",
+        "blocking": true,
+        "blockedReason": "db dependency unresolved",
+        "missingFacts": [
+          "UTILITIES.LOADXMLCONFIG.LOADLIMITAMT 是否仍需读写",
+          "若需要，该表的权威 schema、读写条件与 seed 场景"
+        ],
+        "suggestedOwner": "spec",
+        "nextDecisionNeeded": "确认 UTILITIES.LOADXMLCONFIG.LOADLIMITAMT 是实现必需表、旧逻辑遗留表，还是无需接线。"
+      }
+    ]
+  }
+}

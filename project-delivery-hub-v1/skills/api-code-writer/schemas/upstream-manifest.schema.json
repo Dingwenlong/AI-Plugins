@@ -36,7 +36,7 @@
     "lastMessage"
   ],
   "properties": {
-    "schemaVersion": { "type": "string", "const": "4.1.0" },
+    "schemaVersion": { "type": "string", "enum": ["4.1.0", "4.2.0"] },
     "manifestType": { "type": "string", "const": "api" },
     "executionId": { "type": "string", "minLength": 1 },
     "apiId": { "type": "string", "minLength": 1 },
@@ -60,6 +60,21 @@
         "sheetNames": {
           "type": "array",
           "items": { "type": "string" }
+        },
+        "sequenceDiagrams": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["path", "kind", "sha256", "matchedBy", "authority"],
+            "properties": {
+              "path": { "type": "string", "minLength": 1 },
+              "kind": { "type": "string", "minLength": 1 },
+              "sha256": { "type": "string", "minLength": 1 },
+              "matchedBy": { "type": "string", "minLength": 1 },
+              "authority": { "type": "string", "minLength": 1 }
+            }
+          }
         }
       }
     },

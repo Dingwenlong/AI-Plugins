@@ -1,0 +1,845 @@
+{
+  "schemaVersion": "4.2.0",
+  "apiId": "COMMON.depositcommonfunc.getdawhofixsetting",
+  "newAuthor": "Jimmy",
+  "functionCode": "Common",
+  "version": "1.0",
+  "apiCategory": "DepositCommonFunc",
+  "apiName": "GetDawhoFixSetting",
+  "source": {
+    "tsdFile": "TSD.Common_封存TSD共用开发链路_v1.0_20260523.docx",
+    "workbookFile": "NEWDA_Method_DETAIL_DepositCommonFunc_20260522.xlsx",
+    "sheetNames": [
+      "GetDawhoFixSettingFunc取得定存設定檔"
+    ]
+  },
+  "request": [
+    {
+      "rowKey": "1",
+      "fieldName": "curr",
+      "dataType": "string",
+      "required": true,
+      "description": "幣別",
+      "example": "\"curr\": \"TWD\""
+    },
+    {
+      "rowKey": "2",
+      "fieldName": "fixAPNo",
+      "dataType": "string",
+      "required": false,
+      "description": "存款類型",
+      "example": "\"fixAPNo\": \"011\""
+    },
+    {
+      "rowKey": "3",
+      "fieldName": "period",
+      "dataType": "string",
+      "required": false,
+      "description": "期別",
+      "example": "\"period\": 3"
+    }
+  ],
+  "response": [
+    {
+      "rowKey": "1",
+      "dataType": "boolean",
+      "required": true,
+      "description": "API成功與否",
+      "example": "True",
+      "notes": "true ; false"
+    },
+    {
+      "rowKey": "2",
+      "dataType": "string",
+      "required": true,
+      "description": "回應代碼",
+      "example": "0",
+      "notes": "成功:0000其餘狀況為失敗"
+    },
+    {
+      "rowKey": "3",
+      "dataType": "string",
+      "required": true,
+      "description": "回應訊息",
+      "notes": "失敗狀況下回傳錯誤訊息"
+    },
+    {
+      "rowKey": "4",
+      "dataType": "string",
+      "required": true,
+      "description": "系統回應時間",
+      "notes": "yyyy/MM/dd HH:mm:ss"
+    },
+    {
+      "rowKey": "5",
+      "dataType": "json",
+      "required": true,
+      "description": "回應資料框",
+      "example": "\"responseData\": {}",
+      "properties": [
+        {
+          "rowKey": "5.1",
+          "dataType": "list",
+          "required": true,
+          "properties": [
+            {
+              "rowKey": "5.1.1",
+              "dataType": "string",
+              "required": true,
+              "description": "開始日期",
+              "example": "\"startDate\":\"2026-03-03\"",
+              "notes": "DB.StartDate"
+            },
+            {
+              "rowKey": "5.1.2",
+              "dataType": "string",
+              "required": true,
+              "description": "結束日期",
+              "example": "\"endDate\":\"2029-03-03\"",
+              "notes": "DB.EndDate"
+            },
+            {
+              "rowKey": "5.1.3",
+              "dataType": "string",
+              "required": true,
+              "description": "定存活動同意書版號",
+              "notes": "DB.TermVersion   todo：DB名稱等北祥提供後進行補充"
+            },
+            {
+              "rowKey": "5.1.4",
+              "dataType": "string",
+              "required": true,
+              "description": "活動說明",
+              "example": "無範例",
+              "notes": "OBU法人(同意書):DB.ActivityURL_1\nOBU自然人:DB.ActivityURL_2;\nDBU法人:DB.ActivityURL_3;\nDBU自然人:DB.ActivityURL_4;"
+            },
+            {
+              "rowKey": "5.1.5",
+              "dataType": "string",
+              "required": true,
+              "description": "活動詳情",
+              "example": "無範例",
+              "notes": "DB.ActivityPage"
+            },
+            {
+              "rowKey": "5.1.6",
+              "dataType": "string",
+              "required": true,
+              "description": "設定檔的期別資料（格式：幣別+科目別+期別，換匯定存除外）\n換匯定存格式：EXCHAGEFIX",
+              "example": "\"loader\":\"CNY0286\"\n換匯定存格式：\"loader\":\"EXCHAGEFIX\"",
+              "notes": "DB.loader"
+            },
+            {
+              "rowKey": "5.1.7",
+              "dataType": "string",
+              "required": true,
+              "description": "幣別中文",
+              "example": "\"currText\":\"人民幣\"",
+              "notes": "DB.currText"
+            },
+            {
+              "rowKey": "5.1.8",
+              "dataType": "string",
+              "required": false,
+              "description": "幣別",
+              "example": "\"curr\":\"CNY\"",
+              "notes": "DB.loader拆出來英文部分 作為幣別英文名稱  換匯定存不進行拆分"
+            },
+            {
+              "rowKey": "5.1.9",
+              "dataType": "string",
+              "required": false,
+              "description": "期別",
+              "example": "\"period\":\"6\"",
+              "notes": "DB.loader  去掉英文部分和科目別，剩下的作為期別  換匯定存不進行拆分"
+            },
+            {
+              "rowKey": "5.1.10",
+              "dataType": "string",
+              "required": false,
+              "description": "科目別",
+              "example": "\"fixAPNo\":\"028\"",
+              "notes": "DB.loader 去掉英文部分，截取前三位作為科目別  換匯定存不進行拆分"
+            },
+            {
+              "rowKey": "5.1.11",
+              "dataType": "string",
+              "required": true,
+              "description": "是否為新資金活動",
+              "example": "\"isNewFunds\":\"Y\"",
+              "notes": "DB.IsNewFunds"
+            },
+            {
+              "rowKey": "5.1.12",
+              "dataType": "string",
+              "required": true,
+              "description": "活動同意書url",
+              "example": "\"activityURL\":\"Y\"",
+              "notes": "DB.activityURL"
+            },
+            {
+              "rowKey": "5.1.13",
+              "dataType": "string",
+              "required": false,
+              "description": "OBU法人(同意書)",
+              "example": "\"activityURL_1\":\"Y\"",
+              "notes": "DB.activityURL_1"
+            },
+            {
+              "rowKey": "5.1.14",
+              "dataType": "string",
+              "required": false,
+              "description": "0BU自然人(同意書)",
+              "example": "activityURL 2:\"Y\"",
+              "notes": "DB.activityURL_2"
+            },
+            {
+              "rowKey": "5.1.15",
+              "dataType": "string",
+              "required": false,
+              "description": "DBU法人(同意書)",
+              "example": "activityURL_3:\"Y\"",
+              "notes": "DB.activityURL_3"
+            },
+            {
+              "rowKey": "5.1.16",
+              "dataType": "string",
+              "required": false,
+              "description": "DBU自然人(同意書)",
+              "example": "activityURL_4:\"Y\"",
+              "notes": "DB.activityURL_4"
+            },
+            {
+              "rowKey": "5.1.17",
+              "dataType": "string",
+              "required": true,
+              "description": "定存最低限額",
+              "example": "\"transAmt\":\"\"",
+              "notes": "DB.ActivityText"
+            },
+            {
+              "rowKey": "5.1.18",
+              "dataType": "string",
+              "required": true,
+              "description": "新資金最低限額",
+              "example": "\"newFundsLimit\":\"\"",
+              "notes": "DB.newFundsLimit"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "mockExamples": [
+    {
+      "scenario": "正常結果返回範例",
+      "requestPayload": {
+        "debitAcctCurr": "TWD",
+        "fixAPNo": "011",
+        "period": 3
+      },
+      "responsePayload": {
+        "isSuccess": true,
+        "responseCode": "0000",
+        "responseMessage": "成功",
+        "responseDT": "2026/05/18 14:35:22",
+        "responseData": {
+          "fixSettingList": [
+            {
+              "startDate": "2026-03-03",
+              "endDate": "2029-03-03",
+              "termVersion": "v2.1",
+              "activityMemo": "OBU法人(同意書):https://example.com/obu_corp.pdf\nOBU自然人:https://example.com/obu_ind.pdf;\nDBU法人:https://example.com/dbu_corp.pdf;\nDBU自然人:https://example.com/dbu_ind.pdf;",
+              "activityPage": "https://example.com/activity_page",
+              "loader": "CNY0286",
+              "currText": "人民幣",
+              "curr": "CNY",
+              "period": "6",
+              "fixAPNo": "028",
+              "isNewFunds": "Y",
+              "activityURL": "https://example.com/agreement.pdf",
+              "activityURL_1": "https://example.com/obu_corp.pdf",
+              "activityURL_2": "https://example.com/obu_ind.pdf",
+              "activityURL_3": "https://example.com/dbu_corp.pdf",
+              "activityURL_4": "https://example.com/dbu_ind.pdf"
+            },
+            {
+              "startDate": "2026-05-01",
+              "endDate": "2026-08-01",
+              "termVersion": "v1.0",
+              "activityMemo": "換匯定存專案活動說明",
+              "activityPage": "https://example.com/exchange_fix_page",
+              "loader": "EXCHAGEFIX",
+              "currText": "換匯定存",
+              "curr": "",
+              "period": null,
+              "fixAPNo": null,
+              "isNewFunds": "N",
+              "activityURL": "https://example.com/exchange_agreement.pdf",
+              "activityURL_1": null,
+              "activityURL_2": null,
+              "activityURL_3": null,
+              "activityURL_4": null
+            }
+          ]
+        }
+      }
+    },
+    {
+      "scenario": "連接數據庫查詢失敗",
+      "responsePayload": {
+        "isSuccess": false,
+        "responseCode": "9001",
+        "responseMessage": "系統繁忙,請稍後再試",
+        "responseDT": "2026/02/24 10:30:25",
+        "responseData": {}
+      }
+    },
+    {
+      "scenario": "查詢出來的列表為空",
+      "responsePayload": {
+        "isSuccess": false,
+        "responseCode": "9002",
+        "responseMessage": "查無資料！",
+        "responseDT": "2026/02/24 10:30:25",
+        "responseData": {}
+      }
+    },
+    {
+      "scenario": "未輸入必填請求參數",
+      "responsePayload": {
+        "isSuccess": false,
+        "responseCode": "9999",
+        "responseMessage": "請輸入扣款幣別參數",
+        "responseDT": "2026/02/24 10:30:25",
+        "responseData": {}
+      }
+    },
+    {
+      "scenario": "流程節點PageFix_tr!=10",
+      "responsePayload": {
+        "isSuccess": false,
+        "responseCode": "0210",
+        "responseMessage": "流程節點錯誤,請稍後再試",
+        "responseDT": "2026/02/24 10:30:25",
+        "responseData": {}
+      }
+    }
+  ],
+  "backendApis": {
+    "DB": [
+      "DB"
+    ]
+  },
+  "businessLogic": {
+    "steps": [
+      {
+        "step": 1,
+        "title": "參數與初始化",
+        "details": "1.判斷Request.fixAPNo、Request.curr 和Request.period是否為空\n如果不為空，將傳參組合為loaderParam參數進行查詢"
+      },
+      {
+        "step": 2,
+        "title": "從DB撈取定存設定檔",
+        "details": "SELECT\nDB.StartDate,\nDB.EndDate,\nDB.TermVersion,\nDB.ActivityPage,\nDB.Loader,\nDB.Title,\nDB.IsNewFunds,\nDB.ActivityURL,\nDB.ActivityURL_1,\nDB.ActivityURL_2,\nDB.ActivityURL_3,\nDB.ActivityURL_4\nFROM DB\nWHERE EndDate >= CURDATE()\nAND (\n(:loaderParamIS NOT NULL AND :loaderParam!= '' AND DB.loader = :loaderParam)\nOR\n((:loaderParam IS NULL OR :loaderParam= '') AND :curr IS NOT NULL AND :curr != '' AND DB.loader LIKE CONCAT('%', :curr, '%'))\nOR\n((:loaderParam IS NULL OR :loaderParam= '') AND (:curr IS NULL OR :curr = ''))  -- 两者都为空，不限制loader\n);"
+      },
+      {
+        "step": 5,
+        "title": "組合Response進行返回",
+        "details": "組合response進行返回"
+      }
+    ],
+    "fieldMappings": [
+      {
+        "target": "startDate",
+        "source": "DB.StartDate",
+        "rule": "開始日期；結束日期；定存活動同意書版號；活動說明；活動詳情；設定檔的期別資料（格式：幣別+科目別+期別，換匯定存除外）\n換匯定存格式：EXCHAGEFIX；幣別中文；幣別；期別；科目別；是否為新資金活動；活動同意書url；OBU法人(同意書)；0BU自然人(同意書)；DBU法人(同意書)；DBU自然人(同意書)；定存最低限額；新資金最低限額",
+        "fields": [
+          {
+            "field": "startDate",
+            "source": "DB.StartDate",
+            "rule": "開始日期"
+          },
+          {
+            "field": "endDate",
+            "source": "DB.EndDate",
+            "rule": "結束日期"
+          },
+          {
+            "field": "termVersion",
+            "source": "DB.TermVersion",
+            "rule": "定存活動同意書版號"
+          },
+          {
+            "field": "activityMemo",
+            "source": "OBU法人(同意書):DB.ActivityURL_1\nOBU自然人:DB.ActivityURL_2;\nDBU法人:DB.ActivityURL_3;\nDBU自然人:DB.ActivityURL_4;",
+            "rule": "活動說明"
+          },
+          {
+            "field": "activityPage",
+            "source": "DB.ActivityPage",
+            "rule": "活動詳情"
+          },
+          {
+            "field": "loader",
+            "source": "DB.loader",
+            "rule": "設定檔的期別資料（格式：幣別+科目別+期別，換匯定存除外）\n換匯定存格式：EXCHAGEFIX"
+          },
+          {
+            "field": "currText",
+            "source": "DB.currText",
+            "rule": "幣別中文"
+          },
+          {
+            "field": "curr",
+            "source": "DB.loader拆出來英文部分 作為幣別英文名稱  換匯定存不進行拆分",
+            "rule": "幣別"
+          },
+          {
+            "field": "period",
+            "source": "DB.loader",
+            "rule": "期別"
+          },
+          {
+            "field": "fixAPNo",
+            "source": "DB.loader",
+            "rule": "科目別"
+          },
+          {
+            "field": "isNewFunds",
+            "source": "DB.IsNewFunds",
+            "rule": "是否為新資金活動"
+          },
+          {
+            "field": "activityURL",
+            "source": "DB.activityURL",
+            "rule": "活動同意書url"
+          },
+          {
+            "field": "activityURL_1",
+            "source": "DB.activityURL_1",
+            "rule": "OBU法人(同意書)"
+          },
+          {
+            "field": "activityURL_2",
+            "source": "DB.activityURL_2",
+            "rule": "0BU自然人(同意書)"
+          },
+          {
+            "field": "activityURL 3",
+            "source": "DB.activityURL_3",
+            "rule": "DBU法人(同意書)"
+          },
+          {
+            "field": "activityURL_4",
+            "source": "DB.activityURL_4",
+            "rule": "DBU自然人(同意書)"
+          },
+          {
+            "field": "transAmt",
+            "source": "DB.ActivityText",
+            "rule": "定存最低限額"
+          },
+          {
+            "field": "newFundsLimit",
+            "source": "DB.newFundsLimit",
+            "rule": "新資金最低限額"
+          }
+        ]
+      }
+    ],
+    "errorCodeRules": [
+      {
+        "code": "9001",
+        "scenario": "連接數據庫查詢失敗",
+        "message": "系統繁忙,請稍後再試"
+      },
+      {
+        "code": "9002",
+        "scenario": "查詢出來的列表為空",
+        "message": "查無資料！"
+      },
+      {
+        "code": "9999",
+        "scenario": "未輸入必填請求參數",
+        "message": "請輸入扣款幣別參數"
+      },
+      {
+        "code": "0210",
+        "scenario": "流程節點PageFix_tr!=10",
+        "message": "流程節點錯誤,請稍後再試"
+      }
+    ],
+    "runtimeDependencies": [
+      {
+        "id": "mma_sql_connection",
+        "type": "service",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "Execute authoritative SQL declared in the workbook for DB."
+      },
+      {
+        "id": "sql_table_db_db",
+        "type": "sql_table",
+        "authority": "backend_contract",
+        "required": true,
+        "description": "Excel 依赖声明提到 DB->DB。"
+      }
+    ],
+    "dataSources": [
+      {
+        "name": "DB",
+        "type": "sql_table",
+        "authority": "backend_contract",
+        "required": true
+      }
+    ],
+    "sqlSpecs": [
+      {
+        "id": "2_db",
+        "title": "2.從DB撈取定存設定檔",
+        "authority": "backend_contract",
+        "required": true,
+        "dataSources": [
+          "DB"
+        ],
+        "mustContain": [
+          "DB",
+          "SELECT",
+          "FROM",
+          "WHERE"
+        ],
+        "queryText": "SELECT\nDB.StartDate,\nDB.EndDate,\nDB.TermVersion,\nDB.ActivityPage,\nDB.Loader,\nDB.Title,\nDB.IsNewFunds,\nDB.ActivityURL,\nDB.ActivityURL_1,\nDB.ActivityURL_2,\nDB.ActivityURL_3,\nDB.ActivityURL_4\nFROM DB\nWHERE EndDate >= CURDATE()\nAND (\n(:loaderParamIS NOT NULL AND :loaderParam!= '' AND DB.loader = :loaderParam)\nOR\n((:loaderParam IS NULL OR :loaderParam= '') AND :curr IS NOT NULL AND :curr != '' AND DB.loader LIKE CONCAT('%', :curr, '%'))\nOR\n((:loaderParam IS NULL OR :loaderParam= '') AND (:curr IS NULL OR :curr = ''))  -- 两者都为空，不限制loader\n);"
+      }
+    ],
+    "legacyReferences": [],
+    "prohibitedShortcuts": [
+      "mock_response_payload",
+      "hardcoded_custid",
+      "block_comment_header_substitution"
+    ]
+  },
+  "codeHandoff": {
+    "schemaVersion": "1.0.0",
+    "logicSummary": {
+      "stepCount": 3,
+      "queryContractCount": 1,
+      "mappingRuleCount": 18,
+      "legacyEvidenceCount": 0,
+      "dependencyHintCount": 3,
+      "constraintCount": 8,
+      "unresolvedCount": 0,
+      "primarySource": "businessLogic"
+    },
+    "logicFlow": [
+      {
+        "stepId": "step_1",
+        "title": "參數與初始化",
+        "actionType": "query",
+        "inputs": [
+          "curr",
+          "fixAPNo",
+          "period"
+        ],
+        "outputs": [],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_2",
+        "title": "從DB撈取定存設定檔",
+        "actionType": "query",
+        "inputs": [
+          "curr",
+          "fixAPNo",
+          "period"
+        ],
+        "outputs": [],
+        "evidenceIds": []
+      },
+      {
+        "stepId": "step_5",
+        "title": "組合Response進行返回",
+        "actionType": "return",
+        "inputs": [
+          "curr",
+          "fixAPNo",
+          "period"
+        ],
+        "outputs": [],
+        "evidenceIds": []
+      }
+    ],
+    "legacyEvidence": [],
+    "queryContracts": [
+      {
+        "contractId": "2_db",
+        "purpose": "2.從DB撈取定存設定檔",
+        "dataSources": [
+          "DB"
+        ],
+        "mustContain": [
+          "DB",
+          "SELECT",
+          "FROM",
+          "WHERE"
+        ],
+        "sqlText": "SELECT\nDB.StartDate,\nDB.EndDate,\nDB.TermVersion,\nDB.ActivityPage,\nDB.Loader,\nDB.Title,\nDB.IsNewFunds,\nDB.ActivityURL,\nDB.ActivityURL_1,\nDB.ActivityURL_2,\nDB.ActivityURL_3,\nDB.ActivityURL_4\nFROM DB\nWHERE EndDate >= CURDATE()\nAND (\n(:loaderParamIS NOT NULL AND :loaderParam!= '' AND DB.loader = :loaderParam)\nOR\n((:loaderParam IS NULL OR :loaderParam= '') AND :curr IS NOT NULL AND :curr != '' AND DB.loader LIKE CONCAT('%', :curr, '%'))\nOR\n((:loaderParam IS NULL OR :loaderParam= '') AND (:curr IS NULL OR :curr = ''))  -- 两者都为空，不限制loader\n);",
+        "parameterHints": [],
+        "resultShape": [],
+        "evidenceIds": []
+      }
+    ],
+    "mappingRules": [
+      {
+        "ruleId": "map_db_startdate_startdate",
+        "sourceField": "DB.StartDate",
+        "targetField": "startDate",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "開始日期",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_db_enddate_enddate",
+        "sourceField": "DB.EndDate",
+        "targetField": "endDate",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "結束日期",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_db_termversion_termversion",
+        "sourceField": "DB.TermVersion",
+        "targetField": "termVersion",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "定存活動同意書版號",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_obu_db_activityurl_1obu_db_activityurl_2_dbu_db_activityurl_3_dbu_db_activityurl_4_activitymemo",
+        "sourceField": "OBU法人(同意書):DB.ActivityURL_1\nOBU自然人:DB.ActivityURL_2;\nDBU法人:DB.ActivityURL_3;\nDBU自然人:DB.ActivityURL_4;",
+        "targetField": "activityMemo",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "活動說明",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_db_activitypage_activitypage",
+        "sourceField": "DB.ActivityPage",
+        "targetField": "activityPage",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "活動詳情",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_db_loader_loader",
+        "sourceField": "DB.loader",
+        "targetField": "loader",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "設定檔的期別資料（格式：幣別+科目別+期別，換匯定存除外）\n換匯定存格式：EXCHAGEFIX",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_db_currtext_currtext",
+        "sourceField": "DB.currText",
+        "targetField": "currText",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "幣別中文",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_db_loader_curr",
+        "sourceField": "DB.loader拆出來英文部分 作為幣別英文名稱  換匯定存不進行拆分",
+        "targetField": "curr",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "幣別",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_db_loader_period",
+        "sourceField": "DB.loader",
+        "targetField": "period",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "期別",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_db_loader_fixapno",
+        "sourceField": "DB.loader",
+        "targetField": "fixAPNo",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "科目別",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_db_isnewfunds_isnewfunds",
+        "sourceField": "DB.IsNewFunds",
+        "targetField": "isNewFunds",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "是否為新資金活動",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_db_activityurl_activityurl",
+        "sourceField": "DB.activityURL",
+        "targetField": "activityURL",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "活動同意書url",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_db_activityurl_1_activityurl_1",
+        "sourceField": "DB.activityURL_1",
+        "targetField": "activityURL_1",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "OBU法人(同意書)",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_db_activityurl_2_activityurl_2",
+        "sourceField": "DB.activityURL_2",
+        "targetField": "activityURL_2",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "0BU自然人(同意書)",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_db_activityurl_3_activityurl3",
+        "sourceField": "DB.activityURL_3",
+        "targetField": "activityURL 3",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "DBU法人(同意書)",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_db_activityurl_4_activityurl_4",
+        "sourceField": "DB.activityURL_4",
+        "targetField": "activityURL_4",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "DBU自然人(同意書)",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_db_activitytext_transamt",
+        "sourceField": "DB.ActivityText",
+        "targetField": "transAmt",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "定存最低限額",
+        "evidenceIds": []
+      },
+      {
+        "ruleId": "map_db_newfundslimit_newfundslimit",
+        "sourceField": "DB.newFundsLimit",
+        "targetField": "newFundsLimit",
+        "mappingType": "field_mapping",
+        "mappingTable": null,
+        "defaultValue": "新資金最低限額",
+        "evidenceIds": []
+      }
+    ],
+    "dependencyHints": [
+      {
+        "dependencyType": "service",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor"
+        ],
+        "purpose": "Execute authoritative SQL declared in the workbook for DB.",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "sql_table",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor"
+        ],
+        "purpose": "Excel 依赖声明提到 DB->DB。",
+        "evidenceIds": []
+      },
+      {
+        "dependencyType": "sql_table",
+        "preferredAbstractions": [
+          "ISqlQueryExecutor"
+        ],
+        "purpose": "Read from DB",
+        "evidenceIds": []
+      }
+    ],
+    "constraints": [
+      {
+        "constraintType": "prohibited_shortcut",
+        "rule": "mock_response_payload",
+        "severity": "error",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "prohibited_shortcut",
+        "rule": "hardcoded_custid",
+        "severity": "error",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "prohibited_shortcut",
+        "rule": "block_comment_header_substitution",
+        "severity": "error",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "error_code_rule",
+        "rule": "9001 | 連接數據庫查詢失敗 | 系統繁忙,請稍後再試",
+        "severity": "warning",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "error_code_rule",
+        "rule": "9002 | 查詢出來的列表為空 | 查無資料！",
+        "severity": "warning",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "error_code_rule",
+        "rule": "9999 | 未輸入必填請求參數 | 請輸入扣款幣別參數",
+        "severity": "warning",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "error_code_rule",
+        "rule": "0210 | 流程節點PageFix_tr!=10 | 流程節點錯誤,請稍後再試",
+        "severity": "warning",
+        "evidenceIds": []
+      },
+      {
+        "constraintType": "request_field_validation",
+        "field": "curr",
+        "validationLayer": "dto_attribute",
+        "validationType": "required",
+        "expectedCode": "9999",
+        "expectedMessage": "請輸入扣款幣別參數",
+        "customValidationAttributeNeeded": false,
+        "rule": "curr | dto_attribute | required | 9999 | 請輸入扣款幣別參數",
+        "severity": "warning",
+        "evidenceIds": []
+      }
+    ],
+    "unresolved": []
+  },
+  "rawAppendix": {
+    "backendApiLines": [
+      "1.DB todo需要修改為直接從DB撈取，等北祥提供DB後補充DB表名稱和結構"
+    ]
+  }
+}

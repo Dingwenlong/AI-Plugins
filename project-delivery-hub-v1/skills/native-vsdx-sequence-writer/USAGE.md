@@ -48,7 +48,7 @@
 ### 依 API Detail 產出時序圖
 
 ```text
-[$專案原生VSDX時序圖產生器](C:\Users\<username>\plugins\project-delivery-hub-v1\skills\native-vsdx-sequence-writer\SKILL.md)
+[$專案原生VSDX時序圖產生器](<pluginRoot>\skills\native-vsdx-sequence-writer\SKILL.md)
 請依這份 API Detail 產出 E.001 的 project native VSDX 時序圖，包含 PlantUML、SVG reference、VSDX 與 PNG preview。
 D:\Workspace\API\NEWDA_API_DETAIL_Deposit_being processed.xlsx
 ```
@@ -56,7 +56,7 @@ D:\Workspace\API\NEWDA_API_DETAIL_Deposit_being processed.xlsx
 ### 修正既有 PlantUML
 
 ```text
-[$專案原生VSDX時序圖產生器](C:\Users\<username>\plugins\project-delivery-hub-v1\skills\native-vsdx-sequence-writer\SKILL.md)
+[$專案原生VSDX時序圖產生器](<pluginRoot>\skills\native-vsdx-sequence-writer\SKILL.md)
 請修正這份 .puml，讓它符合 專案標準樣式並可渲染。
 D:\Workspace\output\sequence_diagram\E001\E001_sequence.puml
 ```
@@ -64,7 +64,7 @@ D:\Workspace\output\sequence_diagram\E001\E001_sequence.puml
 ### 對齊既有 SVG / VSDX
 
 ```text
-[$專案原生VSDX時序圖產生器](C:\Users\<username>\plugins\project-delivery-hub-v1\skills\native-vsdx-sequence-writer\SKILL.md)
+[$專案原生VSDX時序圖產生器](<pluginRoot>\skills\native-vsdx-sequence-writer\SKILL.md)
 請比對這份 VSDX 與標準範例，修正 User 樣式、ref 區塊、APP self-call 與右側空白。
 D:\Workspace\v1.x Reference\E.001_01.vsdx
 ```
@@ -72,7 +72,7 @@ D:\Workspace\v1.x Reference\E.001_01.vsdx
 ### 只要 PlantUML
 
 ```text
-[$專案原生VSDX時序圖產生器](C:\Users\<username>\plugins\project-delivery-hub-v1\skills\native-vsdx-sequence-writer\SKILL.md)
+[$專案原生VSDX時序圖產生器](<pluginRoot>\skills\native-vsdx-sequence-writer\SKILL.md)
 請只產出 .puml，不需要 SVG/VSDX。
 ```
 

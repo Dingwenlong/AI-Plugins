@@ -5,8 +5,14 @@ import sys
 from pathlib import Path
 from typing import Any
 
-from docx import Document
-from docx.table import Table
+try:
+    from docx import Document
+    from docx.table import Table
+except ImportError as exc:
+    raise SystemExit(
+        "docx-unittest-report 缺少 Python 依赖：python-docx。"
+        "请在当前解释器安装后重试，例如：python -m pip install python-docx"
+    ) from exc
 
 from docx_report_utils import (
     STATUS_LABELS,

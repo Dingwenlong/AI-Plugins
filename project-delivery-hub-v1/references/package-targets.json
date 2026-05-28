@@ -17,7 +17,8 @@
       "*.bak",
       "*.tmp",
       "*.log",
-      "*.pyc"
+      "*.pyc",
+      "sql-fixture-targets.local.json"
     ]
   },
   "targets": {
@@ -36,6 +37,14 @@
       "sourceRoot": "C:\\Users\\<username>\\plugin-marketplaces\\company-dev",
       "purpose": "development-test-package",
       "defaultForPackaging": true
+    },
+    "personal": {
+      "marketplace": "personal",
+      "uri": "plugin://project-delivery-hub-v1@personal",
+      "marketplacePath": "C:\\Users\\jimmy\\.codex\\plugins\\personal\\.agents\\plugins\\marketplace.json",
+      "sourceRoot": "C:\\Users\\jimmy\\.codex\\plugins\\personal",
+      "purpose": "active-personal-plugin",
+      "defaultForCurrentInstall": true
     }
   },
   "rules": [

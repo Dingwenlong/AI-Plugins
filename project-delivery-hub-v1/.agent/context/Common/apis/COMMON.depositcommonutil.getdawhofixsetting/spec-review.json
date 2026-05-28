@@ -1,0 +1,20 @@
+{
+  "reviewStatus": "passed",
+  "checkedAt": "2026-05-23T19:27:18+08:00",
+  "apiId": "COMMON.depositcommonutil.getdawhofixsetting",
+  "source": {
+    "tsdFile": "TSD.Common_封存TSD共用开发链路_v1.0_20260523.docx",
+    "workbookFile": "NEWDA_API_DETAIL_DepositCommonUtil_20260522.xlsx",
+    "sheetNames": [
+      "GetDawhoFixSetting取得定存設定檔"
+    ]
+  },
+  "summary": {
+    "checks": 128,
+    "matched": 128,
+    "matchPct": 100.0,
+    "blockingCount": 0,
+    "warningCount": 0
+  },
+  "findings": []
+}

@@ -1,0 +1,58 @@
+{
+  "schemaVersion": "4.1.0",
+  "manifestType": "api",
+  "executionId": "Common",
+  "apiId": "COMMON.commonfunc.addiristransactionrecord",
+  "apiCategory": "CommonFunc",
+  "apiName": "AddIrisTransactionRecord",
+  "status": "pending",
+  "phase": "pending",
+  "updatedAt": "2026-05-23T22:18:09+08:00",
+  "newAuthor": "Jimmy",
+  "specStatus": "done",
+  "specUpdatedAt": "2026-05-23T19:20:18+08:00",
+  "specBlockReason": null,
+  "specSourceFingerprint": "sha256:e3bcc9459b4a1eeae9e1dff5928e59c01752d7a436ed3b13c413ab1302654b78",
+  "specSource": {
+    "tsdFile": "TSD.Common_封存TSD共用开发链路_v1.0_20260523.docx",
+    "workbookFile": "NEWDA_Method_DETAIL_ExchangeCommonFunc_20260522.xlsx",
+    "sheetNames": [
+      "AddIrisTransactionRecord新增新大戶IR"
+    ]
+  },
+  "specArtifacts": {
+    "apiSpec": "../../../.agent/context/Common/apis/COMMON.commonfunc.addiristransactionrecord/Common_API_Spec.json"
+  },
+  "fixtureStatus": "blocked",
+  "fixturePhase": "inspection_blocked",
+  "fixtureUpdatedAt": "2026-05-23T19:47:00+08:00",
+  "fixtureBlockReason": "missing_schema_authority",
+  "fixtureSourceFingerprint": "sha256:e3bcc9459b4a1eeae9e1dff5928e59c01752d7a436ed3b13c413ab1302654b78",
+  "fixtureArtifacts": {
+    "dbFixtureReport": "../../.agent/context/Common/apis/COMMON.commonfunc.addiristransactionrecord/db-fixture-report.json",
+    "tableChecks": "../../.agent/context/Common/apis/COMMON.commonfunc.addiristransactionrecord/table-checks.json",
+    "seedPlan": "../../.agent/context/Common/apis/COMMON.commonfunc.addiristransactionrecord/seed-plan.sql",
+    "seedExecuted": null,
+    "seedManifest": null
+  },
+  "codeStatus": "pending",
+  "codePhase": "pending",
+  "codeUpdatedAt": "2026-05-23T22:18:09+08:00",
+  "codeBlockReason": null,
+  "codeProjectRoot": ".",
+  "codeSolutionPath": "Sinopac.EnterpriseAPI.slnx",
+  "inputHashes": {
+    "upstreamManifest": "sha256:38ac104a397e9a82bf74acddf1055f4d271cb63771f1523d1080305491c47dda",
+    "apiSpec": "sha256:8bb5ef041bbb04d34a40adcc0dfc97ad3bbccf711a73c005e519a9b0a4d5d11f"
+  },
+  "modifiedFiles": [],
+  "validationChecks": [],
+  "validationResults": [],
+  "repoDriftFiles": [],
+  "codeArtifacts": {
+    "changePlan": null,
+    "implementationReport": null,
+    "diagnosisReport": null
+  },
+  "lastMessage": null
+}

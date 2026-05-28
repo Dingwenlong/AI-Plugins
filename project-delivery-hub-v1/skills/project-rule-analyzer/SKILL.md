@@ -1,9 +1,9 @@
 ---
-name: 专案规则分析器
+name: 【资料准备】专案规则分析器
 description: 把专案规范文件转换成可被交付链读取的规则库。分析 Word、Excel、Markdown、JSON 规则文件，抽取可复核规则，写入 `.agent/project-rules/<workspaceKey>` 的 JSON/Markdown 产物并更新 catalog；legacy/加密 Word 只记录可读性状态，不凭空生成规则。关键词：project-rules、catalog、规则抽取、sourceHash。
 ---
 
-# 专案规则分析器
+# 【资料准备】专案规则分析器
 
 用于把专案规范、设计标准、开发规范、格式样例说明等文件转成后续技能可读取的规则库条目。
 

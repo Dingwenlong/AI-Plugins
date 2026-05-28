@@ -10,6 +10,7 @@ import os
 import re
 import shutil
 import sys
+import zipfile
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable
@@ -17,6 +18,8 @@ from typing import Iterable
 
 FILE_EXTS = ("docx", "xlsx", "vsdx", "svg", "puml")
 CONFIG_FILENAME = "local-workspaces.json"
+SEQUENCE_EXTS = {".vsdx", ".svg"}
+LEGACY_SEQUENCE_SEGMENT = ("output", "sequence_diagram")
 NEGATIVE_GLOBAL = [
     "不建议直接",
     "不建議直接",
@@ -75,6 +78,23 @@ class Artifact:
     source: Path
     destination: Path
     reason: str
+
+
+@dataclass(frozen=True)
+class CommonRef:
+    display: str
+    ref_name: str
+    method: str | None
+
+
+@dataclass
+class SequenceValidation:
+    source_root: Path | None
+    function_files: list[Path]
+    required_common_refs: list[CommonRef]
+    confirmed_common_refs: dict[str, list[Path]]
+    missing_common_refs: list[dict[str, object]]
+    skipped_unsafe_files: list[Path]
 
 
 class PackageError(RuntimeError):
@@ -378,6 +398,8 @@ def collect_artifacts(text: str, workspace: Path) -> tuple[list[tuple[str, Path]
                     paths.extend(basis.get(key, []))
 
             if not paths:
+                if category == "function_diagram":
+                    continue
                 skipped.append(f"{category_label}: 未解析到文件路径")
                 continue
 
@@ -394,6 +416,301 @@ def collect_artifacts(text: str, workspace: Path) -> tuple[list[tuple[str, Path]
     if not artifacts:
         raise PackageError("已确认交付物未解析到任何可打包文件。")
     return artifacts, skipped
+
+
+def has_active_confirmed_row(text: str, target_category: str) -> bool:
+    confirmed = section(text, ["已确认交付物", "已確認交付物"])
+    for table in parse_tables(confirmed):
+        for row in table[1:]:
+            if not row:
+                continue
+            category_label = row[0].strip()
+            category = classify_category(category_label)
+            if category == target_category and not row_is_skip(category_label, " | ".join(row)):
+                return True
+    return False
+
+
+def is_within(path: Path, parent: Path) -> bool:
+    try:
+        path.resolve().relative_to(parent.resolve())
+        return True
+    except ValueError:
+        return False
+
+
+def is_legacy_sequence_path(path: Path, workspace: Path) -> bool:
+    try:
+        relative = path.resolve().relative_to(workspace.resolve())
+    except ValueError:
+        return False
+    parts = tuple(part.lower() for part in relative.parts)
+    for index in range(len(parts) - 1):
+        if parts[index] == LEGACY_SEQUENCE_SEGMENT[0] and parts[index + 1] == LEGACY_SEQUENCE_SEGMENT[1]:
+            return True
+    return False
+
+
+def is_unsafe_delivery_file(path: Path) -> bool:
+    name = path.name
+    lower_name = name.lower()
+    return (
+        name.startswith("~$")
+        or name.startswith("~$$")
+        or lower_name.endswith(".bak")
+        or ".before_" in lower_name
+        or "preview" in lower_name
+        or "visual_qa" in lower_name
+        or lower_name.endswith(".tmp")
+        or lower_name.endswith(".log")
+    )
+
+
+def function_prefixes(group: FunctionGroup) -> tuple[str, ...]:
+    dotted = "_".join(group.tokens)
+    compact = "_".join(token.replace(".", "").upper() for token in group.tokens)
+    prefixes: list[str] = []
+    for value in (dotted, compact, group.folder_key):
+        if value and value not in prefixes:
+            prefixes.append(value)
+    return tuple(prefixes)
+
+
+def matches_function_diagram(path: Path, group: FunctionGroup) -> bool:
+    if path.suffix.lower() not in SEQUENCE_EXTS or is_unsafe_delivery_file(path):
+        return False
+    lower_name = path.name.lower()
+    return any(lower_name.startswith(prefix.lower()) for prefix in function_prefixes(group))
+
+
+def sequence_analysis_dirs(agent_root: Path | None, group: FunctionGroup) -> list[Path]:
+    if agent_root is None:
+        return []
+    result: list[Path] = []
+    for key in summary_search_keys(group):
+        candidate = agent_root / "functions" / key / "analysis" / "sequence-diagrams"
+        if candidate.exists() and candidate not in result:
+            result.append(candidate)
+    return result
+
+
+def scan_sequence_dir(root: Path, group: FunctionGroup) -> tuple[list[Path], list[Path]]:
+    files: list[Path] = []
+    skipped: list[Path] = []
+    scan_roots = [root]
+    if (root / "vsdx").exists():
+        scan_roots.insert(0, root / "vsdx")
+    for scan_root in scan_roots:
+        for path in sorted(scan_root.glob("*")):
+            if not path.is_file():
+                continue
+            if is_unsafe_delivery_file(path):
+                skipped.append(path)
+                continue
+            if matches_function_diagram(path, group):
+                files.append(path)
+    unique: dict[str, Path] = {}
+    for path in files:
+        unique[str(path.resolve()).lower()] = path
+    return list(unique.values()), skipped
+
+
+def resolve_function_sequence_files(
+    workspace: Path,
+    agent_root: Path | None,
+    group: FunctionGroup,
+) -> tuple[Path | None, list[Path], list[Path]]:
+    skipped: list[Path] = []
+    legacy_root = workspace / "output" / "sequence_diagram"
+    legacy_files = []
+    if legacy_root.exists():
+        for path in legacy_root.rglob("*"):
+            if path.is_file() and matches_function_diagram(path, group):
+                legacy_files.append(path)
+
+    for root in sequence_analysis_dirs(agent_root, group):
+        files, unsafe = scan_sequence_dir(root, group)
+        skipped.extend(unsafe)
+        if files:
+            return root, files, skipped
+
+    reference_root = workspace / "v1.x Reference"
+    if reference_root.exists():
+        files, unsafe = scan_sequence_dir(reference_root, group)
+        skipped.extend(unsafe)
+        if files:
+            return reference_root, files, skipped
+
+    if legacy_files:
+        raise PackageError(
+            "只找到 legacy output/sequence_diagram 時序圖，但該路徑已禁止作為正式打包來源: "
+            + ", ".join(str(path) for path in legacy_files)
+        )
+    return None, [], skipped
+
+
+def read_artifact_text(path: Path) -> str:
+    if path.suffix.lower() == ".vsdx":
+        chunks: list[str] = []
+        try:
+            with zipfile.ZipFile(path) as archive:
+                for name in archive.namelist():
+                    lower_name = name.lower()
+                    if lower_name.endswith(".xml") and (
+                        lower_name.startswith("visio/pages/")
+                        or lower_name.startswith("visio/masters/")
+                        or lower_name.startswith("docprops/")
+                    ):
+                        chunks.append(archive.read(name).decode("utf-8", errors="ignore"))
+        except zipfile.BadZipFile:
+            return ""
+        return "\n".join(chunks)
+    if path.suffix.lower() in {".svg", ".puml", ".json", ".md"}:
+        return read_text(path)
+    return ""
+
+
+def common_method_from_text(value: str) -> str | None:
+    match = re.search(r"(CommonFunc|CommonUtil)[./][A-Za-z0-9_]+", value)
+    if not match:
+        return None
+    return match.group(0).replace("/", ".")
+
+
+def normalize_common_basename(value: str) -> str:
+    stem = Path(value.strip()).stem
+    stem = re.sub(r"_01$", "", stem, flags=re.I)
+    return stem.lower()
+
+
+def collect_common_refs(function_files: list[Path], source_root: Path | None = None) -> list[CommonRef]:
+    texts: list[str] = []
+    for path in function_files:
+        texts.append(read_artifact_text(path))
+    if source_root and source_root.name == "sequence-diagrams":
+        for path in sorted(source_root.glob("*")):
+            if path.is_file() and path.suffix.lower() in {".json", ".puml", ".md"}:
+                texts.append(read_artifact_text(path))
+
+    refs: dict[str, CommonRef] = {}
+    joined = "\n".join(texts)
+    for match in re.finditer(r"循序圖請參考[:：]?\s*([0-9A-Za-z_./-]*(?:CommonFunc|CommonUtil)[A-Za-z0-9_./-]*)", joined):
+        basename = match.group(1).strip().strip(" .。；;,，")
+        method = common_method_from_text(basename)
+        refs[normalize_common_basename(basename)] = CommonRef(display=basename, ref_name=basename, method=method)
+
+    existing_methods = {ref.method for ref in refs.values() if ref.method}
+    for match in re.finditer(r"\b(?:\d+_)?(?:CommonFunc|CommonUtil)[./][A-Za-z0-9_]+", joined):
+        value = match.group(0).strip()
+        method = common_method_from_text(value)
+        if method and method in existing_methods:
+            continue
+        key = normalize_common_basename(value)
+        refs.setdefault(key, CommonRef(display=value, ref_name=value, method=method))
+        if method:
+            existing_methods.add(method)
+
+    return sorted(refs.values(), key=lambda item: item.display.lower())
+
+
+def common_path_matches_ref(path: Path, ref: CommonRef) -> bool:
+    normalized_stem = normalize_common_basename(path.stem)
+    normalized_base = normalize_common_basename(ref.ref_name)
+    if normalized_stem == normalized_base:
+        return True
+    if ref.method:
+        return ref.method.lower() in normalized_stem
+    return False
+
+
+def validate_common_refs(
+    refs: list[CommonRef],
+    common_paths: list[Path],
+) -> tuple[dict[str, list[Path]], list[dict[str, object]]]:
+    confirmed: dict[str, list[Path]] = {}
+    missing: list[dict[str, object]] = []
+    for ref in refs:
+        matched = [path for path in common_paths if common_path_matches_ref(path, ref)]
+        confirmed[ref.display] = matched
+        svg_matches = [path for path in matched if path.suffix.lower() == ".svg"]
+        vsdx_matches = [path for path in matched if path.suffix.lower() == ".vsdx"]
+        missing_formats = [fmt for fmt, paths in (("svg", svg_matches), ("vsdx", vsdx_matches)) if not paths]
+        ambiguous_formats = [
+            {
+                "format": fmt,
+                "matches": [str(path) for path in paths],
+            }
+            for fmt, paths in (("svg", svg_matches), ("vsdx", vsdx_matches))
+            if len(paths) > 1
+        ]
+        if missing_formats or ambiguous_formats:
+            missing.append(
+                {
+                    "ref": ref.display,
+                    "method": ref.method,
+                    "missingFormats": missing_formats,
+                    "ambiguousFormats": ambiguous_formats,
+                    "matched": [str(path) for path in matched],
+                }
+            )
+    return confirmed, missing
+
+
+def apply_sequence_constraints(
+    group: FunctionGroup,
+    text: str,
+    workspace: Path,
+    agent_root: Path | None,
+    artifacts: list[tuple[str, Path]],
+) -> SequenceValidation:
+    diagram_paths = [path for category, path in artifacts if category in {"function_diagram", "common_diagram"}]
+    legacy_paths = [path for path in diagram_paths if is_legacy_sequence_path(path, workspace)]
+    if legacy_paths:
+        raise PackageError(
+            "時序圖正式打包禁止使用 output/sequence_diagram，請改列 .agent/functions 或 v1.x Reference: "
+            + ", ".join(str(path) for path in legacy_paths)
+        )
+
+    has_function_row = has_active_confirmed_row(text, "function_diagram")
+    function_files = [path for category, path in artifacts if category == "function_diagram" and path.suffix.lower() in SEQUENCE_EXTS]
+    source_root: Path | None = None
+    skipped_unsafe: list[Path] = []
+
+    if has_function_row and not function_files:
+        source_root, resolved_files, skipped_unsafe = resolve_function_sequence_files(workspace, agent_root, group)
+        if not resolved_files:
+            raise PackageError(
+                f"{group.display} 已確認本功能時序圖，但未在允許來源找到 VSDX/SVG。"
+                "允許來源僅有 .agent/functions/<functionCode>/analysis/sequence-diagrams 與 v1.x Reference。"
+            )
+        for path in resolved_files:
+            artifacts.append(("function_diagram", path))
+        function_files = resolved_files
+    elif function_files:
+        source_root = function_files[0].parent
+
+    refs = collect_common_refs(function_files, source_root) if function_files else []
+    common_paths = [path for category, path in artifacts if category == "common_diagram"]
+    confirmed, missing = validate_common_refs(refs, common_paths)
+    if missing:
+        details = "; ".join(
+            f"{item['ref']} 缺少 {','.join(item['missingFormats']) or '無'}"
+            f" 多重匹配 {','.join(entry['format'] for entry in item['ambiguousFormats']) or '無'}"
+            for item in missing
+        )
+        raise PackageError(
+            "本功能時序圖引用了共用時序圖，但 已确认交付物 未完整列出對應共用 SVG/VSDX，停止打包: "
+            + details
+        )
+
+    return SequenceValidation(
+        source_root=source_root,
+        function_files=function_files,
+        required_common_refs=refs,
+        confirmed_common_refs=confirmed,
+        missing_common_refs=missing,
+        skipped_unsafe_files=skipped_unsafe,
+    )
 
 
 def destination_for(
@@ -504,6 +821,7 @@ def main() -> int:
     all_plan: list[Artifact] = []
     summaries: list[str] = []
     skipped: list[str] = []
+    sequence_validations: list[dict[str, object]] = []
 
     for raw in args.functions:
         group = normalize_function(raw)
@@ -513,6 +831,7 @@ def main() -> int:
         if not ok:
             raise PackageError(f"{group.display} 不可打包: {reason}。梳理文件: {summary}")
         artifacts, row_skips = collect_artifacts(text, workspace)
+        sequence_validation = apply_sequence_constraints(group, text, workspace, agent_root, artifacts)
         plan = build_plan(
             artifacts,
             output_root,
@@ -523,6 +842,27 @@ def main() -> int:
         all_plan.extend(plan)
         summaries.append(str(summary))
         skipped.extend([f"{group.display}: {s}" for s in row_skips])
+        sequence_validations.append(
+            {
+                "function": group.display,
+                "sourceRoot": str(sequence_validation.source_root) if sequence_validation.source_root else None,
+                "functionFiles": [str(path) for path in sequence_validation.function_files],
+                "requiredCommonRefs": [
+                    {
+                        "display": ref.display,
+                        "basename": ref.ref_name,
+                        "method": ref.method,
+                    }
+                    for ref in sequence_validation.required_common_refs
+                ],
+                "confirmedCommonRefs": {
+                    key: [str(path) for path in paths]
+                    for key, paths in sequence_validation.confirmed_common_refs.items()
+                },
+                "missingCommonRefs": sequence_validation.missing_common_refs,
+                "skippedUnsafeFiles": [str(path) for path in sequence_validation.skipped_unsafe_files],
+            }
+        )
 
     # Deduplicate by destination. Same source/destination is harmless; conflicting source is unsafe.
     deduped: list[Artifact] = []
@@ -555,6 +895,7 @@ def main() -> int:
             for item in deduped
         ],
         "skipped": skipped,
+        "sequenceValidation": sequence_validations,
     }
 
     if args.json:

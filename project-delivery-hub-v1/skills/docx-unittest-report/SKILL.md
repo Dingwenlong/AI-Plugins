@@ -1,9 +1,9 @@
 ---
-name: API 测试代码与单元测试报告生成器
+name: 【测试验收】API 测试代码与单元测试报告生成器
 description: 生成 API 测试代码并写回 DOCX UT 测试报告。可选第 05 步：消费第 04 步测试交接，生成或维护 UnitTest / IntegrationTest / Service runtime validation，也可校验 Postman MCP 真实接口调用证据，执行或读取 `.trx`、代码检查、请求/响应 JSON 与状态截图，并输出 `{functionCode}_API_UT 测试报告 {yyyyMMdd}.docx`；不默认修改生产业务代码。关键词：UT 报告、TRX、mockExamples、testCodeHandoff、Postman MCP、真实接口调用。
 ---
 
-# 05 可选 API 测试代码与单元测试报告生成器
+# 【测试验收】API 测试代码与单元测试报告生成器
 
 ## 概览
 
@@ -23,7 +23,7 @@ Postman MCP 分支只作为「真实接口调用 / Postman MCP 实测」证据�
 正式第 05 步生成测试源码、绑定证据或输出 DOCX 报告前，必须先解析 `unitTestReport` 规则包：
 
 ```powershell
-python "C:\Users\<username>\plugins\project-delivery-hub-v1\references\resolve_project_rule_pack.py" `
+python "<pluginRoot>\references\resolve_project_rule_pack.py" `
   --pack unitTestReport `
   --workspace-key "<workspaceKey>"
 ```
@@ -134,21 +134,21 @@ python "C:\Users\<username>\plugins\project-delivery-hub-v1\references\resolve_p
 初始化 manifest：
 
 ```powershell
-python "C:\Users\<username>\plugins\project-delivery-hub-v1\skills\docx-unittest-report\scripts\bootstrap_manifest.py" `
+python "<pluginRoot>\skills\docx-unittest-report\scripts\bootstrap_manifest.py" `
   "D:\Path\To\Report.docx"
 ```
 
 manifest 完成后运行完整流程：
 
 ```powershell
-python "C:\Users\<username>\plugins\project-delivery-hub-v1\skills\docx-unittest-report\scripts\run_report_job.py" `
+python "<pluginRoot>\skills\docx-unittest-report\scripts\run_report_job.py" `
   "D:\Path\To\Report.job.json"
 ```
 
 若 `.trx` 已存在且只需写回 DOCX：
 
 ```powershell
-python "C:\Users\<username>\plugins\project-delivery-hub-v1\skills\docx-unittest-report\scripts\apply_report_results.py" `
+python "<pluginRoot>\skills\docx-unittest-report\scripts\apply_report_results.py" `
   "D:\Path\To\Report.job.json" `
   "D:\Path\To\Report.results.json"
 ```
@@ -156,7 +156,7 @@ python "C:\Users\<username>\plugins\project-delivery-hub-v1\skills\docx-unittest
 美化版模块报告需生成一份模块级 DOCX，每个 API 对应一张浏览器截取的 Visual Studio 风格证据图。
 
 ```powershell
-python "C:\Users\<username>\plugins\project-delivery-hub-v1\skills\docx-unittest-report\scripts\build_module_visual_report.py" `
+python "<pluginRoot>\skills\docx-unittest-report\scripts\build_module_visual_report.py" `
   --context-root "D:\Path\To\.agent\context\B.003"
 ```
 
@@ -171,7 +171,7 @@ python "C:\Users\<username>\plugins\project-delivery-hub-v1\skills\docx-unittest
 为无界面的 Postman MCP 调用结果补状态截图：
 
 ```powershell
-python "C:\Users\<username>\plugins\project-delivery-hub-v1\skills\docx-unittest-report\scripts\postman_mcp_evidence.py" render-status `
+python "<pluginRoot>\skills\docx-unittest-report\scripts\postman_mcp_evidence.py" render-status `
   --request ".agent\context\<functionCode>\ut-report\postman-mcp\<apiId>\<scenarioId>\request.json" `
   --response ".agent\context\<functionCode>\ut-report\postman-mcp\<apiId>\<scenarioId>\response.json" `
   --output ".agent\context\<functionCode>\ut-report\postman-mcp\<apiId>\<scenarioId>\status.png" `
@@ -307,3 +307,12 @@ python "C:\Users\<username>\plugins\project-delivery-hub-v1\skills\docx-unittest
   - 从专案计划来源抽取的 Feature ID 到 `测试人员` 映射；分类报告以此作为测试人员事实来源。
 - `UnitTest/`
   - Python `unittest` regression coverage for the skill.
+
+## Leader Mode
+
+当由 `multi-api-leader` 显式编排时：
+
+- 05 的测试代码也必须按 `file-claims.json` 分配，避免多个 worker 同时写同一测试文件。
+- worker 只能写已 claim 的测试代码或测试辅助文件，不能写最终 DOCX 报告、manifest/results 或 `final-assessment.json`。
+- leader 汇总第 04 步 `testCodeHandoff`、mockExamples、trx/Postman/code-inspection 证据，统一生成或更新 UT 报告。
+- `final-assessment.json` 只能由 leader 生成；只有 02/03/04/05 gate 全部通过时，才可判定“符合需求”。

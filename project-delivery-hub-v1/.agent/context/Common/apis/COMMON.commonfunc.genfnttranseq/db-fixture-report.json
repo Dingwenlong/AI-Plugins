@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "4.1.0",
+  "skillName": "api-sql-fixture-preparer",
+  "manifestType": "db-fixture-report",
+  "updatedAt": "2026-05-23T19:42:06+08:00",
+  "executionId": "Common",
+  "apiId": "COMMON.commonfunc.genfnttranseq",
+  "status": "blocked",
+  "phase": "inspection_blocked",
+  "executionMode": "prepare",
+  "dbTarget": "connection-name:Report",
+  "authorityRoot": "../../.agent/reference/global",
+  "sqlFixtureRequired": true,
+  "sourcesUsed": [
+    "backendApis"
+  ],
+  "tableRefs": [
+    "MMA.dbo.usp_GetNewUserID",
+    "MMA.DBO.USP_GETNEWUSERID"
+  ],
+  "summary": {
+    "tableCount": 2,
+    "blockingTableCount": 2,
+    "queryTextCount": 0
+  },
+  "message": "COMMON.commonfunc.genfnttranseq fixture blocked: missing_schema_authority",
+  "findings": [
+    {
+      "tableRef": "MMA.dbo.usp_GetNewUserID",
+      "action": "create",
+      "blockReason": "missing_schema_authority"
+    },
+    {
+      "tableRef": "MMA.DBO.USP_GETNEWUSERID",
+      "action": "create",
+      "blockReason": "missing_schema_authority"
+    }
+  ]
+}

@@ -1,0 +1,91 @@
+{
+  "schemaVersion": "4.1.0",
+  "skillName": "api-code-writer",
+  "manifestType": "code-contract-review",
+  "updatedAt": "2026-05-23T22:17:37+08:00",
+  "executionId": "Common",
+  "apiId": "COMMON.commonfunc.getvirtualacctprefix",
+  "status": "warnings",
+  "summary": {
+    "findingCount": 1,
+    "blockingCount": 0,
+    "warningCount": 1
+  },
+  "contractSnapshot": {
+    "requestFields": [
+      {
+        "path": "payeeAcct",
+        "dataType": "string",
+        "required": true,
+        "description": "付款帳號",
+        "notes": ""
+      },
+      {
+        "path": "isCardNo",
+        "dataType": "boolean",
+        "required": true,
+        "description": "是否卡號",
+        "notes": ""
+      }
+    ],
+    "responseFields": [
+      {
+        "path": "isSuccess",
+        "dataType": "boolean",
+        "required": true,
+        "description": "API成功與否",
+        "notes": "true ; false"
+      },
+      {
+        "path": "responseCode",
+        "dataType": "string",
+        "required": true,
+        "description": "回應代碼",
+        "notes": "成功:0000其餘狀況為失敗"
+      },
+      {
+        "path": "responseMessage",
+        "dataType": "string",
+        "required": true,
+        "description": "回應訊息",
+        "notes": "失敗狀況下回傳錯誤訊息"
+      },
+      {
+        "path": "responseDT",
+        "dataType": "string",
+        "required": true,
+        "description": "系統回應時間",
+        "notes": "yyyy/MM/dd HH:mm:ss"
+      },
+      {
+        "path": "responseData",
+        "dataType": "json",
+        "required": true,
+        "description": "回應資料框",
+        "notes": ""
+      },
+      {
+        "path": "responseData.t24PayeeAcct",
+        "dataType": "string",
+        "required": true,
+        "description": "T24格式的付款帳號",
+        "notes": ""
+      }
+    ],
+    "responseDataIsCollection": false,
+    "responseItemFields": [
+      "t24PayeeAcct"
+    ]
+  },
+  "findings": [
+    {
+      "severity": "warning",
+      "category": "method_signature_missing",
+      "file": "Sinopac.EnterpriseAPI/Controllers/CommonFuncController.cs",
+      "line": null,
+      "message": "找不到 GetVirtualAcctPreFixAsync 方法簽名，無法驗證 controller 與 spec 契約是否一致。",
+      "expected": "GetVirtualAcctPreFixAsync",
+      "actual": "not found"
+    }
+  ]
+}

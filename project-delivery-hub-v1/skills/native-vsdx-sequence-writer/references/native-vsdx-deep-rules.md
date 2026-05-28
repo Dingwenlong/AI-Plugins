@@ -92,7 +92,7 @@ output/sequence_diagram/{functionCode}/
 
 正式 VSDX 必须通过 `scripts/build_native_visio_sequence.ps1`，从 `output/sequence_diagram/{functionCode}/{functionCode}_native_visio_spec.json` 产出，并使用 Visio UML masters 与原生 shape 模板库。若 native spec 缺失、过期，或 VSDX 构建命令没有使用该 spec，需先停止并修正；不得用 SVG-import VSDX 代替。专案系统设计标准 v2.5 要求交付 Visio source 且兼容 Visio 2013-2016；正式交接时需保留 native source VSDX，并在环境支持时保存/导出为 Visio 2013-2016 兼容格式。不要把新生成的功能图同步复制到 `v1.x Reference/` 作为标准交付步骤；官方生成输出应保留在 `output/sequence_diagram/{functionCode}/`。只有用户针对该次交付给出新的明确指示时，才额外创建 `v1.x Reference/` 副本，并记录为例外而非可复用规则。若因 PlantUML、Visio COM、必要 UML masters 或必要工具不可用而无法产出 VSDX，仍需产出 `.puml` 文本草稿，并明确报告缺少 native VSDX 是未完成交付项及具体阻塞原因。
 
-最终交付后保持输出目录干净。默认不要创建或刷新 `svg/`、`png/` 参考渲染目录。对于 `vsdx/`，只保留最终 `{functionCode}_01.vsdx`，如需备份，最多保留一个相邻备份。
+最终交付后保持输出目录干净。默认不要创建或刷新 `svg/`、`png/` 参考渲染目录。对于 `vsdx/`，只保留最终 `{functionCode}_01.vsdx`；不要创建 `.bak`、`.before_*`、时间戳备份或其他交付目录相邻备份。确需安全副本时使用版本控制或工具临时目录，并在交付前清理。
 
 ## 图面结构
 
@@ -235,7 +235,7 @@ ref over Ent : CommonFunc.GetAccountInfo\n取得帳戶資訊\n　\n　\n30_Commo
 10. `alt` / `else` condition labels must use the native UML fragment condition/operand slots. Header tabs from `alt`, `opt`, `ref`, or business `group` frames must never cover or clip condition text such as `[無計息資料]` or `[歷史定存查詢（fixedDepositQueryScope=HISTORY）]`.
 11. Final VSDX graphics must fit completely inside the Visio page. Remove excessive right-side page whitespace and fix long text fragments that enlarge selection bounds beyond the visible diagram before page fitting. On short-flow tabs, calculate the page width from the participant/content bounds instead of reusing a wide page from another tab, and horizontally center the participant group within the page.
 12. Do not export SVG or PNG reference images by default. If the user explicitly requests image output, handle it as an extra artifact and do not make it part of the normal VSDX acceptance gate.
-13. If the target VSDX already exists, create at most one adjacent backup for that target file and remove or archive older adjacent backups unless the user asks to keep them.
+13. If the target VSDX already exists, overwrite only through the requested output path. Do not create adjacent `.bak`, `.before_*`, timestamp, or other delivery-directory backup copies unless the user explicitly asks and the active workspace rule allows it.
 14. When Visio COM supports it, save/export the final VSDX in Visio 2013-2016 compatible form for customer delivery and mention compatibility in the handoff. If compatibility export cannot be verified, report it as a remaining delivery risk rather than silently claiming it.
 
 ### 原生 Visio 重建模式
@@ -410,7 +410,7 @@ java -jar plantuml.jar -checkonly path\to\file.puml
 当存在正式 VSDX 时，始终运行原生结构关卡：
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File C:\Users\<username>\plugins\project-delivery-hub-v1\skills\native-vsdx-sequence-writer\scripts\validate_native_visio_output.ps1 -VsdxPath path\to\file.vsdx
+powershell -NoProfile -ExecutionPolicy Bypass -File <pluginRoot>\skills\native-vsdx-sequence-writer\scripts\validate_native_visio_output.ps1 -VsdxPath path\to\file.vsdx
 ```
 
 交接前必须通过此关卡。若 VSDX 出现 `TopLevelShapes = 1`、`ForeignData`、`visio/media`、`visio/embeddings`、手工 fragment 覆盖框、fragment/member 外溢、讯息贴框、讯息端点未 GlueTo、lifeline 连接点稀疏/不均匀，或讯息跨 operand separator，代表旧式/降级结构，不是正式原生交付。不要为了追求 `Connects` 统计值额外加单箭头专属 lifeline connection-point rows。

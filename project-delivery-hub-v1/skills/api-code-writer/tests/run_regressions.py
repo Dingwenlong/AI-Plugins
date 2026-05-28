@@ -320,7 +320,7 @@ def build_api_spec(
     api_name: str,
     request: list[dict],
     response: list[dict],
-    schema_version: str = "4.2.0",
+    schema_version: str = "4.3.0",
     include_code_handoff: bool = True,
     business_logic_override: dict | None = None,
     code_handoff_override: dict | None = None,
@@ -570,6 +570,97 @@ def create_base_repo(repo_root: Path) -> None:
     )
 
 
+def create_p240301git_repo(project_root: Path) -> None:
+    enterprise_root = project_root / "Sinopac.EnterpriseAPI"
+    write_text(
+        enterprise_root / "Sinopac.EnterpriseAPI.slnx",
+        "\n".join(
+            [
+                "<Solution>",
+                "  <Project Path=\"EnterpriseApiBusiness.Interface\\EnterpriseApiBusiness.Interface.csproj\" />",
+                "  <Project Path=\"EnterpriseApiBusiness\\EnterpriseApiBusiness.csproj\" />",
+                "  <Project Path=\"EnterpriseApiEntity\\EnterpriseApiEntity.csproj\" />",
+                "  <Project Path=\"..\\Libray\\Sinopac.CommonFunc\\Sinopac.CommonFunc.csproj\" />",
+                "  <Project Path=\"Sinopac.EnterpriseAPI\\Sinopac.EnterpriseAPI.csproj\" />",
+                "</Solution>",
+                "",
+            ]
+        ),
+    )
+    write_text(
+        enterprise_root / "Sinopac.EnterpriseAPI" / "Sinopac.EnterpriseAPI.csproj",
+        minimal_csproj("Sinopac.EnterpriseAPI"),
+    )
+    write_text(
+        enterprise_root / "Sinopac.EnterpriseAPI" / "ProgramExtensions.cs",
+        "\n".join(
+            [
+                "namespace Sinopac.EnterpriseAPI;",
+                "",
+                "public static class ProgramExtensions",
+                "{",
+                "    public static void AddBusinessScoped(this object builder)",
+                "    {",
+                "    }",
+                "}",
+                "",
+            ]
+        ),
+    )
+    write_text(
+        enterprise_root / "EnterpriseApiBusiness.Interface" / "EnterpriseApiBusiness.Interface.csproj",
+        minimal_csproj("EnterpriseApiBusiness.Interface"),
+    )
+    write_text(
+        enterprise_root / "EnterpriseApiBusiness" / "EnterpriseApiBusiness.csproj",
+        minimal_csproj("EnterpriseApiBusiness"),
+    )
+    write_text(
+        enterprise_root / "EnterpriseApiEntity" / "EnterpriseApiEntity.csproj",
+        minimal_csproj("EnterpriseApiEntity"),
+    )
+    write_text(
+        enterprise_root / "Test" / "EnterpriseApi.Unit" / "EnterpriseApi.Unit.csproj",
+        minimal_csproj("EnterpriseApi.Unit"),
+    )
+    write_text(
+        enterprise_root / "Test" / "EnterpriseApi.Integration" / "EnterpriseApi.Integration.csproj",
+        minimal_csproj("EnterpriseApi.Integration"),
+    )
+
+    common_func_root = project_root / "Libray" / "Sinopac.CommonFunc"
+    write_text(common_func_root / "Sinopac.CommonFunc.csproj", minimal_csproj("Sinopac.CommonFunc"))
+    write_text(
+        common_func_root / "IFuncService" / "ICommonFuncService.cs",
+        "\n".join(
+            [
+                "namespace Sinopac.CommonFunc;",
+                "",
+                "public interface ICommonFuncService",
+                "{",
+                "}",
+                "",
+            ]
+        ),
+    )
+    write_text(
+        common_func_root / "FuncService" / "CommonFuncService.cs",
+        "\n".join(
+            [
+                "namespace Sinopac.CommonFunc;",
+                "",
+                "public partial class CommonFuncService : ICommonFuncService",
+                "{",
+                "}",
+                "",
+            ]
+        ),
+    )
+    write_text(common_func_root / "Dto" / ".gitkeep", "")
+    write_text(common_func_root / "ResponseCodes" / "O_Common.resx", "<root />\n")
+    write_text(common_func_root / "ResponseCodes" / "O_Common.Designer.cs", "namespace Sinopac.CommonFunc.ResponseCodes;\n")
+
+
 def create_existing_deposit_module(repo_root: Path) -> None:
     controller_path = repo_root / "API" / "EnterpriseAPI" / "EnterpriseAPI" / "Controllers" / "DepositController.cs"
     interface_path = repo_root / "BusinessLogicLayout" / "EnterpriseApi" / "EnterpriseApiBusiness.Interface" / "IDepositService.cs"
@@ -807,6 +898,35 @@ def setup_workspace(
     return paths
 
 
+def setup_p240301git_commonfunc_workspace(temp_dir: Path) -> dict[str, Path]:
+    workspace_root = temp_dir / "FixtureWorkspace"
+    create_project_rules_fixture(workspace_root)
+    create_p240301git_repo(workspace_root)
+    paths = create_execution(
+        workspace_root,
+        function_code="Common",
+        api_id="Common.CommonFunc.GetCENCurr",
+        api_category="CommonFunc",
+        api_name="GetCENCurr",
+        version="v1.0",
+        request=[{"fieldName": "currCode", "dataType": "string", "required": True, "description": "幣別"}],
+        response=[{"fieldName": "currName", "dataType": "string", "required": False, "description": "幣別名稱"}],
+    )
+    fake_bin = temp_dir / "fake-bin"
+    write_text(fake_bin / "dotnet.cmd", fake_dotnet_script())
+    paths.update(
+        {
+            "workspace_root": workspace_root,
+            "repo_root": workspace_root,
+            "solution_path": workspace_root / "Sinopac.EnterpriseAPI" / "Sinopac.EnterpriseAPI.slnx",
+            "batch_file": workspace_root / ".agent" / "context" / "execution-batch.json",
+            "fake_bin": fake_bin,
+            "dotnet_log": temp_dir / "dotnet.log",
+        }
+    )
+    return paths
+
+
 def base_command(paths: dict[str, Path], *, function_code: str) -> list[str]:
     return [
         sys.executable,
@@ -1002,6 +1122,50 @@ def test_n006_prepare_only_generates_change_plan_and_defers_code_writing() -> No
         completed = run_command(base_command(paths, function_code="N.006") + ["--execution-mode", "prepare"], env=fake_dotnet_env(paths))
         assert_true(completed.returncode == 0, completed.stdout + completed.stderr)
         assert_n006_prepare_output(paths)
+        assert_true(read_dotnet_commands(paths) == [], "Prepare must not run validation commands")
+
+
+def test_commonfunc_prepare_uses_library_folders_without_controller() -> None:
+    with tempfile.TemporaryDirectory() as temp_dir:
+        paths = setup_p240301git_commonfunc_workspace(Path(temp_dir))
+        completed = run_command(base_command(paths, function_code="Common") + ["--execution-mode", "prepare"], env=fake_dotnet_env(paths))
+        assert_true(completed.returncode == 0, completed.stdout + completed.stderr)
+        change_plan = load_json(paths["change_plan_path"])
+        analysis = change_plan["analysis"]
+        serialized = json.dumps(change_plan, ensure_ascii=False)
+
+        assert_true(analysis["moduleName"] == "CommonFunc", "CommonFunc prepare should pin the shared module name")
+        assert_true(analysis["controllerFile"] is None, "CommonFunc prepare must not plan a controller")
+        assert_true(
+            analysis["interfaceFile"] == "Libray/Sinopac.CommonFunc/IFuncService/ICommonFuncService.cs",
+            "CommonFunc interface should land in IFuncService",
+        )
+        assert_true(
+            analysis["targetFile"] == "Libray/Sinopac.CommonFunc/FuncService/CommonFuncService.GetCENCurr.cs",
+            "CommonFunc method partial should land in FuncService",
+        )
+        assert_true(
+            analysis["serviceFiles"]
+            == [
+                "Libray/Sinopac.CommonFunc/FuncService/CommonFuncService.cs",
+                "Libray/Sinopac.CommonFunc/FuncService/CommonFuncService.GetCENCurr.cs",
+            ],
+            "CommonFunc service files should stay under FuncService",
+        )
+        assert_true(
+            analysis["entityFiles"] == ["Libray/Sinopac.CommonFunc/Dto/GetCENCurrInfo.cs"],
+            "CommonFunc DTO should stay under Dto",
+        )
+        assert_true(
+            "Libray/Sinopac.CommonFunc/IFuncService/ICommonFuncService.cs" in analysis["codeTargetFiles"],
+            "CommonFunc code targets should include IFuncService interface",
+        )
+        assert_true(
+            "Libray/Sinopac.CommonFunc/FuncService/CommonFuncService.GetCENCurr.cs" in analysis["codeTargetFiles"],
+            "CommonFunc code targets should include FuncService method partial",
+        )
+        assert_true("EnterpriseApiBusiness/CommonFunc" not in serialized, "CommonFunc prepare must not use old EnterpriseApiBusiness path")
+        assert_true("CommonFuncController" not in serialized, "CommonFunc prepare must not plan CommonFuncController")
         assert_true(read_dotnet_commands(paths) == [], "Prepare must not run validation commands")
 
 
@@ -1330,6 +1494,87 @@ def test_old_spec_without_code_handoff_uses_business_logic_compat() -> None:
         assert_true(change_plan["analysis"]["queryContractsSelected"][0]["contractId"] == "query_login_logs", "Compat path should still recover SQL contracts")
 
 
+def test_sequence_diagram_43_spec_is_accepted_by_code_writer_prepare() -> None:
+    with tempfile.TemporaryDirectory() as temp_dir:
+        paths = setup_workspace(
+            Path(temp_dir),
+            function_code="D.006",
+            api_id="D.006.deposit.apply",
+            api_category="Deposit",
+            api_name="ApplyDeposit",
+            version="v1.0",
+            request=[{"fieldName": "custId", "dataType": "string", "required": True, "description": "客戶代號"}],
+            response=[{"fieldName": "responseCode", "dataType": "string", "required": False, "description": "回應代碼"}],
+            existing_deposit=True,
+        )
+        sequence_source = {
+            "path": ".agent/functions/D.006/analysis/sequence-diagrams/D.006_ApplyDeposit_native_visio_spec.json",
+            "kind": "native_visio_spec",
+            "sha256": "sha256:sequence-fixture",
+            "matchedBy": "functionCode+apiName",
+            "authority": "supporting",
+        }
+        evidence_id = "sequence_1_d006_applydeposit"
+        api_spec = load_json(paths["api_spec_path"])
+        api_spec["source"]["sequenceDiagrams"] = [sequence_source]
+        api_spec["rawAppendix"] = {
+            "sequenceDiagramExtracts": [
+                {
+                    "evidenceId": evidence_id,
+                    "path": sequence_source["path"],
+                    "kind": sequence_source["kind"],
+                    "appliedToApi": True,
+                    "messages": ["Controller -> Service: ApplyDeposit(custId)", "Service -> IRIS: verify deposit state"],
+                }
+            ]
+        }
+        code_handoff = api_spec["codeHandoff"]
+        code_handoff["legacyEvidence"].append(
+            {
+                "evidenceId": evidence_id,
+                "kind": "sequenceDiagram",
+                "origin": sequence_source["path"],
+                "authority": "supporting",
+                "symbols": ["ApplyDeposit", "IRIS"],
+                "summary": "ApplyDeposit 時序圖補強 IRIS 驗證流程。",
+                "snippet": "Service -> IRIS: verify deposit state",
+            }
+        )
+        code_handoff["logicFlow"].append(
+            {
+                "stepId": "sequence-1-1",
+                "title": "時序圖：IRIS 驗證存款狀態",
+                "actionType": "sequence",
+                "inputs": ["custId"],
+                "outputs": ["responseCode"],
+                "evidenceIds": [evidence_id],
+            }
+        )
+        code_handoff["dependencyHints"].append(
+            {
+                "dependencyType": "IRIS",
+                "preferredAbstractions": ["IIrisDepositClient"],
+                "purpose": "依時序圖驗證存款狀態。",
+                "evidenceIds": [evidence_id],
+            }
+        )
+        code_handoff["logicSummary"]["legacyEvidenceCount"] = len(code_handoff["legacyEvidence"])
+        code_handoff["logicSummary"]["dependencyHintCount"] = len(code_handoff["dependencyHints"])
+        code_handoff["logicSummary"]["primarySource"] = "businessLogic+sequenceDiagram"
+        dump_json(paths["api_spec_path"], api_spec)
+
+        manifest = load_json(paths["manifest_path"])
+        manifest["schemaVersion"] = "4.2.0"
+        manifest["specSource"]["sequenceDiagrams"] = [sequence_source]
+        dump_json(paths["manifest_path"], manifest)
+
+        completed = run_command(base_command(paths, function_code="D.006") + ["--execution-mode", "prepare"])
+        assert_true(completed.returncode == 0, completed.stdout + completed.stderr)
+        analysis = load_json(paths["change_plan_path"])["analysis"]
+        assert_true(any(entry["kind"] == "sequenceDiagram" for entry in analysis["legacyEvidenceUsed"]), "Prepare should keep sequence evidence from API_Spec 4.3.0")
+        assert_true(any(entry["dependencyType"] == "IRIS" for entry in analysis["dependencyHintsSelected"]), "Prepare should keep sequence dependency hints")
+
+
 def test_old_spec_with_prose_only_logic_blocks() -> None:
     with tempfile.TemporaryDirectory() as temp_dir:
         paths = setup_workspace(
@@ -1431,6 +1676,7 @@ def test_review_notes_with_unknown_field_blocks_prepare() -> None:
 def main() -> int:
     tests = [
         test_n006_prepare_only_generates_change_plan_and_defers_code_writing,
+        test_commonfunc_prepare_uses_library_folders_without_controller,
         test_n006_apply_uses_real_ai_authored_changes_and_default_validation,
         test_apply_pending_fixture_reuses_prepare_plan_without_cleanup,
         test_d006_prepare_reuses_existing_deposit_module,
@@ -1438,6 +1684,7 @@ def main() -> int:
         test_missing_enterprise_slots_block_precheck,
         test_environment_validation_failure_is_classified,
         test_old_spec_without_code_handoff_uses_business_logic_compat,
+        test_sequence_diagram_43_spec_is_accepted_by_code_writer_prepare,
         test_old_spec_with_prose_only_logic_blocks,
         test_n006_prepare_consumes_review_notes_and_splits_role_requirements,
         test_review_notes_with_unknown_field_blocks_prepare,

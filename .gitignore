@@ -12,6 +12,8 @@ venv/
 node_modules/
 **/.agent/functions/
 **/.agent/status/
+**/.agent/tmp/
+**/.agent/wedoc-smartsheet-staging/
 **/.agent/wedoc-smartsheet-receipts/
 wedoc-smartsheet-targets.json
 wedoc-smartsheet-targets.local.json

@@ -1,11 +1,13 @@
 ---
-name: API 规格写入器
-description: 把功能 handoff 转成可供开发消费的 API Spec JSON。第 02 步：从 `.agent/functions/<functionCode>/handoff` 与 inputs 生成 `{functionCode}_API_Spec.json`，回写共享 `.agent/context` 的 `spec*` 状态；缺少 handoff 时先回到设计梳理技能。关键词：API_Spec.json、codeHandoff、mockExamples、specStatus。
+name: 【开发落地】API 规格写入器
+description: 把功能 handoff、明确 TSD 输入或 execution-batch 转成可供开发消费的 API Spec JSON。第 02 步：优先从 `.agent/functions/<functionCode>/handoff` 与 inputs 生成 `{functionCode}_API_Spec.json`，缺少 handoff 时可直接消费 docx_ref / execution-batch，回写共享 `.agent/context` 的 `spec*` 状态。关键词：API_Spec.json、codeHandoff、mockExamples、specStatus。
 ---
 
-# 02 API 规格写入器
+# 【开发落地】API 规格写入器
 
-使用这个第 02 步技能在共享 `.agent/context` 下初始化或恢复一个按功能编号稳定落盘的 API 规格生成执行面。脚本会读取共享的 `execution-batch.json` 与当前 execution 目录，只更新 `spec*` 字段并保留 `code*` 历史。`functionCode` 必须保留 TSD 文件名中的完整功能编号，例如 `D.006`、`N.001.001`，不能裁切成上层编号。除现有 `businessLogic` 外，`*_API_Spec.json` 还会新增 machine-readable `codeHandoff`，把查询契约、映射规则、依赖提示、旧逻辑证据和约束显式交给第 04 步 [$api-code-writer](C:/Users/<username>/plugins/project-delivery-hub-v1/skills/api-code-writer/SKILL.md)。若 `.agent/Common/project-hard-constraints.json` 存在，本 skill 还会先校验该项目级 profile，再把命中的项目硬约束折进 `codeHandoff.constraints`、`legacyEvidence` 与必要的 `unresolved`。若需要初始化或刷新全局 reference，改用第 01 步 [$reference-index-importer](C:/Users/<username>/plugins/project-delivery-hub-v1/skills/reference-index-importer/SKILL.md)；本 skill 只消费已存在的 reference 索引。
+使用这个第 02 步技能在共享 `.agent/context` 下初始化或恢复一个按功能编号稳定落盘的 API 规格生成执行面。脚本会读取共享的 `execution-batch.json` 与当前 execution 目录，只更新 `spec*` 字段并保留 `code*` 历史。`functionCode` 必须保留 TSD 文件名中的完整功能编号，例如 `D.006`、`N.001.001`，不能裁切成上层编号。除现有 `businessLogic` 外，`*_API_Spec.json` 还会新增 machine-readable `codeHandoff`，把查询契约、映射规则、依赖提示、旧逻辑证据和约束显式交给第 04 步 [$api-code-writer](<pluginRoot>/skills/api-code-writer/SKILL.md)。若 `.agent/Common/project-hard-constraints.json` 存在，本 skill 还会先校验该项目级 profile，再把命中的项目硬约束折进 `codeHandoff.constraints`、`legacyEvidence` 与必要的 `unresolved`。若需要初始化或刷新全局 reference，改用第 01 步 [$reference-index-importer](<pluginRoot>/skills/reference-index-importer/SKILL.md)；本 skill 只消费已存在的 reference 索引。
+
+02 还会读取当前 `functionCode` 对应的时序图作为业务逻辑证据源。时序图只用于补强流程、依赖、校验、错误分支与测试意图；TSD/API Detail 仍是接口字段与 response contract 的权威来源。若时序图出现 API Detail/TSD 未声明的字段或 response code，必须写入 blocking `codeHandoff.unresolved`，不得静默覆盖契约。02 只读并解析 `.puml` / `.vsdx` / `.svg` / `*_native_visio_spec.json`，不绘制、不改写 VSDX/SVG；正式画图仍交给 `native-vsdx-sequence-writer`。
 
 默认优先解析插件本地 `references/local-workspaces.json`，可按 `workspaceKey` 指向对应集中 `.agent`。参数优先级为 `--agent-root/--workspace-root` > 环境变量 > 插件本地配置 > 旧逻辑 `<project-root>\.agent`。`project-root` 只代表当前代码分支目录，`agent-root` 代表共享链路资料库。
 
@@ -16,26 +18,27 @@ description: 把功能 handoff 转成可供开发消费的 API Spec JSON。第 0
 正式第 02 步启动后、读取 handoff 与生成 `API_Spec.json` 前，必须先解析 `apiSpecWriter` 规则包：
 
 ```powershell
-python "C:\Users\<username>\plugins\project-delivery-hub-v1\references\resolve_project_rule_pack.py" `
+python "<pluginRoot>\references\resolve_project_rule_pack.py" `
   --pack apiSpecWriter `
   --workspace-key "<workspaceKey>"
 ```
 
 若用户明确给出规则库，改传 `--rules-root "<rulesRoot>"`。脚本输出的 `rules[].resolvedPath` 是 spec 生成前的必读规则；`status=blocked` 时，不得生成标记为正式完成的 spec，只能把缺口写入 `codeHandoff.unresolved` / review artifact，并停止自动推进。
 
-若 `.agent/functions/<functionCode>/handoff/development-handoff.json` 已存在，02 可直接从 handoff 选择 TSD 与 inputs，跳过 01；若 handoff 标记 `blocked` 或 `developmentReady=false`，02 必须停止推进并说明阻塞原因。
+若 `.agent/functions/<functionCode>/handoff/development-handoff.json` 已存在，02 优先从 handoff 选择 TSD 与 inputs，跳过 01；若 handoff 标记 `blocked` 或 `developmentReady=false`，02 必须停止推进并说明阻塞原因。
 
-若未找到 handoff，02 的默认动作不是跑 01，也不是直接消费 legacy `.agent/TSD`。必须先切回 `专案需求接口设计梳理`：完成梳理逻辑、确认开发会用到的 TSD / API Detail / Common / Response Code / DB / Redis 设计文件，并执行 `scripts/materialize_design_handoff.py` 生成 `.agent/functions/<functionCode>/inputs/` 与 `handoff/development-handoff.json`；然后再回到 02。开发规范另由 `专案规则分析器 --category code-guidelines` 接入 project-rules。只有用户明确要求兼容旧流程时，才可加 `--allow-legacy-input` 直接消费 `docx_ref` 或 `execution-batch`。
+若未找到 handoff，02 不再强制切回 `专案需求接口设计梳理`。只要用户提供 `docx_ref`，或 `.agent/context/execution-batch.json` 能明确命中唯一功能与 TSD，02 可以直接生成 API Spec，并在输出中保留可追溯来源与必要的 `codeHandoff.unresolved`。`专案需求接口设计梳理` 仍是推荐前置，用于提高冻版质量；开发规范另由 `专案规则分析器 --category code-guidelines` 接入 project-rules。`--allow-legacy-input` 仅保留为旧调用兼容开关，不再是缺 handoff 时继续执行的必要条件。
 
 ## 默认使用方式
 
 1. 直接调用 `scripts/write_api_spec.py`
 2. 默认读取集中 `.agent/context/execution-batch.json`；未配置集中 `.agent` 时回退 `<project-root>/.agent/context/execution-batch.json`
 3. 启动后先检查 `.agent/functions/<functionCode>/handoff/development-handoff.json`
-4. 若 handoff 不存在，停止当前 02，先执行梳理技能与 handoff 物化，不把 01 当作补救步骤
-5. 默认落到 `.agent/context/<functionCode>/`
-6. 若未指定 `--api-id`，只推进一支未完成 API
-7. 每次运行结束后，必须读取共享 `execution-state.json` 与 `api-checklist.json` 汇报结果
+4. 若 handoff 不存在，改从 `docx_ref` 或 `execution-batch.json` 解析 TSD；无法定位功能或 TSD 时才阻塞
+5. 读取对应时序图：优先 `.agent/functions/<functionCode>/analysis/sequence-diagrams`，再读 handoff 中的时序图 artifact，最后读 `.agent/config/design-source-registry.json` 的 `directories.sequenceDiagram` / `directories.sequenceDiagrams`
+6. 默认落到 `.agent/context/<functionCode>/`
+7. 若未指定 `--api-id`，只推进一支未完成 API
+8. 每次运行结束后，必须读取共享 `execution-state.json` 与 `api-checklist.json` 汇报结果
 
 ## 命令行
 
@@ -77,17 +80,20 @@ python ".\scripts\write_api_spec.py" `
   - `--rules-root`
   - `--context-root`
   - `--design-handoff`
-  - `--allow-legacy-input`（只作旧流程兼容；默认不要使用）
+  - `--allow-legacy-input`（旧调用兼容；缺 handoff 时现在默认也可继续）
   - `--api-id`
   - `--function-code`
+  - `--sequence-root`
   - `--new-author`
 
-默认 `--context-root` 为 `<agent-root>/context`。若存在 handoff 或当前项可命中，`docx_ref` 可省略；没有 handoff 时，即使存在 batch 文件也应先生成梳理产物。
+默认 `--context-root` 为 `<agent-root>/context`。若存在 handoff 或当前项可命中，`docx_ref` 可省略；没有 handoff 时，可用 batch 文件或明确 `docx_ref` 直接推进 02。
+`--sequence-root` 只作为临时覆盖时序图根目录；未指定时使用共享 `.agent` 与工作区 registry。
 
 ## 共享目录结构
 
 - `.agent/functions/<functionCode>/handoff/development-handoff.json`
 - `.agent/functions/<functionCode>/inputs/{tsd,api-spec,common,response-codes,reference}/...`
+- `.agent/functions/<functionCode>/analysis/sequence-diagrams/{*.puml,*.vsdx,*.svg,*_native_visio_spec.json}`
 - `.agent/context/execution-batch.json`
 - `.agent/context/<functionCode>/execution-state.json`
 - `.agent/context/<functionCode>/api-checklist.json`
@@ -106,14 +112,17 @@ python ".\scripts\write_api_spec.py" `
 ## 完成规则
 
 - 不再写入 `.agent/api-spec-writer`
-- 默认不再以 legacy `.agent/TSD` 作为 02 起点；缺 handoff 时回到梳理技能生成开发输入包
-- `--allow-legacy-input` 是显式兼容开关，只用于历史项目或应急验证，不能作为默认流程
+- 默认优先使用 handoff；缺 handoff 时允许以明确的 `docx_ref` 或 `execution-batch.json` 作为 02 起点
+- `--allow-legacy-input` 是旧调用兼容开关；保留但不再控制是否允许缺 handoff 继续
 - 只更新共享 `execution-state.json`、`api-checklist.json`、`manifest.json` 的 `spec*` 字段和顶层聚合字段
 - 若 `specSourceFingerprint` 变化，必须把对应 API 的 `codeStatus` / `codePhase` 回退为 `pending`
 - `progress.md` 改为 `spec-progress.md`
 - `*_API_Spec.json` 仍只由 spec writer 负责
 - 新生成的 `*_API_Spec.json` 必须同时包含原始 `businessLogic` 和结构化 `codeHandoff`
+- 新生成的 `*_API_Spec.json` 若命中时序图，必须在 `source.sequenceDiagrams[]` 记录 path、kind、sha256、matchedBy、authority，并在 `rawAppendix.sequenceDiagramExtracts[]` 保留可追溯摘要
 - `codeHandoff` 至少包含 `logicFlow`、`queryContracts`、`mappingRules`、`dependencyHints`、`legacyEvidence`、`constraints`、`unresolved`
+- 时序图证据进入 `codeHandoff.legacyEvidence` 时使用 `kind=sequenceDiagram`；由时序图补强的 `logicFlow`、`dependencyHints`、`constraints` 必须引用对应 evidenceId
+- 时序图 hash 必须纳入 `specSourceFingerprint`；若时序图内容变化，后续 04 code 状态必须按现有 source fingerprint 机制回退为 `pending`
 - `codeHandoff` 同时供第 04 步业务代码实现与第 05 步 UT 测试代码/报告生成消费；其中测试意图、DB/SQL runtime validation、fixture 缺口、身份/缓存/外部依赖风险必须能被 `docx-unittest-report` 直接判定证据层级
 - Excel API Detail 的「范例 / 情境说明」区块中每个可解析的 Request / Response 情景都必须完整写入 `mockExamples`；不得只挑成功、失败代表样本，也不得因为多个情景共用同一个 responseCode 就合并或丢弃
 - `mockExamples` 是第 05 步 `docx-unittest-report` 生成 UnitTest / IntegrationTest / Service runtime validation 测试代码与 UT 测报证据的权威情景来源；Excel 中的失败情景、营业日/时间窗情景、必填参数情景即使已写入 `businessLogic.errorCodeRules` 或 `codeHandoff.constraints`，也仍必须保留在 `mockExamples`
@@ -178,3 +187,12 @@ python ".\scripts\write_api_spec.py" `
 - `schemas/api-spec.schema.json`
 - `schemas/manifest.schema.json`
 - `schemas/project-hard-constraints.schema.json`
+
+## Leader Mode
+
+当由 `multi-api-leader` 显式编排时：
+
+- 02 仍由 leader 串行执行并写入共享 `.agent/context/<functionCode>/` 状态。
+- 子 agent 只能做只读 review，例如检查 API contract、字段命名、mockExamples 与 handoff 缺口。
+- 每个 API 的 `*_API_Spec.json`、`manifest.json`、`api-checklist.json` 和 `spec*` 状态只能由 leader 落盘。
+- 若 reviewer 发现 blocking，leader 必须回到设计梳理或 spec 修正，不能让 worker 直接改共享状态。

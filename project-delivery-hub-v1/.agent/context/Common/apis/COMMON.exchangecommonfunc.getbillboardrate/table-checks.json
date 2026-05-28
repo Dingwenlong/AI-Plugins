@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "4.1.0",
+  "skillName": "api-sql-fixture-preparer",
+  "manifestType": "table-checks",
+  "updatedAt": "2026-05-23T19:45:18+08:00",
+  "executionId": "Common",
+  "apiId": "COMMON.exchangecommonfunc.getbillboardrate",
+  "dbTarget": "connection-name:Report",
+  "authorityRoot": "../../.agent/reference/global",
+  "tables": [
+    {
+      "tableRef": "vSPListRate",
+      "resolvedTableName": null,
+      "exists": false,
+      "rowCount": null,
+      "action": "create",
+      "blockReason": "missing_schema_authority",
+      "schemaSql": null,
+      "seedSql": null
+    }
+  ]
+}

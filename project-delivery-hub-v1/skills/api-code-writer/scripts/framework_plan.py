@@ -32,7 +32,7 @@ class FrameworkProfile:
 class FrameworkPlan:
     framework_profile: str
     module_name: str
-    controller_file: str
+    controller_file: str | None
     interface_file: str
     service_files: tuple[str, ...]
     entity_files: tuple[str, ...]
@@ -47,7 +47,7 @@ class FrameworkPlan:
     registration_strategy: str
 
 
-def dedupe_paths(values: list[str]) -> list[str]:
+def dedupe_paths(values: list[str | None]) -> list[str]:
     seen: set[str] = set()
     ordered: list[str] = []
     for value in values:

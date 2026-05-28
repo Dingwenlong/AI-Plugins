@@ -38,6 +38,7 @@ Default participant order remains `User -> APP -> Enterprise -> IRIS -> DB -> Re
 
 - Participants should have visible spacing; lifelines should align cleanly and not stick together.
 - Request arrows and backend-related messages must have readable labels. When a message depends on backend data, show the DB table/API/source name in the message label or nearby note.
+- APP-to-Enterprise or participant-to-participant request arrows that represent an interface/API call must put the full interface address on the first line, for example `ExchangeCommonUtil/GetCommonCurrency` or `Deposit/GetDemandDepositAccounts`, and put the Traditional Chinese business meaning on the second line. Do not use a business-only label such as `取常用幣別` for an API call. This rule applies to main-flow request arrows, not `ref` fragments.
 - Response arrows must describe the returned result. Do not leave a bare `return` or unlabeled arrow.
 - APP popup/reminder content should be written as text, not pasted as a screenshot.
 - Do not place full request/response field lists on arrows. Use business-readable labels and keep full field contracts in API Detail.
@@ -54,11 +55,12 @@ Default participant order remains `User -> APP -> Enterprise -> IRIS -> DB -> Re
 
 ## Common Method References
 
-- CommonFunc/CommonUtil references should be modeled as `ref` blocks, not as ordinary main-flow self-calls or standalone participants.
-- The visible reference self-call notation is fixed by layer: internal CommonFunc uses `CommonFunc.MethodName`; outward CommonUtil keeps `CommonUtil/MethodName`.
-- The visible ref should identify the common method and Chinese description, while the real file name or path can stay in the landing note / trace list.
-- In native VSDX, the ref block may contain the compact reference self-call that identifies the CommonFunc/CommonUtil target plus the pointer strip. It must not contain actual main-flow request, response, return, APP display, or Enterprise business-processing messages.
-- If a normal message or self-call begins with `CommonFunc.` / `CommonFunc/` / `CommonUtil.` / `CommonUtil/`, rewrite it as a ref before delivery.
+- Internal Func/common references should be modeled as `ref` blocks, not as ordinary main-flow self-calls or standalone participants.
+- The visible reference self-call notation identifies the implementation/common method being referenced. Internal Func classes must use dot notation, for example `CommonFunc.GenFntTranSeq`, `ExchangeCommonFunc.GetCommonCurrency`, or `ExchangeCommonFunc.EditCommonCurrency`. Do not use slash notation such as `CommonFunc/GenFntTranSeq` or `ExchangeCommonFunc/EditCommonCurrency` in a `ref`.
+- If the main-flow request calls an external API/wrapper such as `ExchangeCommonUtil/GetCommonCurrency`, do not repeat that wrapper path in the `ref`; the `ref` should show the internal Func/common method called by that API, such as `ExchangeCommonFunc.GetCommonCurrency`.
+- The visible ref should identify the internal common method and Chinese description, while the real file name or path can stay in the landing note / trace list.
+- In native VSDX, the ref block may contain the compact reference self-call that identifies the internal Func/common target plus the pointer strip. It must not contain actual main-flow request, response, return, APP display, external interface address, or Enterprise business-processing messages.
+- If a normal main-flow message/self-call begins with an internal Func/common method name such as `CommonFunc.` or `ExchangeCommonFunc.`, rewrite it as a ref before delivery. External API/wrapper paths such as `CommonUtil/MethodName` or `ExchangeCommonUtil/MethodName` may remain only on real request arrows and must not be used as ref self-call text when an internal Func/common target exists. Internal Func slash paths such as `CommonFunc/MethodName` or `ExchangeCommonFunc/MethodName` are invalid in `ref` and must be rewritten to dot notation.
 
 ## Special Standard Patterns
 
@@ -74,6 +76,6 @@ Before handoff:
 - Every tab has a clear user entry, normally `User -> APP`.
 - Request/response labels are present and business-readable.
 - Backend-related arrows state the backend data source/API where needed.
-- `alt`, `opt`, `ref`, and CommonFunc/CommonUtil usage matches this reference.
+- `alt`, `opt`, `ref`, internal Func/common references, and external API/wrapper request usage matches this reference.
 - User, DB, and Redis visual styles match the DAWHO native baseline.
 - Formal VSDX exists or the blocker is explicitly reported; normal delivery must not say VSDX is only a future optional step.

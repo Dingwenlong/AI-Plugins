@@ -1,0 +1,20 @@
+{
+  "reviewStatus": "passed",
+  "checkedAt": "2026-05-23T19:27:52+08:00",
+  "apiId": "COMMON.commonfunc.isintradedate",
+  "source": {
+    "tsdFile": "TSD.Common_封存TSD共用开发链路_v1.0_20260523.docx",
+    "workbookFile": "NEWDA_Method_DETAIL_ExchangeCommonFunc_20260522.xlsx",
+    "sheetNames": [
+      "IsInTradeDate判斷當前時間是否為正常交易時間"
+    ]
+  },
+  "summary": {
+    "checks": 38,
+    "matched": 38,
+    "matchPct": 100.0,
+    "blockingCount": 0,
+    "warningCount": 0
+  },
+  "findings": []
+}
