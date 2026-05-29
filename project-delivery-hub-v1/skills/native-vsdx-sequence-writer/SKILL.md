@@ -1,5 +1,5 @@
 ---
-name: 专案交付中枢：【交付文件】专案原生 VSDX 时序图生成器
+name: native-vsdx-sequence-writer
 description: 生成或修正正式交付用的原生可编辑 Visio VSDX 时序图。按冻版 PRD、TSD、API Detail 产出 native VSDX，并保留 PlantUML/SVG 作为文本草稿、视觉参考或降级输出；重点验证 native shapes、lifeline、alt/ref/opt/group 与可编辑性。关键词：VSDX、Visio、sequence diagram、PlantUML、native validation。
 ---
 

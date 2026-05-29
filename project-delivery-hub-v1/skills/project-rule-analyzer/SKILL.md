@@ -1,5 +1,5 @@
 ---
-name: 专案交付中枢：【资料准备】专案规则分析器
+name: project-rule-analyzer
 description: 把专案规范文件转换成可被交付链读取的规则库。分析 Word、Excel、Markdown、JSON 规则文件，抽取可复核规则，写入 `.agent/project-rules/<workspaceKey>` 的 JSON/Markdown 产物并更新 catalog；legacy/加密 Word 只记录可读性状态，不凭空生成规则。关键词：project-rules、catalog、规则抽取、sourceHash。
 ---
 

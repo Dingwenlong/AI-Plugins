@@ -1,5 +1,5 @@
 ---
-name: 专案交付中枢：【开发落地】API 业务代码写入器
+name: api-code-writer
 description: 把已完成的 API Spec 落成 .NET 业务代码。第 04 步：在已绑定唯一 `.sln` 的工作区读取共享 `.agent/context/{functionCode}/`、`*_API_Spec.json` 与 `codeHandoff`，实现 Controller / Service / Entity 等业务代码并交接测试计划；不生成 UnitTest / IntegrationTest 测试源码。关键词：Controller、Service、Entity、change-plan、codeStatus。
 ---
 

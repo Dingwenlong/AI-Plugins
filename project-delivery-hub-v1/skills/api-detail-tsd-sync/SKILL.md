@@ -1,5 +1,5 @@
 ---
-name: 专案交付中枢：【设计梳理】专案需求接口设计梳理
+name: api-detail-tsd-sync
 description: 把 PRD、TSD 与 API Detail 梳理成可开发的 API 设计交接。用于比对 API contract、统一字段/API 命名、维护 Api_List/后端来源、产出功能设计梳理与开发就绪判断；也判断时序图影响，并在接近冻版时物化 handoff 给第 02 步 API 规格生成。多文件或 Office 交付物写入时作为 Design Leader 产出 edit plan/file claim，由 Office 交付文件编辑器执行 .docx/.xlsx 物理保存。关键词：PRD、TSD、API Detail、功能设计梳理、开发就绪、handoff、Design Leader、office-edit-plan。
 ---
 

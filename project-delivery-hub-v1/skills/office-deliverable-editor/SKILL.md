@@ -1,5 +1,5 @@
 ---
-name: 专案交付中枢：【交付文件】专案 Office 交付文件编辑器
+name: office-deliverable-editor
 description: 专门执行 TSD Word、API Detail Excel、CommonFunc/CommonUtil Excel、Response Code 等交付 Office 文件的物理写入、保存与复验。接收 Design Leader、格式检查器或用户明确给出的 office-edit-plan/file claim，只修改被 claim 的 .docx/.xlsx 文件，回报 modifiedFiles、摘要、验证命令、风险；不裁决业务语义、不判断格式规则、不写 handoff 或共享 .agent 状态。关键词：Word 编辑、Excel 编辑、office-edit-plan、DOCX、XLSX、modifiedFiles、file claim。
 ---
 

@@ -1,5 +1,5 @@
 ---
-name: 专案交付中枢：【测试验收】API 测试代码与单元测试报告生成器
+name: docx-unittest-report
 description: 生成 API 测试代码并写回 DOCX UT 测试报告。可选第 05 步：消费第 04 步测试交接，生成或维护 UnitTest / IntegrationTest / Service runtime validation，也可校验 Postman MCP 真实接口调用证据，执行或读取 `.trx`、代码检查、请求/响应 JSON 与状态截图，并输出 `{functionCode}_API_UT 测试报告 {yyyyMMdd}.docx`；不默认修改生产业务代码。关键词：UT 报告、TRX、mockExamples、testCodeHandoff、Postman MCP、真实接口调用。
 ---
 

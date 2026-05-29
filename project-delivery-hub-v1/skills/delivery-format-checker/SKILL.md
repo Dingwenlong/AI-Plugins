@@ -1,5 +1,5 @@
 ---
-name: 专案交付中枢：【交付文件】专案交付文件格式检查器
+name: delivery-format-checker
 description: 检查 TSD Word 与 API Excel 的交付格式，产出格式问题清单、office-edit-plan 与验收结论。用于文件命名、章节/工作表结构、必要表格、可见栏位、字体、对齐、繁体中文、版面与视觉 QA；实际 .docx/.xlsx 写入交给专案 Office 交付文件编辑器；不判断业务逻辑、接口语义或字段业务含义。关键词：TSD DOCX、API XLSX、格式检查、office-edit-plan、视觉 QA。
 ---
 

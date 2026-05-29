@@ -1,5 +1,5 @@
 ---
-name: 专案交付中枢：【开发落地】SQL 测试资料准备器
+name: api-sql-fixture-preparer
 description: 为依赖 SQL 的 API 按 `.agent` 私有 SQL Server 目标配置准备表结构与最小测试数据。可选第 03 步：读取 `*_API_Spec.json` 与 `codeHandoff.queryContracts`，识别 SQL 表依赖，检查或补齐 schema/seed；无权威 schema、连接或安全边界不清时阻塞，供第 04 步接续执行。关键词：SQL fixture、queryContracts、schema、seed、fixtureStatus。
 ---
 

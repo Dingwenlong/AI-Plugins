@@ -1,5 +1,5 @@
 ---
-name: 专案交付中枢：【设计梳理】专案设计反馈修改协调器
+name: design-feedback-fix-coordinator
 description: 处理明确由客户、SA、IT review 或问题单反馈引发的设计交付物修正。读取反馈邮件/问题清单/TSD 客户反馈，识别 TSD、API Detail、CommonFunc、CommonUtil、Response Code、梳理稿、handoff 与时序图影响，复用「专案需求接口设计梳理」的 Design Leader 语义判断与多文件 file-claim 编排；涉及 Word/Excel 写入时转交 Office 交付文件编辑器；不复制 API contract 规则，不直接绘制 VSDX。关键词：反馈修改、TSD 问题、客户反馈、design-change-plan、file-claims、office-edit-plan、Design Leader。
 ---
 

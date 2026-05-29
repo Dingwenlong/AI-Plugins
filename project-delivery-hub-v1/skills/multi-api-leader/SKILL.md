@@ -1,5 +1,5 @@
 ---
-name: 专案交付中枢：【流程编排】单功能多接口并行交付领导者
+name: multi-api-leader
 description: 显式 leader 入口，用当前对话统筹一支 functionCode 下多个 API 的 01-05 交付流程；负责设计冻版复核、子 agent 分工、文件 claim、串行共享状态写入、最终需求符合性鉴定。关键词：multi-api leader、sub-agent、orchestration、file-claims、final-assessment。
 ---
 

@@ -1,5 +1,5 @@
 ---
-name: 专案交付中枢：【插件运维】专案交付中枢插件打包器
+name: plugin-packager
 description: 打包、发布并同步 `project-delivery-hub-v1` 插件。仅用于插件维护任务：刷新 `company-jimmy` 本机维护版、`company-dev` 开发测试版或显式配置的 Codex 缓存，套用 `references/package-targets.json` 中的 plugin URI 与 marketplace 规则，并随包携带集中 `.agent`、主流程图、技能/.agent 架构图与工作区结构树；不处理客户 TSD 交付包。关键词：plugin package、company-jimmy、company-dev、agent bundle、cache sync。
 ---
 
