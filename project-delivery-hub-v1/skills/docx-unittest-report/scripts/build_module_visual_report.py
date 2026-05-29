@@ -36,7 +36,8 @@ except ImportError as exc:
     ) from exc
 
 from chain_workspace import resolve_chain_workspace, update_chain_status, write_workspace_snapshot
-from docx_report_utils import resolve_current_login_display_name, today_slash
+from docx_report_utils import today_slash
+from feature_tester_map import resolve_feature_tester_name
 from project_rules import resolve_asset_path
 from trx_result_utils import build_test_lookup, find_latest_trx, parse_trx
 
@@ -44,7 +45,6 @@ from trx_result_utils import build_test_lookup, find_latest_trx, parse_trx
 DEFAULT_TEMPLATE_DOCX = (
     Path(__file__).resolve().parents[1] / "assets" / "API_UT自測報告模板_v3.5_20260512.docx"
 )
-FEATURE_TESTER_MAP_JSON = Path(__file__).resolve().parents[1] / "assets" / "feature-tester-map.json"
 DEFAULT_REPORT_FONT_NAME = "微軟正黑體"
 
 
@@ -1230,28 +1230,6 @@ def infer_function_display_name(function_code: str, execution_state: dict[str, A
     return f"{function_code} 功能模組"
 
 
-def load_feature_tester_map(path: Path = FEATURE_TESTER_MAP_JSON) -> dict[str, str]:
-    project_path = resolve_asset_path("featureTesterMap", fallback=path)
-    if project_path is not None:
-        path = project_path
-    if not path.exists():
-        return {}
-    payload = load_json(path)
-    mapping = payload.get("mapping")
-    if not isinstance(mapping, dict):
-        return {}
-    return {
-        normalize_text(feature_id).casefold(): normalize_text(tester_name)
-        for feature_id, tester_name in mapping.items()
-        if normalize_text(feature_id) and normalize_text(tester_name)
-    }
-
-
-def resolve_feature_tester_name(function_code: str) -> str:
-    tester_name = load_feature_tester_map().get(normalize_text(function_code).casefold())
-    return tester_name or resolve_current_login_display_name()
-
-
 def unique_cells(row: Any) -> list[Any]:
     result: list[Any] = []
     seen: set[int] = set()
@@ -2175,7 +2153,7 @@ def build_module_visual_report(
             legacy_overall_image.unlink()
 
     current_date = today_slash()
-    tester_name = resolve_feature_tester_name(function_code) if (compact_template or categorized_template) else resolve_current_login_display_name()
+    tester_name = resolve_feature_tester_name(function_code)
     update_standalone_date_paragraphs(document, current_date)
     replace_document_placeholders(
         document,

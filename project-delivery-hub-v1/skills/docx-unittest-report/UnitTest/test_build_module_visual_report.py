@@ -5,6 +5,7 @@ import subprocess
 import sys
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 from docx import Document
 from docx.enum.table import WD_CELL_VERTICAL_ALIGNMENT, WD_TABLE_ALIGNMENT
@@ -144,6 +145,7 @@ def create_module_context(workspace: Path) -> Path:
     repo_root = workspace / "repo"
     context_root = repo_root / ".agent" / "context" / "M.001"
     context_root.mkdir(parents=True, exist_ok=True)
+    write_json(repo_root / ".agent" / "config" / "feature-tester-map.json", {"mapping": {"M.001": "Kelly"}})
     write_json(
         context_root / "api-checklist.json",
         {
@@ -219,9 +221,52 @@ def create_module_context(workspace: Path) -> Path:
 
 class BuildModuleVisualReportTests(unittest.TestCase):
     def test_resolve_feature_tester_name_uses_project_plan_map(self) -> None:
-        self.assertEqual(resolve_feature_tester_name("B.003"), "Kelly")
-        self.assertEqual(resolve_feature_tester_name("N.001.001"), "Emily")
-        self.assertEqual(resolve_feature_tester_name("N.006"), "Emily")
+        workspace = temp_dir()
+        agent_map = workspace / ".agent" / "config" / "feature-tester-map.json"
+        agent_map.parent.mkdir(parents=True, exist_ok=True)
+        write_json(
+            agent_map,
+            {
+                "mapping": {
+                    "B.003": "Kelly",
+                    "N.001.001": "Emily",
+                    "N.006": "Emily",
+                }
+            },
+        )
+        config = {
+            "defaultWorkspace": "LOCAL",
+            "workspaces": {
+                "LOCAL": {
+                    "workspaceRoot": workspace.as_posix(),
+                    "agentRoot": ".agent",
+                }
+            },
+        }
+
+        with patch("project_rules.load_workspace_config", return_value=(config, workspace / "local-workspaces.json")):
+            self.assertEqual(resolve_feature_tester_name("B.003"), "Kelly")
+            self.assertEqual(resolve_feature_tester_name("N.001.001"), "Emily")
+            self.assertEqual(resolve_feature_tester_name("N.006"), "Emily")
+
+    def test_resolve_feature_tester_name_blocks_when_agent_map_missing_feature(self) -> None:
+        workspace = temp_dir()
+        agent_map = workspace / ".agent" / "config" / "feature-tester-map.json"
+        agent_map.parent.mkdir(parents=True, exist_ok=True)
+        write_json(agent_map, {"mapping": {"B.003": "Kelly"}})
+        config = {
+            "defaultWorkspace": "LOCAL",
+            "workspaces": {
+                "LOCAL": {
+                    "workspaceRoot": workspace.as_posix(),
+                    "agentRoot": ".agent",
+                }
+            },
+        }
+
+        with patch("project_rules.load_workspace_config", return_value=(config, workspace / "local-workspaces.json")):
+            with self.assertRaises(SystemExit):
+                resolve_feature_tester_name("N.001.001")
 
     def test_build_module_visual_report_generates_docx_and_pngs(self) -> None:
         workspace = temp_dir()

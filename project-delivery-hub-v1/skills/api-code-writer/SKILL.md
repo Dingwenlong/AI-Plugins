@@ -1,5 +1,5 @@
 ---
-name: 【开发落地】API 业务代码写入器
+name: 专案交付中枢：【开发落地】API 业务代码写入器
 description: 把已完成的 API Spec 落成 .NET 业务代码。第 04 步：在已绑定唯一 `.sln` 的工作区读取共享 `.agent/context/{functionCode}/`、`*_API_Spec.json` 与 `codeHandoff`，实现 Controller / Service / Entity 等业务代码并交接测试计划；不生成 UnitTest / IntegrationTest 测试源码。关键词：Controller、Service、Entity、change-plan、codeStatus。
 ---
 
@@ -29,7 +29,7 @@ python "<pluginRoot>\references\resolve_project_rule_pack.py" `
 
 这个技能不绑定固定前置步骤名称。只要共享 `.agent/context` 中已经存在可消费的 `spec*` 状态、`manifest.json` 与 `*_API_Spec.json`，就可以直接进入 code writer；不要求调用者必须先显式经过某个特定命名的上游 workflow / skill。
 
-进入 code writer 前不强制先执行 `skills/api-sql-fixture-preparer/SKILL.md`。默认允许先跑 `prepare` 产出 `change-plan.json` 并开始 AI 改码；若目标 API 后续验证依赖 SQL fixture，再于 `apply` 前补执行 fixture。若 `apply` 时 `fixtureStatus` 仍非 `done|skipped`，则应回报 `waiting_fixture`，提示先补 fixture。
+进入 code writer 前不强制先执行 `skills/api-sql-fixture-preparer/SKILL.md`。默认先跑 `prepare` 产出 `change-plan.json`、`implementation-template.md` 与 `implementation-template.json`；用户审阅或修改 Markdown 后，必须再跑 `--execution-mode confirm` 锁定当前范本，AI 才能开始真实改码。若目标 API 后续验证依赖 SQL fixture，再于 `apply` 前补执行 fixture。若 `apply` 时 `fixtureStatus` 仍非 `done|skipped`，则应回报 `waiting_fixture`，提示先补 fixture。
 
 `prepare` 内建承担 precheck 的职责：会直接解析目标仓库框架槽位、模块落点、依赖、风险与验证命令，并生成 `change-plan.json`。因此这一步不依赖 `workflow-develop-precheck` 或其它外部 precheck skill。
 
@@ -40,10 +40,12 @@ python "<pluginRoot>\references\resolve_project_rule_pack.py" `
 `api-code-writer` 现在是 **AI 编排运行时**，不是 deterministic code generator：
 
 1. `prepare` 只负责共享状态整理、依赖解析、计划产出与状态回写
-2. AI 必须根据 `change-plan.json`、`*_API_Spec.json`、框架说明与示例项目，直接修改目标仓库业务代码
-3. `apply` 只接受 AI 已落盘的真实改动，负责检测修改文件、执行验证、产出报告并回写状态
-4. 脚本不得再把 `queryContracts / mappingRules / legacyEvidence` 渲染成注释式 stub 代码
-5. 脚本与 AI 都不得在第 04 步产出测试源码；测试源码生成、测试执行证据整理和 Word UT 测报由第 05 步负责
+2. `prepare` 必须同时生成三层落码范本：项目结构、代码文件、文件内方法；确认前 AI 不得修改目标仓库业务代码
+3. 用户确认或修改范本后运行 `--execution-mode confirm`，由脚本记录 Markdown hash；若确认后 Markdown 再被修改，`apply` 必须阻塞并要求重新确认
+4. AI 必须根据已确认的 `implementation-template.md`、`change-plan.json`、`*_API_Spec.json`、框架说明与示例项目，直接修改目标仓库业务代码
+5. `apply` 只接受 AI 已落盘的真实改动，负责检测修改文件、执行验证、产出报告并回写状态
+6. 脚本不得再把 `queryContracts / mappingRules / legacyEvidence` 渲染成注释式 stub 代码
+7. 脚本与 AI 都不得在第 04 步产出测试源码；测试源码生成、测试执行证据整理和 Word UT 测报由第 05 步负责
 
 当专案规则库或 API Spec 指向 `EnterpriseAPI` 工作区 profile 时，落码规则固定为：
 
@@ -58,29 +60,33 @@ python "<pluginRoot>\references\resolve_project_rule_pack.py" `
 1. 先调用 `scripts/write_api_code.py --execution-mode prepare`
 2. 默认读取集中 `.agent/context/execution-batch.json`；未配置集中 `.agent` 时回退 `<project-root>/.agent/context/execution-batch.json`
 3. 默认落到 `.agent/context/<functionCode>/`
-4. 读取 `change-plan.json` 后，AI 必须直接在目标仓库修改真实业务代码；脚本只负责 prepare/apply 编排，不代写 Controller / Service，也不写测试源码
-5. 若目标 API 依赖 SQL fixture，且尚未执行或结果未达 `done|skipped`，则在 `apply` 前补执行 `skills/api-sql-fixture-preparer/SKILL.md`
-6. 代码改完后，再调用 `scripts/write_api_code.py --execution-mode apply`
-7. 若未指定 `--api-id`，一次只推进一支 `specStatus=done` 且 `codeStatus` eligible 的 API；`prepare` 不以 `fixtureStatus` 作为入口门槛
-8. 每次运行结束后，必须读取共享 `execution-state.json` 与 `api-checklist.json` 向用户汇报结果
-9. 在生成 `change-plan.json` 前必须先完成 `logic resolution`，显式解析 `queryContracts / mappingRules / dependencyHints / legacyEvidence / constraints`
-10. 在生成 `change-plan.json` 时必须先完成专案开发规范选择：先判 `audienceProfile`，再查专案规则库 catalog 指定的开发规范 catalog，只选择必要的 `devGuidelineRulesSelected` 与 `devGuidelineLoadHints`；不得整本加载规范
-11. 若同目录存在 `review-notes.json`，`prepare` 必须先合并评审约束，再生成 `change-plan.json.analysis.reviewConstraintsSelected / fileRequirements / responseLifecycleRules / failureDisposition / languagePolicy`
-12. 对 `EnterpriseAPI`，默认映射到固定业务槽位：
+4. 读取 `implementation-template.md` 并让用户确认；用户若改 Markdown，只需改这个文件，不要手改同目录 JSON
+5. 用户确认或改完范本后，调用 `scripts/write_api_code.py --execution-mode confirm`
+6. `confirm` 通过后，AI 才能按已确认范本直接在目标仓库修改真实业务代码；脚本只负责 prepare/confirm/apply 编排，不代写 Controller / Service，也不写测试源码
+7. 若目标 API 依赖 SQL fixture，且尚未执行或结果未达 `done|skipped`，则在 `apply` 前补执行 `skills/api-sql-fixture-preparer/SKILL.md`
+8. 代码改完后，再调用 `scripts/write_api_code.py --execution-mode apply`
+9. 若未指定 `--api-id`，一次只推进一支 `specStatus=done` 且 `codeStatus` eligible 的 API；`prepare` 不以 `fixtureStatus` 作为入口门槛
+10. 每次运行结束后，必须读取共享 `execution-state.json` 与 `api-checklist.json` 向用户汇报结果
+11. 在生成 `change-plan.json` 前必须先完成 `logic resolution`，显式解析 `queryContracts / mappingRules / dependencyHints / legacyEvidence / constraints`
+12. 在生成 `change-plan.json` 时必须先完成专案开发规范选择：先判 `audienceProfile`，再查专案规则库 catalog 指定的开发规范 catalog，只选择必要的 `devGuidelineRulesSelected` 与 `devGuidelineLoadHints`；不得整本加载规范
+13. 若同目录存在 `review-notes.json`，`prepare` 必须先合并评审约束，再生成 `change-plan.json.analysis.reviewConstraintsSelected / fileRequirements / responseLifecycleRules / failureDisposition / languagePolicy`
+14. 对 `EnterpriseAPI`，默认映射到固定业务槽位：
    - `API/EnterpriseAPI/EnterpriseAPI/Controllers/<Module>Controller.cs`
    - `BusinessLogicLayout/EnterpriseApi/EnterpriseApiBusiness.Interface/I<Module>Service.cs`
    - `BusinessLogicLayout/EnterpriseApi/EnterpriseApiBusiness/<Module>/<Module>Service.cs`
    - `BusinessLogicLayout/EnterpriseApi/EnterpriseApiBusiness/<Module>/<Module>Service.<ApiName>.cs`
    - `BusinessLogicLayout/EnterpriseApi/EnterpriseApiEntity/<Module>/...Info.cs`
    - 测试目标文件仅写入 `testCodeHandoff` / `change-plan.json.analysis.unitTestTargetFiles` / `change-plan.json.analysis.integrationTestTargetFiles`，例如 `Test/UnitTesting/...` 与 `Test/IntegrationTesting/...`；不得由第 04 步创建或修改
-13. NEWDAWHO 当前 `P240301Git` 布局下，若 `apiCategory=CommonFunc` 且存在 `Libray/Sinopac.CommonFunc/Sinopac.CommonFunc.csproj`，必须强制使用 CommonFunc 类库落点：
+15. 若专案采用多项目分层架构，必须先按功能类别、专案规则库和仓库既有项目分层判断落点，再生成 Controller / Service / Entity / Common 类库计划。不得只按 API 名称或单一 `EnterpriseAPI` profile，把所有功能都写进同一个项目。
+16. NEWDAWHO 当前 `P240301Git` 布局下，若 `apiCategory=CommonFunc` 且存在 `Libray/Sinopac.CommonFunc/Sinopac.CommonFunc.csproj`，必须强制使用 CommonFunc 类库落点：
    - `Libray/Sinopac.CommonFunc/IFuncService/ICommonFuncService.cs`
    - `Libray/Sinopac.CommonFunc/FuncService/CommonFuncService.cs`
    - `Libray/Sinopac.CommonFunc/FuncService/CommonFuncService.<ApiName>.cs`
    - `Libray/Sinopac.CommonFunc/Dto/<ApiName>Info.cs`
    - `Libray/Sinopac.CommonFunc/ResponseCodes/O_Common.resx`
    - `controllerFile` 必须为空，`codeTargetFiles` 不得包含 `CommonFuncController`，也不得再落到 `EnterpriseApiBusiness/CommonFunc`
-14. `CommonUtil` 仍保留 EnterpriseAPI Controller / Service 结构；第 04 步只允许为了编译引用 CommonFunc DTO / interface 调整 namespace，不得把 CommonUtil 搬入 `Sinopac.CommonFunc`
+17. NEWDAWHO 的 `CommonFunc` 是实现类库，承载可复用业务方法；`CommonUtil` 是对外调用入口，用来包装并暴露 `CommonFunc` 能力。若某 API 内部逻辑需要调用 CommonFunc，而目标方法尚不存在，第 04 步必须把 CommonFunc 内部方法也列入落码范本和 `codeTargetFiles`；不得只写 CommonUtil 外壳。内部方法调用 CommonFunc 时按方法调用处理，不视为外部 API 调用。
+18. `CommonUtil` 仍保留 EnterpriseAPI Controller / Service 结构；第 04 步只允许为了编译引用 CommonFunc DTO / interface 调整 namespace，不得把 CommonUtil 搬入 `Sinopac.CommonFunc`
 10. 先复用共享抽象，再补模块代码：若仓库已有 `CommonStatic`、共用 helper、response factory、header 解析器、错误码封装或 SQL executor 包装，不得在单个 service 内重复新增同类 helper
 11. 对 `TransactionResult<T>` 封装，优先复用公共 factory；不得在每个 service 内重复创建 `BuildSuccess` / `BuildFailure` 之类的局部方法，除非该 helper 明确包含模块专属业务语义
 12. 不得为单支 API 落码便利而预支公共抽象；只有仓库已存在同类模式，或至少 2 个 API / 模块会明确复用时，才允许新增 `CommonStatic` 级 SQL executor、response helper 或其它基础设施包装
@@ -106,6 +112,7 @@ python "<pluginRoot>\references\resolve_project_rule_pack.py" `
 系统设计规范 v2.5 的开发落码补充规则：
 
 - 外部资源交互场景默认使用 async/await，包括 HTTP、Database、webservice、文件读写、FTP、上传下载、Email 等；方法名应以 `Async` 为后缀，返回 `Task` 或 `Task<T>`，调用异步方法不得使用 `.Result`。
+- NEWDAWHO 专案反向约束：没有 DB、HTTP、Redis、文件、网络、外部服务等异步操作的方法，不得为了统一样式强行返回 `Task` / `Task<T>`，也不得加 `Async` 后缀。
 - 资料检索代码必须遵守系统设计规范 v2.5 的 `数据检索顺序`，以及 handoff 中的 `dataRetrievalOrder` 或同等说明。若 DB/cache/API 优先级、cache miss、资料不一致或权威来源未定义，code writer 必须阻塞或标记 handoff gap，不得自行决定检索顺序。
 - Redis key 落码必须先确认简易模式共享 Hash/Member 生命周期或进阶模式自定义 Key；自定义 Key 只能使用 `[A-Za-z0-9]`、`_`、`:`，不得包含空格、换行、百分号等特殊字符，且不得包含身份证号、完整卡号、密码等敏感资料。
 - Appsetting 落码必须使用 `appsettings.{Environment}.json` 既有环境文件规则；配置 Section/Key 使用 PascalCase 与层级化 JSON。第三方服务配置量超过 50 个时，应依 handoff 或既有仓库模式拆到独立配置文件；缺少依据时不得自行新建随意命名的配置文件。
@@ -133,6 +140,8 @@ python "<pluginRoot>\references\resolve_project_rule_pack.py" `
 50. 对服务层中的 SQL 语句，默认使用 C# Raw String Literals（`"""`）语法；不要再生成 `@"..."` 逐行 SQL 字面量
 51. 使用 Raw String Literals 时，SQL 必须按关键字换行并保持可读布局，例如 `SELECT` / `FROM` / `WHERE` / `INSERT INTO` / `VALUES` / `UPDATE` / `SET` 各自独立成段，不要压成单行或半行拼接
 52. 对 `FROM` / `LEFT JOIN` / `INNER JOIN` / `WHERE` 这类 SQL 主子句，默认采用“关键字单独成行，下一行再放表名、连接目标或条件主体”的版式；不要生成 `FROM Table`、`LEFT JOIN Table`、`WHERE Condition` 这种挂尾式写法
+53. 服务层 SQL 变量默认写成 `var sql = """ ... """;`。`SELECT` 字段一行一个，第二个字段开始逗号放在字段行前；字段引用默认使用 `表名.字段名` 或 `别名.字段名`，避免裸字段造成来源不清。
+54. SQL 中不得出现 `dbo.`。若 legacy evidence 明确带 schema，不能直接照抄到新 SQL；必须在落码范本或诊断中说明 schema 来源和沿用理由，等待用户确认后才可处理。
 53. 对 `partial` service / controller 的分拆实现文件，必须自行补齐本文件实际用到的 `using`；像 `ILogger.LogError` / `LogWarning` 这类 extension method 不得假设会从同名主文件透进来，若当前文件直接调用扩展方法，必须显式引入 `Microsoft.Extensions.Logging`
 54. 对 C# `file` local type，只有在该类型不会出现在非 `file` local 类型的成员签名中时才允许使用；若 helper type 会出现在 `Service` / `Controller` 的方法返回型别、参数、局部集合型别或私有方法签名中，必须改为类内 `private` / `internal` nested type，或改为同文件非 `file` local 顶层型别
 55. 对集合空值回退与 `??` 运算，左右两侧型别必须保持一致；若左侧是 `List<T>` 就使用 `[]` 或 `new List<T>()`，若左侧是 `IReadOnlyList<T>` 就统一投影成相同接口型别，不得生成 `List<T> ?? T[]` 这种会触发 `CS0019` 的组合
@@ -144,6 +153,7 @@ python "<pluginRoot>\references\resolve_project_rule_pack.py" `
 61. 文件级头部说明属于 `Controller`、`Service`、`Entity`、`Runtime`、`Validation` 等业务源码的共同约束；类型 XML 注释不能替代文件头规则。`UnitTest`、`IntegrationTest` 文件头由第 05 步负责。
 62. 对 service / helper 方法中的非直观逻辑，默认补“分段说明型”行内注释；尤其是身份上下文解析、缓存命中与回退、唯一性校验、写库分支、异常回退、跨来源判定前后，都应在代码块前给出一句注释
 63. 方法内部注释必须解释“为什么这里这样做”或“这一段在业务上承担什么职责”，不要写成逐行复述；像 `// 赋值给变量`、`// 调用方法` 这类废话注释禁止生成
+64. 中文注释必须自然、通俗、像维护者会写的话；避免英文直译腔、抽象空话和 AI 感强的表达。不要写“执行资料获取以进行后续处理”这类拗口句，应改成“先查出资料，后面组回传结果会用到”。
 64. 若逻辑只是简单 getter / setter / 单行转发，可不写方法内部注释；只有多分支、跨依赖、易误解或需要维护者快速建立上下文的代码块才要求补注释
 65. 对 SQL 前置判定，优先在 SQL 之前说明“为何先查缓存 / 为何先判重复 / 为何根据存在性决定 insert/update”，而不是在每一行 SQL 参数旁重复解释
 66. 对 `Service` 实现方法，若 `API_Spec.json` 或 `change-plan.json.analysis.businessSteps` 已提供大逻辑步骤，只有直接映射到这些 Spec 步骤的代码块才使用 `step + title` 的编号式注释，例如 `// 1. 操作邏輯：...`、`// 2. DB執行sql語句：...`
@@ -173,6 +183,18 @@ python ".\scripts\write_api_code.py" `
   --workspace-key "PROJECT" `
   --solution-path "D:\Repo\Project\App.sln" `
   --execution-mode "prepare"
+```
+
+用户审阅或修改 `implementation-template.md` 后确认范本：
+
+```powershell
+python ".\scripts\write_api_code.py" `
+  --project-root "D:\Repo\Project" `
+  --workspace-key "PROJECT" `
+  --solution-path "D:\Repo\Project\App.sln" `
+  --function-code "D.006" `
+  --api-id "D.006.deposit.addexchangedepositinit" `
+  --execution-mode "confirm"
 ```
 
 ```powershell
@@ -243,6 +265,8 @@ powershell -ExecutionPolicy Bypass `
 - `.agent/context/<functionCode>/apis/<apiId>/manifest.json`
 - `.agent/context/<functionCode>/apis/<apiId>/{functionCode}_API_Spec.json`
 - `.agent/context/<functionCode>/apis/<apiId>/change-plan.json`
+- `.agent/context/<functionCode>/apis/<apiId>/implementation-template.md`
+- `.agent/context/<functionCode>/apis/<apiId>/implementation-template.json`
 - `.agent/context/<functionCode>/apis/<apiId>/implementation-report.md`
 - `.agent/context/<functionCode>/apis/<apiId>/diagnosis-report.json`
 - `.agent/context/<functionCode>/apis/<apiId>/review-notes.json`
@@ -277,7 +301,9 @@ powershell -ExecutionPolicy Bypass `
 - 若涉及缓存，`change-plan.json.analysis` 必须额外写明 `cacheKeysUsed`, `cacheRole(cache|session|source_of_truth)`, `authoritativeStore`, `cacheTtl`, `cacheRefreshPolicy`, `cacheInvalidationPolicy`, `nullCachingPolicy`, `consistencyModel`, `staleReadRisk` 与 `cacheFallbackPolicy`
 - 若涉及请求 DTO 校验，`change-plan.json.analysis` 必须额外写明 `requestValidationPlan`, `dtoAttributeRules`, `customValidationAttributesNeeded`, `validationResponseMappingMode`, `serviceValidationsRetained` 与 `validationInfrastructureGap`
 - `prepare` 只允许生成 change-plan 与状态文件；不得直接创建或改写业务代码文件
-- `apply` 必须基于 AI 已写入的真实仓库改动；如果未检测到真实改动，必须阻塞
+- `prepare` 还必须生成三层 `implementation-template.md` 与机器锁 `implementation-template.json`；用户只改 Markdown，不手改 JSON
+- `confirm` 必须锁定当前 Markdown hash；确认后若 Markdown 又被修改，`apply` 必须以 `template_modified_after_confirmation` 阻塞
+- `apply` 必须基于已确认范本和 AI 已写入的真实仓库改动；如果未确认范本或未检测到真实改动，必须阻塞
 - 默认验证策略：显式 `validation-check` 优先；未提供时 `EnterpriseAPI` 固定执行 API build，并可运行仓库既有 unit test / integration test 作为回归验证；第 04 步不得为了通过验证而新增或修改测试源码。默认 API build、unit test、integration test 都必须使用 `-m:1` 降低 MSBuild 并行度，测试项目默认正常 build/test，不使用 `--no-build` 依赖既有 DLL
 - Windows 下显式 `validation-check` 必须在命令字符串内部使用双引号包住含空格路径，例如 `dotnet build "D:\Repo\App.csproj"`；不要把 PowerShell 单引号路径直接塞进 `validation-check`
 - Windows 下手工验证或显式验证若需要固定清理常驻进程，优先调用 `scripts/dotnet-stable-verify.ps1`；需要强制清理 `dotnet` 进程时显式传入 `-KillDotnet`

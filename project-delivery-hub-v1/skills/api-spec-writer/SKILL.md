@@ -1,5 +1,5 @@
 ---
-name: 【开发落地】API 规格写入器
+name: 专案交付中枢：【开发落地】API 规格写入器
 description: 把功能 handoff、明确 TSD 输入或 execution-batch 转成可供开发消费的 API Spec JSON。第 02 步：优先从 `.agent/functions/<functionCode>/handoff` 与 inputs 生成 `{functionCode}_API_Spec.json`，缺少 handoff 时可直接消费 docx_ref / execution-batch，回写共享 `.agent/context` 的 `spec*` 状态。关键词：API_Spec.json、codeHandoff、mockExamples、specStatus。
 ---
 

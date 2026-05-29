@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import re
@@ -14,6 +15,7 @@ from typing import Any, Iterable
 
 
 SCHEMA_VERSION = "1.0.0"
+TEMPLATE_STATUS_APPROVED = "approved"
 
 CODE_FILE_KEYS = {
     "codeTargetFiles",
@@ -65,6 +67,40 @@ def write_json(path: Path, data: Any) -> None:
     with path.open("w", encoding="utf-8", newline="\n") as handle:
         json.dump(data, handle, ensure_ascii=False, indent=2)
         handle.write("\n")
+
+
+def sha256_file(path: Path) -> str | None:
+    if not path.exists():
+        return None
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return f"sha256:{digest.hexdigest()}"
+
+
+def change_plan_fingerprint(change_plan: dict[str, Any]) -> str:
+    analysis = json.loads(json.dumps(change_plan.get("analysis") or {}, ensure_ascii=False))
+    if isinstance(analysis, dict):
+        analysis.pop("resumedFromPhase", None)
+    stable_payload = {
+        "schemaVersion": change_plan.get("schemaVersion"),
+        "skillName": change_plan.get("skillName"),
+        "manifestType": change_plan.get("manifestType"),
+        "executionId": change_plan.get("executionId"),
+        "apiId": change_plan.get("apiId"),
+        "projectRoot": change_plan.get("projectRoot"),
+        "solutionPath": change_plan.get("solutionPath"),
+        "upstream": change_plan.get("upstream") or {},
+        "sourceCandidates": change_plan.get("sourceCandidates") or [],
+        "repoDriftDetected": bool(change_plan.get("repoDriftDetected")),
+        "repoDriftFiles": change_plan.get("repoDriftFiles") or [],
+        "beforeHashes": change_plan.get("beforeHashes") or {},
+        "analysis": analysis,
+        "validationChecks": change_plan.get("validationChecks") or [],
+    }
+    rendered = json.dumps(stable_payload, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+    return f"sha256:{hashlib.sha256(rendered.encode('utf-8')).hexdigest()}"
 
 
 def normalize_claim_path(value: Any, project_root: str | Path | None = None) -> str | None:
@@ -160,6 +196,26 @@ def find_change_plan(function_context: Path, api_id: str) -> Path | None:
     return None
 
 
+def evaluate_template_approval(change_plan_path: Path, change_plan: dict[str, Any]) -> tuple[bool, str | None, str | None]:
+    template_json_path = change_plan_path.parent / "implementation-template.json"
+    template_md_path = change_plan_path.parent / "implementation-template.md"
+    if not template_json_path.exists() or not template_md_path.exists():
+        return False, None, "missing implementation-template.md/json"
+    try:
+        template = read_json(template_json_path)
+    except (OSError, json.JSONDecodeError) as exc:
+        return False, normalize_claim_path(template_json_path, change_plan_path.parent), f"invalid implementation-template.json: {exc}"
+    current_hash = sha256_file(template_md_path)
+    approved_hash = str(template.get("approvedTemplateMdSha256") or "").strip() if isinstance(template, dict) else ""
+    if not isinstance(template, dict) or template.get("status") != TEMPLATE_STATUS_APPROVED or not approved_hash:
+        return False, normalize_claim_path(template_json_path, change_plan_path.parent), "implementation template is not approved"
+    if str(template.get("changePlanFingerprint") or "").strip() != change_plan_fingerprint(change_plan):
+        return False, normalize_claim_path(template_json_path, change_plan_path.parent), "implementation template approves a different change-plan"
+    if current_hash != approved_hash:
+        return False, normalize_claim_path(template_json_path, change_plan_path.parent), "implementation-template.md changed after confirmation"
+    return True, normalize_claim_path(template_json_path, change_plan_path.parent), None
+
+
 def load_api_plans(function_context: Path, project_root: str | Path | None, include_tests: bool) -> tuple[list[dict[str, Any]], list[str]]:
     warnings: list[str] = []
     plans: list[dict[str, Any]] = []
@@ -167,15 +223,21 @@ def load_api_plans(function_context: Path, project_root: str | Path | None, incl
         change_plan_path = find_change_plan(function_context, api_id)
         if not change_plan_path:
             warnings.append(f"Missing change-plan.json for API {api_id}")
-            plans.append({"apiId": api_id, "changePlanPath": None, "codeFiles": [], "testFiles": []})
+            plans.append({"apiId": api_id, "changePlanPath": None, "templatePath": None, "templateApproved": False, "templateIssue": "missing change-plan.json", "codeFiles": [], "testFiles": []})
             continue
         change_plan = read_json(change_plan_path)
+        template_approved, template_path, template_issue = evaluate_template_approval(change_plan_path, change_plan)
+        if not template_approved:
+            warnings.append(f"Implementation template not approved for API {api_id}: {template_issue}")
         code_files = collect_file_values(change_plan, CODE_FILE_KEYS, project_root)
         test_files = collect_file_values(change_plan, TEST_FILE_KEYS, project_root) if include_tests else []
         plans.append(
             {
                 "apiId": api_id,
                 "changePlanPath": normalize_claim_path(change_plan_path, function_context),
+                "templatePath": template_path,
+                "templateApproved": template_approved,
+                "templateIssue": template_issue,
                 "codeFiles": code_files,
                 "testFiles": test_files,
             }
@@ -286,7 +348,18 @@ def write_plan(
         "workGroups": workgroups,
         "blockingIssues": blocking_issues,
     }
-    claims_doc = build_claims(function_code, workgroups, owner_prefix, lease_minutes)
+    claims_doc = (
+        build_claims(function_code, workgroups, owner_prefix, lease_minutes)
+        if not blocking_issues
+        else {
+            "schemaVersion": SCHEMA_VERSION,
+            "functionCode": function_code,
+            "generatedAt": iso_z(now),
+            "status": "blocked",
+            "blockingIssues": blocking_issues,
+            "claims": [],
+        }
+    )
     leader_run = {
         "schemaVersion": SCHEMA_VERSION,
         "functionCode": function_code,

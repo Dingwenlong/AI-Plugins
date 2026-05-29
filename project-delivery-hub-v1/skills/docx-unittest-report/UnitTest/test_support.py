@@ -17,6 +17,7 @@ if str(SCRIPTS_DIR) not in sys.path:
 
 
 def write_json(path: Path, payload: dict[str, Any]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
@@ -68,6 +69,10 @@ def build_temp_manifest(docx_path: Path, output_docx: Path, trx_path: Path | Non
 
     outline = load_report_outline(docx_path)
     manifest = build_manifest_from_outline(outline, output_docx=output_docx.as_posix())
+    agent_root = docx_path.parent / ".agent"
+    write_json(agent_root / "config" / "feature-tester-map.json", {"mapping": {"N.006": "Kelly"}})
+    manifest["metadata"]["functionCode"] = "N.006"
+    manifest["analysisContext"]["contextRoot"] = (agent_root / "context" / "N.006").as_posix()
     if trx_path is not None:
         manifest["unitTest"]["trxPath"] = trx_path.as_posix()
     manifest_path = docx_path.with_suffix(".job.json")

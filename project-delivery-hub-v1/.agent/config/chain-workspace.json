@@ -1,12 +1,12 @@
 {
   "schemaVersion": "1.0.0",
-  "workspaceKey": "NEWDAWHO",
+  "workspaceKey": null,
   "workspaceRoot": "D:/Devs/NEWDAWHO",
   "agentRoot": "D:/Devs/NEWDAWHO/.agent",
   "rulesRoot": "D:/Devs/NEWDAWHO/.agent/project-rules/NEWDAWHO",
   "rulesCatalog": "D:/Devs/NEWDAWHO/.agent/project-rules/NEWDAWHO/catalog.json",
-  "lastProjectRoot": "D:/Devs/NEWDAWHO",
+  "lastProjectRoot": "D:/Devs/NEWDAWHO/B.004.002&B.004.003&B.004.004/P240301Git",
   "resolutionSource": "arg",
   "configSource": null,
-  "updatedAt": "2026-05-26T18:50:33+08:00"
+  "updatedAt": "2026-05-29T16:40:27+08:00"
 }

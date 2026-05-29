@@ -1,5 +1,5 @@
 ---
-name: 【插件运维】专案交付中枢插件打包器
+name: 专案交付中枢：【插件运维】专案交付中枢插件打包器
 description: 打包、发布并同步 `project-delivery-hub-v1` 插件。仅用于插件维护任务：刷新 `company-jimmy` 本机维护版、`company-dev` 开发测试版或显式配置的 Codex 缓存，套用 `references/package-targets.json` 中的 plugin URI 与 marketplace 规则，并随包携带集中 `.agent`、主流程图、技能/.agent 架构图与工作区结构树；不处理客户 TSD 交付包。关键词：plugin package、company-jimmy、company-dev、agent bundle、cache sync。
 ---
 
@@ -36,14 +36,14 @@ description: 打包、发布并同步 `project-delivery-hub-v1` 插件。仅用�
 
 ## 打包流程
 
-1. 读取 `references/package-targets.json`，确认 `pluginId`、本机 URI、默认打包 URI、可用 target 与目标市场路径；路径不得凭记忆或旧会话推断。
-2. 校验 `.codex-plugin/plugin.json` 中的 `name` 与 `version`。
+1. 读取 `references/package-targets.json`，确认 `pluginId`、本机 URI、默认打包 URI、可用 target 与目标市场路径；路径不得凭记忆或旧会话推断，路径中的 `<username>` 必须展开为当前 Windows 用户名。
+2. 校验 `.codex-plugin/plugin.json` 中的 `name`、`version` 与 `interface.composerIcon` / `interface.logo` 本地资源路径，并确认技能/agent 显示名统一使用 `专案交付中枢：` 前缀；agent 入口必须使用 `interface.display_name`，避免顶层 `name` 被 Codex 再自动套插件名。
 3. 若用户未指定目标，选择 `company-dev`；若用户要求刷新本机维护版，选择 `company-jimmy`；若要完整同步，选择 `both`。
 4. 校验插件根目录 `USAGE.md` 存在，并写明 `.agent` 正式运行位置是项目工作区 `<workspaceRoot>\.agent`。
 5. 若本次包含结构型变动，先同步 `专案交付中枢_主流程图.svg`、`专案交付中枢_技能与agent架构图.svg` 与 `专案交付中枢_工作区与agent结构树.svg`；然后校验打包技能内三张固定 SVG 架构图存在且可读。
 6. 按 `agentBundle` 读取集中 `.agent` 并镜像到插件包根目录 `.agent`，同步时排除备份、缓存、临时文件。
 7. 校验命名标准文件与只读检查脚本存在；本轮命名规范先行时，只执行报告，不迁移 `.agent` 旧名。
-8. 将插件源目录镜像到目标市场的 `plugins/project-delivery-hub-v1`，排除 `.bak`、`__pycache__`、临时日志、缓存文件、智能表格私有配置文件与智能表格回执目录。
+8. 将插件源目录镜像到目标市场的 `plugins/project-delivery-hub-v1`；若目标 marketplace config 不存在，先创建只包含当前插件的本地 marketplace 注册文件；镜像时排除 `.bak`、`__pycache__`、临时日志、缓存文件、智能表格私有配置文件与智能表格回执目录。
 9. 同步 Codex 缓存到 `.codex/plugins/cache/<marketplace>/project-delivery-hub-v1/<version>`。
 10. 验证 JSON/TOML 可解析，验证新包和缓存中没有旧 active URI；`.agent` 内历史资料不参与旧 active URI 判定。
 11. 只报告旧目录或旧缓存仍存在；除非用户明确要求清理，不删除历史来源。
@@ -85,6 +85,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File "<pluginRoot>\skills\plugin-
 - `company-jimmy` 与 `company-dev` marketplace 均能解析 `project-delivery-hub-v1`。
 - `company-dev` 包内的 `references/package-targets.json` 标明默认打包目标为 `plugin://project-delivery-hub-v1@company-dev`。
 - 新包与新缓存内都包含 `USAGE.md`，且说明 `.agent` 正式运行位置是项目工作区 `<workspaceRoot>\.agent`。
+- 新包与新缓存内的 `interface.composerIcon` 与 `interface.logo` 指向插件包内真实图片资源，不引用 Downloads、个人绝对路径或外部 URL。
 - 新包与新缓存内都包含 `.agent`，来源为 `references/package-targets.json` 的 `agentBundle`。
 - 新包与新缓存内的 `.agent` 不包含 `.bak`、`__pycache__`、`.tmp`、`.log`、`.pyc`。
 - 新包与新缓存内不得包含 `.agent/workspaces`；workspace snapshot 统一读取 `.agent/config/chain-workspace.json`。
@@ -95,6 +96,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File "<pluginRoot>\skills\plugin-
   - `skills/plugin-packager/assets/diagrams/专案交付中枢_工作区与agent结构树.svg`
 - 若本次包含结构型变动，上述三张图必须已经反映最新技能关系、`.agent` 职责、工作区/分支代码位置与打包/cache 流向。
 - 新缓存内没有 `.bak` 与 `__pycache__`。
+- 新包与新缓存内的技能 `SKILL.md` frontmatter `name` 统一使用 `专案交付中枢：` 前缀；agent 入口统一使用 `interface.display_name` 且同样带此前缀，不保留顶层 `name`。
 - 新包与新缓存内没有 `sql-fixture-targets.local.json`、`wedoc-smartsheet-targets.json`、`wedoc-smartsheet-targets.local.json`、`.agent/wedoc-smartsheet-receipts/` 或真实企业微信智能表格 WebHook URL；但必须包含 `references/wedoc-smartsheet-targets.example.json`。
 - 新包内不得出现旧插件 ID 与旧个人 marketplace 的 active 组合。
 

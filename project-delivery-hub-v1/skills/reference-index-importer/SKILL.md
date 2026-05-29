@@ -1,5 +1,5 @@
 ---
-name: 【资料准备】参考资料索引导入器
+name: 专案交付中枢：【资料准备】参考资料索引导入器
 description: 把外部 API 资料与 DB Schema 导入全局参考索引。第 01 步：维护集中 `.agent/reference/global`，生成 `catalog.json` 与分类索引，供第 02 步 `api-spec-writer` 消费；不搜集开发规范、不维护 `.agent/project-rules`，不梳理单一功能，也不生成功能 handoff。关键词：external API、DB Schema、reference catalog。
 ---
 

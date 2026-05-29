@@ -1,5 +1,5 @@
 ---
-name: 【运营同步】企业微信智能表格异动记录器
+name: 专案交付中枢：【运营同步】企业微信智能表格异动记录器
 description: 将 Common/API/配置异动记录写入企业微信文档智能表格 WebHook。用于按 `records-json` 生成 add_records 或 update_records payload，可只读参考本地异动清单 Excel 的表头与示例写法，并按项目 .agent 私有配置选择 target key、校验 WebHook、json 请求格式与 user_id，防止未配置或误用他人配置。
 ---
 

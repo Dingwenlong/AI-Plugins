@@ -1,5 +1,5 @@
 ---
-name: 【开发落地】代码规范审查器
+name: 专案交付中枢：【开发落地】代码规范审查器
 description: 只读审查既有 C# 业务代码是否符合当前 04 api-code-writer 技能本体约束与专案外置 apiCodeWriter 规则包。用于 04 规范变更后定位旧代码不符合规范的位置，输出 code-style-review JSON/Markdown 报告；不修改代码、不生成测试源码、不回写 codeStatus。关键词：代码规范审查、旧代码、style review、code-style-review、04、apiCodeWriter、定位不符合规范。
 ---
 

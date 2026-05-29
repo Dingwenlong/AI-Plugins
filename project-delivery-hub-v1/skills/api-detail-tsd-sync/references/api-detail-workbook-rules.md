@@ -42,6 +42,12 @@ Use these rules when planning API Detail workbook edits, syncing Api_List, prese
 - 不得把 `H:AZ` 或其他历史污染空白区纳入字体/格式套用范围。
 - 不得因一两个 API 内容变更，顺手重写所有 sheet 的 `Font.Name`、`Font.Size`、rich text runs 或 row/column default font。
 
+行高与对齐硬规则：
+
+- 局部内容编辑后若需要调高行高、AutoFit 或开启换行，只能在明确范围内处理，不得扩散到全 workbook。
+- 行高修复不得改变一般内容行的对齐语义；目标内容行必须保持或恢复自动换行、水平靠左、垂直居中。不得为了展示长内容把一般内容行改成顶端对齐。
+- 若某范围按专案规则库应为序号/表头/日期等居中样式，`office-edit-plan` 必须说明按配置保留对应对齐，而不是统一套左对齐。
+
 
 ## 来源规则
 

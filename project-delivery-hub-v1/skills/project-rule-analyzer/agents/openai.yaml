@@ -1,4 +1,6 @@
 interface:
-  display_name: "【资料准备】专案规则分析器"
+  display_name: "专案交付中枢：专案规则分析器"
   short_description: "把 Word、Excel、Markdown、JSON 规范抽取成 project-rules catalog，并可接入 04 开发规范。"
+  icon_small: "./assets/资料准备.png"
+  icon_large: "./assets/资料准备.png"
   default_prompt: "请分析这份专案规则文件，生成 JSON 与 Markdown 规则产物并更新 project-rules catalog。若是开发规范、框架说明、Redis/JWT/Session 规则，请使用 category=code-guidelines；确认后 approve，让第 04 步 api-code-writer 读取 apiCodeWriter 规则包。"

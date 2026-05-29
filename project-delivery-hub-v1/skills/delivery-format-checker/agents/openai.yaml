@@ -1,4 +1,6 @@
 interface:
-  display_name: "【交付文件】专案交付文件格式检查器"
+  display_name: "专案交付中枢：专案交付文件格式检查器"
   short_description: "检查 TSD DOCX 与 API XLSX 格式，生成修复计划并验收；实际写入交给 Office 编辑器。"
+  icon_small: "./assets/交付文件.png"
+  icon_large: "./assets/交付文件.png"
   default_prompt: "请先读取当前 workspace 的 project-rules catalog，再检查这份 TSD .docx 或 API .xlsx 的格式与结构合规性，产出优先级问题清单；若需要写入，请生成 office-edit-plan 并交给 Office 编辑器。"

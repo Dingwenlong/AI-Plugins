@@ -4,6 +4,7 @@ from __future__ import annotations
 import argparse
 import datetime as dt
 import getpass
+import hashlib
 import json
 import re
 import sys
@@ -92,6 +93,10 @@ UPSTREAM_READY_STATUS = "done"
 REVIEW_NOTE_SCOPES = {"global_skill", "api_behavior", "controller", "service", "entity", "test", "reporting"}
 REVIEW_NOTE_FILE_ROLES = {"controller", "service", "entity", "unit_test", "integration_test", "shared"}
 PROJECT_HARD_CONSTRAINTS_FILENAME = "project-hard-constraints.json"
+TEMPLATE_STATUS_AWAITING = "awaiting_user_confirmation"
+TEMPLATE_STATUS_APPROVED = "approved"
+TEMPLATE_DIAG_NOT_CONFIRMED = "template_not_confirmed"
+TEMPLATE_DIAG_MODIFIED_AFTER_CONFIRMATION = "template_modified_after_confirmation"
 
 
 class SkillError(RuntimeError):
@@ -156,7 +161,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--context-root", default=None)
     parser.add_argument("--function-code", default=None)
     parser.add_argument("--api-id", default=None)
-    parser.add_argument("--execution-mode", choices=["auto", "prepare", "apply"], default="auto")
+    parser.add_argument("--execution-mode", choices=["auto", "prepare", "confirm", "apply"], default="auto")
     parser.add_argument("--validation-check", action="append", default=[])
     parser.add_argument("--modified-file", action="append", default=[])
     parser.add_argument("--new-file", action="append", default=[])
@@ -2817,6 +2822,402 @@ def build_change_plan_payload(
         ],
     }
 
+
+def change_plan_fingerprint(change_plan: dict[str, Any]) -> str:
+    analysis = json.loads(json.dumps(change_plan.get("analysis") or {}, ensure_ascii=False))
+    if isinstance(analysis, dict):
+        analysis.pop("resumedFromPhase", None)
+    stable_payload = {
+        "schemaVersion": change_plan.get("schemaVersion"),
+        "skillName": change_plan.get("skillName"),
+        "manifestType": change_plan.get("manifestType"),
+        "executionId": change_plan.get("executionId"),
+        "apiId": change_plan.get("apiId"),
+        "projectRoot": change_plan.get("projectRoot"),
+        "solutionPath": change_plan.get("solutionPath"),
+        "upstream": change_plan.get("upstream") or {},
+        "sourceCandidates": change_plan.get("sourceCandidates") or [],
+        "repoDriftDetected": bool(change_plan.get("repoDriftDetected")),
+        "repoDriftFiles": change_plan.get("repoDriftFiles") or [],
+        "beforeHashes": change_plan.get("beforeHashes") or {},
+        "analysis": analysis,
+        "validationChecks": change_plan.get("validationChecks") or [],
+    }
+    rendered = json.dumps(stable_payload, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+    return f"sha256:{hashlib.sha256(rendered.encode('utf-8')).hexdigest()}"
+
+
+def md_cell(value: object) -> str:
+    text = clean_text(value)
+    if not text:
+        return "-"
+    return text.replace("|", "\\|").replace("\n", "<br>")
+
+
+def render_template_bullets(values: Iterable[object], *, empty: str = "- 无") -> list[str]:
+    lines: list[str] = []
+    for value in values:
+        if isinstance(value, dict):
+            rendered = json.dumps(value, ensure_ascii=False, sort_keys=True)
+        else:
+            rendered = clean_text(value)
+        if rendered:
+            lines.append(f"- {rendered}")
+    return lines or [empty]
+
+
+def summarize_business_step(step: dict[str, Any], index: int) -> str:
+    step_no = clean_text(step.get("step")) or clean_text(step.get("stepId")) or str(index)
+    title = clean_text(step.get("title")) or clean_text(step.get("actionType")) or "业务步骤"
+    details = clean_text(step.get("details")) or clean_text(step.get("description")) or clean_text(step.get("summary"))
+    return f"{step_no}. {title}" + (f"：{details}" if details else "")
+
+
+def build_template_method_rows(change_plan: dict[str, Any]) -> list[dict[str, str]]:
+    analysis = change_plan.get("analysis") or {}
+    rows: list[dict[str, str]] = []
+    seen: set[tuple[str, str]] = set()
+
+    def add(role: str, path: object, method: str, responsibility: str, inputs: str = "-", outputs: str = "-", blockers: str = "-") -> None:
+        file_path = clean_text(path)
+        if not file_path:
+            return
+        key = (role, file_path)
+        if key in seen:
+            return
+        seen.add(key)
+        rows.append(
+            {
+                "role": role,
+                "file": file_path,
+                "method": method,
+                "responsibility": responsibility,
+                "inputs": inputs,
+                "outputs": outputs,
+                "blockers": blockers,
+            }
+        )
+
+    target_method = clean_text(analysis.get("internalAsyncMethod")) or clean_text(analysis.get("targetMethod")) or "目标业务方法"
+    external_name = clean_text(analysis.get("externalApiName")) or target_method
+    target_class = clean_text(analysis.get("targetClass")) or "目标 Service"
+    request_fields = ", ".join(
+        clean_text(field.get("fieldName"))
+        for field in analysis.get("requestFields") or []
+        if isinstance(field, dict) and clean_text(field.get("fieldName"))
+    ) or "API request / 当前上下文"
+    response_fields = ", ".join(
+        clean_text(field.get("fieldName"))
+        for field in analysis.get("responseFields") or []
+        if isinstance(field, dict) and clean_text(field.get("fieldName"))
+    ) or "TransactionResult response"
+    business_steps = analysis.get("businessSteps") or []
+    unresolved = analysis.get("unresolvedLogic") or []
+    guideline_gaps = analysis.get("devGuidelineGaps") or []
+    blocking_topics = [
+        clean_text(entry.get("topic")) or clean_text(entry.get("message")) or clean_text(entry.get("gapType"))
+        for entry in [*unresolved, *guideline_gaps]
+        if isinstance(entry, dict) and (entry.get("blocking") or entry in unresolved)
+    ]
+    blockers = "; ".join(topic for topic in blocking_topics if topic) or "-"
+
+    add(
+        "Controller",
+        analysis.get("controllerFile"),
+        external_name,
+        "接收 route/request，调用服务层并保持响应 envelope 与错误码契约。",
+        request_fields,
+        response_fields,
+        blockers,
+    )
+    add(
+        "Interface",
+        analysis.get("interfaceFile"),
+        target_method,
+        "声明服务层异步契约，保持 Controller 与 Service 之间的类型边界。",
+        request_fields,
+        response_fields,
+        blockers,
+    )
+    service_files = [path for path in analysis.get("serviceFiles") or [] if clean_text(path)]
+    target_file = clean_text(analysis.get("targetFile"))
+    for service_file in service_files:
+        if clean_text(service_file) == target_file:
+            step_note = "；".join(
+                summarize_business_step(step, index + 1)
+                for index, step in enumerate(business_steps)
+                if isinstance(step, dict)
+            )
+            add(
+                "Service",
+                service_file,
+                target_method,
+                step_note or "实现 queryContracts、mappingRules、legacyEvidence 与错误码处理。",
+                request_fields,
+                response_fields,
+                blockers,
+            )
+        else:
+            add(
+                "Service",
+                service_file,
+                target_class,
+                "维护 Service partial/class、依赖注入栏位与模块共享成员，不写测试源码。",
+                "DI services / runtime context",
+                "module service instance",
+                blockers,
+            )
+    for entity_file in analysis.get("entityFiles") or []:
+        add(
+            "Entity",
+            entity_file,
+            "Request/Response DTO / Info",
+            "补齐 API 输入输出模型、字段说明、DTO attribute 校验与 spec code/message 映射需求。",
+            request_fields,
+            response_fields,
+            blockers,
+        )
+    known_files = {clean_text(row["file"]) for row in rows}
+    for file_path in analysis.get("codeTargetFiles") or []:
+        if clean_text(file_path) not in known_files:
+            add(
+                "Helper/Config",
+                file_path,
+                "按 change-plan 扩展",
+                "仅在已有模式或跨 API 明确复用时扩展 helper/config/response catalog。",
+                "change-plan analysis",
+                "business runtime support",
+                blockers,
+            )
+    return rows
+
+
+def build_implementation_template_markdown(
+    context: ExecutionContext,
+    item: dict[str, Any],
+    change_plan: dict[str, Any],
+) -> str:
+    analysis = change_plan.get("analysis") or {}
+    api_id = item["apiId"]
+    lines = [
+        f"# 落码范本：{api_id}",
+        "",
+        "> 用户只需要审阅或修改本 Markdown。确认后运行 `--execution-mode confirm`，脚本会更新同目录 `implementation-template.json`；JSON 不需要人工编辑。",
+        "",
+        "## 1 层项目结构",
+        "",
+        "| 项目 | 内容 |",
+        "| --- | --- |",
+        f"| functionCode | {md_cell(context.execution_id)} |",
+        f"| apiId | {md_cell(api_id)} |",
+        f"| apiName | {md_cell(item.get('apiName'))} |",
+        f"| frameworkProfile | {md_cell(analysis.get('frameworkProfile'))} |",
+        f"| repoRoot | {md_cell(analysis.get('repoRoot'))} |",
+        f"| moduleName | {md_cell(analysis.get('moduleName'))} |",
+        f"| creationMode | {md_cell(analysis.get('creationMode'))} |",
+        f"| registrationStrategy | {md_cell(analysis.get('registrationStrategy'))} |",
+        f"| targetClass | {md_cell(analysis.get('targetClass'))} |",
+        f"| targetMethod | {md_cell(analysis.get('internalAsyncMethod') or analysis.get('targetMethod'))} |",
+        "",
+        "### 框架与规则依据",
+        "",
+        *render_template_bullets(change_plan.get("sourceCandidates") or [], empty="- 无额外候选来源"),
+        "",
+        "### 专案开发规范选择",
+        "",
+        *render_template_bullets(analysis.get("devGuidelineRulesSelected") or [], empty="- 未命中专案规范规则"),
+        "",
+        "## 2 层代码文件",
+        "",
+        "| 角色 | 文件 | 处理方式 |",
+        "| --- | --- | --- |",
+    ]
+
+    method_rows = build_template_method_rows(change_plan)
+    for row in method_rows:
+        lines.append(f"| {md_cell(row['role'])} | {md_cell(row['file'])} | {md_cell(row['responsibility'])} |")
+
+    lines.extend(
+        [
+            "",
+            "## 3 层文件内方法",
+            "",
+            "| 文件 | 方法/成员 | 职责 | 输入依据 | 输出契约 | 阻塞点 |",
+            "| --- | --- | --- | --- | --- | --- |",
+        ]
+    )
+    for row in method_rows:
+        lines.append(
+            "| "
+            + " | ".join(
+                [
+                    md_cell(row["file"]),
+                    md_cell(row["method"]),
+                    md_cell(row["responsibility"]),
+                    md_cell(row["inputs"]),
+                    md_cell(row["outputs"]),
+                    md_cell(row["blockers"]),
+                ]
+            )
+            + " |"
+        )
+
+    lines.extend(
+        [
+            "",
+            "### 业务步骤",
+            "",
+            *render_template_bullets(
+                [
+                    summarize_business_step(step, index + 1)
+                    for index, step in enumerate(analysis.get("businessSteps") or [])
+                    if isinstance(step, dict)
+                ],
+                empty="- change-plan 未提供 businessSteps；需以 codeHandoff/queryContracts/mappingRules 为准。",
+            ),
+            "",
+            "### Query / Mapping / Legacy 依据",
+            "",
+            *render_template_bullets(analysis.get("queryContractsSelected") or [], empty="- 无 queryContractsSelected"),
+            *render_template_bullets(analysis.get("mappingRulesSelected") or [], empty="- 无 mappingRulesSelected"),
+            *render_template_bullets(analysis.get("legacyEvidenceUsed") or [], empty="- 无 legacyEvidenceUsed"),
+            "",
+            "### 第 05 步测试交接",
+            "",
+            *render_template_bullets((analysis.get("testCodeHandoff") or {}).get("unitTestTargetFiles") or [], empty="- 无 UnitTest 目标提示"),
+            *render_template_bullets((analysis.get("testCodeHandoff") or {}).get("integrationTestTargetFiles") or [], empty="- 无 IntegrationTest 目标提示"),
+            "",
+            "## 确认说明",
+            "",
+            "- 确认前，AI 不得修改目标仓库业务代码。",
+            "- 若你修改了本 Markdown，确认命令会锁定修改后的版本。",
+            "- 确认后若再次修改本 Markdown，`apply` 会阻塞并要求重新 confirm。",
+        ]
+    )
+    return "\n".join(lines).rstrip() + "\n"
+
+
+def read_template_metadata(path: Path) -> dict[str, Any]:
+    if not path.exists():
+        return {}
+    payload = load_json(path)
+    return payload if isinstance(payload, dict) else {}
+
+
+def write_or_refresh_implementation_template(
+    context: ExecutionContext,
+    item: dict[str, Any],
+    change_plan: dict[str, Any],
+) -> dict[str, Any]:
+    api_id = item["apiId"]
+    md_path = context.paths.implementation_template_md_path(api_id)
+    json_path = context.paths.implementation_template_json_path(api_id)
+    fingerprint = change_plan_fingerprint(change_plan)
+    existing = read_template_metadata(json_path)
+    preserve_existing_md = (
+        md_path.exists()
+        and clean_text(existing.get("changePlanFingerprint")) == fingerprint
+        and clean_text(existing.get("templateMdPath"))
+    )
+    if not preserve_existing_md:
+        dump_text(md_path, build_implementation_template_markdown(context, item, change_plan))
+
+    current_hash = sha256_file(md_path)
+    existing_status = clean_text(existing.get("status"))
+    existing_approved_hash = clean_text(existing.get("approvedTemplateMdSha256"))
+    approval_still_valid = (
+        preserve_existing_md
+        and existing_status == TEMPLATE_STATUS_APPROVED
+        and existing_approved_hash
+        and current_hash == existing_approved_hash
+    )
+    payload = {
+        "schemaVersion": "1.0.0",
+        "status": TEMPLATE_STATUS_APPROVED if approval_still_valid else TEMPLATE_STATUS_AWAITING,
+        "executionId": context.execution_id,
+        "apiId": api_id,
+        "templateMdPath": normalize_persisted_path(md_path, project_root=context.project_root),
+        "templateMdSha256": current_hash,
+        "approvedTemplateMdSha256": existing_approved_hash if approval_still_valid else None,
+        "approvedAt": existing.get("approvedAt") if approval_still_valid else None,
+        "approvedBy": existing.get("approvedBy") if approval_still_valid else None,
+        "changePlanFingerprint": fingerprint,
+        "updatedAt": now_iso(),
+    }
+    dump_json(json_path, payload)
+    return payload
+
+
+def confirm_implementation_template(
+    context: ExecutionContext,
+    api_id: str,
+    change_plan: dict[str, Any],
+) -> tuple[dict[str, Any] | None, dict[str, str] | None]:
+    md_path = context.paths.implementation_template_md_path(api_id)
+    json_path = context.paths.implementation_template_json_path(api_id)
+    if not md_path.exists():
+        return None, {
+            "reason": TEMPLATE_DIAG_NOT_CONFIRMED,
+            "detail": "implementation-template.md is missing. Run --execution-mode prepare before confirm.",
+        }
+    current_hash = sha256_file(md_path)
+    if not current_hash:
+        return None, {
+            "reason": TEMPLATE_DIAG_NOT_CONFIRMED,
+            "detail": "implementation-template.md is empty or unreadable. Run --execution-mode prepare again.",
+        }
+    existing = read_template_metadata(json_path)
+    payload = {
+        **existing,
+        "schemaVersion": "1.0.0",
+        "status": TEMPLATE_STATUS_APPROVED,
+        "executionId": context.execution_id,
+        "apiId": api_id,
+        "templateMdPath": normalize_persisted_path(md_path, project_root=context.project_root),
+        "templateMdSha256": current_hash,
+        "approvedTemplateMdSha256": current_hash,
+        "approvedAt": now_iso(),
+        "approvedBy": getpass.getuser(),
+        "changePlanFingerprint": change_plan_fingerprint(change_plan),
+        "updatedAt": now_iso(),
+    }
+    dump_json(json_path, payload)
+    return payload, None
+
+
+def validate_implementation_template_approval(
+    context: ExecutionContext,
+    api_id: str,
+    change_plan: dict[str, Any],
+) -> dict[str, str] | None:
+    md_path = context.paths.implementation_template_md_path(api_id)
+    json_path = context.paths.implementation_template_json_path(api_id)
+    if not md_path.exists() or not json_path.exists():
+        return {
+            "reason": TEMPLATE_DIAG_NOT_CONFIRMED,
+            "detail": "Apply requires approved implementation-template.md/json. Run prepare, review the template, then run --execution-mode confirm.",
+        }
+    metadata = read_template_metadata(json_path)
+    current_hash = sha256_file(md_path)
+    approved_hash = clean_text(metadata.get("approvedTemplateMdSha256"))
+    if clean_text(metadata.get("status")) != TEMPLATE_STATUS_APPROVED or not approved_hash:
+        return {
+            "reason": TEMPLATE_DIAG_NOT_CONFIRMED,
+            "detail": "implementation-template.md has not been confirmed. Review or edit it, then run --execution-mode confirm.",
+        }
+    if clean_text(metadata.get("changePlanFingerprint")) != change_plan_fingerprint(change_plan):
+        return {
+            "reason": TEMPLATE_DIAG_NOT_CONFIRMED,
+            "detail": "implementation-template.json does not approve the current change-plan.json. Run prepare if needed, then confirm again.",
+        }
+    if current_hash != approved_hash:
+        return {
+            "reason": TEMPLATE_DIAG_MODIFIED_AFTER_CONFIRMATION,
+            "detail": "implementation-template.md changed after confirmation. Review the new content and run --execution-mode confirm again.",
+        }
+    return None
+
+
 def build_validation_commands(context: ExecutionContext, framework_profile: FrameworkProfile) -> list[str]:
     if context.validation_checks:
         return list(context.validation_checks)
@@ -3254,7 +3655,7 @@ def resolve_execution_mode(
     current_snapshot: dict[str, str],
     excluded_prefixes: list[str],
 ) -> str:
-    if requested_mode in {"prepare", "apply"}:
+    if requested_mode in {"prepare", "confirm", "apply"}:
         return requested_mode
     previous_phase = clean_text(previous_manifest.get("codePhase")) if isinstance(previous_manifest, dict) else ""
     if previous_change_plan and snapshot_path.exists() and previous_phase in {"planned", "implemented", "validation_failed"}:
@@ -3277,7 +3678,7 @@ def choose_target_item(items: list[dict[str, Any]], requested_api_id: str | None
             return item, "", 0
         raise SkillError(f"api-id not found in upstream checklist: {requested_api_id}")
 
-    for status in ("in_progress", "tests_failed", "error", "pending", "waiting_fixture"):
+    for status in ("in_progress", "tests_failed", "error", "pending", "waiting_fixture", "blocked"):
         for item in items:
             if item["upstreamStatus"] == UPSTREAM_READY_STATUS and item["writerStatus"] == status:
                 return item, "", 0
@@ -3527,9 +3928,10 @@ def persist_prepare_result(
         write_code_status="pending",
         validate_status="pending",
     )
+    template_metadata = write_or_refresh_implementation_template(context, selected_item, prepare_plan)
     prepare_message = (
         f"{selected_item['apiId']} change-plan generated for {framework_plan.target_file}; "
-        "waiting for AI-authored code changes."
+        f"implementation-template generated at {template_metadata['templateMdPath']}; waiting for user confirmation."
     )
     persist_selected_api(
         context,
@@ -3555,6 +3957,120 @@ def persist_prepare_result(
     write_snapshot(context.paths.snapshot_path, current_snapshot, reason="prepared")
     refresh_batch_pointer(context, preferred_function_code=context.execution_id)
     print(prepare_message)
+    return 0
+
+
+def persist_confirm_result(
+    context: ExecutionContext,
+    items: list[dict[str, Any]],
+    selected_item: dict[str, Any],
+    upstream_api: UpstreamApiRecord,
+    previous_manifest: dict[str, Any] | None,
+    upstream_summary: dict[str, int],
+    normalized_model: dict[str, Any],
+    previous_change_plan: dict[str, Any] | None,
+    prepared_change_plan: dict[str, Any],
+    framework_plan: FrameworkPlan,
+    *,
+    validation_commands: list[str],
+    repo_drift_files: list[str],
+    current_snapshot: dict[str, str],
+    logic_resolution: dict[str, Any],
+) -> int:
+    api_id = selected_item["apiId"]
+    if previous_change_plan is None:
+        block_reason = "Confirm requires an existing change-plan and implementation-template from a prepare run."
+        blocked_plan = update_change_plan_progress(
+            prepared_change_plan,
+            status="blocked",
+            write_code_status="pending",
+            validate_status="pending",
+        )
+        return persist_terminal_api_state(
+            context,
+            items,
+            selected_item,
+            upstream_api,
+            previous_manifest,
+            upstream_summary,
+            normalized_model,
+            status="blocked",
+            phase="blocked",
+            message=f"{api_id} blocked: {block_reason}",
+            block_reason=block_reason,
+            diagnosis_type=TEMPLATE_DIAG_NOT_CONFIRMED,
+            target_file=framework_plan.target_file,
+            change_plan=blocked_plan,
+            validation_commands=validation_commands,
+            validation_results=[],
+            repo_drift_files=repo_drift_files,
+            unresolved_logic=logic_resolution.get("unresolvedLogic") or [],
+            snapshot=current_snapshot,
+            snapshot_reason="blocked",
+            preserve_history=False,
+        )
+
+    template_metadata, issue = confirm_implementation_template(context, api_id, previous_change_plan)
+    if issue is not None:
+        blocked_plan = update_change_plan_progress(
+            previous_change_plan,
+            status="blocked",
+            write_code_status="pending",
+            validate_status="pending",
+        )
+        return persist_terminal_api_state(
+            context,
+            items,
+            selected_item,
+            upstream_api,
+            previous_manifest,
+            upstream_summary,
+            normalized_model,
+            status="blocked",
+            phase="blocked",
+            message=f"{api_id} blocked: {issue['detail']}",
+            block_reason=issue["detail"],
+            diagnosis_type=issue["reason"],
+            target_file=framework_plan.target_file,
+            change_plan=blocked_plan,
+            validation_commands=validation_commands,
+            validation_results=[],
+            repo_drift_files=repo_drift_files,
+            unresolved_logic=logic_resolution.get("unresolvedLogic") or [],
+            snapshot=current_snapshot,
+            snapshot_reason="blocked",
+            preserve_history=False,
+        )
+
+    selected_item = {**selected_item, "writerStatus": "pending", "phase": "planned", "blockReason": None}
+    update_item(items, selected_item)
+    confirm_message = (
+        f"{api_id} implementation-template approved by {template_metadata['approvedBy']}; "
+        "AI may now implement the confirmed business-code template."
+    )
+    persist_selected_api(
+        context,
+        items,
+        selected_item,
+        upstream_api,
+        previous_manifest,
+        upstream_summary,
+        execution_message=confirm_message,
+        execution_phase="planned",
+        execution_status=derive_execution_status(items),
+        manifest_status="pending",
+        manifest_phase="planned",
+        block_reason=None,
+        change_plan=previous_change_plan,
+        implementation_report=None,
+        modified_files=[],
+        validation_commands=validation_commands,
+        validation_results=[],
+        repo_drift_files=repo_drift_files,
+        diagnosis_payload=None,
+    )
+    refresh_batch_pointer(context, preferred_function_code=context.execution_id)
+    print(confirm_message)
     return 0
 
 
@@ -3781,12 +4297,44 @@ def run_apply_mode(
             validation_results=[],
             repo_drift_files=repo_drift_files,
             unresolved_logic=logic_resolution.get("unresolvedLogic") or [],
-            snapshot=current_snapshot_before,
+            snapshot=load_snapshot(context.paths.snapshot_path) or current_snapshot_before,
             snapshot_reason="blocked",
             preserve_history=False,
         )
 
     change_plan = clone_change_plan(previous_change_plan)
+    template_issue = validate_implementation_template_approval(context, selected_item["apiId"], previous_change_plan)
+    if template_issue is not None:
+        blocked_plan = update_change_plan_progress(
+            change_plan,
+            status="blocked",
+            write_code_status="pending",
+            validate_status="pending",
+        )
+        return persist_terminal_api_state(
+            context,
+            items,
+            selected_item,
+            upstream_api,
+            previous_manifest,
+            upstream_summary,
+            normalized_model,
+            status="blocked",
+            phase="blocked",
+            message=f"{selected_item['apiId']} blocked: {template_issue['detail']}",
+            block_reason=template_issue["detail"],
+            diagnosis_type=template_issue["reason"],
+            target_file=framework_plan.target_file,
+            change_plan=blocked_plan,
+            validation_commands=validation_commands,
+            validation_results=[],
+            repo_drift_files=repo_drift_files,
+            unresolved_logic=logic_resolution.get("unresolvedLogic") or [],
+            snapshot=load_snapshot(context.paths.snapshot_path) or current_snapshot_before,
+            snapshot_reason="blocked",
+            preserve_history=False,
+        )
+
     change_plan["updatedAt"] = now_iso()
     change_plan["validationChecks"] = validation_commands
     repo_drift_files = list(change_plan.get("repoDriftFiles") or repo_drift_files)
@@ -3814,7 +4362,7 @@ def run_apply_mode(
             validation_results=[],
             repo_drift_files=repo_drift_files,
             unresolved_logic=logic_resolution.get("unresolvedLogic") or [],
-            snapshot=current_snapshot_before,
+            snapshot=load_snapshot(context.paths.snapshot_path) or current_snapshot_before,
             snapshot_reason="waiting_fixture",
             execution_status="waiting_fixture",
             manifest_status="waiting_fixture",
@@ -4091,19 +4639,36 @@ def main() -> int:
             excluded_prefixes=excluded_prefixes,
         )
 
-        persist_precheck_progress(
-            context,
-            items,
-            selected_item,
-            upstream_api,
-            previous_manifest,
-            upstream_summary,
-            prepared_change_plan,
-            validation_commands=validation_commands,
-            repo_drift_files=repo_drift_files,
-        )
+        if effective_mode == "confirm":
+            return persist_confirm_result(
+                context,
+                items,
+                selected_item,
+                upstream_api,
+                previous_manifest,
+                upstream_summary,
+                normalized_model,
+                previous_change_plan,
+                prepared_change_plan,
+                framework_plan,
+                validation_commands=validation_commands,
+                repo_drift_files=repo_drift_files,
+                current_snapshot=current_snapshot_before,
+                logic_resolution=logic_resolution,
+            )
 
         if effective_mode == "prepare":
+            persist_precheck_progress(
+                context,
+                items,
+                selected_item,
+                upstream_api,
+                previous_manifest,
+                upstream_summary,
+                prepared_change_plan,
+                validation_commands=validation_commands,
+                repo_drift_files=repo_drift_files,
+            )
             return persist_prepare_result(
                 context,
                 items,

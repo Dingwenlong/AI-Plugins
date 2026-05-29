@@ -22,6 +22,26 @@ def write_json(path: Path, data: object) -> None:
     path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
+def write_approved_change_plan(path: Path, data: dict) -> None:
+    write_json(path, data)
+    template_md = path.parent / "implementation-template.md"
+    template_md.write_text("# 落码范本\n\n已确认。\n", encoding="utf-8")
+    template_hash = orchestrate.sha256_file(template_md)
+    write_json(
+        path.parent / "implementation-template.json",
+        {
+            "schemaVersion": "1.0.0",
+            "status": "approved",
+            "templateMdPath": "implementation-template.md",
+            "templateMdSha256": template_hash,
+            "approvedTemplateMdSha256": template_hash,
+            "approvedAt": "2026-05-29T12:00:00Z",
+            "approvedBy": "Regression",
+            "changePlanFingerprint": orchestrate.change_plan_fingerprint(data),
+        },
+    )
+
+
 def test_groups_overlapping_code_files() -> None:
     groups = orchestrate.build_workgroups(
         [
@@ -41,8 +61,8 @@ def test_plan_writes_claims_and_leader_run() -> None:
         root = Path(temp_dir)
         context = root / ".agent" / "context" / "D.001"
         write_json(context / "api-checklist.json", {"apis": [{"apiId": "api.one"}, {"apiId": "api.two"}]})
-        write_json(context / "apis" / "api.one" / "change-plan.json", {"analysis": {"controllerFile": "Controllers/A.cs"}})
-        write_json(context / "apis" / "api.two" / "change-plan.json", {"analysis": {"controllerFile": "Controllers/B.cs"}})
+        write_approved_change_plan(context / "apis" / "api.one" / "change-plan.json", {"analysis": {"controllerFile": "Controllers/A.cs"}})
+        write_approved_change_plan(context / "apis" / "api.two" / "change-plan.json", {"analysis": {"controllerFile": "Controllers/B.cs"}})
 
         result = orchestrate.write_plan(root / ".agent" / "context", "D.001", project_root=root, owner_prefix="agent")
 
@@ -67,6 +87,22 @@ def test_missing_change_plan_blocks_plan() -> None:
         assert result["leaderRun"]["status"] == "blocked"
         assert any("api.two" in issue for issue in result["leaderRun"]["blockingIssues"])
         assert any(plan["apiId"] == "api.two" and plan["changePlanPath"] is None for plan in result["workGroups"]["apiPlans"])
+        assert result["fileClaims"]["claims"] == []
+
+
+def test_unapproved_template_blocks_worker_claims() -> None:
+    with tempfile.TemporaryDirectory() as temp_dir:
+        root = Path(temp_dir)
+        context = root / ".agent" / "context" / "D.001"
+        write_json(context / "api-checklist.json", {"apis": [{"apiId": "api.one"}]})
+        write_json(context / "apis" / "api.one" / "change-plan.json", {"analysis": {"controllerFile": "Controllers/A.cs"}})
+
+        result = orchestrate.write_plan(root / ".agent" / "context", "D.001", project_root=root, owner_prefix="agent")
+
+        assert result["leaderRun"]["status"] == "blocked"
+        assert any("Implementation template not approved" in issue for issue in result["leaderRun"]["blockingIssues"])
+        assert result["workGroups"]["apiPlans"][0]["templateApproved"] is False
+        assert result["fileClaims"]["claims"] == []
 
 
 def test_expired_claim_and_worker_output_validation() -> None:
@@ -181,6 +217,7 @@ def run() -> None:
         test_groups_overlapping_code_files,
         test_plan_writes_claims_and_leader_run,
         test_missing_change_plan_blocks_plan,
+        test_unapproved_template_blocks_worker_claims,
         test_expired_claim_and_worker_output_validation,
         test_final_assessment_blocks_without_ut_results_and_passes_with_results,
         test_final_assessment_aggregates_all_api_status_files,

@@ -35,7 +35,6 @@
     "apiDetailRegressionExample": "assets/excel/Regression_Example.xlsx",
     "utReportTemplate": "assets/docx/API_UT自測報告模板_v3.5_20260512.docx",
     "utChecklistBaseline": "assets/docx/UT自测标准_API单元测试CheckList v3 20260509.xlsx",
-    "featureTesterMap": "assets/docx/feature-tester-map.json",
     "utBindingRules": "assets/docx/binding-rules.json"
   },
   "rulePacks": {
@@ -151,7 +150,6 @@
       "requiredAssets": [
         "utReportTemplate",
         "utChecklistBaseline",
-        "featureTesterMap",
         "utBindingRules"
       ],
       "optionalAssets": [],
@@ -420,18 +418,6 @@
       "sourceHash": "sha256:1b18b62db7591f288d4054117a9a4d85f4c6472691c1814c947e4eb4c8e0f103",
       "sourceLocator": "",
       "assetKey": "utChecklistBaseline"
-    },
-    {
-      "ruleId": "feature-tester-map",
-      "category": "ut-report",
-      "title": "Feature Tester Map",
-      "path": "assets/docx/feature-tester-map.json",
-      "format": "json",
-      "reviewStatus": "approved",
-      "sourceFile": "feature-tester-map.json",
-      "sourceHash": "sha256:1c2fbb2522d7b2c90f44fae4a4aaf5c22c8d95b71dae410436c968f90e6339a1",
-      "sourceLocator": "",
-      "assetKey": "featureTesterMap"
     },
     {
       "ruleId": "ut-binding-rules",

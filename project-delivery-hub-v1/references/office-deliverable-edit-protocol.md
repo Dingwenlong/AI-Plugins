@@ -104,6 +104,7 @@ When under a leader, the Office editor returns this result to the leader; the le
 - Do not create `.bak`, `.before_*`, timestamp backup, or delivery-directory backup copies unless the user explicitly asks or the active workspace rule requires it.
 - If safety requires a temporary copy, use a tool temp directory or another non-delivery area and remove it before reporting completion.
 - Prefer Excel COM for saving `.xlsx` files that may contain OLE, EMF, media, controls, comments, external links, or mixed rich text. `openpyxl` may be used for read-only checks, and only for saving when the plan and file contents make that safe.
+- Row-height and AutoFit repairs must not silently change alignment. When an Excel edit adjusts row height or enables wrapping to expose long content, preserve or restore normal content rows to `WrapText=True`, horizontal left alignment, and vertical center alignment (`HorizontalAlignment = -4131`, `VerticalAlignment = -4108` in Excel COM). Do not use top alignment (`VerticalAlignment = -4160`) just to show more text unless the caller explicitly requests that range and reason in the plan.
 - Use `python-docx` for precise `.docx` edits when it preserves the target structure; render or reopen the document when layout fidelity matters.
 - Preserve unrelated content, unrelated styles, hidden workbook assets, hyperlinks, formulas, media, OLE objects, comments, and sheet order.
 - Reopen every modified Office file before reporting success.

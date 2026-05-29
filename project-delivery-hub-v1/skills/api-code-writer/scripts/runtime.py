@@ -64,6 +64,12 @@ class ExecutionPaths:
     def change_plan_path(self, api_id: str) -> Path:
         return self.api_dir(api_id) / "change-plan.json"
 
+    def implementation_template_md_path(self, api_id: str) -> Path:
+        return self.api_dir(api_id) / "implementation-template.md"
+
+    def implementation_template_json_path(self, api_id: str) -> Path:
+        return self.api_dir(api_id) / "implementation-template.json"
+
     def implementation_report_path(self, api_id: str) -> Path:
         return self.api_dir(api_id) / "implementation-report.md"
 

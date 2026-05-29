@@ -1,5 +1,5 @@
 ---
-name: 【交付文件】专案 Office 交付文件编辑器
+name: 专案交付中枢：【交付文件】专案 Office 交付文件编辑器
 description: 专门执行 TSD Word、API Detail Excel、CommonFunc/CommonUtil Excel、Response Code 等交付 Office 文件的物理写入、保存与复验。接收 Design Leader、格式检查器或用户明确给出的 office-edit-plan/file claim，只修改被 claim 的 .docx/.xlsx 文件，回报 modifiedFiles、摘要、验证命令、风险；不裁决业务语义、不判断格式规则、不写 handoff 或共享 .agent 状态。关键词：Word 编辑、Excel 编辑、office-edit-plan、DOCX、XLSX、modifiedFiles、file claim。
 ---
 
@@ -48,6 +48,14 @@ description: 专门执行 TSD Word、API Detail Excel、CommonFunc/CommonUtil Ex
 - `validation[]`: 验证命令或验收口径
 
 若调用者只说“帮我修这个 Word/Excel”，可以在当前对话中形成最小 edit plan；但不能自行发明业务语义或格式标准。
+
+## Excel 行高与对齐硬规则
+
+- 调整 `.xlsx` 行高、AutoFit 或开启换行时，默认只允许改变 `RowHeight` / `WrapText`；不得顺手改变字体、底色、边框、合并格、水平对齐或垂直对齐。
+- API Detail / CommonFunc / CommonUtil / Response Code 的一般内容行，为展示长内容而调整行高后，必须保持或恢复 `WrapText=True`、水平靠左、垂直居中。Excel COM 对应值为 `HorizontalAlignment = -4131 (xlLeft)`、`VerticalAlignment = -4108 (xlCenter)`。
+- 禁止为了“尽量展示内容”把一般内容行改成顶端对齐，例如 `VerticalAlignment = -4160 (xlTop)`；只有 caller 的 `office-edit-plan` 明确要求某个范围改为顶端对齐并说明原因时，才可例外执行。
+- 表头、序号、日期、版本号、姓名、API 名称 hyperlink 等有专案规则库或 caller plan 明确居中/特殊对齐的区域，按配置或计划执行；但行高修复不得改变这些区域的既有对齐语义。
+- 保存后必须重新开启 workbook，抽查本次调整行的行高、`WrapText`、水平对齐与垂直对齐；若无法复验，对齐结果必须列入 risk，不能宣称完成。
 
 ## 工作流程
 

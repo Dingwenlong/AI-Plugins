@@ -1,9 +1,6 @@
 interface:
-  display_name: "【测试验收】API 测试代码与单元测试报告生成器"
+  display_name: "专案交付中枢：05 可选 API 测试代码与单元测试报告生成器"
   short_description: "生成 API 测试代码，并把 TRX、代码检查或 Postman MCP 实测证据写回 DOCX UT 报告。"
-  default_prompt: "使用「【测试验收】API 测试代码与单元测试报告生成器」作为可选第 05 步，消费第 04 步测试交接，生成或维护 API UnitTest、IntegrationTest 与 Service runtime validation 测试代码；如需真实接口调用，由 agent 调用 Postman MCP 并保存 request.json、response.json、status.png，再读取 .trx、代码检查或 Postman MCP / 真实接口调用证据，把实际结果写回 {functionCode}_API_UT 測試報告 {yyyyMMdd}.docx。"
-
-leaderMode: |
-  在 multi-api-leader 显式编排中，05 测试代码写入也必须遵守 file-claims.json。
-  worker 只能写已 claim 的测试代码/辅助文件，不能写最终 DOCX 报告、manifest/results 或 final-assessment.json。
-  leader 汇总 testCodeHandoff、mockExamples、trx/Postman/code-inspection 证据并生成最终 UT 报告和评估。
+  icon_small: "./assets/测试验收.png"
+  icon_large: "./assets/测试验收.png"
+  default_prompt: "使用「API 测试代码与单元测试报告生成器」作为可选第 05 步，消费第 04 步测试交接，生成或维护 API UnitTest、IntegrationTest 与 Service runtime validation 测试代码；如需真实接口调用，由 agent 调用 Postman MCP 并保存 request.json、response.json、status.png，再读取 .trx、代码检查或 Postman MCP / 真实接口调用证据，把实际结果写回 {functionCode}_API_UT 測試報告 {yyyyMMdd}.docx。"

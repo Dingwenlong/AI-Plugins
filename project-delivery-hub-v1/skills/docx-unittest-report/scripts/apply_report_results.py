@@ -28,6 +28,7 @@ from docx_report_utils import (
     strip_auto_status,
     write_json,
 )
+from feature_tester_map import resolve_feature_tester_name
 
 
 def set_cell_text(cell: Any, text: str) -> None:
@@ -42,6 +43,29 @@ def clear_paragraph(paragraph: Any) -> None:
         if child.tag.endswith("}pPr"):
             continue
         element.remove(child)
+
+
+def infer_agent_root_from_context_root(raw_context_root: str) -> Path | None:
+    text = normalize_text(raw_context_root)
+    if not text:
+        return None
+    context_root = Path(text).expanduser().resolve()
+    if context_root.parent.name == "context":
+        return context_root.parent.parent.resolve()
+    return None
+
+
+def resolve_manifest_metadata(manifest: dict[str, Any], outline: dict[str, Any]) -> dict[str, str]:
+    metadata_payload = dict(manifest.get("metadata") or {})
+    function_code = normalize_text(metadata_payload.get("functionCode") or manifest.get("functionCode"))
+    if not function_code:
+        raise SystemExit(
+            "metadata.functionCode is required to resolve tester from "
+            "<workspaceRoot>/.agent/config/feature-tester-map.json."
+        )
+    agent_root = infer_agent_root_from_context_root((manifest.get("analysisContext") or {}).get("contextRoot", ""))
+    metadata_payload["tester"] = resolve_feature_tester_name(function_code, agent_root=agent_root)
+    return resolve_effective_metadata(metadata_payload, outline.get("header", {}))
 
 
 def set_paragraph_text(paragraph: Any, text: str) -> None:
@@ -325,7 +349,7 @@ def main() -> None:
 
     document = Document(input_docx)
     outline = load_report_outline(input_docx)
-    metadata = resolve_effective_metadata(manifest.get("metadata", {}), outline.get("header", {}))
+    metadata = resolve_manifest_metadata(manifest, outline)
     results_lookup = {case["caseId"]: case for case in results.get("cases", [])}
     all_cases = [
         results_lookup.get(item["caseId"], pending_case_result(item))

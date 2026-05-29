@@ -1,5 +1,5 @@
 ---
-name: 【设计梳理】专案需求接口设计梳理
+name: 专案交付中枢：【设计梳理】专案需求接口设计梳理
 description: 把 PRD、TSD 与 API Detail 梳理成可开发的 API 设计交接。用于比对 API contract、统一字段/API 命名、维护 Api_List/后端来源、产出功能设计梳理与开发就绪判断；也判断时序图影响，并在接近冻版时物化 handoff 给第 02 步 API 规格生成。多文件或 Office 交付物写入时作为 Design Leader 产出 edit plan/file claim，由 Office 交付文件编辑器执行 .docx/.xlsx 物理保存。关键词：PRD、TSD、API Detail、功能设计梳理、开发就绪、handoff、Design Leader、office-edit-plan。
 ---
 
@@ -231,7 +231,7 @@ Worker 约束：
 - 语义/API 设计编辑裁决由本技能完成；实际 `.xlsx` 保存由 `专案 Office 交付文件编辑器` 执行；格式修复不能补造缺失 API 内容。
 - 生成 `office-edit-plan` 时，内容编辑、字体继承与格式修复必须限于本次实际变更的 API sheets、`Api_List` 行或明确语义范围；禁止因为修改少量内容而遍历全 workbook 或所有 sheets 改字体。
 - `office-edit-plan` 必须记录本次实际变更的单元格/合并范围，并要求尽量保留未变更文字的既有字体。只有实际新增或替换后的字符/词组使用专案规则库 `apiDetailExcelStyle` 的字型槽位（中文 `微軟正黑體`、英文数字 `Times New Roman`、字号 10）并以红色字体标示；不得整格、整行或整段标红。
-- 若写入会影响列高，`office-edit-plan` 必须要求目标 workbook 的所有工作表已用行或明确范围执行 Excel COM 行高自适应；含换行文字或合并格的行需按可见内容补足行高，避免文字裁切。
+- 若写入会影响列高，`office-edit-plan` 必须要求目标 workbook 的所有工作表已用行或明确范围执行 Excel COM 行高自适应；含换行文字或合并格的行需按可见内容补足行高，避免文字裁切；同时要求 Office 编辑器不得把一般内容行改成顶端对齐，行高调整后需保持或恢复水平靠左、垂直居中与自动换行。
 - 补充设计说明时避免重复灌入多个位置：`涉及BackendAPI` / `後端來源` 只保留调用关系和来源摘要，Redis、fallback、排序等细节放在对应业务逻辑行或字段说明中，除非客户模板明确要求重复列示。
 - Office 编辑器保存 API Detail workbook 后，必须交给 `delivery-format-checker` 做格式检查闭环；若检查器产出修复计划，再回到 Office 编辑器保存。
 - 交接格式检查器时必须列出本次变更的 sheet 名、`Api_List` 行或范围；若范围无法确认，只做只读检查并先报告风险，不执行全 workbook 字体槽位。

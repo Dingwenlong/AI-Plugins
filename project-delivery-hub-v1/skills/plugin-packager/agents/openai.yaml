@@ -1,8 +1,6 @@
 interface:
-  display_name: "【插件运维】专案交付中枢插件打包器"
+  display_name: "专案交付中枢：专案交付中枢插件打包器"
   short_description: "打包、发布并同步 project-delivery-hub-v1 插件、集中 .agent、缓存与固定架构图。"
-  default_prompt: "使用 $plugin-packager 先读取 references/package-targets.json 并执行 package_project_delivery_hub.ps1 -DryRun 校验目标、缓存、agentBundle 与三张固定 SVG；只有用户明确要求正式发布/同步时才去掉 -DryRun。"
-
-multiApiLeaderPackaging: |
-  打包 project-delivery-hub-v1 时必须校验 Design Leader、feedback coordinator、Office deliverable editor、multi-api-leader、orchestration assets、USAGE、命名标准和三张架构 SVG。
-  新增或修改 design-change-plan/file-claims/office-edit-plan/office-edit-results/worker-results/final-design-fix-report 或 leader-run/api-workgroups/final-assessment 时，同步运行 package_project_delivery_hub.ps1 -DryRun。
+  icon_small: "./assets/插件运维.png"
+  icon_large: "./assets/插件运维.png"
+  default_prompt: "请按默认规则打包本插件，并同步 company-dev、Codex 缓存、集中 .agent 与三张固定 SVG 架构图。"

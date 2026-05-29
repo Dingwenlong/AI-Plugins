@@ -14,6 +14,8 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 SKILL_DIR = SCRIPT_DIR.parent
 WRITE_API_CODE = SKILL_DIR / "scripts" / "write_api_code.py"
 CONVERT_DEV_GUIDELINES = SKILL_DIR / "scripts" / "convert_dev_guidelines.py"
+SKILL_MD = SKILL_DIR / "SKILL.md"
+OPENAI_YAML = SKILL_DIR / "agents" / "openai.yaml"
 
 
 def load_json(path: Path) -> dict:
@@ -834,6 +836,8 @@ def create_execution(
         "execution_state_path": execution_root / "execution-state.json",
         "checklist_path": execution_root / "api-checklist.json",
         "change_plan_path": api_root / "change-plan.json",
+        "implementation_template_md_path": api_root / "implementation-template.md",
+        "implementation_template_json_path": api_root / "implementation-template.json",
         "implementation_report_path": api_root / "implementation-report.md",
         "diagnosis_path": api_root / "diagnosis-report.json",
         "test_evidence_path": api_root / "test-evidence.json",
@@ -979,6 +983,10 @@ def mark_fixture_status(paths: dict[str, Path], *, status: str, phase: str | Non
     dump_json(paths["checklist_path"], checklist)
 
 
+def confirm_template(paths: dict[str, Path], *, function_code: str) -> subprocess.CompletedProcess[str]:
+    return run_command(base_command(paths, function_code=function_code) + ["--execution-mode", "confirm"])
+
+
 def extract_planned_files(change_plan: dict) -> list[str]:
     analysis = change_plan.get("analysis") or {}
     files = []
@@ -1071,6 +1079,15 @@ def assert_n006_prepare_output(paths: dict[str, Path]) -> None:
     assert_true(state["codeStatus"] == "waiting_resume", "Prepare should leave execution waiting for resumed apply")
     assert_true(state["codePhase"] == "planned", "Prepare should leave execution phase at planned")
     assert_true(paths["implementation_report_path"].exists() is False, "Prepare should not emit implementation report yet")
+    assert_true(paths["implementation_template_md_path"].exists(), "Prepare should emit implementation-template.md")
+    assert_true(paths["implementation_template_json_path"].exists(), "Prepare should emit implementation-template.json")
+    template_md = paths["implementation_template_md_path"].read_text(encoding="utf-8")
+    template_json = load_json(paths["implementation_template_json_path"])
+    assert_true("## 1 层项目结构" in template_md, "Template should include project-structure layer")
+    assert_true("## 2 层代码文件" in template_md, "Template should include code-file layer")
+    assert_true("## 3 层文件内方法" in template_md, "Template should include method layer")
+    assert_true(template_json["status"] == "awaiting_user_confirmation", "Prepare should leave template awaiting confirmation")
+    assert_true(template_json["approvedTemplateMdSha256"] is None, "Prepare should not pre-approve the template")
 
 
 def test_n006_prepare_only_generates_change_plan_and_defers_code_writing() -> None:
@@ -1196,6 +1213,8 @@ def test_n006_apply_uses_real_ai_authored_changes_and_default_validation() -> No
         mark_fixture_status(paths, status="skipped")
         prepare = run_command(base_command(paths, function_code="N.006") + ["--execution-mode", "prepare"])
         assert_true(prepare.returncode == 0, prepare.stdout + prepare.stderr)
+        confirmed = confirm_template(paths, function_code="N.006")
+        assert_true(confirmed.returncode == 0, confirmed.stdout + confirmed.stderr)
 
         modified_files = simulate_ai_authored_changes(paths, marker="REAL AI IMPLEMENTATION")
         service_method_path = paths["workspace_root"] / "Sinopac.DawhoEnterprise/BusinessLogicLayout/EnterpriseApi/EnterpriseApiBusiness/Setting/SettingService.QueryUserLoginLog.cs"
@@ -1243,6 +1262,8 @@ def test_apply_pending_fixture_reuses_prepare_plan_without_cleanup() -> None:
         )
         prepare = run_command(base_command(paths, function_code="N.006") + ["--execution-mode", "prepare"])
         assert_true(prepare.returncode == 0, prepare.stdout + prepare.stderr)
+        confirmed = confirm_template(paths, function_code="N.006")
+        assert_true(confirmed.returncode == 0, confirmed.stdout + confirmed.stderr)
         simulate_ai_authored_changes(paths, marker="PENDING FIXTURE")
 
         completed = run_command(base_command(paths, function_code="N.006") + ["--execution-mode", "apply"], env=fake_dotnet_env(paths))
@@ -1399,6 +1420,8 @@ def test_apply_without_real_changes_blocks() -> None:
         mark_fixture_status(paths, status="skipped")
         prepare = run_command(base_command(paths, function_code="N.006") + ["--execution-mode", "prepare"])
         assert_true(prepare.returncode == 0, prepare.stdout + prepare.stderr)
+        confirmed = confirm_template(paths, function_code="N.006")
+        assert_true(confirmed.returncode == 0, confirmed.stdout + confirmed.stderr)
 
         completed = run_command(base_command(paths, function_code="N.006") + ["--execution-mode", "apply"], env=fake_dotnet_env(paths))
         assert_true(completed.returncode == 1, "Apply without AI-authored code changes should block")
@@ -1407,6 +1430,64 @@ def test_apply_without_real_changes_blocks() -> None:
         assert_true(manifest["codeStatus"] == "blocked", "Apply without changes should leave manifest blocked")
         assert_true("No AI-authored code changes detected" in (diagnosis.get("detail") or ""), "Diagnosis should explain that apply needs real code changes")
         assert_true(read_dotnet_commands(paths) == [], "Apply without changes should not start validation")
+
+
+def test_apply_without_confirmed_template_blocks() -> None:
+    with tempfile.TemporaryDirectory() as temp_dir:
+        paths = setup_workspace(
+            Path(temp_dir),
+            function_code="N.006",
+            api_id="N.006.setting.queryuserloginlog",
+            api_category="setting",
+            api_name="QueryUserLoginLog",
+            version="v1.2",
+            request=[],
+            response=[{"fieldName": "keyId", "dataType": "string", "required": False, "description": "JWT key"}],
+        )
+        mark_fixture_status(paths, status="skipped")
+        prepare = run_command(base_command(paths, function_code="N.006") + ["--execution-mode", "prepare"])
+        assert_true(prepare.returncode == 0, prepare.stdout + prepare.stderr)
+        simulate_ai_authored_changes(paths, marker="UNCONFIRMED TEMPLATE")
+
+        completed = run_command(base_command(paths, function_code="N.006") + ["--execution-mode", "apply"], env=fake_dotnet_env(paths))
+        assert_true(completed.returncode == 1, "Apply should block before code validation when template is not confirmed")
+        diagnosis = load_json(paths["diagnosis_path"])
+        manifest = load_json(paths["manifest_path"])
+        assert_true(diagnosis["diagnosisType"] == "template_not_confirmed", "Diagnosis should classify missing template approval")
+        assert_true("not been confirmed" in (diagnosis.get("detail") or ""), "Diagnosis should tell users to confirm the template")
+        assert_true(manifest["codeStatus"] == "blocked", "Unconfirmed template should leave manifest blocked")
+        assert_true(read_dotnet_commands(paths) == [], "Template gate should block before validation")
+
+
+def test_apply_after_template_edit_requires_reconfirm() -> None:
+    with tempfile.TemporaryDirectory() as temp_dir:
+        paths = setup_workspace(
+            Path(temp_dir),
+            function_code="N.006",
+            api_id="N.006.setting.queryuserloginlog",
+            api_category="setting",
+            api_name="QueryUserLoginLog",
+            version="v1.2",
+            request=[],
+            response=[{"fieldName": "keyId", "dataType": "string", "required": False, "description": "JWT key"}],
+        )
+        mark_fixture_status(paths, status="skipped")
+        prepare = run_command(base_command(paths, function_code="N.006") + ["--execution-mode", "prepare"])
+        assert_true(prepare.returncode == 0, prepare.stdout + prepare.stderr)
+        confirmed = confirm_template(paths, function_code="N.006")
+        assert_true(confirmed.returncode == 0, confirmed.stdout + confirmed.stderr)
+        paths["implementation_template_md_path"].write_text(paths["implementation_template_md_path"].read_text(encoding="utf-8") + "\n- 用户补充确认点\n", encoding="utf-8")
+        simulate_ai_authored_changes(paths, marker="TEMPLATE EDITED")
+
+        blocked = run_command(base_command(paths, function_code="N.006") + ["--execution-mode", "apply"], env=fake_dotnet_env(paths))
+        assert_true(blocked.returncode == 1, "Apply should block when template changed after confirmation")
+        diagnosis = load_json(paths["diagnosis_path"])
+        assert_true(diagnosis["diagnosisType"] == "template_modified_after_confirmation", "Diagnosis should require reconfirm after template edit")
+
+        reconfirmed = confirm_template(paths, function_code="N.006")
+        assert_true(reconfirmed.returncode == 0, reconfirmed.stdout + reconfirmed.stderr)
+        completed = run_command(base_command(paths, function_code="N.006") + ["--execution-mode", "apply"], env=fake_dotnet_env(paths))
+        assert_true(completed.returncode == 0, completed.stdout + completed.stderr)
 
 
 def test_missing_enterprise_slots_block_precheck() -> None:
@@ -1448,6 +1529,8 @@ def test_environment_validation_failure_is_classified() -> None:
         mark_fixture_status(paths, status="skipped")
         prepare = run_command(base_command(paths, function_code="N.006") + ["--execution-mode", "prepare"])
         assert_true(prepare.returncode == 0, prepare.stdout + prepare.stderr)
+        confirmed = confirm_template(paths, function_code="N.006")
+        assert_true(confirmed.returncode == 0, confirmed.stdout + confirmed.stderr)
         simulate_ai_authored_changes(paths, marker="ENV FAILURE CASE")
 
         completed = run_command(
@@ -1673,14 +1756,50 @@ def test_review_notes_with_unknown_field_blocks_prepare() -> None:
         assert_true(diagnosis["diagnosisType"] == "review_constraint_gap", "Diagnosis should classify review-note conflicts separately")
 
 
+def test_skill_rule_text_covers_new_04_constraints_without_duplicate_validation_rule() -> None:
+    skill_text = SKILL_MD.read_text(encoding="utf-8-sig")
+    prompt_text = OPENAI_YAML.read_text(encoding="utf-8-sig")
+    combined = f"{skill_text}\n{prompt_text}"
+    required_texts = [
+        'var sql = """ ... """;',
+        "逗号放在字段行前",
+        "表名.字段名",
+        "别名.字段名",
+        "不得出现 `dbo.`",
+        "多项目分层架构",
+        "按功能类别",
+        "CommonFunc 是实现类库",
+        "CommonUtil 是对外调用入口",
+        "CommonFunc 内部方法也列入落码范本和 `codeTargetFiles`",
+        "不视为外部 API 调用",
+        "没有 DB、HTTP、Redis、文件、网络、外部服务等异步操作",
+        "不得为了统一样式强行返回 `Task`",
+        "英文直译腔",
+        "AI 感强",
+    ]
+    for text in required_texts:
+        assert_true(text in combined, f"Missing 04 rule text: {text}")
+    assert_true(
+        skill_text.count("基础输入约束默认优先放在实体类特性") == 1,
+        "DTO validation default should stay as one SKILL.md rule instead of duplicate guidance",
+    )
+    assert_true(
+        "字段验证未特殊指定时默认放在实体类特性中" in prompt_text,
+        "Prompt should keep the short DTO validation reminder",
+    )
+
+
 def main() -> int:
     tests = [
+        test_skill_rule_text_covers_new_04_constraints_without_duplicate_validation_rule,
         test_n006_prepare_only_generates_change_plan_and_defers_code_writing,
         test_commonfunc_prepare_uses_library_folders_without_controller,
         test_n006_apply_uses_real_ai_authored_changes_and_default_validation,
         test_apply_pending_fixture_reuses_prepare_plan_without_cleanup,
         test_d006_prepare_reuses_existing_deposit_module,
         test_apply_without_real_changes_blocks,
+        test_apply_without_confirmed_template_blocks,
+        test_apply_after_template_edit_requires_reconfirm,
         test_missing_enterprise_slots_block_precheck,
         test_environment_validation_failure_is_classified,
         test_old_spec_without_code_handoff_uses_business_logic_compat,

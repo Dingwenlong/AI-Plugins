@@ -1,5 +1,5 @@
 ---
-name: 【测试验收】API 测试代码与单元测试报告生成器
+name: 专案交付中枢：【测试验收】API 测试代码与单元测试报告生成器
 description: 生成 API 测试代码并写回 DOCX UT 测试报告。可选第 05 步：消费第 04 步测试交接，生成或维护 UnitTest / IntegrationTest / Service runtime validation，也可校验 Postman MCP 真实接口调用证据，执行或读取 `.trx`、代码检查、请求/响应 JSON 与状态截图，并输出 `{functionCode}_API_UT 测试报告 {yyyyMMdd}.docx`；不默认修改生产业务代码。关键词：UT 报告、TRX、mockExamples、testCodeHandoff、Postman MCP、真实接口调用。
 ---
 
@@ -10,13 +10,13 @@ description: 生成 API 测试代码并写回 DOCX UT 测试报告。可选第 0
 当事实来源仍是 Word 测试报告，但执行证据必须来自 `.NET UnitTest`、`IntegrationTest`、Service runtime validation、Postman MCP 真实接口调用或直接代码检查，而不是浏览器自动化时，使用这个可选第 05 步技能。
 建议链路中，在第 04 步业务代码路径与测试交接资料可用后运行本技能。
 本步骤负责 UnitTest / IntegrationTest / Service runtime validation 测试源码的生成与维护，也负责把已由 Codex 调用 Postman MCP 取得的真实接口调用证据纳入报告。它消费第 04 步交接资料，创建或更新缺失测试代码，执行或消费测试结果，必要时检查代码路径，解析 `.trx` 或校验请求/响应 JSON 与状态截图，并把状态、实际结果与文字证据写回文件。
-API 交付默认基准优先从专案规则库 catalog asset `utChecklistBaseline` 读取；需与每个 API Spec `mockExamples` 情境及第 04 步 runtime 交接一起套用。技能内 `assets/` 只保留兼容模板与回归 fixture。
+API 交付默认基准优先从专案规则库 catalog asset `utChecklistBaseline` 读取；需与每个 API Spec `mockExamples` 情境及第 04 步 runtime 交接一起套用。测试人员对照名单的权威位置是工作区 `<workspaceRoot>/.agent/config/feature-tester-map.json`。技能内 `assets/` 只保留兼容模板与回归 fixture。
 
 Postman MCP 分支只作为「真实接口调用 / Postman MCP 实测」证据层，不得描述为 UnitTest。当前 agent 负责实际调用 Postman MCP，并在报告运行前保存静态 `request.json`、`response.json` 与 `status.png`；本技能脚本只校验证据完整性、敏感信息遮蔽与 HTTP 状态是否符合预期。当前环境若没有可用 Postman MCP 工具，必须将该分支标记为阻塞或待补，不得伪造通过。
 
 默认优先解析插件本地 `references/local-workspaces.json`，可按 `workspaceKey` 指向对应集中 `.agent`。报告脚本可直接传 `--function-code` 解析集中 `.agent/context/<functionCode>`；若未配置集中 `.agent`，仍可显式传旧 `<project-root>\.agent\context\<functionCode>`。
 
-专案规则读取顺序：`--rules-root` > `PROJECT_RULES_ROOT` / 专案环境变量 > `references/local-workspaces.json.rulesRoot` > `<agentRoot>/project-rules/<workspaceKey>`。UT 模板、检查清单、测试人员映射、绑定规则与报告语言/层级规则都优先从 `<rulesRoot>/catalog.json` 的 asset 与 rules 读取；缺少规则库时可继续通用报告流程，但专案专属模板/人员映射必须标记为缺口，不能从插件内旧 DAWHO 资产偷读默认规则。
+专案规则读取顺序：`--rules-root` > `PROJECT_RULES_ROOT` / 专案环境变量 > `references/local-workspaces.json.rulesRoot` > `<agentRoot>/project-rules/<workspaceKey>`。UT 模板、检查清单、绑定规则与报告语言/层级规则都优先从 `<rulesRoot>/catalog.json` 的 asset 与 rules 读取；测试人员映射只允许从 `<agentRoot>/config/feature-tester-map.json` 读取。缺少规则库、缺少人员映射文件或缺少当前 `functionCode` 对应 Feature ID 时必须阻塞，不能回退到插件内旧 DAWHO 资产、project-rules 旧资产或当前登录名。
 
 ## 规则包启动检查
 
@@ -28,7 +28,7 @@ python "<pluginRoot>\references\resolve_project_rule_pack.py" `
   --workspace-key "<workspaceKey>"
 ```
 
-若用户明确给出规则库，改传 `--rules-root "<rulesRoot>"`。脚本输出的 `utReportTemplate`、`utChecklistBaseline`、`featureTesterMap`、`utBindingRules` 与测试交接规则是正式报告的硬输入；`status=blocked` 时，不得输出“符合专案标准”的正式 UT 报告，只能输出草稿、缺口清单或要求补规则库。
+若用户明确给出规则库，改传 `--rules-root "<rulesRoot>"`。脚本输出的 `utReportTemplate`、`utChecklistBaseline`、`utBindingRules` 与测试交接规则，加上工作区 `.agent/config/feature-tester-map.json` 中的测试人员映射，是正式报告的硬输入；`status=blocked` 时，不得输出“符合专案标准”的正式 UT 报告，只能输出草稿、缺口清单或要求补规则库。
 
 ## 工作流程
 
@@ -81,7 +81,7 @@ python "<pluginRoot>\references\resolve_project_rule_pack.py" `
 - 当检查清单行被归类为当前 API 范围外时，`测试结果` 单元格必须填写 `不适用`；不要因为该 API 已执行测试全部通过就填 `通过`。汇总行也要维持相同边界，把这些行计入 `不适用 z 项`。
 - 每个 API 及整体模拟截图只能来自当前功能 API 选定的测试。不要为了让截图更饱满而展示无关功能、模块或项目的测试。
 - 若 Word 模板用带边框的空白段落模拟封面边框，生成报告时必须改用第一节页面边框，让封面边框覆盖整个第一页，且不要出现在第二页或报告正文页。
-- 分类报告中，`测试人员` 应从专案规则库 catalog asset `featureTesterMap` 读取，并用报告 `functionCode` 匹配项目计划中的 `Feature ID`。不要沿用之前按秒数轮换的规则。若 map 中缺少 Feature ID，回退为当前登录显示名，并把 map 视为待维护。
+- 分类报告中，`测试人员` 只允许从工作区 `<workspaceRoot>/.agent/config/feature-tester-map.json` 读取，并用报告 `functionCode` 匹配项目计划中的 `Feature ID`。不要沿用之前按秒数轮换的规则；若 map 中缺少 Feature ID，必须阻塞并维护 `.agent` 名单，不得回退为当前登录显示名。
 - 仅靠文件文字不足以推断测试名称。每个启用的 `unit_test` 或 `integration_test` 项目都必须绑定明确的 `testBindings.testNames`。
 - 接口契约、验证规则、响应 schema、查询结构、下载与通知流程等检查项，在无需 runtime 测试时可用直接代码检查验证。
 - 自动化结果可以来自 `.trx`，也可以来自直接代码检查证据。
@@ -303,8 +303,8 @@ python "<pluginRoot>\skills\docx-unittest-report\scripts\postman_mcp_evidence.py
   - 默认 Word UT 报告模板。`UT-01` 保留给来自 API Spec Excel / `mockExamples` 的功能接口范例；标准化 API UT 检查清单类别从 `UT-02` 开始。
 - project-rules catalog asset `utChecklistBaseline`
   - 默认标准化 API UnitTest 检查清单基准，包含 P0/P1/P2/P3 优先级排序与非 API 删除说明。
-- project-rules catalog asset `featureTesterMap`
-  - 从专案计划来源抽取的 Feature ID 到 `测试人员` 映射；分类报告以此作为测试人员事实来源。
+- `<workspaceRoot>/.agent/config/feature-tester-map.json`
+  - 从专案计划来源抽取的 Feature ID 到 `测试人员` 映射；分类报告以此作为唯一测试人员事实来源。
 - `UnitTest/`
   - Python `unittest` regression coverage for the skill.
 

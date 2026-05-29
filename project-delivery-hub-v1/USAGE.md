@@ -35,7 +35,7 @@ plugins/project-delivery-hub-v1/
 - 设计梳理可输出 `.agent/functions/<functionCode>/handoff/development-handoff.json`，作为 02 的优先输入。
 - 02 优先从 handoff 生成各 API 的 `*_API_Spec.json`；没有 handoff 时，也可从明确 `docx_ref` 或 `execution-batch.json` 命中的 TSD 直接生成。TSD/API Detail 仍是接口字段与响应契约主源；当前功能的时序图可作为更细业务逻辑证据进入 02，用于补强流程、依赖、校验、错误分支与测试意图，冲突时写入 blocking unresolved。
 - 03 根据 SQL 依赖和 `.agent/config/sql-fixture-targets.local.json` 私有 SQL Server 目标配置准备 schema/seed，或标记 `skipped/not_required`；SQLite 本地建表路径已禁用。
-- 04 只写业务代码，不生成 UnitTest/IntegrationTest 测试源码。
+- 04 先生成 `implementation-template.md/json` 落码范本；用户确认或修改 Markdown 并执行 confirm 后，才写业务代码，不生成 UnitTest/IntegrationTest 测试源码。
 - 05 消费第 04 步 `testCodeHandoff`、mockExamples 与验证证据，生成测试代码和 DOCX UT 报告。
 
 ## 设计阶段 Design Leader
@@ -106,8 +106,9 @@ leader 维护：
 - 设计冻版阶段可派只读 reviewer 子 agent 检查 API contract、DB/SQL、Common/旧逻辑、UT 验收口径；`development-handoff.json` 是推荐交接物，不再是 02 的硬性前置。
 - 02/03 的共享状态由 leader 串行写入。
 - 02 会把命中的时序图 path/hash 写入 `source.sequenceDiagrams` 与 manifest source fingerprint；时序图内容变化会触发后续代码阶段重新待处理。
-- 04 先由 leader 按 `--api-id` 串行 prepare 所有 API，收集 `change-plan.json` 的 planned files。
-- `multi-api-leader` 脚本按文件重叠关系生成 workGroup；文件重叠 API 归同一 worker 串行处理，无重叠组可并行。
+- 04 先由 leader 按 `--api-id` 串行 prepare 所有 API，收集 `change-plan.json` 与 `implementation-template.md/json`。
+- 所有 API 的 Markdown 范本经用户确认并执行 `--execution-mode confirm` 后，`multi-api-leader` 脚本才按文件重叠关系生成 workGroup 与可执行 file claim；任一范本未确认时必须 blocking。
+- 文件重叠 API 归同一 worker 串行处理，无重叠组可并行。
 - worker 不写 `.agent/context`，不写测试源码，返回 `modifiedFiles`、验证命令、阻塞项。
 - leader 校验 `modifiedFiles` 未越权后再串行 apply/验证。
 - 05 的测试代码也按 file claim 分配；DOCX 报告、manifest/results 和 `final-assessment.json` 由 leader 汇总落盘。

@@ -31,6 +31,7 @@ API 测试代码与单元测试报告生成器 - 使用说明
 - 运行配置：.job.json
 - UnitTest / IntegrationTest 结果：.trx 或可产出 .trx 的执行命令
 - Postman MCP 真实接口调用证据：request.json、response.json、status.png
+- 测试人员对照名单：必须配置在 `<workspaceRoot>/.agent/config/feature-tester-map.json`，缺文件或缺 Feature ID 时阻塞
 
 输出：
 - 回填后的测试报告：.docx
@@ -38,9 +39,9 @@ API 测试代码与单元测试报告生成器 - 使用说明
 
 四、目录中的关键文件
 1. SKILL.md
-2. assets/ 内置 API UT 报告模板
-3. assets/ 内置 API 单元测试检查清单
-4. assets/binding-rules.json
+2. assets/ 兼容模板与回归 fixture
+3. `<workspaceRoot>/.agent/config/feature-tester-map.json` 工作区测试人员对照名单
+4. project-rules catalog assets：`utReportTemplate`、`utChecklistBaseline`、`utBindingRules`
 5. scripts/bootstrap_manifest.py
 6. scripts/trx_result_utils.py
 7. scripts/analyze_module_scope.py

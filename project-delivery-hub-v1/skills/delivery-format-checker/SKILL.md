@@ -1,5 +1,5 @@
 ---
-name: 【交付文件】专案交付文件格式检查器
+name: 专案交付中枢：【交付文件】专案交付文件格式检查器
 description: 检查 TSD Word 与 API Excel 的交付格式，产出格式问题清单、office-edit-plan 与验收结论。用于文件命名、章节/工作表结构、必要表格、可见栏位、字体、对齐、繁体中文、版面与视觉 QA；实际 .docx/.xlsx 写入交给专案 Office 交付文件编辑器；不判断业务逻辑、接口语义或字段业务含义。关键词：TSD DOCX、API XLSX、格式检查、office-edit-plan、视觉 QA。
 ---
 
@@ -80,7 +80,7 @@ python scripts/check_api_xlsx_format.py "path/to/API_DETAIL.xlsx"
 - 保留上游 API 内容、sheet 意图、字段语义、范例与业务逻辑；除非用户明确要求，不要新增或删除 API 设计内容。
 - 使用 API Detail 语义范围作为格式处理范围，不以 Excel `UsedRange` 为准。默认 API worksheet 样式范围仍为 `A:G`；不要因为历史样式污染就把格式扩到 `H:AZ`。
 - 当由 `专案需求接口设计梳理` 等上游技能交接局部内容编辑时，以上游交接的 sheet 名、`Api_List` 行号或单元格范围为最高优先级。不要因为局部内容编辑而默认扫描所有 API Detail worksheets 执行字体槽位或样式修复。
-- 局部内容编辑后的格式收尾有三条强制约束：一是只对实际新增或替换后的字符/词组使用 `apiDetailExcelStyle` 字型槽位（中文 `微軟正黑體`、英文数字 `Times New Roman`、字号 10）并标红，不得整格、整行或整段标红；二是字体修复只准作用于这些变更字符/词组，其他文字与单元格字体保持既有样式；三是目标 workbook 的所有工作表已用行必须重新自适应高度，含换行文字或合并格的行需按可见内容补足行高。
+- 局部内容编辑后的格式收尾有四条强制约束：一是只对实际新增或替换后的字符/词组使用 `apiDetailExcelStyle` 字型槽位（中文 `微軟正黑體`、英文数字 `Times New Roman`、字号 10）并标红，不得整格、整行或整段标红；二是字体修复只准作用于这些变更字符/词组，其他文字与单元格字体保持既有样式；三是目标 workbook 的所有工作表已用行必须重新自适应高度，含换行文字或合并格的行需按可见内容补足行高；四是行高/换行修复不得把一般内容行改成顶端对齐，必须要求 Office 编辑器保持或恢复水平靠左、垂直居中。
 - 信息补充不得重复堆叠：`涉及BackendAPI`、`後端來源`、`Api_List` 仅写调用关系与来源摘要；Redis、DB fallback、排序、异常等细节优先放在 `API 內部業務邏輯` 的对应步骤，避免同一说明在清单和逻辑区重复出现。
 - 若上游未提供明确变更范围，先执行只读检查并回报需要确认的范围；不得为了收尾而扩大到全 workbook 或所有 sheets。
 - 当 API Detail worksheet 本身需要整页格式收尾时，`office-edit-plan` 可建议 Office 编辑器使用 `scripts/rebuild_api_xlsx_detail_sheets_from_text.ps1` 的“抽取文字并重建”流程：先抽取语义 `A:G` 文字与分区，再创建干净 worksheet，并按配置重新填入。不要在旧 worksheet 上反复修补过期合并格、边框、底色与行高。
@@ -187,6 +187,7 @@ powershell -ExecutionPolicy Bypass -File scripts/apply_excel_font_scheme.ps1 -Pa
 - Excel COM 对一个 mixed-font cell 查 `Range.Font.Name` 可能回空值，这代表同格混合字型，不等于失败。需要抽查时用 `Range("A1").Characters(start, length).Font.Name` 分别确认中文与英文字符。
 - 逐字/rich-text run 激进修复只作为兜底：当 COM 双字型槽位模式后，实际画面仍有明确字型错误，且使用者同意进行深度富文本修复时才使用。
 - XLSX 对齐检查需使用同一套序号识别规则：A 栏 `^\d+(\.\d+)*$` 为序号并置中，其余有内容储存格靠左垂直置中。
+- XLSX 行高或 AutoFit 修复必须保留上述对齐结果：除表头、序号或配置明确要求居中的区域外，含内容储存格调整行高后仍应靠左、垂直置中、启用换行；不得为了展示长内容改成顶端对齐。
 - 修复既有交付版 API workbook 时，若 workbook 内含 `xl/embeddings/` 或 `xl/media/`，计划必须要求 Office 编辑器优先使用 Excel COM 储存，避免 `openpyxl` 移除 OLE 物件或 EMF 图片。可用 `openpyxl` 读取检查，但不要用它保存此类 workbook。
 - Office 编辑器需重新开启每个已修改的 DOCX/XLSX，确认变更后的段落、表格列、储存格或样式。
 - Office 编辑器修复完成后，本技能预设执行结构复验与视觉 QA；XLSX 至少要用 artifact-tool import/inspect/render 代表性 API sheet，必要时再转 PDF。未完成渲染与检视前，不得宣称交付版面完全通过。

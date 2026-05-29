@@ -17,9 +17,9 @@ from collect_unittest_results import build_runtime_context, evaluate_case
 from docx_report_utils import (
     build_manifest_from_outline,
     load_report_outline,
-    resolve_current_login_display_name,
     today_slash,
 )
+from feature_tester_map import resolve_feature_tester_name
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -57,6 +57,12 @@ def infer_context_root(api_root: Path) -> Path:
     if api_root.parent.name != "apis":
         raise SystemExit(f"api root must be .agent/context/<functionCode>/apis/<apiId>: {api_root.as_posix()}")
     return api_root.parent.parent
+
+
+def infer_agent_root(context_root: Path) -> Path:
+    if context_root.parent.name != "context":
+        raise SystemExit(f"context root must be .agent/context/<functionCode>: {context_root.as_posix()}")
+    return context_root.parent.parent.resolve()
 
 
 def ensure_required_file(path: Path, label: str) -> Path:
@@ -295,9 +301,8 @@ def bootstrap_report_job(
     report_job["metadata"]["apiDisplayName"] = (
         normalize_text(test_evidence.get("apiDisplayName")) or report_job["metadata"]["apiDisplayName"]
     )
-    report_job["metadata"]["tester"] = (
-        normalize_text(report_job["metadata"].get("tester")) or resolve_current_login_display_name()
-    )
+    report_job["metadata"]["functionCode"] = context_root.name
+    report_job["metadata"]["tester"] = resolve_feature_tester_name(context_root.name, agent_root=infer_agent_root(context_root))
     report_job["metadata"]["testDate"] = normalize_text(report_job["metadata"].get("testDate")) or today_slash()
 
     configure_unit_test_block(report_job, test_evidence, repo_root)

@@ -19,6 +19,7 @@ def create_api_context(
     context_root = repo_root / ".agent" / "context" / "N.006"
     api_root = context_root / "apis" / "N.006.setting.queryuserloginlog"
     api_root.mkdir(parents=True, exist_ok=True)
+    write_json(repo_root / ".agent" / "config" / "feature-tester-map.json", {"mapping": {"N.006": "Kelly"}})
 
     solution_path = repo_root / "Sinopac.DawhoEnterprise" / "Sinopac.DawhoEnterprise.sln"
     solution_path.parent.mkdir(parents=True, exist_ok=True)
@@ -252,6 +253,8 @@ class ContextToReportJobTests(unittest.TestCase):
         autofix_report = read_json(api_root / "report-job.autofix-report.json")
 
         self.assertEqual(report_job["metadata"]["apiDisplayName"], "Setting/QueryUserLoginLog")
+        self.assertEqual(report_job["metadata"]["functionCode"], "N.006")
+        self.assertEqual(report_job["metadata"]["tester"], "Kelly")
         self.assertIn("dotnet test", report_job["unitTest"]["command"])
         self.assertIn("EnterpriseAPIUnit.csproj", report_job["unitTest"]["command"])
         self.assertFalse(report_job["integrationTest"]["cleanWorkspace"]["enabled"])

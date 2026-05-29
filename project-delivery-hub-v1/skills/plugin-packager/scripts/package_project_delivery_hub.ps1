@@ -62,6 +62,49 @@ function Resolve-PluginRelativePath {
   return Join-Path $PluginRoot $Path
 }
 
+function Resolve-ConfiguredPath {
+  param([string]$Path)
+  if ([string]::IsNullOrWhiteSpace($Path)) {
+    return $Path
+  }
+  return $Path.Replace("<username>", [System.Environment]::UserName)
+}
+
+function New-MarketplaceConfig {
+  param(
+    [string]$Path,
+    [string]$TargetName,
+    [string]$DisplayName,
+    [string]$PluginId
+  )
+  $directory = Split-Path -Parent $Path
+  New-Item -ItemType Directory -Force -Path $directory | Out-Null
+  $marketplace = [ordered]@{
+    name = $TargetName
+    interface = [ordered]@{
+      displayName = $DisplayName
+    }
+    plugins = @(
+      [ordered]@{
+        name = $PluginId
+        source = [ordered]@{
+          source = "local"
+          path = "./plugins/$PluginId"
+        }
+        policy = [ordered]@{
+          installation = "AVAILABLE"
+          authentication = "ON_INSTALL"
+        }
+        category = "Productivity"
+      }
+    )
+  }
+  $json = $marketplace | ConvertTo-Json -Depth 8
+  $encoding = New-Object System.Text.UTF8Encoding($false)
+  [System.IO.File]::WriteAllText($Path, $json + [System.Environment]::NewLine, $encoding)
+  Write-Host "[ok] created marketplace config: $Path"
+}
+
 function Get-AgentBundleInfo {
   param(
     [string]$PluginRoot,
@@ -132,6 +175,31 @@ function Get-AgentBundleInfo {
     PluginAgentRoot = $pluginAgentRoot
     SourceIsBundledSnapshot = $false
   }
+}
+
+function Assert-PluginInterfaceAssets {
+  param(
+    [string]$PluginRoot,
+    [object]$Manifest
+  )
+  $interface = $Manifest.interface
+  if (-not $interface) {
+    throw "plugin.json missing interface metadata"
+  }
+  foreach ($field in @("composerIcon", "logo")) {
+    $relativePath = [string]$interface.$field
+    if ([string]::IsNullOrWhiteSpace($relativePath)) {
+      continue
+    }
+    if ([System.IO.Path]::IsPathRooted($relativePath)) {
+      throw "plugin.json interface.$field must be a relative package path: $relativePath"
+    }
+    $assetPath = Join-Path $PluginRoot $relativePath
+    if (-not (Test-Path -LiteralPath $assetPath -PathType Leaf)) {
+      throw "plugin.json interface.$field points to missing asset: $relativePath"
+    }
+  }
+  Write-Host "[ok] plugin interface assets verified"
 }
 
 function Assert-BundledDiagramAssets {
@@ -239,6 +307,47 @@ function Assert-DesignLeaderAssets {
     }
   }
   Write-Host "[ok] design leader assets verified"
+}
+
+function Assert-SkillDisplayNames {
+  param([string]$PluginRoot)
+  $prefix = -join ([char[]](0x4E13, 0x6848, 0x4EA4, 0x4ED8, 0x4E2D, 0x67A2, 0xFF1A))
+  $prefixPattern = [regex]::Escape($prefix)
+  $skillNamePattern = "(?m)^name:\s+$prefixPattern"
+  $agentTopLevelNamePattern = "(?m)^name:\s+"
+  $agentDisplayNamePattern = '(?m)^\s*display_name:\s+"' + $prefixPattern
+  $skillsRoot = Join-Path $PluginRoot "skills"
+  if (-not (Test-Path -LiteralPath $skillsRoot)) {
+    throw "Missing skills directory: $skillsRoot"
+  }
+
+  $hits = New-Object System.Collections.Generic.List[string]
+  Get-ChildItem -LiteralPath $skillsRoot -Directory | ForEach-Object {
+    $skillFile = Join-Path $_.FullName "SKILL.md"
+    if (Test-Path -LiteralPath $skillFile) {
+      $skillText = Read-Utf8Text $skillFile
+      if (-not [regex]::IsMatch($skillText, $skillNamePattern)) {
+        $hits.Add("${skillFile}: frontmatter name must start with '$prefix'")
+      }
+    }
+
+    $agentFile = Join-Path $_.FullName "agents\openai.yaml"
+    if (Test-Path -LiteralPath $agentFile) {
+      $agentText = Read-Utf8Text $agentFile
+      $hasPrefixedDisplayName = [regex]::IsMatch($agentText, $agentDisplayNamePattern)
+      if ([regex]::IsMatch($agentText, $agentTopLevelNamePattern)) {
+        $hits.Add("${agentFile}: use interface.display_name instead of top-level name to avoid automatic plugin-name prefix")
+      }
+      if (-not $hasPrefixedDisplayName) {
+        $hits.Add("${agentFile}: interface.display_name must start with '$prefix'")
+      }
+    }
+  }
+
+  if ($hits.Count -gt 0) {
+    throw "Skill display names are missing plugin prefix:`n$($hits -join "`n")"
+  }
+  Write-Host "[ok] skill display names prefixed"
 }
 
 function Remove-PackagingExclusions {
@@ -437,9 +546,11 @@ if (-not $Target) {
 }
 
 Assert-UsageGuide -PluginRoot $pluginRoot
+Assert-PluginInterfaceAssets -PluginRoot $pluginRoot -Manifest $manifest
 Assert-BundledDiagramAssets -PluginRoot $pluginRoot
 Assert-MultiApiLeaderAssets -PluginRoot $pluginRoot
 Assert-DesignLeaderAssets -PluginRoot $pluginRoot
+Assert-SkillDisplayNames -PluginRoot $pluginRoot
 
 $agentBundleInfo = Get-AgentBundleInfo -PluginRoot $pluginRoot -PackageTargets $packageTargets
 if ($agentBundleInfo) {
@@ -459,7 +570,7 @@ foreach ($targetName in $targetNames) {
     throw "Target not found in package-targets.json: $targetName"
   }
 
-  $marketplacePath = [string]$targetInfo.marketplacePath
+  $marketplacePath = Resolve-ConfiguredPath ([string]$targetInfo.marketplacePath)
   $marketplaceExists = $false
   try {
     $marketplaceExists = Test-Path -LiteralPath $marketplacePath
@@ -472,6 +583,9 @@ foreach ($targetName in $targetNames) {
   if ($DryRun -and -not $marketplaceExists) {
     Write-Host "[dry-run] marketplace config missing; skipping marketplace validation: $marketplacePath"
   } else {
+    if (-not $marketplaceExists) {
+      New-MarketplaceConfig -Path $marketplacePath -TargetName $targetName -DisplayName $targetName -PluginId ([string]$packageTargets.pluginId)
+    }
     $marketplace = Assert-JsonFile $marketplacePath
     if ($marketplace.name -ne $targetName) {
       throw "Marketplace name '$($marketplace.name)' does not match target '$targetName'"
@@ -482,7 +596,7 @@ foreach ($targetName in $targetNames) {
     }
   }
 
-  $sourceRoot = [string]$targetInfo.sourceRoot
+  $sourceRoot = Resolve-ConfiguredPath ([string]$targetInfo.sourceRoot)
   $targetPluginRoot = Join-Path $sourceRoot ("plugins\" + [string]$packageTargets.pluginId)
   Invoke-Mirror -Source $pluginRoot -Destination $targetPluginRoot -Label "$targetName marketplace"
   $syncedRoots.Add($targetPluginRoot)

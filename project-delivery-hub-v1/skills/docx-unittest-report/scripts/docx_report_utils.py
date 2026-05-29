@@ -1,8 +1,6 @@
 from __future__ import annotations
 
-import getpass
 import json
-import os
 import re
 import unicodedata
 from collections import Counter
@@ -162,20 +160,6 @@ def humanize_account_name(raw_value: str) -> str:
     return " ".join(part[:1].upper() + part[1:].lower() for part in token.split(" "))
 
 
-def resolve_current_login_display_name() -> str:
-    candidates = [
-        os.environ.get("CODEx_TESTER_NAME", ""),
-        os.environ.get("USERNAME", ""),
-        getpass.getuser(),
-        os.environ.get("USER", ""),
-    ]
-    for candidate in candidates:
-        display_name = humanize_account_name(candidate)
-        if display_name:
-            return display_name
-    return "Tester"
-
-
 def is_placeholder_tester(raw_value: str) -> bool:
     return normalize_text(raw_value).casefold() in PLACEHOLDER_TESTERS
 
@@ -205,7 +189,7 @@ def resolve_effective_metadata(
 
     tester = raw_tester
     if not tester or is_placeholder_tester(tester):
-        tester = resolve_current_login_display_name()
+        tester = ""
 
     return {
         "apiDisplayName": normalize_text(raw_api_name)
@@ -497,6 +481,7 @@ def build_manifest_from_outline(
         "metadata": {
             "apiDisplayName": metadata["apiDisplayName"],
             "tester": metadata["tester"],
+            "functionCode": "",
             "testDate": metadata["testDate"],
             "actualSummary": "",
             "overallStatus": "",
