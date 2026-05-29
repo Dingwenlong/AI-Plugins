@@ -4,3 +4,4 @@ interface:
   icon_small: "./assets/测试验收.png"
   icon_large: "./assets/测试验收.png"
   default_prompt: "使用「API 测试代码与单元测试报告生成器」作为可选第 05 步，消费第 04 步测试交接，生成或维护 API UnitTest、IntegrationTest 与 Service runtime validation 测试代码；如需真实接口调用，由 agent 调用 Postman MCP 并保存 request.json、response.json、status.png，再读取 .trx、代码检查或 Postman MCP / 真实接口调用证据，把实际结果写回 {functionCode}_API_UT 測試報告 {yyyyMMdd}.docx。"
+

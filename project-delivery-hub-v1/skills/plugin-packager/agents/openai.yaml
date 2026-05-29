@@ -4,3 +4,4 @@ interface:
   icon_small: "./assets/插件运维.png"
   icon_large: "./assets/插件运维.png"
   default_prompt: "请按默认规则打包本插件，并同步 company-dev、Codex 缓存、集中 .agent 与三张固定 SVG 架构图。"
+
