@@ -1,0 +1,12 @@
+{
+  "schemaVersion": "1.0.0",
+  "workspaceKey": "MYPROJECT",
+  "workspaceRoot": "D:\\Path\\To\\MyProject",
+  "agentRoot": "D:\\Path\\To\\MyProject\\.agent",
+  "rulesRoot": "D:\\Path\\To\\MyProject\\.agent\\project-rules\\MYPROJECT",
+  "rulesCatalog": "D:\\Path\\To\\MyProject\\.agent\\project-rules\\MYPROJECT\\catalog.json",
+  "lastProjectRoot": "D:\\Path\\To\\MyProject\\src",
+  "resolutionSource": "example",
+  "configSource": null,
+  "updatedAt": "2026-01-01T00:00:00+08:00"
+}

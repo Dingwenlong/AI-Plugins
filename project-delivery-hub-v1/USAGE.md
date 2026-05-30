@@ -25,6 +25,19 @@ plugins/project-delivery-hub-v1/
 
 `.agent` 是共享交付状态根目录。插件中的 `references/local-workspaces.json` 用于记录 `workspaceRoot`、`agentRoot`、`rulesRoot` 与默认代码目录；真实项目可在本机维护私有配置，不要把私有路径、SQL 连接串、WeDoc WebHook 或运行日志打进交付包。
 
+## 首次安装引导（必做一次）
+
+交付包**故意不含任何真实配置**：`local-workspaces.json`、`<workspaceRoot>/.agent/config/` 下的 `design-source-registry.json` / `feature-tester-map.json` / `chain-workspace.json`、企业微信 `wedoc-smartsheet-targets.json`、SQL `sql-fixture-targets.local.json` 都被脱敏或排除，包内只带对应的 `*.example.json` 模板。新机器装好后**必须先走一次安装引导**，否则各技能会因缺配置而阻塞。
+
+用 `workspace-onboarding`（【安装引导】工作区与配置初始化引导器）一键脚手架（先 `--dry-run` 预览）：
+
+```powershell
+python "<pluginRoot>\skills\workspace-onboarding\scripts\init_workspace_config.py" `
+  --workspace-root "<workspaceRoot>" --workspace-key "<workspaceKey>" --rule-pack "generic" --dry-run
+```
+
+它从 `references/` 模板生成真实配置与规则库（`references/local-workspaces.json`、`<workspaceRoot>/.agent/config/*`，以及 `<workspaceRoot>/.agent/project-rules/<workspaceKey>/` 规则库——`--rule-pack generic` 默认复制通用模板，含就绪的 `apiCodeWriter` 包；`--rule-pack <workspaceKey>` 复制包内 `.agent` 快照的真实规则包；`none` 跳过），**只新建、不覆盖**。脚手架后按提示填占位值（绝对路径、测试人员、WebHook/连接串、`implementation-profile.md` 等），并用 `专案规则分析器`（project-rule-analyzer）补专案专属规则类目。详见 `skills/workspace-onboarding/SKILL.md`。
+
 ## 常规 01-05 链路
 
 ```text

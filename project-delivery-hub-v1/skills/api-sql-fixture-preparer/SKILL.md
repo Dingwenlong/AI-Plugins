@@ -5,7 +5,7 @@ description: 为依赖 SQL 的 API 按 `.agent` 私有 SQL Server 目标配置�
 
 # 【开发落地】SQL 测试资料准备器
 
-使用这个可选第 03 步技能在目标项目的 `.agent/context` 下补一层独立的 SQL fixture 准备执行面。它的职责不是生成 spec，也不是修改业务代码，而是判断当前 API 是否依赖 SQL 表，并按 `.agent/config/sql-fixture-targets.local.json` 指定的 SQL Server fixture 目标准备最小可运行的表结构与测试数据，供第 04 步 [$api-code-writer](<pluginRoot>/skills/api-code-writer/SKILL.md) 后续 build、test、integration test 使用。推荐链路是先 01，再 02，再 03（如需），再 04，最后 05（如需）。
+使用这个可选第 03 步技能在目标项目的 `.agent/context` 下补一层独立的 SQL fixture 准备执行面。它的职责不是生成 spec，也不是修改业务代码，而是判断当前 API 是否依赖 SQL 表，并按 `.agent/config/sql-fixture-targets.local.json` 指定的 SQL Server fixture 目标准备最小可运行的表结构与测试数据，供第 04 步 [$api-code-writer](<pluginRoot>/skills/api-code-writer/SKILL.md) 后续 build、test、integration test 使用。推荐链路：先 01 设计梳理 → 02 规格 →（如需）03 SQL fixture → 04 代码 →（如需）05 测试报告；『参考资料索引导入』为可选资料准备，按需在 02/03 前补做。
 
 默认优先解析插件本地 `references/local-workspaces.json`，可按 `workspaceKey` 指向对应集中 `.agent`。`project-root` 仍是实际代码分支目录，`agent-root` 是共享链路资料库。参数优先级为 `--agent-root/--workspace-root` > 环境变量 > 插件本地配置 > 旧逻辑 `<project-root>\.agent`。
 
@@ -50,11 +50,18 @@ python "<pluginRoot>\references\resolve_project_rule_pack.py" `
 
 ## 工作流契约
 
-这个可选第 03 步技能不绑定固定前置步骤名称。只要共享 `.agent/context` 中已经存在 `specStatus=done`、`manifest.json` 与 `*_API_Spec.json`，就可以在第 02 步之后、或第 04 步 `apply` 前按需进入 fixture 准备；不要求调用者必须先显式经过某个特定命名的上游 workflow / skill。
+这个可选第 03 步技能不绑定固定前置步骤名称。只要共享 `.agent/context` 中已经存在 `specStatus=done`、`manifest.json` 与 `*_API_Spec.json`，就可以在第 02 步之后、或第 04 步 `apply` 前按需进入 fixture 准备；不要求调用者必须先显式经过某个特定命名的上游 workflow / skill。——本链路按**产物就绪驱动**，而非调用顺序驱动；『推荐链路』只是常见顺序，实际放行以共享 `.agent/context` 产物是否齐备为准。
 
-本技能不是进入 [`api-code-writer`](<pluginRoot>/skills/api-code-writer/SKILL.md) 的硬前提。默认允许 code writer 先执行 `prepare` 与 AI 改码；只有当目标 API 的 `apply` / 验证阶段确实依赖 SQL fixture，且 `fixtureStatus` 仍非 `done|skipped` 时，才需要先补执行本技能。
+03 的「何时必需 / 何时可跳过 / 与 04 的门禁关系」以下方权威小节「[## 何时需要 03 / 何时可跳过](#何时需要-03--何时可跳过)」为单一来源，本文件其余处不再重复展开。
 
-只有当 `fixtureStatus=done|skipped` 时，依赖 SQL fixture 的 code writer `apply` 才应继续推进。
+## 何时需要 03 / 何时可跳过
+
+本小节是「03 何时必需、何时可跳过、与 04 关系」的**单一权威表述**；本文件其它地方只引用此处，不另行重述。
+
+- **何时算需要 SQL fixture**：当目标 API 满足「SQL 识别规则」任一条件——`codeHandoff.queryContracts` 存在明确 SQL 查询契约、`codeHandoff.constraints` 显式声明 DB fixture 约束、`businessLogic.sqlSpecs` 或 `backendApis` 指向数据库表/schema，或出现 `FROM` / `JOIN` / `INSERT INTO` / `UPDATE` 指向的表、或 handoff 明确要求本地/测试库准备表数据——即视为需要 SQL fixture。
+- **何时回 `skipped`**：若 API 只依赖外部 API、Redis、Header、JWT 等，没有任何数据库表依赖，直接回写 `fixtureStatus=skipped`；`not_required` 与 `skipped` 等价，用于由 leader 最终确认当前 API 无需 SQL fixture。
+- **03 不是进入 04 的硬前提**：默认允许第 04 步 [`api-code-writer`](<pluginRoot>/skills/api-code-writer/SKILL.md) 先执行 `prepare` 与 AI 改码；`prepare` 不以 `fixtureStatus` 作为入口门槛。只有当目标 API 的 `apply` / 验证阶段确实依赖 SQL fixture 时，才需要在 `apply` 前补执行本技能。
+- **`apply` 门禁**：只有依赖 SQL fixture 的 code writer `apply`，才要求 `fixtureStatus ∈ {done, skipped, not_required}` 后继续推进；不依赖 SQL fixture 的 API 不受此门禁约束。
 
 ## 默认使用方式
 
@@ -192,6 +199,7 @@ seed 必须满足以下要求：
 - `in_progress`
 - `done`
 - `skipped`
+- `not_required`
 - `blocked`
 - `error`
 
@@ -207,7 +215,7 @@ seed 必须满足以下要求：
 
 其中：
 
-- `db-fixture-report.json` 记录总结果、阻塞原因、目标环境、schema authority 与执行摘要
+- `db-fixture-report.json` 记录总结果、阻塞原因、目标环境、schema authority 与执行摘要；其中必须显式记录本次实际使用的目标库标识（target name + targetDatabase + environment），作为第 05 步 configured-connection 校验的对账依据
 - `table-checks.json` 记录每张表的存在性、结构判定、数据判定
 - `seed-plan.sql` 记录计划执行的 SQL
 - `seed-executed.sql` 记录实际执行过的 SQL
@@ -256,11 +264,12 @@ seed 必须满足以下要求：
 
 - 只消费共享 `.agent/context`
 - 只更新共享状态中的 `fixture*` 字段
-- 本技能不限制固定前置步骤名称；只认共享 `.agent/context` 产物是否齐备
+- 本技能不限制固定前置步骤名称；只认共享 `.agent/context` 产物是否齐备（产物就绪驱动；何时必需/可跳过见「何时需要 03 / 何时可跳过」小节）
 - 若 `specSourceFingerprint` 变化，必须把对应 API 的 `fixtureStatus` / `fixturePhase` 回退为 `pending`
 - `fixtureStatus=done` 只表示 fixture 就绪，不代表代码通过
 - `fixtureStatus=skipped` 只用于确认当前 API 不依赖 SQL fixture
-- 无论最终结果是 `done`、`skipped`、`blocked` 或 `error`，都表示本技能已经实际执行过一次；其中只有 `done|skipped` 允许依赖 SQL fixture 的 code writer `apply` 继续
+- `fixtureStatus=not_required` 与 `skipped` 等价，用于由 leader 最终确认当前 API 无需 SQL fixture、可直接放行第 04 步
+- 无论最终结果是 `done`、`skipped`、`not_required`、`blocked` 或 `error`，都表示本技能已经实际执行过一次；其中只有 `done|skipped|not_required` 允许依赖 SQL fixture 的 code writer `apply` 继续
 - 若目标库被判定为非 local/test，必须阻塞，不允许继续
 - 若缺少权威 schema，必须阻塞，不允许从查询 SQL 脑补建表
 - 若表已存在但数据不足，允许补最小 seed

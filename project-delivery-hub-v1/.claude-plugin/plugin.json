@@ -1,0 +1,25 @@
+{
+  "name": "project-delivery-hub-v1",
+  "version": "1.2.18",
+  "description": "专案交付中枢 / Project delivery hub: PRD/TSD/API Detail alignment, design feedback fixes, Office deliverable editing, native VSDX, delivery formatting, API spec, SQL fixture, .NET business code, code style review, UT report, WeDoc change records, and explicit leader/sub-agent orchestration. (16 skills)",
+  "author": {
+    "name": "Jimmy Local"
+  },
+  "license": "UNLICENSED",
+  "keywords": [
+    "project-delivery",
+    "api-design",
+    "design-leader",
+    "office-deliverable",
+    "api-spec",
+    "sql-fixture",
+    "code-style-review",
+    "multi-api-leader",
+    "orchestration",
+    "tsd",
+    "vsdx",
+    "unit-test-report",
+    "wedoc"
+  ],
+  "skills": "./skills/"
+}

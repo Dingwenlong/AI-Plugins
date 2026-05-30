@@ -1,6 +1,6 @@
 interface:
-  display_name: "专案交付中枢：01 参考资料索引导入器"
+  display_name: "专案交付中枢：参考资料索引导入器（可选·资料准备）"
   short_description: "导入外部 API 与 DB Schema，生成全局参考索引。"
   icon_small: "./assets/资料准备.png"
   icon_large: "./assets/资料准备.png"
-  default_prompt: "使用 $reference-index-importer 执行第 01 步 01 参考资料索引导入器：将外部 API 与 DB Schema 导入集中 `.agent/reference/global`，并生成 `catalog.json` 与分类索引，供第 02 步 [$api-spec-writer](C:/Users/<username>/plugins/project-delivery-hub-v1/skills/api-spec-writer/SKILL.md) 消费。01 不搜集开发规范、不负责梳理单一功能、不生成功能 handoff、不生成 active project rules；开发规范、框架说明、Redis/JWT/Session 规则请改用 $project-rule-analyzer 写入 `<rulesRoot>/catalog.json`，再由第 04 步 `$api-code-writer` 读取 `apiCodeWriter` 规则包。"
+  default_prompt: "使用 $reference-index-importer 执行可选『参考资料索引导入器』（资料准备旁路，非主链编号步骤）：将外部 API 与 DB Schema 导入集中 `.agent/reference/global`，并生成 `catalog.json` 与分类索引，供 01 设计梳理、第 02 步 [$api-spec-writer](C:/Users/<username>/plugins/project-delivery-hub-v1/skills/api-spec-writer/SKILL.md) 与第 03 步 SQL 测试资料准备器消费。本旁路不搜集开发规范、不负责梳理单一功能、不生成功能 handoff、不生成 active project rules；开发规范、框架说明、Redis/JWT/Session 规则请改用 $project-rule-analyzer 写入 `<rulesRoot>/catalog.json`，再由第 04 步 `$api-code-writer` 读取 `apiCodeWriter` 规则包。"

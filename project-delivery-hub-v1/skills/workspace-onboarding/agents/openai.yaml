@@ -1,0 +1,12 @@
+interface:
+  display_name: "专案交付中枢：安装引导（工作区与配置初始化）"
+  short_description: "首次安装后把 .example 配置脚手架成本机真实配置并初始化工作区 .agent。"
+  icon_small: "./assets/资料准备.png"
+  icon_large: "./assets/资料准备.png"
+  default_prompt: >-
+    使用 $workspace-onboarding 完成本插件首次安装后的工作区与配置初始化：运行
+    scripts/init_workspace_config.py 把 references 下的 .example 模板脚手架成本机真实配置
+    （references/local-workspaces.json，以及 <workspaceRoot>/.agent/config 下 design-source-registry /
+    feature-tester-map / wedoc-smartsheet-targets），按提示填占位值，初始化项目工作区 .agent，
+    再用 project-rule-analyzer 接好 project-rules，使 01-05 交付主链可用。脚本只新建、绝不覆盖
+    已存在的真实配置，可安全重复运行。

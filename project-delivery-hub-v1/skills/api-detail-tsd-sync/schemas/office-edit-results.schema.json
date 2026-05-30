@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Office Edit Results",
+  "description": "Office editor result echoed back to the Design Leader (optionally persisted to .agent/functions/<functionCode>/orchestration/office-edit-results.json). Same shape office-deliverable-editor returns.",
+  "type": "object",
+  "required": ["schemaVersion", "claimId", "modifiedFiles"],
+  "properties": {
+    "schemaVersion": { "type": "string" },
+    "claimId": { "type": "string" },
+    "completedAt": { "type": "string" },
+    "modifiedFiles": { "type": "array", "items": { "type": "string" } },
+    "changeSummary": { "type": "array", "items": { "type": "string" } },
+    "validationCommands": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["command"],
+        "properties": {
+          "command": { "type": "string" },
+          "result": { "type": "string" },
+          "summary": { "type": "string" }
+        },
+        "additionalProperties": true
+      }
+    },
+    "blockers": { "type": "array" },
+    "risks": { "type": "array" }
+  },
+  "additionalProperties": true
+}

@@ -17,7 +17,7 @@ EXECUTION_ID = "D.006"
 API_ID_READY = "D.006.deposit.addexchangedepositinit"
 
 sys.path.insert(0, str(SKILL_DIR / "scripts"))
-from runtime import build_api_spec_filename, extract_function_code
+from runtime import build_api_id, build_api_spec_filename, extract_function_code, validate_function_code
 from write_api_spec import (
     build_code_handoff,
     collect_excel_visual_warnings,
@@ -416,6 +416,28 @@ def test_extract_function_code_preserves_full_tsd_code() -> None:
     )
 
 
+def test_function_code_rejects_path_hostile_characters() -> None:
+    for good in ("D.006", "N.001.001", "F.006_F.006.001"):
+        assert_true(validate_function_code(good) == good, f"clean functionCode should pass: {good}")
+    for bad in ("F.006&F.006.001", "F.006 F.006.001", "a/b", "x|y"):
+        raised = False
+        try:
+            validate_function_code(bad)
+        except ValueError:
+            raised = True
+        assert_true(raised, f"path-hostile functionCode should be rejected: {bad}")
+    for builder in (
+        lambda: build_api_id("F.006&F.006.001", "deposit", "init"),
+        lambda: build_api_spec_filename("F.006&F.006.001", None),
+    ):
+        raised = False
+        try:
+            builder()
+        except ValueError:
+            raised = True
+        assert_true(raised, "path-builders must reject '&' in functionCode")
+
+
 def test_source_change_resets_code_manifest_and_execution_state() -> None:
     with tempfile.TemporaryDirectory() as temp_dir:
         paths = setup_project(Path(temp_dir))
@@ -513,6 +535,8 @@ def test_source_change_resets_code_manifest_and_execution_state() -> None:
 def main() -> int:
     test_extract_function_code_preserves_full_tsd_code()
     print("[pass] test_extract_function_code_preserves_full_tsd_code")
+    test_function_code_rejects_path_hostile_characters()
+    print("[pass] test_function_code_rejects_path_hostile_characters")
     test_excel_visual_detection_marks_handoff_unresolved()
     print("[pass] test_excel_visual_detection_marks_handoff_unresolved")
     test_project_hard_constraints_schema_accepts_1x_forward_compatible_metadata()

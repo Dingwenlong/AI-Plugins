@@ -148,6 +148,33 @@ def extract_function_code(name: str) -> str | None:
     return None
 
 
+_FUNCTION_CODE_ALLOWED = set(
+    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789._-"
+)
+
+
+def validate_function_code(function_code: str | None) -> str | None:
+    """前向校验：functionCode 同时用作 .agent 目录段与存储键，必须只含 [A-Za-z0-9._-]。
+
+    组合功能编号统一用 '_'（例如 F.006_F.006.001），不得用 '&'、空格等路径敏感字符，
+    否则在 Windows 路径、glob、shell 下都不安全。命中非法字符时快速失败并提示改用 '_'，
+    不做静默重映射，避免目录段与存储键脑裂。
+    """
+    if function_code is None:
+        return None
+    code = str(function_code).strip()
+    if not code:
+        return code
+    bad = sorted({ch for ch in code if ch not in _FUNCTION_CODE_ALLOWED})
+    if bad:
+        shown = " ".join(repr(ch) for ch in bad)
+        raise ValueError(
+            f"functionCode {code!r} 含路径敏感字符 {shown}；请改用 [A-Za-z0-9._-]，"
+            f"组合功能用 '_'（例如 F.006_F.006.001），不要用 '&'、空格等。"
+        )
+    return code
+
+
 def extract_version_token_from_tsd_path(tsd_path: Path | str | None) -> str | None:
     if not tsd_path:
         return None
@@ -162,10 +189,12 @@ def build_api_spec_filename(function_code: str | None, tsd_path: Path | str | No
     resolved_function_code = function_code or extract_function_code(Path(tsd_path).name if tsd_path else "")
     if not resolved_function_code:
         raise ValueError("functionCode is required to build the API_Spec file name.")
+    validate_function_code(resolved_function_code)
     return f"{resolved_function_code}_API_Spec.json"
 
 
 def build_api_id(function_code: str | None, api_category: str, api_name: str) -> str:
+    validate_function_code(function_code)
     parts = []
     if function_code:
         parts.append(function_code.upper())

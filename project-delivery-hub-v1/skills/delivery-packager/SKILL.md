@@ -109,7 +109,7 @@ python "<pluginRoot>\skills\delivery-packager\scripts\package_delivery.py" `
 常用参数：
 
 - `--date yyyyMMdd`：覆盖交付包日期；默认使用本地当天日期。
-- `--output-root <path>`：覆盖 `TSD 交付客户版本` 输出根目录。
+- `--output-root <path>`：客户交付包输出根。解析优先级：**本参数 > `references/local-workspaces.json` 中对应 workspace 的 `deliveryOutputRoot` > 默认 `<workspace>\TSD 交付客戶版本`**。`deliveryOutputRoot` 留空或省略时回退默认，行为不变。
 - `--workspace-key <key>` / `--agent-root <path>`：指定集中 `.agent`，用于优先读取 `.agent/functions/<functionCode>/analysis`。
 - `--summary <path>`：指定明确的梳理稿。
 - `--overwrite`：目标文件已存在时允许替换。

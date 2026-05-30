@@ -22,7 +22,7 @@ leader 在 `.agent/context/<functionCode>/orchestration/` 下维护：
 
 - `leader-run.json`：本轮 leader run、阶段、worker 分工、阻塞项、最终状态。
 - `api-workgroups.json`：按 API 写入文件重叠关系生成的工作组。
-- `file-claims.json`：代码/测试文件到 owner/workGroup 的租约。
+- `file-claims.json`：代码/测试文件到 owner/workGroup 的租约（**开发执行面**，位于 `.agent/context/<functionCode>/orchestration/`）。注意它与设计阶段 `.agent/functions/<functionCode>/orchestration/file-claims.json`（claim TSD / API Detail / Common 等设计文件，由 `专案需求接口设计梳理` Design Leader 维护）是**不同平面、不同 schema 的同名文件**，互不混用、互不覆盖。
 - `final-assessment.json`：需求符合性、01-05 gate、UT 结论和未决项。
 
 ## Workflow
@@ -33,7 +33,7 @@ leader 在 `.agent/context/<functionCode>/orchestration/` 下维护：
 4. 04 worker：leader 运行本技能脚本建立冲突图和文件 claim，再将无文件重叠的 workGroup 并行派给 worker；重叠 API 合并给同一 worker 串行处理。任一 API 缺少 `change-plan.json` 或范本未确认时，plan 阶段必须 blocking，不能生成可执行 worker claim。worker 不写 `.agent/context`，不写测试源码。
 5. 04 apply/verify：leader 校验 worker 输出的 `modifiedFiles` 未越权，再串行 apply/验证，写回 codeStatus 和测试交接。
 6. 05：leader 基于第 04 步 `testCodeHandoff`、mockExamples、trx/Postman/code-inspection 证据分配测试文件 claim，最终汇总测试代码、manifest/results 与 DOCX UT 报告。
-7. 最终鉴定：聚合根层与 `apis/<apiId>/` 下所有相关 status/results 文件；任一 API 或任一 gate 失败、缺失、blocking，或存在过期 file claim，`final-assessment.json` 都必须失败。只有 02 spec、03 fixture、04 code validation、05 UT/report 全部无 blocking，且 `final-assessment.json` 通过，才输出“符合需求”。
+7. 最终鉴定：聚合根层与 `apis/<apiId>/` 下所有相关 status/results 文件；任一 API 或任一 gate 失败、缺失、blocking，或存在过期 file claim，`final-assessment.json` 都必须失败。任一 API 的 `apis/<apiId>/test-defect-handoff.json` 存在且 `status=open`（第 05 步回交第 04 步的生产代码缺陷未闭环）时，`final-assessment.json` 必须失败，不得判“符合需求”。只有 02 spec、03 fixture、04 code validation、05 UT/report 全部无 blocking、无 `status=open` 的缺陷回交物，且 `final-assessment.json` 通过，才输出“符合需求”。
 
 ## Script Usage
 

@@ -11,14 +11,14 @@
   <rect class="lane" x="40" y="92" width="1200" height="170" rx="12"/>
   <text class="label" x="64" y="124">Design Leader, feedback fixes, and Office edits</text>
   <rect class="gate" x="64" y="148" width="210" height="72"/><text class="label" x="84" y="178">Feedback entry</text><text class="small" x="84" y="200">issue list, email, new demand</text>
-  <rect class="box" x="334" y="148" width="230" height="72"/><text class="label" x="354" y="178">Design Leader</text><text class="small" x="354" y="200">contract, naming, sources</text>
+  <rect class="box" x="334" y="148" width="230" height="72"/><text class="label" x="354" y="178">01 Design Leader</text><text class="small" x="354" y="200">contract, naming, sources</text>
   <rect class="state" x="624" y="148" width="250" height="72"/><text class="label" x="644" y="178">design + office plans</text><text class="small" x="644" y="200">file claims, office-edit-plan</text>
   <rect class="warn" x="934" y="148" width="250" height="72"/><text class="label" x="954" y="178">development-handoff</text><text class="small" x="954" y="200">leader writes hashes</text>
   <path class="arrow" d="M274 184H334"/><path class="arrow" d="M564 184H624"/><path class="arrow" d="M874 184H934"/>
 
   <rect class="lane" x="40" y="296" width="1200" height="190" rx="12"/>
-  <text class="label" x="64" y="328">01-04 implementation orchestration and style review</text>
-  <rect class="box" x="64" y="356" width="170" height="72"/><text class="label" x="84" y="386">01 reference</text><text class="small" x="84" y="408">optional global index</text>
+  <text class="label" x="64" y="328">02-04 implementation orchestration and style review</text>
+  <rect class="box" x="64" y="356" width="170" height="72"/><text class="label" x="84" y="386">reference (opt)</text><text class="small" x="84" y="408">optional global index</text>
   <rect class="box" x="274" y="356" width="170" height="72"/><text class="label" x="294" y="386">02 spec</text><text class="small" x="294" y="406">TSD/API Detail</text><text class="small" x="294" y="422">+ sequence evidence</text>
   <rect class="box" x="484" y="356" width="170" height="72"/><text class="label" x="504" y="386">03 fixture</text><text class="small" x="504" y="408">done, skipped, blocked</text>
   <rect class="gate" x="694" y="356" width="210" height="72"/><text class="label" x="714" y="386">04 code + style</text><text class="small" x="714" y="408">change-plan + drift report</text>

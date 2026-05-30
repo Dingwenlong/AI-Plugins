@@ -38,10 +38,10 @@ python "<pluginRoot>\references\resolve_project_rule_pack.py" `
 4. 若报告是模块范围，先运行 `analyze_module_scope.py` 产出 `module-scope.json`。
 5. 运行 `classify_template_items.py`，在绑定测试前把检查清单章节标记为 `applicable` 或 `not_applicable`。当前 API 不具备的能力，例如 DB、邮件、上传、导出或仅 UI 行为，必须标记为 `接口未涉及`，不要伪造测试。
 6. 运行 `build_coverage_gap.py`，检查哪些适用项目仍缺少正确的 UnitTest / IntegrationTest / Service runtime validation / code-inspection 证据。
-7. 从 `.agent/context/<functionCode>/change-plan.json.analysis` 读取第 04 步交接，尤其是 `mockExamples`、`testScenarioPlan`、`testTargetFiles`、`serviceRuntimeValidationPlan`、SQL fixture 说明与阻塞项。
-8. 对每个使用 DB / SQL 的 API，创建或更新默认 EnterpriseAPI configured-connection runtime validation：载入 EnterpriseAPI `appsettings.json` 连接字符串，使用正式 `SqlDbFactory` / `SqlExecutor` 路径，并对该配置数据库执行 Service SQL。可额外加入 LocalDB / fixture 测试作为辅助检查，但不得替代这项默认证据。
+7. 逐 API 从 `.agent/context/<functionCode>/apis/<apiId>/change-plan.json` 的 `analysis` 读取第 04 步交接，尤其是 `mockExamples`、`testScenarioPlan`、`testTargetFiles`、`serviceRuntimeValidationPlan`、SQL fixture 说明与阻塞项。
+8. 对每个使用 DB / SQL 的 API，创建或更新默认 EnterpriseAPI configured-connection runtime validation：载入 EnterpriseAPI `appsettings.json` 连接字符串，使用正式 `SqlDbFactory` / `SqlExecutor` 路径，并对该配置数据库执行 Service SQL。可额外加入 LocalDB / fixture 测试作为辅助检查，但不得替代这项默认证据。在做 EnterpriseAPI configured-connection runtime validation 前，必须先读取第 03 步的 `.agent/context/<functionCode>/apis/<apiId>/db-fixture-report.json`，解析出 03 实际准备 fixture 的目标库（target name + targetDatabase + environment）。若该 API 依赖 SQL fixture，且 05 的 configured-connection 目标库与 03 的 fixture 目标库不一致，必须在报告中显式标记该不一致（例如「05 验证库与 03 准备库不同，seed 可能不在被验证库中」），不得静默当作已验证；无法确认被验证库包含 03 的 seed 时，该 `UT-07` / runtime 证据应标 `不通过` 并写 `原因：...`。
 9. 若交付要求真实接口调用，由 Codex 调用 Postman MCP，并在 `.agent/context/<functionCode>/ut-report/postman-mcp/<apiId>/<scenarioId>/` 保存 `request.json`、`response.json` 与 `status.png`。保存前必须遮蔽 `Authorization`、`Cookie`、API key、token、password、secret 等敏感值。
-10. 收集证据前，在测试项目下创建或更新缺失的 UnitTest / IntegrationTest / Service runtime validation 测试源码。手动编辑使用 `apply_patch`，除非用户明确要求修业务代码，否则不要改生产业务代码。
+10. 收集证据前，在测试项目下创建或更新缺失的 UnitTest / IntegrationTest / Service runtime validation 测试源码。手动编辑使用 `apply_patch`，除非用户明确要求修业务代码，否则不要改生产业务代码；若测试暴露生产业务代码缺陷，按「测试代码生成职责」写入 `test-defect-handoff.json` 回交第 04 步，并把对应检查清单项标为 `不通过`。
 11. 可选运行 `apply_manifest_gap_fixes.py`，只套用安全修复：manual-mode 修正、code-inspection 配置与高可信测试绑定建议。
 12. 填写 `metadata`、`unitTest`，以及可选的 `integrationTest`。
 13. 每个 `unit_test` 或 `integration_test` 项目都需绑定明确的 `testBindings.testNames`；每个代码/文件/模板检查项目使用 `mode: "code_inspection"`，并填写对应证据路径与简短人工证据文字；每个真实接口调用项目使用 `mode: "api_runtime_call"`，并填写 `apiRuntimeCall.requestPath`、`responsePath`、`screenshotPath` 与 `expectedStatusCodes`。
@@ -106,7 +106,7 @@ python "<pluginRoot>\references\resolve_project_rule_pack.py" `
 - Mock SQL executor 测试可以证明 request 映射、分支选择、参数绑定与 response 转换，但不得描述为已经证明 SQL 语法、join、排序或 production runtime 行为正确。
 - 用 mock Service 替代 Service 的 Controller IntegrationTests 只属于 route、authentication、serialization 与 envelope smoke test。业务行为必须由真实 Service 测试证明，或明确标记为等待 fixture 证据。
 - 如果检查清单项目声称验证 “Service logic”、“business rules”、“DB / SQL”、“field mapping from persistence”、“transaction result” 或任何下游 Service 执行行为，证据必须包含真实 Service-method 执行路径。窄范围 UnitTest 分支覆盖可以 mock `ISqlExecutor`、Redis 或外部 gateway，但它不能作为下游 runtime 行为的唯一证据。
-- 当测试暴露生产业务代码缺陷时，不要在报告步骤中静默修改生产代码。应清楚记录失败，或交回第 04 步；除非用户明确要求本技能也修补业务代码。
+- 当测试暴露生产业务代码缺陷时，不要在报告步骤中静默修改生产代码，而是回交第 04 步：在 `.agent/context/<functionCode>/apis/<apiId>/test-defect-handoff.json` 写入回交物，字段至少为 `apiId`、`defectSummary`、`failingTests`/`evidencePaths`、`suspectedFiles`、`classification`（沿用既有 `code_issue` 等口径）、`suggestedOwner: "04-api-code-writer"`、`nextDecisionNeeded`、`status`（`open`/`resolved`）。同时把对应 UT 检查清单项的证据标为 `不通过` 并写 `原因：…`，不得写成通过。除非用户明确要求本技能也修补业务代码，否则生产代码修改仍属于第 04 步；第 04 步 `prepare` 检测到 `status=open` 的该回交物会把该 API 回退为 `pending` 返工。
 - 正式报告文字必须便于人工阅读。用自然中文描述已验证的业务行为与结果；除非模板要求，不要把内部测试方法名、JSON key、fixture 接线或自动化术语堆进用户可见单元格。
 
 ## API UT 检查清单与证据分层
@@ -259,7 +259,7 @@ python "<pluginRoot>\skills\docx-unittest-report\scripts\postman_mcp_evidence.py
 - 若提供 `unitTest.command` 或 `integrationTest.command`，它必须产出本技能可消费的 `.trx`。
 - 若 `failIfTrxMissing` 为 `true` 且无法解析 `.trx`，需停止。
 - 若绑定测试缺失且 `allowMissing` 为 `false`，需停止，不要写入误导性的通过结果。
-- 若测试失败指向生产代码，保留失败证据并分类缺陷。除非用户明确扩大本步骤范围，否则生产代码修改属于第 04 步。
+- 若测试失败指向生产代码，保留失败证据并分类缺陷，写入 `.agent/context/<functionCode>/apis/<apiId>/test-defect-handoff.json`（`status=open`、`suggestedOwner: "04-api-code-writer"`，字段见「测试代码生成职责」），并把对应检查清单项标为 `不通过` 且写明 `原因：…`。除非用户明确扩大本步骤范围，否则生产代码修改属于第 04 步；不得为了让报告通过而静默改生产码或把回交项写成通过。
 
 ## 脚本
 
@@ -305,6 +305,8 @@ python "<pluginRoot>\skills\docx-unittest-report\scripts\postman_mcp_evidence.py
   - 默认标准化 API UnitTest 检查清单基准，包含 P0/P1/P2/P3 优先级排序与非 API 删除说明。
 - `<workspaceRoot>/.agent/config/feature-tester-map.json`
   - 从专案计划来源抽取的 Feature ID 到 `测试人员` 映射；分类报告以此作为唯一测试人员事实来源。
+- `.agent/context/<functionCode>/apis/<apiId>/test-defect-handoff.json`
+  - 当测试暴露生产业务代码缺陷时，本步骤写入的缺陷回交物（`status=open`、`suggestedOwner: "04-api-code-writer"`）；由第 04 步 `prepare` 读取并把该 API 回退为 `pending`，修复后改 `status=resolved`。
 - `UnitTest/`
   - Python `unittest` regression coverage for the skill.
 

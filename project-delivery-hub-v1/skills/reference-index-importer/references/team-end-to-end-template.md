@@ -29,7 +29,7 @@
 
 ## 推荐顺序
 
-`专案需求接口设计梳理 -> Optional 01 Reference Index Importer -> 02 API Spec Writer -> 03 Optional SQL Fixture Preparer -> Project Rule Analyzer(code-guidelines) -> 04 API Code Writer -> 05 Optional DOCX UnitTest Report`
+先 01 设计梳理（`专案需求接口设计梳理`）→ 02 API Spec Writer → 03 Optional SQL Fixture Preparer → Project Rule Analyzer(code-guidelines) → 04 API Code Writer → 05 Optional DOCX UnitTest Report；可选『参考资料索引导入器』（资料准备旁路）按需在 02/03 前补做
 
 ## 0. 专案需求接口设计梳理：生成开发输入包
 
@@ -44,7 +44,7 @@ workspace-key: <WORKSPACE_KEY>
 
 这一步必须先完成，后面的 02/04 才有可消费的 `.agent\functions\<FUNCTION_CODE>\handoff\development-handoff.json`。
 
-## 1. Optional 01 Reference Index Importer：建外部参考索引
+## 1. 可选『参考资料索引导入器』（资料准备旁路）：建外部参考索引
 
 把下面整段发给 Codex：
 

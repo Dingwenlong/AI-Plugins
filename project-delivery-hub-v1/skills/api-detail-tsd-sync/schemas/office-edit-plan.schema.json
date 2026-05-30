@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Office Edit Plan",
+  "description": "Precise Word/Excel write plan handed to office-deliverable-editor. Canonical field contract: references/office-deliverable-edit-protocol.md. Produced by the Design Leader or delivery-format-checker; written to .agent/functions/<functionCode>/orchestration/office-edit-plan.json.",
+  "type": "object",
+  "required": ["schemaVersion", "owner", "claimId", "mode", "targetFiles", "allowedOperations", "forbiddenOperations", "validation"],
+  "properties": {
+    "schemaVersion": { "type": "string" },
+    "functionCode": { "type": "string" },
+    "owner": { "type": "string" },
+    "claimId": { "type": "string" },
+    "mode": { "type": "string", "enum": ["semantic-content", "format-fix", "content-and-format"] },
+    "createdAt": { "type": "string" },
+    "targetFiles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["path"],
+        "properties": {
+          "path": { "type": "string" },
+          "kind": { "type": "string" },
+          "claimScope": { "type": "string" }
+        },
+        "additionalProperties": true
+      }
+    },
+    "allowedOperations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["file", "operation"],
+        "properties": {
+          "file": { "type": "string" },
+          "operation": { "type": "string" }
+        },
+        "additionalProperties": true
+      }
+    },
+    "forbiddenOperations": { "type": "array", "items": { "type": "string" } },
+    "validation": { "type": "array", "items": { "type": "string" } }
+  },
+  "additionalProperties": true
+}

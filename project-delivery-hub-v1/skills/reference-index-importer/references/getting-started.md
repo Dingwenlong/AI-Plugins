@@ -1,6 +1,6 @@
-# 01 Reference Index Importer 新手教程
+# 参考资料索引导入器 新手教程
 
-这个第 01 步 skill 用来把外部参考资料导入项目的 `.agent/reference/global`，并生成给第 02 步 `api-spec-writer` 使用的索引文件。它不是主链路的第一步；真正的主链路起点是 `专案需求接口设计梳理`，先生成 `.agent/functions/<functionCode>/analysis + inputs + handoff`，后面 02 才有可消费的开发输入。
+这个可选『参考资料索引导入器』（资料准备旁路，非主链编号步骤）用来把外部参考资料导入项目的 `.agent/reference/global`，并生成给 02 与 03 使用的索引文件（03 靠其表目录定位目标表）。它不是主链路的第一步；真正的主链路起点是 01 `专案需求接口设计梳理`，先生成 `.agent/functions/<functionCode>/analysis + inputs + handoff`，后面 02 才有可消费的开发输入。
 
 ## 什么时候用
 
@@ -53,7 +53,7 @@ dbSchemaImported: 3
 
 - 这个动作会重建 `.agent/reference/global`
 - 不要把手工文件直接放在 `.agent/reference/global` 下面
-- 第 02 步 `api-spec-writer` 不负责导入参考资料；若确实缺外部 API / DB Schema 索引，再跑这个第 01 步 skill
-- 推荐链路是 `专案需求接口设计梳理 -> 可选 01 -> 02 -> 03 Optional -> 专案规则分析器(code-guidelines) -> 04 -> 05 Optional`
+- 第 02 步 `api-spec-writer` 不负责导入参考资料；若确实缺外部 API / DB Schema 索引，再跑这个可选『参考资料索引导入器』（资料准备旁路）
+- 推荐链路：先 01 设计梳理 → 02 规格 →（如需）03 SQL fixture → 专案规则分析器(code-guidelines) → 04 代码 →（如需）05 测试报告；『参考资料索引导入』为可选资料准备，按需在 02/03 前补做
 - 当前 skill 已自包含，不依赖其他兄弟 skill 的脚本路径
 - 如果 `.agent/reference/global` 被防毒或 Explorer 占用，重建时可能会删不掉旧目录；这时先关闭占用再重跑

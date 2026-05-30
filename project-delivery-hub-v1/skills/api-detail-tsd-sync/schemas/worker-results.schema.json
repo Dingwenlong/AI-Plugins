@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Design Stage Worker Results",
+  "description": "Collected design-stage worker reports, written by the Design Leader to .agent/functions/<functionCode>/orchestration/worker-results.json after workers return.",
+  "type": "object",
+  "required": ["schemaVersion", "functionCode", "workers"],
+  "properties": {
+    "schemaVersion": { "type": "string" },
+    "functionCode": { "type": "string" },
+    "updatedAt": { "type": "string" },
+    "nonOfficeModifiedFiles": { "type": "array", "items": { "type": "string" } },
+    "workers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["claimId", "result"],
+        "properties": {
+          "claimId": { "type": "string" },
+          "worker": { "type": "string" },
+          "result": { "type": "object" }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true
+}

@@ -15,10 +15,29 @@ $PrivateWedocConfigFileNames = @(
 $PrivateSqlFixtureConfigFileNames = @(
   "sql-fixture-targets.local.json"
 )
+# Personal/local configs that carry machine-specific paths or names. They must NOT
+# ship with real values; the package ships their *.example.json templates instead,
+# and the workspace-onboarding skill scaffolds the real files on the target machine.
+$PersonalLocalConfigFileNames = @(
+  "local-workspaces.json",
+  "design-source-registry.json",
+  "feature-tester-map.json",
+  "chain-workspace.json"
+)
 $PrivateWedocDirectoryNames = @(
   "wedoc-smartsheet-receipts"
 )
-$PrivateRuntimeConfigFileNames = $PrivateWedocConfigFileNames + $PrivateSqlFixtureConfigFileNames
+# Per-feature work data + machine-local runtime dirs under .agent that must NOT ship in
+# the agentBundle snapshot. The package ships only a clean skeleton (rule pack templates,
+# config examples), not real PRD/TSD work data, chain status, scratch, or reference index.
+$AgentWorkDataDirectoryNames = @(
+  "functions",
+  "status",
+  "tmp",
+  "wedoc-smartsheet-staging",
+  "reference"
+)
+$PrivateRuntimeConfigFileNames = $PrivateWedocConfigFileNames + $PrivateSqlFixtureConfigFileNames + $PersonalLocalConfigFileNames
 $PackageExcludedFilePatterns = @("*.bak", "*.tmp", "*.log", "*.pyc") + $PrivateRuntimeConfigFileNames
 
 function Get-FullPath {
@@ -323,14 +342,9 @@ function Assert-SkillDisplayNames {
 
   $hits = New-Object System.Collections.Generic.List[string]
   Get-ChildItem -LiteralPath $skillsRoot -Directory | ForEach-Object {
-    $skillFile = Join-Path $_.FullName "SKILL.md"
-    if (Test-Path -LiteralPath $skillFile) {
-      $skillText = Read-Utf8Text $skillFile
-      if (-not [regex]::IsMatch($skillText, $skillNamePattern)) {
-        $hits.Add("${skillFile}: frontmatter name must start with '$prefix'")
-      }
-    }
-
+    # Skill SKILL.md frontmatter name is the kebab technical id (matches the directory
+    # name and the $skill references); the plugin prefix is only required on the agent
+    # entry interface.display_name (checked below), not on the SKILL.md frontmatter name.
     $agentFile = Join-Path $_.FullName "agents\openai.yaml"
     if (Test-Path -LiteralPath $agentFile) {
       $agentText = Read-Utf8Text $agentFile
@@ -360,7 +374,7 @@ function Remove-PackagingExclusions {
     Sort-Object FullName -Descending |
     Remove-Item -Recurse -Force
   Get-ChildItem -LiteralPath $Destination -Recurse -File -Force |
-    Where-Object { $_.Name -like "*.bak" -or $_.Name -like "*.tmp" -or $_.Name -like "*.log" -or $_.Name -like "*.pyc" -or $PrivateWedocConfigFileNames -contains $_.Name } |
+    Where-Object { $_.Name -like "*.bak" -or $_.Name -like "*.tmp" -or $_.Name -like "*.log" -or $_.Name -like "*.pyc" -or $PrivateRuntimeConfigFileNames -contains $_.Name } |
     Remove-Item -Force
   Get-ChildItem -LiteralPath $Destination -Recurse -Directory -Force |
     Sort-Object FullName -Descending |
@@ -372,7 +386,8 @@ function Invoke-Mirror {
   param(
     [string]$Source,
     [string]$Destination,
-    [string]$Label
+    [string]$Label,
+    [string[]]$ExtraExcludeDirectoryNames = @()
   )
   $sourcePath = (Resolve-Path -LiteralPath $Source).Path.TrimEnd('\')
   if ($DryRun) {
@@ -385,7 +400,7 @@ function Invoke-Mirror {
     return
   }
   New-Item -ItemType Directory -Force -Path $destinationPath | Out-Null
-  robocopy $sourcePath $destinationPath /MIR /XD __pycache__ .git $PrivateWedocDirectoryNames /XF $PackageExcludedFilePatterns | Out-Null
+  robocopy $sourcePath $destinationPath /MIR /XD __pycache__ .git $PrivateWedocDirectoryNames $ExtraExcludeDirectoryNames /XF $PackageExcludedFilePatterns | Out-Null
   if ($LASTEXITCODE -gt 7) {
     throw "robocopy failed for $Label with exit code $LASTEXITCODE"
   }
@@ -557,7 +572,7 @@ if ($agentBundleInfo) {
   if ($DryRun -and [bool]$agentBundleInfo.SourceIsBundledSnapshot) {
     Write-Host "[dry-run] agentBundle source missing; validating bundled .agent snapshot instead: $($agentBundleInfo.SourceAgentRoot)"
   } else {
-    Invoke-Mirror -Source $agentBundleInfo.SourceAgentRoot -Destination $agentBundleInfo.PluginAgentRoot -Label "$($agentBundleInfo.WorkspaceKey) .agent bundle"
+    Invoke-Mirror -Source $agentBundleInfo.SourceAgentRoot -Destination $agentBundleInfo.PluginAgentRoot -Label "$($agentBundleInfo.WorkspaceKey) .agent bundle" -ExtraExcludeDirectoryNames $AgentWorkDataDirectoryNames
   }
 }
 

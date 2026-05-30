@@ -144,6 +144,7 @@ python "<pluginRoot>\skills\wedoc-smartsheet-change-recorder\scripts\send_wedoc_
 - `--excel` 只检查文件存在并作为证据记录在操作说明中；脚本不会读取、解析或提交 Excel 行。
 - 新增记录时没有 `--records-json` 必须阻塞，即使提供了 `--excel`。
 - dry-run 会输出 payload 且不调用 WebHook、不写回执；正式新增成功后才写 `<workspaceRoot>\.agent\wedoc-smartsheet-receipts\<targetKey>.jsonl`。
+- 待提交的 `records-json` 批次可暂存于项目工作区 `<workspaceRoot>\.agent\wedoc-smartsheet-staging\`（项目运行资料，随 `.gitignore` 排除、不随插件分发）。它只是人工/工具准备记录的工作区；脚本仍只读你用 `--records-json` 显式传入的文件，**不会自动扫描 staging，也不会写入该目录**。回执则由脚本写到同级的 `wedoc-smartsheet-receipts\`，两者职责分开。
 
 ## 资源
 

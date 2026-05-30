@@ -7,6 +7,15 @@ description: 专门执行 TSD Word、API Detail Excel、CommonFunc/CommonUtil Ex
 
 本技能是交付 Office 文件的写入层。它负责把已经裁决好的内容或格式修复计划安全写入 `.docx` / `.xlsx`，并复验保存结果。
 
+## 核心原则：外科手术式精确编辑
+
+**必须外科手术式精确编辑**：只改 `office-edit-plan` / file claim 明确点名的最小单元（指定段落、表格 cell、row、合并格、指定样式属性），其余一律不动。
+
+- 不得为了「顺手」「统一」「更整齐」而改写、重排或重新套样式到未点名的文字、cell、sheet、行高、字体、底色、边框或对齐。
+- 改动范围以计划/语义范围为准，**不以 Excel `UsedRange`、整列、整表或整个 workbook 为默认套用面**。
+- 目标是**最小 diff**：能定点改一格就不动整行，能改一段就不重写整章；保留未变更内容的既有文字与格式。
+- 任何超出 claim/计划的「必要连带修改」必须先回报为 blocker/risk 等待确认，不得自行扩大手术范围。
+
 ## 必读协议
 
 执行前读取插件根目录：
@@ -52,7 +61,7 @@ description: 专门执行 TSD Word、API Detail Excel、CommonFunc/CommonUtil Ex
 ## Excel 行高与对齐硬规则
 
 - 调整 `.xlsx` 行高、AutoFit 或开启换行时，默认只允许改变 `RowHeight` / `WrapText`；不得顺手改变字体、底色、边框、合并格、水平对齐或垂直对齐。
-- API Detail / CommonFunc / CommonUtil / Response Code 的一般内容行，为展示长内容而调整行高后，必须保持或恢复 `WrapText=True`、水平靠左、垂直居中。Excel COM 对应值为 `HorizontalAlignment = -4131 (xlLeft)`、`VerticalAlignment = -4108 (xlCenter)`。
+- 为展示长内容而调整行高后，必须**保持或恢复该行调整前的对齐与 `WrapText`**，不得因调行高顺带改变对齐语义。具体目标对齐/字型/换行的取值以 `office-edit-plan` 或专案规则库 `apiDetailExcelStyle` 为准——本技能是执行层，不自带格式策略。Excel COM 对齐常量参考：`xlLeft=-4131`、`xlCenter=-4108`、`xlTop=-4160`。
 - 禁止为了“尽量展示内容”把一般内容行改成顶端对齐，例如 `VerticalAlignment = -4160 (xlTop)`；只有 caller 的 `office-edit-plan` 明确要求某个范围改为顶端对齐并说明原因时，才可例外执行。
 - 表头、序号、日期、版本号、姓名、API 名称 hyperlink 等有专案规则库或 caller plan 明确居中/特殊对齐的区域，按配置或计划执行；但行高修复不得改变这些区域的既有对齐语义。
 - 保存后必须重新开启 workbook，抽查本次调整行的行高、`WrapText`、水平对齐与垂直对齐；若无法复验，对齐结果必须列入 risk，不能宣称完成。

@@ -3,9 +3,9 @@ name: api-spec-writer
 description: 把功能 handoff、明确 TSD 输入或 execution-batch 转成可供开发消费的 API Spec JSON。第 02 步：优先从 `.agent/functions/<functionCode>/handoff` 与 inputs 生成 `{functionCode}_API_Spec.json`，缺少 handoff 时可直接消费 docx_ref / execution-batch，回写共享 `.agent/context` 的 `spec*` 状态。关键词：API_Spec.json、codeHandoff、mockExamples、specStatus。
 ---
 
-# 【开发落地】API 规格写入器
+# 【规格设计】API 规格写入器
 
-使用这个第 02 步技能在共享 `.agent/context` 下初始化或恢复一个按功能编号稳定落盘的 API 规格生成执行面。脚本会读取共享的 `execution-batch.json` 与当前 execution 目录，只更新 `spec*` 字段并保留 `code*` 历史。`functionCode` 必须保留 TSD 文件名中的完整功能编号，例如 `D.006`、`N.001.001`，不能裁切成上层编号。除现有 `businessLogic` 外，`*_API_Spec.json` 还会新增 machine-readable `codeHandoff`，把查询契约、映射规则、依赖提示、旧逻辑证据和约束显式交给第 04 步 [$api-code-writer](<pluginRoot>/skills/api-code-writer/SKILL.md)。若 `.agent/Common/project-hard-constraints.json` 存在，本 skill 还会先校验该项目级 profile，再把命中的项目硬约束折进 `codeHandoff.constraints`、`legacyEvidence` 与必要的 `unresolved`。若需要初始化或刷新全局 reference，改用第 01 步 [$reference-index-importer](<pluginRoot>/skills/reference-index-importer/SKILL.md)；本 skill 只消费已存在的 reference 索引。
+使用这个第 02 步技能在共享 `.agent/context` 下初始化或恢复一个按功能编号稳定落盘的 API 规格生成执行面。脚本会读取共享的 `execution-batch.json` 与当前 execution 目录，只更新 `spec*` 字段并保留 `code*` 历史。`functionCode` 必须保留 TSD 文件名中的完整功能编号，例如 `D.006`、`N.001.001`，不能裁切成上层编号。组合功能编号统一用 `_`（例如 `F.006_F.006.001`），只允许 `[A-Za-z0-9._-]`；含 `&`、空格等路径敏感字符会被前向校验阻塞（functionCode 同时是 `.agent` 目录段与存储键）。除现有 `businessLogic` 外，`*_API_Spec.json` 还会新增 machine-readable `codeHandoff`，把查询契约、映射规则、依赖提示、旧逻辑证据和约束显式交给第 04 步 [$api-code-writer](<pluginRoot>/skills/api-code-writer/SKILL.md)。若 `.agent/Common/project-hard-constraints.json` 存在，本 skill 还会先校验该项目级 profile，再把命中的项目硬约束折进 `codeHandoff.constraints`、`legacyEvidence` 与必要的 `unresolved`。若需要初始化或刷新全局 reference，改用可选『参考资料索引导入器』（资料准备旁路）[$reference-index-importer](<pluginRoot>/skills/reference-index-importer/SKILL.md)；本 skill 只消费已存在的 reference 索引。
 
 02 还会读取当前 `functionCode` 对应的时序图作为业务逻辑证据源。时序图只用于补强流程、依赖、校验、错误分支与测试意图；TSD/API Detail 仍是接口字段与 response contract 的权威来源。若时序图出现 API Detail/TSD 未声明的字段或 response code，必须写入 blocking `codeHandoff.unresolved`，不得静默覆盖契约。02 只读并解析 `.puml` / `.vsdx` / `.svg` / `*_native_visio_spec.json`，不绘制、不改写 VSDX/SVG；正式画图仍交给 `native-vsdx-sequence-writer`。
 
@@ -98,14 +98,18 @@ python ".\scripts\write_api_spec.py" `
 - `.agent/context/<functionCode>/execution-state.json`
 - `.agent/context/<functionCode>/api-checklist.json`
 - `.agent/context/<functionCode>/spec-progress.md`
-- `.agent/context/<functionCode>/code-progress.md`
+- `.agent/context/<functionCode>/code-progress.md`（由第 04 步写）
+- `.agent/context/<functionCode>/fixture-progress.md`（由第 03 步写）
 - `.agent/context/<functionCode>/apis/<apiId>/manifest.json`
 - `.agent/context/<functionCode>/apis/<apiId>/{functionCode}_API_Spec.json`
+- `.agent/context/<functionCode>/apis/<apiId>/spec-review.json`（本步 spec review artifact）
+
+> 命名提醒：「manifest」在本链路指多种不同结构，勿混淆：per-API 执行清单 `apis/<apiId>/manifest.json`（本步）、SQL 种子身份 `seed-manifest.json`（第 03 步）、第 05 步 UT 报告 job manifest（`*.job.json`），以及 schema `upstream-manifest.schema.json`。
 
 ## 参考资料前置条件
 
 - `.agent/reference/global` 属于前置全局参考库，不由本 skill 现场导入
-- 若缺少外部 API / DB Schema 的全局 `catalog.json` / `indexes/*.json`，才使用可选第 01 步 `$reference-index-importer`
+- 若缺少外部 API / DB Schema 的全局 `catalog.json` / `indexes/*.json`，才使用可选『参考资料索引导入器』（资料准备旁路）`$reference-index-importer`
 - 本 skill 读取顺序：功能专属 `.agent/functions/<functionCode>/inputs/reference` > 全局 `.agent/reference/global` > legacy `.agent/Reference`
 - 若 `.agent/Common/project-hard-constraints.json` 存在，必须通过 `schemas/project-hard-constraints.schema.json` 校验；校验失败时直接阻塞
 
@@ -135,13 +139,14 @@ python ".\scripts\write_api_spec.py" `
 - 对 DB / SQL API，`codeHandoff.queryContracts` 不得只保留一段不可消费的大 SQL 文本；必须拆出可供 fixture 与测试使用的结构化内容，例如 `connectionTarget`、`tables`、`seedRequirements`、`expectedResultShape`、`parameterSources`、`orderingRules`、`filterRules`、`joinRules` 与 `mappingAssertions`。若只能取得原始 SQL，仍须保留原文并在 `codeHandoff.unresolved` 标记缺少哪些 fixture/test facts。
 - 若 DB / SQL API 缺少权威 schema、最小 seed、测试 DB 连接方式、当前用户/会话来源或必要 fixture 前置条件，spec writer 必须写入 `codeHandoff.unresolved`，不得把该 API 交接成“只需 mock SQL executor 即可完成正式业务验证”。
 - 若存在 `.agent/Common/project-hard-constraints.json`，spec writer 必须把当前 API 命中的项目级硬约束折进 `codeHandoff.constraints`，并把来源写进 `codeHandoff.legacyEvidence`
-- 若功能专属 `inputs/reference` 或专案规则库 `rules/code-guidelines/**` 下存在 JWT / Redis / Session 生命周期设计文档（如 `JWT_Redis_存储說明`），spec writer 只能把其中与当前 API 直接相关的 Redis key、JWT claim、会话主键、TTL / 续期规则写入 `codeHandoff.constraints` 与 `legacyEvidence`。第 01 步 `.agent/reference/global` 只保存外部 API / DB Schema 索引，不再作为开发规范来源
+- 若功能专属 `inputs/reference` 或专案规则库 `rules/code-guidelines/**` 下存在 JWT / Redis / Session 生命周期设计文档（如 `JWT_Redis_存储說明`），spec writer 只能把其中与当前 API 直接相关的 Redis key、JWT claim、会话主键、TTL / 续期规则写入 `codeHandoff.constraints` 与 `legacyEvidence`。可选『参考资料索引导入器』（资料准备旁路）维护的 `.agent/reference/global` 只保存外部 API / DB Schema 索引，不再作为开发规范来源
 - 对这类设计文档，spec writer 不得只摘取零散字段名；必须明确区分“当前 API 直接依赖的规则”“跨模块背景规则”“当前仍未落地的前置条件”
 - 若设计文档的核心模型依赖登录态主键、统一 session key 或共享 member hash，而当前 API 只消费其中一部分，`codeHandoff.unresolved` 必须显式标注这是“partial adoption risk”，避免 code writer 误把参考文档当成已完整接线的现状
 - 若 handoff 涉及 Header 候选键扫描、Header / Redis fallback、字符串长度计算等实现细节，spec writer 应区分“可抽成共用解析模式”与“保留在业务层的具体规则”，避免 code writer 把业务常量和通用算法一起下沉到 `CommonStatic`
 - 若当前 API 依赖“当前用户 / 当前会话 / 当前 CustId”这类运行时身份上下文，spec writer 必须在 `codeHandoff.constraints` 中显式写出身份来源、认证前提、claims / headers / Redis keys、session scope 与允许的 fallback；缺任一项都必须写入 `codeHandoff.unresolved`
 - spec writer 不得把 `CurrentRuntimeContextAccessor` 一类基础设施当作当然存在；若仓库现状与参考设计文档不一致，必须明确标注“reuse existing context accessor”还是“identity model blocked”，而不是留给 code writer 自行脑补
 - 若当前 API 涉及 Redis / Memory / 本地缓存，spec writer 必须在 `codeHandoff.constraints` 中显式区分 `authoritativeStore` 与 `cacheRole`，并写清 TTL、失效策略、空值处理、刷新策略、允许的 stale-read 范围；缺项时必须写入 `codeHandoff.unresolved`
+- 若业务步骤出现「优先取 Redis / 缓存、未命中回源 X」但 API Detail / TSD 未写明缓存来源（key、谁写入或回源、TTL、authoritativeStore），spec writer 必须先在功能专属 `inputs/reference` 与 `rules/code-guidelines/**` 的 Redis / 缓存设计文档中查权威来源：命中则把 `cacheKey`、`populator`、`ttl`、`authoritativeStore`、`cacheRole` 与未命中回源契约写入 `codeHandoff.constraints`，并在 `legacyEvidence` 引用来源；查不到则写结构化 `codeHandoff.unresolved`（`blockedReason=cache_source_undefined`、`missingFacts=[cacheKey, populator, ttl, authoritativeStore, missFallbackContract]`、`suggestedOwner=spec/upstream-design`、`nextDecisionNeeded`）。第 01 步 `.agent/reference/global` 只有外部 API / DB Schema 索引、不含 Redis 来源；**任何情况下都不得臆造 Redis key 或回源行为**
 - 若业务判定同时依赖数据库与缓存，spec writer 必须明确写出“重复判断/存在性判断/写后刷新”应以哪一个事实源为准；不得把 DB 与缓存都列出来却不说明优先级
 - 按系统设计规范 v2.5 的 `数据检索顺序`，涉及资料读取或运算时必须交接 `dataRetrievalOrder` 或同等说明：优先从哪里取资料、何时可读 Redis/Memory cache、何时必须回权威 DB/API/BackendAPI、缓存未命中或资料不一致时如何处理；缺少顺序时写入 `codeHandoff.unresolved`
 - 按系统设计规范 v2.5，Redis key 设计必须说明是简易模式共享 Hash/Member 生命周期，还是进阶模式自定义 Key；自定义 Key 只能使用 `[A-Za-z0-9]`、`_`、`:`，不得包含空格、换行、百分号等特殊字符，且不得把身份证号、完整卡号、密码等敏感资料放进 key

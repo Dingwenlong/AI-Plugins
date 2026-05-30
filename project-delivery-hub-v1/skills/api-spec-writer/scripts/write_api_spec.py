@@ -699,8 +699,8 @@ def build_reference_library_warning(agent_dir: Path, function_code: str | None =
     if active_root is None:
         catalog_ref = base_relative_reference_path(agent_dir, reference_catalog_path(agent_dir))
         return (
-            f"未找到 `{catalog_ref}`；本次会继续生成 API Spec，但不会带入第 01 步参考索引。"
-            "若此 API 需要外部 API 或 DB Schema 证据，请补运行可选第 01 步 `$reference-index-importer`。开发规范请改用 `专案规则分析器 --category code-guidelines` 接入 project-rules。"
+            f"未找到 `{catalog_ref}`；本次会继续生成 API Spec，但不会带入参考资料索引。"
+            "若此 API 需要外部 API 或 DB Schema 证据，请补运行可选『参考资料索引导入器』（资料准备旁路）`$reference-index-importer`。开发规范请改用 `专案规则分析器 --category code-guidelines` 接入 project-rules。"
         )
 
     missing_indexes: list[str] = []

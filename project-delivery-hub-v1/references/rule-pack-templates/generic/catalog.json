@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "1.0.0",
+  "workspaceKey": "MYPROJECT",
+  "projectName": "MYPROJECT",
+  "activeReviewStatuses": ["approved", "active"],
+  "defaultNewRuleStatus": "draft",
+  "defaults": {
+    "frameworkProfile": "<your-framework-profile>",
+    "primaryFrameworkGuideline": "<your framework guideline document>",
+    "codeGuidelineCatalog": "rules/code-guidelines/p240301-v6.2/catalog.json"
+  },
+  "rulePacks": {
+    "apiCodeWriter": {
+      "strict": true,
+      "requiredRuleIds": [
+        "p240301-v6.2-catalog",
+        "p240301-v6.2-backoffice-authz",
+        "p240301-v6.2-cache",
+        "p240301-v6.2-common-style",
+        "p240301-v6.2-implementation-profile",
+        "p240301-v6.2-config",
+        "p240301-v6.2-data-access",
+        "p240301-v6.2-frontstage-session",
+        "p240301-v6.2-logging-exception",
+        "p240301-v6.2-test-handoff",
+        "p240301-v6.2-validation"
+      ],
+      "requiredAssets": [],
+      "optionalAssets": [],
+      "purpose": "Code writer resolves the full code guideline rule pack before selecting per-API guideline load hints. Generic baseline; customize implementation-profile and defaults per project."
+    }
+  },
+  "rules": [
+    { "ruleId": "p240301-v6.2-catalog", "category": "code-guidelines", "title": "Code Guideline Catalog", "path": "rules/code-guidelines/p240301-v6.2/catalog.json", "format": "json", "reviewStatus": "approved", "sourceFile": "catalog.json", "sourceLocator": "" },
+    { "ruleId": "p240301-v6.2-backoffice-authz", "category": "code-guidelines", "title": "backoffice-authz", "path": "rules/code-guidelines/p240301-v6.2/rules/backoffice-authz.md", "format": "md", "reviewStatus": "approved", "sourceFile": "backoffice-authz.md", "sourceLocator": "" },
+    { "ruleId": "p240301-v6.2-cache", "category": "code-guidelines", "title": "cache", "path": "rules/code-guidelines/p240301-v6.2/rules/cache.md", "format": "md", "reviewStatus": "approved", "sourceFile": "cache.md", "sourceLocator": "" },
+    { "ruleId": "p240301-v6.2-common-style", "category": "code-guidelines", "title": "common-style", "path": "rules/code-guidelines/p240301-v6.2/rules/common-style.md", "format": "md", "reviewStatus": "approved", "sourceFile": "common-style.md", "sourceLocator": "" },
+    { "ruleId": "p240301-v6.2-implementation-profile", "category": "code-guidelines", "title": "implementation-profile (template)", "path": "rules/code-guidelines/p240301-v6.2/rules/implementation-profile.md", "format": "md", "reviewStatus": "approved", "sourceFile": "implementation-profile.md", "sourceLocator": "" },
+    { "ruleId": "p240301-v6.2-config", "category": "code-guidelines", "title": "config", "path": "rules/code-guidelines/p240301-v6.2/rules/config.md", "format": "md", "reviewStatus": "approved", "sourceFile": "config.md", "sourceLocator": "" },
+    { "ruleId": "p240301-v6.2-data-access", "category": "code-guidelines", "title": "data-access", "path": "rules/code-guidelines/p240301-v6.2/rules/data-access.md", "format": "md", "reviewStatus": "approved", "sourceFile": "data-access.md", "sourceLocator": "" },
+    { "ruleId": "p240301-v6.2-frontstage-session", "category": "code-guidelines", "title": "frontstage-session", "path": "rules/code-guidelines/p240301-v6.2/rules/frontstage-session.md", "format": "md", "reviewStatus": "approved", "sourceFile": "frontstage-session.md", "sourceLocator": "" },
+    { "ruleId": "p240301-v6.2-logging-exception", "category": "code-guidelines", "title": "logging-exception", "path": "rules/code-guidelines/p240301-v6.2/rules/logging-exception.md", "format": "md", "reviewStatus": "approved", "sourceFile": "logging-exception.md", "sourceLocator": "" },
+    { "ruleId": "p240301-v6.2-test-handoff", "category": "code-guidelines", "title": "test-handoff", "path": "rules/code-guidelines/p240301-v6.2/rules/test-handoff.md", "format": "md", "reviewStatus": "approved", "sourceFile": "test-handoff.md", "sourceLocator": "" },
+    { "ruleId": "p240301-v6.2-validation", "category": "code-guidelines", "title": "validation", "path": "rules/code-guidelines/p240301-v6.2/rules/validation.md", "format": "md", "reviewStatus": "approved", "sourceFile": "validation.md", "sourceLocator": "" }
+  ]
+}

@@ -1248,6 +1248,94 @@ def test_n006_apply_uses_real_ai_authored_changes_and_default_validation() -> No
         assert_true(isinstance(test_evidence["testNames"]["integration"], list), "Apply should always emit an integration test-name list")
 
 
+def test_prepare_reverts_to_pending_when_test_defect_handoff_open() -> None:
+    with tempfile.TemporaryDirectory() as temp_dir:
+        paths = setup_workspace(
+            Path(temp_dir),
+            function_code="N.006",
+            api_id="N.006.setting.queryuserloginlog",
+            api_category="setting",
+            api_name="QueryUserLoginLog",
+            version="v1.2",
+            request=[],
+            response=[
+                {"fieldName": "keyId", "dataType": "string", "required": False, "description": "JWT key"},
+                {
+                    "fieldName": "loginLogs",
+                    "dataType": "list",
+                    "required": False,
+                    "description": "登入記錄列表",
+                    "properties": [
+                        {"fieldName": "loginTime", "dataType": "string", "required": False, "description": "登入時間"},
+                        {"fieldName": "loginStatus", "dataType": "string", "required": False, "description": "登入狀態"},
+                    ],
+                },
+            ],
+        )
+        mark_fixture_status(paths, status="skipped")
+
+        # Drive a full prepare -> confirm -> apply so the manifest legitimately reaches
+        # tests_passed with real input hashes (the "same inputs" preserve path).
+        prepare = run_command(base_command(paths, function_code="N.006") + ["--execution-mode", "prepare"])
+        assert_true(prepare.returncode == 0, prepare.stdout + prepare.stderr)
+        confirmed = confirm_template(paths, function_code="N.006")
+        assert_true(confirmed.returncode == 0, confirmed.stdout + confirmed.stderr)
+        simulate_ai_authored_changes(paths, marker="REAL AI IMPLEMENTATION")
+        applied = run_command(base_command(paths, function_code="N.006") + ["--execution-mode", "apply"], env=fake_dotnet_env(paths))
+        assert_true(applied.returncode == 0, applied.stdout + applied.stderr)
+        assert_true(load_json(paths["manifest_path"])["codeStatus"] == "tests_passed", "Apply should reach tests_passed before defect handoff")
+
+        # Re-running prepare with unchanged inputs and no defect must preserve tests_passed.
+        reprepare = run_command(base_command(paths, function_code="N.006") + ["--execution-mode", "prepare"])
+        assert_true(reprepare.returncode == 0, reprepare.stdout + reprepare.stderr)
+        assert_true(
+            load_json(paths["manifest_path"])["codeStatus"] == "tests_passed",
+            "Prepare with unchanged inputs and no open defect should keep tests_passed",
+        )
+
+        # Step 05 reports a production-code defect: an open test-defect-handoff.json.
+        dump_json(
+            paths["api_root"] / "test-defect-handoff.json",
+            {
+                "apiId": "N.006.setting.queryuserloginlog",
+                "defectSummary": "Service returns wrong loginStatus mapping for blocked accounts.",
+                "failingTests": ["SettingServiceTests.QueryUserLoginLog_BlockedAccount_MapsStatus"],
+                "evidencePaths": [".agent/report-results/N.006/.../unit"],
+                "suspectedFiles": ["BusinessLogicLayout/.../SettingService.QueryUserLoginLog.cs"],
+                "classification": "code_issue",
+                "suggestedOwner": "04-api-code-writer",
+                "nextDecisionNeeded": "Fix loginStatus mapping then rerun apply.",
+                "status": "open",
+            },
+        )
+
+        # Prepare must now force the API back to pending for rework even though inputs are unchanged.
+        defect_prepare = run_command(base_command(paths, function_code="N.006") + ["--execution-mode", "prepare"])
+        assert_true(defect_prepare.returncode == 0, defect_prepare.stdout + defect_prepare.stderr)
+        manifest = load_json(paths["manifest_path"])
+        checklist_item = load_json(paths["checklist_path"])["items"][0]
+        assert_true(
+            manifest["codeStatus"] == "pending",
+            "Open test-defect-handoff.json must revert manifest codeStatus to pending",
+        )
+        assert_true(
+            checklist_item["codeStatus"] == "pending",
+            "Open test-defect-handoff.json must revert checklist codeStatus to pending",
+        )
+
+        # Once the defect is resolved, prepare should no longer force pending.
+        resolved = load_json(paths["api_root"] / "test-defect-handoff.json")
+        resolved["status"] = "resolved"
+        dump_json(paths["api_root"] / "test-defect-handoff.json", resolved)
+        resolved_prepare = run_command(base_command(paths, function_code="N.006") + ["--execution-mode", "prepare"])
+        assert_true(resolved_prepare.returncode == 0, resolved_prepare.stdout + resolved_prepare.stderr)
+        assert_true(
+            load_json(paths["manifest_path"])["codeStatus"] != "pending"
+            or load_json(paths["manifest_path"])["codePhase"] == "planned",
+            "Resolved defect handoff should not keep forcing pending rework",
+        )
+
+
 def test_apply_pending_fixture_reuses_prepare_plan_without_cleanup() -> None:
     with tempfile.TemporaryDirectory() as temp_dir:
         paths = setup_workspace(
@@ -1795,6 +1883,7 @@ def main() -> int:
         test_n006_prepare_only_generates_change_plan_and_defers_code_writing,
         test_commonfunc_prepare_uses_library_folders_without_controller,
         test_n006_apply_uses_real_ai_authored_changes_and_default_validation,
+        test_prepare_reverts_to_pending_when_test_defect_handoff_open,
         test_apply_pending_fixture_reuses_prepare_plan_without_cleanup,
         test_d006_prepare_reuses_existing_deposit_module,
         test_apply_without_real_changes_blocks,

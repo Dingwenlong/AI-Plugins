@@ -215,6 +215,130 @@ def collect_text_signals(
         match_key_map.setdefault(normalize_match_key(key), set()).add(locator_value)
 
 
+CATALOG_SHEET_NAME_HINTS = {
+    "table list", "tablelist", "table catalog", "list", "tables",
+    "清单", "清單", "目录", "目錄", "資料表清單", "数据表清单",
+}
+_CODE_HEADER_HINTS = {
+    "project", "編號", "编号", "no", "no.", "#", "sheet", "seq",
+    "序号", "序號", "item", "編碼", "编码", "id",
+}
+_TABLE_HEADER_HINTS = {
+    "data sheet", "datasheet", "table", "table name", "tablename", "table_name",
+    "表名", "表名稱", "資料表", "数据表", "資料表名稱", "資料表名", "資料表名稱",
+}
+_DESC_HEADER_HINTS = {
+    "describe", "description", "desc", "說明", "说明", "描述",
+    "comment", "remark", "備註", "备注",
+}
+_CATEGORY_HEADER_HINTS = {"category", "type", "分類", "分类", "類別", "类别"}
+
+
+def _norm_header(value: object) -> str:
+    return clean_text(value).strip().lower()
+
+
+def _looks_like_table_identifier(value: str) -> bool:
+    if not value:
+        return False
+    if not (value[:1].isalpha() or value[:1] == "_"):
+        return False
+    return all(ch.isalnum() or ch == "_" for ch in value)
+
+
+def workbook_looks_like_catalog(sheet_names: list[str]) -> bool:
+    """Detect the 'list + code-named sheets' layout: first sheet is a catalog/list and the
+    remaining sheets are named by code/number (e.g. `15`, `16`)."""
+    if not sheet_names:
+        return False
+    first = str(sheet_names[0])
+    first_norm = _norm_header(first)
+    if first_norm in CATALOG_SHEET_NAME_HINTS or "list" in first_norm or "清单" in first or "清單" in first:
+        return True
+    rest = [str(name).strip() for name in sheet_names[1:]]
+    if len(rest) >= 3:
+        numeric = sum(1 for name in rest if name.isdigit())
+        if numeric >= max(3, (len(rest) + 1) // 2):
+            return True
+    return False
+
+
+def extract_table_catalog(workbook, sheet_names: list[str]) -> list[dict[str, str]]:
+    """Parse a leading catalog/list sheet into `code-sheet <-> table-name <-> description` rows.
+
+    Some external DB Schema workbooks name their data sheets by code/number (`15`, `16`, ...) and
+    keep the authoritative table catalog on the first sheet (e.g. `15 -> ACCT_ACTIVITY`). The plain
+    cell-token scan misses code-named sheets and non-underscore table names, leaving the index
+    incomplete so downstream SQL-fixture lookups cannot resolve a target table. This recovers the
+    explicit mapping from the catalog sheet."""
+    if not workbook_looks_like_catalog(sheet_names):
+        return []
+    try:
+        sheet = workbook[sheet_names[0]]
+    except (KeyError, IndexError):
+        return []
+    existing_sheets = {str(name).strip() for name in sheet_names}
+    rows = list(sheet.iter_rows(values_only=True))
+    columns: dict[str, "int | None"] = {}
+    header_index: "int | None" = None
+    for idx, row in enumerate(rows[:40]):
+        code_col = table_col = desc_col = cat_col = None
+        for col_idx, cell in enumerate(row):
+            norm = _norm_header(cell)
+            if not norm:
+                continue
+            if table_col is None and (
+                norm in _TABLE_HEADER_HINTS
+                or "data sheet" in norm
+                or norm == "table"
+                or "表名" in norm
+                or "資料表" in norm
+                or "数据表" in norm
+            ):
+                table_col = col_idx
+            elif code_col is None and norm in _CODE_HEADER_HINTS:
+                code_col = col_idx
+            elif desc_col is None and norm in _DESC_HEADER_HINTS:
+                desc_col = col_idx
+            elif cat_col is None and norm in _CATEGORY_HEADER_HINTS:
+                cat_col = col_idx
+        if table_col is not None:
+            columns = {"table": table_col, "code": code_col, "desc": desc_col, "cat": cat_col}
+            header_index = idx
+            break
+    if header_index is None:
+        return []
+
+    def cell_text(row: tuple, key: str) -> str:
+        col = columns.get(key)
+        if col is None or col >= len(row):
+            return ""
+        return clean_text(row[col]).strip()
+
+    catalog: list[dict[str, str]] = []
+    seen: set[str] = set()
+    for row in rows[header_index + 1:]:
+        table = cell_text(row, "table")
+        if not _looks_like_table_identifier(table):
+            continue
+        key = table.upper()
+        if key in seen:
+            continue
+        seen.add(key)
+        code = cell_text(row, "code")
+        code_sheet = code if code and code in existing_sheets else ""
+        catalog.append(
+            {
+                "tableName": key,
+                "code": code,
+                "codeSheet": code_sheet,
+                "description": cell_text(row, "desc"),
+                "category": cell_text(row, "cat"),
+            }
+        )
+    return catalog
+
+
 def extract_xlsx_metadata(path: Path) -> dict[str, Any]:
     workbook = load_workbook(path, read_only=True, data_only=True)
     api_codes: set[str] = find_api_codes(path.name)
@@ -223,6 +347,7 @@ def extract_xlsx_metadata(path: Path) -> dict[str, Any]:
     keywords: set[str] = find_external_keywords(path.name) | find_framework_keywords(path.name)
     sheet_match_keys: dict[str, set[str]] = {}
     sheet_names = list(workbook.sheetnames)
+    table_catalog: list[dict[str, str]] = []
     try:
         for sheet_name in workbook.sheetnames:
             collect_text_signals(
@@ -246,6 +371,15 @@ def extract_xlsx_metadata(path: Path) -> dict[str, Any]:
                         field_names=field_names,
                         keywords=keywords,
                     )
+        table_catalog = extract_table_catalog(workbook, sheet_names)
+        for entry in table_catalog:
+            table_name = entry["tableName"]
+            table_names.add(table_name)
+            target_sheet = entry.get("codeSheet") or sheet_names[0]
+            sheet_match_keys.setdefault(normalize_match_key(table_name), set()).add(target_sheet)
+            code_value = entry.get("code") or ""
+            if code_value:
+                sheet_match_keys.setdefault(normalize_match_key(code_value), set()).add(target_sheet)
     finally:
         workbook.close()
     return {
@@ -255,6 +389,7 @@ def extract_xlsx_metadata(path: Path) -> dict[str, Any]:
         "tableNames": sorted(table_names),
         "fieldNames": sorted(field_names),
         "keywords": sorted(keywords),
+        "tableCatalog": table_catalog,
     }
 
 
@@ -425,6 +560,7 @@ def build_reference_record(
         "fieldNames": list(metadata.get("fieldNames") or []),
         "sheetNames": list(metadata.get("sheetNames") or []),
         "sheetMatchKeys": metadata.get("sheetMatchKeys") or {},
+        "tableCatalog": metadata.get("tableCatalog") or [],
         "sectionMatchKeys": metadata.get("sectionMatchKeys") or {},
         "pageMatchKeys": metadata.get("pageMatchKeys") or {},
     }

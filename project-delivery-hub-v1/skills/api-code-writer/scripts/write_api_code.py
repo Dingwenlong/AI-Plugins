@@ -443,6 +443,7 @@ def summarize_fixture_status(items: list[dict[str, Any]]) -> dict[str, int]:
         "in_progress": 0,
         "done": 0,
         "skipped": 0,
+        "not_required": 0,
         "blocked": 0,
         "error": 0,
     }
@@ -461,7 +462,7 @@ def derive_fixture_execution_status(items: list[dict[str, Any]]) -> str:
         return "blocked"
     if any(status == "in_progress" for status in statuses):
         return "running"
-    if all(status in {"done", "skipped"} for status in statuses):
+    if all(status in {"done", "skipped", "not_required"} for status in statuses):
         return "done"
     if any(status == "error" for status in statuses):
         return "error"
@@ -1358,7 +1359,33 @@ def normalize_phase(value: str | None, fallback: str) -> str:
     return text or fallback
 
 
-def build_writer_item(upstream_api: UpstreamApiRecord, previous_manifest: dict[str, Any] | None) -> dict[str, Any]:
+def has_open_test_defect_handoff(api_dir: Path) -> bool:
+    """Return True when a step-05 defect handoff exists with status=open.
+
+    The step-05 docx-unittest-report writes ``test-defect-handoff.json`` next to the
+    API state when a test exposes a production-code defect. While it is ``open`` the
+    API must be reworked, so prepare forces ``codeStatus`` back to ``pending`` instead
+    of preserving a previous ``tests_passed`` result. A missing or malformed sidecar is
+    treated as "no open defect" so a bad file never crashes prepare.
+    """
+    path = api_dir / "test-defect-handoff.json"
+    if not path.exists():
+        return False
+    try:
+        payload = load_json(path)
+    except Exception:
+        return False
+    if not isinstance(payload, dict):
+        return False
+    return clean_text(payload.get("status")).lower() == "open"
+
+
+def build_writer_item(
+    upstream_api: UpstreamApiRecord,
+    previous_manifest: dict[str, Any] | None,
+    *,
+    test_defect_open: bool = False,
+) -> dict[str, Any]:
     input_hashes = {
         "upstreamManifest": stable_spec_manifest_hash(upstream_api.manifest_payload),
         "apiSpec": sha256_file(upstream_api.api_spec_path) if upstream_api.api_spec_path else None,
@@ -1396,6 +1423,32 @@ def build_writer_item(upstream_api: UpstreamApiRecord, previous_manifest: dict[s
             "cleanupArtifacts": bool(previous_manifest),
             "resetReason": "upstream_not_ready",
             "lastMessage": clean_text(previous_manifest.get("lastMessage")) if previous_manifest else "",
+        }
+
+    if test_defect_open:
+        # Step-05 reported a production-code defect (test-defect-handoff.json status=open).
+        # Force rework: revert codeStatus to pending even when spec inputs are unchanged and
+        # the previous run was tests_passed, so the step-05 -> step-04 loop is not silently lost.
+        return {
+            "apiId": upstream_api.api_id,
+            "apiCategory": upstream_api.api_category,
+            "apiName": upstream_api.api_name,
+            "upstreamStatus": upstream_api.status,
+            "writerStatus": "pending",
+            "phase": "pending",
+            "blockReason": None,
+            "specBlockReason": upstream_api.block_reason,
+            "fixtureStatus": upstream_api.fixture_status,
+            "fixturePhase": upstream_api.fixture_phase,
+            "fixtureBlockReason": upstream_api.fixture_block_reason,
+            "fixtureSourceFingerprint": upstream_api.fixture_source_fingerprint,
+            "inputHashes": input_hashes,
+            "sourceFingerprint": source_fingerprint,
+            "newAuthor": clean_text((upstream_api.api_spec_payload or {}).get("newAuthor")) or getpass.getuser(),
+            "preserveHistory": False,
+            "cleanupArtifacts": False,
+            "resetReason": "test_defect_handoff_open",
+            "lastMessage": "Reverted to pending: open test-defect-handoff.json from step 05 requires rework.",
         }
 
     if same_inputs and previous_code_status == "tests_passed":
@@ -3708,7 +3761,14 @@ def reconcile_writer_queue(
 ) -> tuple[dict[str, int], dict[str, dict[str, Any]], list[dict[str, Any]]]:
     upstream_summary = summarize_upstream_status(upstream_checklist_items)
     previous_manifest_map = existing_writer_manifest_map(context)
-    items = [build_writer_item(upstream_api_map[item["apiId"]], previous_manifest_map.get(item["apiId"])) for item in upstream_checklist_items]
+    items = [
+        build_writer_item(
+            upstream_api_map[item["apiId"]],
+            previous_manifest_map.get(item["apiId"]),
+            test_defect_open=has_open_test_defect_handoff(context.paths.api_dir(item["apiId"])),
+        )
+        for item in upstream_checklist_items
+    ]
     dump_queue_manifests(context, items, upstream_api_map, previous_manifest_map)
     persist_execution_view(
         context,
@@ -4339,7 +4399,7 @@ def run_apply_mode(
     change_plan["validationChecks"] = validation_commands
     repo_drift_files = list(change_plan.get("repoDriftFiles") or repo_drift_files)
 
-    if clean_text(upstream_api.fixture_status) not in {"done", "skipped"}:
+    if clean_text(upstream_api.fixture_status) not in {"done", "skipped", "not_required"}:
         block_reason = upstream_api.fixture_block_reason or (
             f"Apply requires SQL fixture readiness, but fixture status is {upstream_api.fixture_status or 'pending'}."
         )

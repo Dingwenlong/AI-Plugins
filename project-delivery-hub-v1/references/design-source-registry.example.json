@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "directories": {
+    "prd": "D:\\Path\\To\\Design\\PRD",
+    "tsdApiSpec": "D:\\Path\\To\\Design\\TSD_API_Detail",
+    "sequenceDiagram": "D:\\Path\\To\\Design\\SequenceDiagrams",
+    "common": "D:\\Path\\To\\Design\\Common",
+    "customerItSpec": "D:\\Path\\To\\Design\\IT_SPEC",
+    "legacyProject": "D:\\Path\\To\\LegacySource"
+  },
+  "functions": {
+    "X.001": {
+      "aliases": ["X.001"],
+      "prdCodes": ["X.001"],
+      "tsdCodes": ["X.001"],
+      "apiSpecDomain": "SampleDomain",
+      "notes": "Example entry. Use one key per functionCode (or combined code such as 'D.001 D.002'); aliases/prdCodes/tsdCodes are the code variants that appear in source filenames. This file belongs at <workspaceRoot>/.agent/config/design-source-registry.json, not in the plugin."
+    }
+  }
+}

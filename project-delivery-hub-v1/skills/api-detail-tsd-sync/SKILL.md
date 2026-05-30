@@ -1,9 +1,11 @@
 ---
 name: api-detail-tsd-sync
-description: 把 PRD、TSD 与 API Detail 梳理成可开发的 API 设计交接。用于比对 API contract、统一字段/API 命名、维护 Api_List/后端来源、产出功能设计梳理与开发就绪判断；也判断时序图影响，并在接近冻版时物化 handoff 给第 02 步 API 规格生成。多文件或 Office 交付物写入时作为 Design Leader 产出 edit plan/file claim，由 Office 交付文件编辑器执行 .docx/.xlsx 物理保存。关键词：PRD、TSD、API Detail、功能设计梳理、开发就绪、handoff、Design Leader、office-edit-plan。
+description: 把 PRD、TSD 与 API Detail 梳理成可开发的 API 设计交接。交付主链第 01 步（主链起点）。用于比对 API contract、统一字段/API 命名、维护 Api_List/后端来源、产出功能设计梳理与开发就绪判断；也判断时序图影响，并在接近冻版时物化 handoff 给第 02 步 API 规格生成。多文件或 Office 交付物写入时作为 Design Leader 产出 edit plan/file claim，由 Office 交付文件编辑器执行 .docx/.xlsx 物理保存。关键词：PRD、TSD、API Detail、功能设计梳理、开发就绪、handoff、Design Leader、office-edit-plan。
 ---
 
-# 【设计梳理】专案需求接口设计梳理
+# 【设计梳理】01 专案需求接口设计梳理
+
+本技能是 01-05 交付主链的**第 01 步**，也是主链起点：负责把 PRD / TSD / API Detail 梳理成可开发的功能设计交接，并在可进入开发时把 `development-handoff.json` 与开发输入包产出给第 02 步 `api-spec-writer` 消费。可选的『参考资料索引导入器』只是资料准备旁路，不是主链编号步骤。
 
 ## Office Edit Plan Contract
 
@@ -90,6 +92,14 @@ python ".\scripts\materialize_design_handoff.py" `
 
 若分析稿未达到可进入开发，仍可保存到 `analysis/`，但 `development-handoff.json` 必须标记 `status=blocked` / `developmentReady=false`，第 02 步不得自动推进。
 
+## 可选消费参考资料索引（资料准备旁路）
+
+梳理（01）在判断 `后端来源` / `涉及BackendAPI`、统一字段与 API 命名、比对 contract 时，可选消费可选『参考资料索引导入器』导入的 `.agent/reference/global`（外部 API 索引 + DB Schema 索引，含表目录）作为佐证：
+
+- **有则用、无则照常**：参考索引不一定存在；缺它时 01 仍以 PRD / TSD / API Detail 正常梳理，不得把它当硬前置。
+- **参照≠权威**：PRD / TSD / API Detail 仍是接口契约与字段语义的权威来源；参考索引只用于校验「后端 API / 表 / 栏位是否真实存在、形状是否一致」。冲突时（例如 TSD 声明的 BackendAPI 或字段在索引中查无对应）标记 `待确认` / `unresolved` 写进梳理稿与 handoff，不得反向覆盖契约。
+- **折进 handoff**：把与本功能相关、已校验的参考切片随 `scripts/materialize_design_handoff.py` 落进 `inputs/reference` 与 `development-handoff.json`，让「哪些外部参照与本功能相关」的判断在 01 做一次；第 02 步仍保留读全局 `.agent/reference/global` 的兜底。
+
 ## Design Leader Mode
 
 当新需求梳理或反馈修正需要同步多份设计交付物时，本技能就是设计阶段 leader。业务语义、API contract、命名、后端来源、CommonFunc/CommonUtil 复用、Response Code 与开发就绪判断仍由本技能负责；worker 只处理已分配文件。TSD Word 与 API Detail/Common/Response Code Excel 的物理写入交给 `专案 Office 交付文件编辑器`，本技能只负责裁决和生成可执行 edit plan。
@@ -112,6 +122,8 @@ Design Leader 状态面：
   worker-results.json
   final-design-fix-report.json
 ```
+
+> 以上设计面编排产物均有 JSON Schema（`skills/api-detail-tsd-sync/schemas/`：`design-change-plan` / `office-edit-plan` / `file-claims` / `worker-results` / `final-design-fix-report` / `office-edit-results`），写入前后应据此校验。设计面 `file-claims.json` 的 schema 与开发面 `skills/multi-api-leader/schemas/file-claims.schema.json` **不同**（设计面 `targetFiles` 是 `{path,kind,claimScope}` 对象，开发面是文件路径字符串），勿混用。可用 `python skills/api-detail-tsd-sync/scripts/validate_design_artifacts.py --workspace-key <workspaceKey> --function-code <functionCode>` 对该功能整组 orchestration 产物做只读 schema 校验（缺失产物跳过，发现不符返回非零）。
 
 不要把设计阶段 orchestration 状态写入 `.agent/context/<functionCode>/`；`.agent/context` 留给 02-05 开发执行链。`development-handoff.json` 仍保留在 `.agent/functions/<functionCode>/handoff/`，由 leader 在验证后串行更新。
 
@@ -168,7 +180,7 @@ Worker 约束：
 
 当用户要求梳理某功能设计、接口设计、设计进度、开发就绪度，或要求把某功能推进到 100% 冻版时，默认按以下顺序执行：
 
-1. 解析功能编号，例如 `D.003`、`L.004`、`N.001.001`。
+1. 解析功能编号，例如 `D.003`、`L.004`、`N.001.001`。组合功能编号统一用 `_`（例如 `F.006_F.006.001`），只允许 `[A-Za-z0-9._-]`；勿用 `&`、空格等路径敏感字符（functionCode 会用作 `.agent` 目录段，开发链会前向校验阻塞）。
 2. 若用户未给文件路径，读取 `references/path-registry-rules.md`，再从 `<agentRoot>/config/design-source-registry.json` 解析 PRD/TSD/API Detail/Common/Response Code/IT SPEC/旧项目目录。
 3. 以 PRD 对齐最新版主 TSD 与 API Detail，确认 TSD API 清单、Api_List、API sheet、API Name、Request、Response、范例、业务逻辑、Response Code 当前状态。
 4. 若任务涉及系统设计规范或命名/完整性判断，读取 `references/system-design-standard-v2.5-api-contract-rules.md`，用 v2.5 规则检查 API 命名、必填、范例、`responseData`、Header 来源、旧命名边界、Redis/Appsetting/DB 设计证据。
@@ -188,6 +200,7 @@ Worker 约束：
 - 若既有字段名与 PRD 语义不符，直接提出 rename，并同步考虑字段表、范例、业务逻辑与相关说明。
 - CommonFunc 是内部共享方法层；CommonUtil 是外部 wrapper/API 层。能复用现有 CommonFunc/CommonUtil 时，不新增重复共用逻辑。
 - `涉及BackendAPI` 与 `后端来源` 必须能追溯；不确定 DB/SP、配置 key、外部 URL、过滤条件或字段映射时，标记待确认。
+- 缓存/Redis 来源必须能追溯：业务逻辑出现「优先取 Redis / 缓存、未命中回源 X」时，必须确认缓存 key、写入或回源方、TTL、authoritativeStore 与未命中回源契约。能从 Redis / 缓存设计文档查到就在梳理阶段补进梳理稿与 handoff（必要时拷入 `inputs/reference`）；查不到则列为开发就绪的「待确认」缺口，不得只写「优先取 Redis」就当已就绪，也不得替开发臆造 key。
 - 若需要设计新增/调整数据库表或字段，必须同时说明表用途、权威来源、字段语义、数据类型、必填/可空、PK/FK/唯一键、索引意图、更新频率、预计资料量、保留期限、审计字段与敏感资料分类；缺少任一关键事实时标记 `待确认` / `unresolved`，不得替用户补表设计。
 - API 范例情境、Response Code 与业务逻辑必须保持一致；不要因为多个情境共用 response code 就合并掉测试/范例语义。
 - 字段、API、功能开关、布尔旗标、动作与内部方法命名需要用新系统语义重整，避免 legacy naming 污染正式 contract。
@@ -230,8 +243,8 @@ Worker 约束：
 - 读取 `references/api-detail-workbook-rules.md`。
 - 语义/API 设计编辑裁决由本技能完成；实际 `.xlsx` 保存由 `专案 Office 交付文件编辑器` 执行；格式修复不能补造缺失 API 内容。
 - 生成 `office-edit-plan` 时，内容编辑、字体继承与格式修复必须限于本次实际变更的 API sheets、`Api_List` 行或明确语义范围；禁止因为修改少量内容而遍历全 workbook 或所有 sheets 改字体。
-- `office-edit-plan` 必须记录本次实际变更的单元格/合并范围，并要求尽量保留未变更文字的既有字体。只有实际新增或替换后的字符/词组使用专案规则库 `apiDetailExcelStyle` 的字型槽位（中文 `微軟正黑體`、英文数字 `Times New Roman`、字号 10）并以红色字体标示；不得整格、整行或整段标红。
-- 若写入会影响列高，`office-edit-plan` 必须要求目标 workbook 的所有工作表已用行或明确范围执行 Excel COM 行高自适应；含换行文字或合并格的行需按可见内容补足行高，避免文字裁切；同时要求 Office 编辑器不得把一般内容行改成顶端对齐，行高调整后需保持或恢复水平靠左、垂直居中与自动换行。
+- `office-edit-plan` 必须记录本次实际变更的单元格/合并范围，并要求尽量保留未变更文字的既有字体。只有实际新增或替换后的字符/词组使用专案规则库 `apiDetailExcelStyle` 配置的字型槽位并以红色字体标示；不得整格、整行或整段标红。具体字型/字号取值以 `apiDetailExcelStyle` 为准，本技能不复述。
+- 若写入会影响列高，`office-edit-plan` 必须要求目标 workbook 的所有工作表已用行或明确范围执行 Excel COM 行高自适应；含换行文字或合并格的行需按可见内容补足行高，避免文字裁切；同时要求 Office 编辑器行高调整后**保持或恢复该行既有 / `apiDetailExcelStyle` 指定的对齐与自动换行**，不得顺带改变对齐语义（例如不得擅自改成顶端对齐）。
 - 补充设计说明时避免重复灌入多个位置：`涉及BackendAPI` / `後端來源` 只保留调用关系和来源摘要，Redis、fallback、排序等细节放在对应业务逻辑行或字段说明中，除非客户模板明确要求重复列示。
 - Office 编辑器保存 API Detail workbook 后，必须交给 `delivery-format-checker` 做格式检查闭环；若检查器产出修复计划，再回到 Office 编辑器保存。
 - 交接格式检查器时必须列出本次变更的 sheet 名、`Api_List` 行或范围；若范围无法确认，只做只读检查并先报告风险，不执行全 workbook 字体槽位。

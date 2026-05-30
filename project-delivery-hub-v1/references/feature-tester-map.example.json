@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "1.0.0",
+  "sourceWorkbook": "D:\\Path\\To\\ProjectPlan.xlsx",
+  "sourceSheet": "FeatureList",
+  "featureIdColumn": "Feature ID",
+  "testerColumn": "Tester",
+  "updatedDate": "2026-01-01",
+  "mapping": {
+    "X.001": "TesterName"
+  },
+  "rows": [
+    {
+      "featureId": "X.001",
+      "tester": "TesterName",
+      "module": "SampleModule",
+      "featureName": "Sample feature",
+      "sourceRow": 2
+    }
+  ]
+}

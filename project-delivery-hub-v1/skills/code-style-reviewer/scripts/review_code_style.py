@@ -54,7 +54,17 @@ def write_text(path: Path, text: str) -> None:
 def read_json(path: Path) -> dict[str, Any]:
     if not path.exists():
         return {}
-    payload = json.loads(path.read_text(encoding="utf-8-sig"))
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8-sig"))
+    except (json.JSONDecodeError, UnicodeDecodeError, OSError) as exc:
+        # A single malformed/corrupted JSON (e.g. a mojibake change-plan with an
+        # unterminated string) must not abort the whole review. Skip it with a
+        # visible warning and let the caller treat it as an empty / needs-review file.
+        print(
+            f"[code-style-reviewer] WARN: skipping unreadable JSON {path}: {exc}",
+            file=sys.stderr,
+        )
+        return {}
     return payload if isinstance(payload, dict) else {}
 
 

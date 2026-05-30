@@ -23,6 +23,8 @@ Do not write design orchestration state into `.agent/context/<functionCode>/`; `
 | `worker-results.json` | Collected worker reports: modified files, validation, blockers, risks | leader only after worker return |
 | `final-design-fix-report.json` | Final design-stage verdict, validation summary, handoff readiness | leader only |
 
+JSON Schemas for these artifacts live in `skills/api-detail-tsd-sync/schemas/` (`design-change-plan`, `office-edit-plan`, `file-claims`, `worker-results`, `final-design-fix-report`, `office-edit-results`); validate against them before and after writing. The design-stage `file-claims.json` schema differs from the dev-execution one at `skills/multi-api-leader/schemas/file-claims.schema.json` — design-stage `targetFiles` entries are `{path, kind, claimScope}` objects, the dev-execution one uses plain file-path strings.
+
 The leader may also update `.agent/functions/<functionCode>/handoff/development-handoff.json`, source/copy hashes, and high-level chain status after all worker changes are verified.
 
 ## Leader Responsibilities

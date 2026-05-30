@@ -67,3 +67,15 @@ python ".\scripts\analyze_project_rules.py" `
 - 更新开发规范 catalog，供第 04 步 `api-code-writer` 产生 `devGuidelineRulesSelected` 与 `devGuidelineLoadHints`
 
 未加 `--approve` 时只产出 `reviewStatus=draft` 的复核稿，不会让第 04 步默认作为 active 开发规范读取。
+
+## 其它规则包的接入（重要：当前非自动）
+
+`--approve` 时脚本**只自动维护 `rulePacks.apiCodeWriter`**（把 `code-guidelines` 规则接入该 pack）。其余规则包的 `requiredRuleIds` 是**跨多个类别精选**的，无法由单条规则的 category 自动派生，因此脚本**不会**自动接入：
+
+- `apiDetailSync` / `apiSpecWriter`：需 `api-contract` + `api-detail-workbook` + `field-kb` + `sequence-diagram` 等多类规则。
+- `deliveryFormat`：`delivery-format` + `api-detail-workbook` 等。
+- `sequenceDiagram`：`sequence-diagram` 类规则与 native VSDX 规则、相关 asset。
+- `sqlFixture`：`sql-fixture` 默认值。
+- `unitTestReport`：`test-handoff` 规则 + UT 模板/清单 asset。
+
+因此用本技能新增/批准**非 `code-guidelines`** 类规则后，必须**手动**把新 `ruleId` 加进对应 `rulePacks.<pack>.requiredRuleIds` / `optionalRuleIds`，否则该 pack 的消费技能（如 `delivery-format-checker`、`api-spec-writer`、`native-vsdx-sequence-writer`）不会加载到这条新规则。批准后请复核 `catalog.json` 的 `rulePacks` 是否已覆盖新规则；若需要把自动接入扩展到其它 pack，应先为每个 pack 定义明确的「category → pack」纳入规则，再改脚本。

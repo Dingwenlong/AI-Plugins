@@ -21,7 +21,10 @@ description: 打包、发布并同步 `project-delivery-hub-v1` 插件。仅用�
 - 打包时必须把 `agentBundle` 指向的 `.agent` 同步进包和缓存；随包 `.agent` 只作为初始化快照，正式运行位置必须是项目工作区根目录，例如 `<workspaceRoot>\.agent`。
 - 工作区解析快照只允许存在于 `.agent/config/chain-workspace.json`；不要生成或携带 `.agent/workspaces/<workspaceKey>.json`。
 - `.agent` 内的 `.bak`、`__pycache__`、`.tmp`、`.log`、`.pyc` 不得进入打包产物。
+- agentBundle 快照只携带可分发骨架，**不得包含**逐功能工作数据与本机运行态目录：`.agent/functions/`、`.agent/status/`、`.agent/tmp/`、`.agent/wedoc-smartsheet-staging/`、`.agent/reference/`。打包脚本已在 agentBundle 镜像排除这些（`$AgentWorkDataDirectoryNames`）；保留 `.agent/project-rules/`（团队规则库）、`.agent/config/`（去除个人/私有档后）与 `.agent/diagrams/`。
+- `references/rule-pack-templates/`（`generic/` 通用规则库模板：`catalog.json` + 就绪的 code-guidelines + 占位 `implementation-profile.md` + `README.md`）必须随包，供 `workspace-onboarding` 为新项目脚手架规则库。
 - 企业微信智能表格真实配置属于个人/项目私有配置，`.agent/config/wedoc-smartsheet-targets.json` 与 `.agent/config/wedoc-smartsheet-targets.local.json` 不得进入插件源、打包产物或 cache；只允许 `references/wedoc-smartsheet-targets.example.json` 模板随包。
+- 个人/本地配置 `references/local-workspaces.json`、`.agent/config/design-source-registry.json`、`.agent/config/feature-tester-map.json`、`.agent/config/chain-workspace.json` 含本机路径/名单，不得带真实值进入插件源、打包产物或 cache；打包脚本已将其纳入排除名单（`$PersonalLocalConfigFileNames`），包内只随对应 `references/*.example.json` 模板。接收方用 `workspace-onboarding` 技能从模板脚手架出本机真实配置（`scripts/init_workspace_config.py`，只新建不覆盖）。
 - SQL fixture 数据库连接真实配置属于个人/项目私有配置，`.agent/config/sql-fixture-targets.local.json` 不得进入插件源、打包产物或 cache；技能文档只能保留无密码示例或字段说明。
 - 企业微信智能表格新增回执属于项目运行资料，`.agent/wedoc-smartsheet-receipts/` 不得进入插件源、打包产物或 cache。
 - 打包扫描若发现真实 `qyapi.weixin.qq.com/cgi-bin/wedoc/smartsheet/webhook?key=` URL、上述私有配置文件或智能表格回执目录，必须失败并先清理。
@@ -96,8 +99,9 @@ powershell -NoProfile -ExecutionPolicy Bypass -File "<pluginRoot>\skills\plugin-
   - `skills/plugin-packager/assets/diagrams/专案交付中枢_工作区与agent结构树.svg`
 - 若本次包含结构型变动，上述三张图必须已经反映最新技能关系、`.agent` 职责、工作区/分支代码位置与打包/cache 流向。
 - 新缓存内没有 `.bak` 与 `__pycache__`。
-- 新包与新缓存内的技能 `SKILL.md` frontmatter `name` 统一使用 `专案交付中枢：` 前缀；agent 入口统一使用 `interface.display_name` 且同样带此前缀，不保留顶层 `name`。
-- 新包与新缓存内没有 `sql-fixture-targets.local.json`、`wedoc-smartsheet-targets.json`、`wedoc-smartsheet-targets.local.json`、`.agent/wedoc-smartsheet-receipts/` 或真实企业微信智能表格 WebHook URL；但必须包含 `references/wedoc-smartsheet-targets.example.json`。
+- 新包与新缓存内的技能 `SKILL.md` frontmatter `name` 使用 kebab 技术 ID（与目录名、文档内 `$技能` 引用一致）；`专案交付中枢：` 前缀只用于 agent 入口 `interface.display_name`（且不保留顶层 `name`）。
+- 新包与新缓存内没有 `sql-fixture-targets.local.json`、`wedoc-smartsheet-targets.json`、`wedoc-smartsheet-targets.local.json`、`.agent/wedoc-smartsheet-receipts/` 或真实企业微信智能表格 WebHook URL；也没有带真实值的个人配置 `local-workspaces.json`、`design-source-registry.json`、`feature-tester-map.json`、`chain-workspace.json`；但必须包含全部 `references/*.example.json` 模板（`local-workspaces` / `design-source-registry` / `feature-tester-map` / `chain-workspace` / `wedoc-smartsheet-targets`）、`references/rule-pack-templates/generic/`（含 `catalog.json` 与 code-guidelines 规则）与 `skills/workspace-onboarding/`（含 `scripts/init_workspace_config.py`、`agents/openai.yaml`、`assets/`）。
+- 新包与新缓存内的 bundled `.agent`（若有）不含 `functions/`、`status/`、`tmp/`、`wedoc-smartsheet-staging/`、`reference/`；`.agent/project-rules/` 团队规则库可保留（同团队连续性）。
 - 新包内不得出现旧插件 ID 与旧个人 marketplace 的 active 组合。
 
 ## Multi API Leader Packaging
@@ -128,5 +132,12 @@ powershell -NoProfile -ExecutionPolicy Bypass -File "<pluginRoot>\skills\plugin-
 - `skills/office-deliverable-editor/SKILL.md`
 - `skills/office-deliverable-editor/agents/openai.yaml`
 - `references/artifact-naming-standard.json` 中的 `00-design-leader-*` 与 `00-office-edit-*` mappings
+- `skills/api-detail-tsd-sync/schemas/design-change-plan.schema.json`
+- `skills/api-detail-tsd-sync/schemas/office-edit-plan.schema.json`
+- `skills/api-detail-tsd-sync/schemas/file-claims.schema.json`
+- `skills/api-detail-tsd-sync/schemas/worker-results.schema.json`
+- `skills/api-detail-tsd-sync/schemas/final-design-fix-report.schema.json`
+- `skills/api-detail-tsd-sync/schemas/office-edit-results.schema.json`
+- `skills/api-detail-tsd-sync/scripts/validate_design_artifacts.py`
 
 如果设计阶段 orchestration 状态面、feedback entrypoint、Office edit plan、file claim 或 handoff 写入规则有变化，必须同步更新 `USAGE.md`、命名标准、三张架构 SVG 与 package dry-run 校验。

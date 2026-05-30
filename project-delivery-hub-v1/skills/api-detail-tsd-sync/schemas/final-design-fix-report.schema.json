@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Final Design Fix Report",
+  "description": "Final design-stage verdict, validation summary and handoff readiness, written by the Design Leader to .agent/functions/<functionCode>/orchestration/final-design-fix-report.json.",
+  "type": "object",
+  "required": ["schemaVersion", "functionCode", "verdict", "developmentReady"],
+  "properties": {
+    "schemaVersion": { "type": "string" },
+    "functionCode": { "type": "string" },
+    "completedAt": { "type": "string" },
+    "verdict": { "type": "string" },
+    "developmentReady": { "type": "boolean" },
+    "modifiedFiles": { "type": "array", "items": { "type": "string" } },
+    "orchestrationArtifacts": { "type": "array", "items": { "type": "string" } },
+    "validationSummary": { "type": "array", "items": { "type": "string" } },
+    "remainingRisks": { "type": "array", "items": { "type": "string" } }
+  },
+  "additionalProperties": true
+}

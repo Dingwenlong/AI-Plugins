@@ -142,6 +142,29 @@ def resolve_agent_root(agent_root_arg: str | None, workspace_key: str | None) ->
     return None
 
 
+def resolve_output_root(output_root_arg: str | None, workspace_key: str | None, workspace: Path) -> Path:
+    """Resolve the customer delivery output root.
+
+    Priority: --output-root arg > selected workspace's `deliveryOutputRoot` in
+    references/local-workspaces.json > legacy default `<workspace>/TSD 交付客戶版本`.
+    An empty/missing `deliveryOutputRoot` falls back to the legacy default, so
+    existing behavior is unchanged until the field is explicitly set.
+    """
+    explicit = clean_text(output_root_arg)
+    if explicit:
+        return Path(explicit).expanduser().resolve()
+
+    config = load_workspace_config()
+    workspaces = config.get("workspaces") if isinstance(config.get("workspaces"), dict) else {}
+    selected_key = clean_text(workspace_key) or clean_text(os.environ.get("PROJECT_WORKSPACE_KEY")) or clean_text(config.get("defaultWorkspace"))
+    selected = workspaces.get(selected_key) if selected_key else None
+    if isinstance(selected, dict):
+        configured = clean_text(selected.get("deliveryOutputRoot"))
+        if configured:
+            return Path(configured).expanduser().resolve()
+    return (workspace / "TSD 交付客戶版本").resolve()
+
+
 def normalize_function(raw: str) -> FunctionGroup:
     tokens = tuple(re.findall(r"[A-Za-z]\.\d+(?:\.\d+)*", raw))
     if not tokens:
@@ -800,7 +823,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--agent-root", help="Central .agent root, for example D:\\Repo\\Project\\.agent")
     parser.add_argument("--workspace-key", help="Workspace key from references/local-workspaces.json")
     parser.add_argument("--date", default=today, help="Package date yyyymmdd; default today")
-    parser.add_argument("--output-root", help="Default: <workspace>\\TSD 交付客戶版本")
+    parser.add_argument("--output-root", help="客户交付包输出根。优先级：本参数 > local-workspaces.json 的 deliveryOutputRoot > 默认 <workspace>\\TSD 交付客戶版本")
     parser.add_argument("--dry-run", action="store_true", help="List the copy plan without copying")
     parser.add_argument("--overwrite", action="store_true", help="Allow replacing existing destination files")
     parser.add_argument("--keep-source-dates", action="store_true", help="Do not replace final date suffixes in filenames")
@@ -816,7 +839,7 @@ def main() -> int:
     if args.summary and len(args.functions) != 1:
         raise PackageError("--summary 只能搭配单一 --function 使用")
 
-    output_root = Path(args.output_root).resolve() if args.output_root else workspace / "TSD 交付客戶版本"
+    output_root = resolve_output_root(args.output_root, args.workspace_key, workspace)
     agent_root = resolve_agent_root(args.agent_root, args.workspace_key)
     all_plan: list[Artifact] = []
     summaries: list[str] = []

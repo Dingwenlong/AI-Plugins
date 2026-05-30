@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Design Stage File Claims",
+  "description": "Design-stage file ownership for workers, written by the Design Leader to .agent/functions/<functionCode>/orchestration/file-claims.json. This is the DESIGN plane (TSD / API Detail / Common / Response Code delivery files); it is a different schema and plane from the dev-execution file-claims at .agent/context/<functionCode>/orchestration/file-claims.json (see skills/multi-api-leader/schemas/file-claims.schema.json).",
+  "type": "object",
+  "required": ["schemaVersion", "functionCode", "claimId", "claims"],
+  "properties": {
+    "schemaVersion": { "type": "string" },
+    "functionCode": { "type": "string" },
+    "claimId": { "type": "string" },
+    "createdAt": { "type": "string" },
+    "workGroups": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["workGroupId"],
+        "properties": {
+          "workGroupId": { "type": "string" },
+          "serial": { "type": "boolean" },
+          "reason": { "type": "string" }
+        },
+        "additionalProperties": true
+      }
+    },
+    "claims": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["claimId", "owner", "targetFiles"],
+        "properties": {
+          "claimId": { "type": "string" },
+          "workGroupId": { "type": "string" },
+          "owner": { "type": "string" },
+          "targetFiles": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["path"],
+              "properties": {
+                "path": { "type": "string" },
+                "kind": { "type": "string" },
+                "claimScope": { "type": "string" }
+              },
+              "additionalProperties": true
+            }
+          },
+          "readOnlyFiles": { "type": "array", "items": { "type": "string" } },
+          "forbiddenPaths": { "type": "array", "items": { "type": "string" } }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true
+}

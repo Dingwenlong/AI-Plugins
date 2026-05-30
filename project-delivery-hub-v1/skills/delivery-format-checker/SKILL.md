@@ -7,7 +7,7 @@ description: 检查 TSD Word 与 API Excel 的交付格式，产出格式问题�
 
 ## Office Edit Plan Contract
 
-When creating or handing off `office-edit-plan.json`, include `schemaVersion: "1.0.0"`, `claimId`, `targetFiles[]`, `allowedOperations[]`, `forbiddenOperations[]`, and `validation[]`. The Office editor result must echo the `claimId` and report `modifiedFiles` plus `validationCommands`.
+`office-edit-plan.json` 的完整字段契约以 `references/office-deliverable-edit-protocol.md` 为权威单一来源。本技能作为格式修复的 plan owner，产出/交接时必须给齐：`schemaVersion: "1.0.0"`、`functionCode`（若有）、`owner: "delivery-format-checker"`、`mode: "format-fix"`、`claimId`、`targetFiles[]`（含 `claimScope: "whole-file"`）、`allowedOperations[]`、`forbiddenOperations[]`、`validation[]`。**不得省略 `owner` 与 `mode`**——`专案 Office 交付文件编辑器` 按这两个字段判定来源与编辑模式，缺失会导致无法按契约消费。Office 编辑器结果必须回传 `claimId`、`modifiedFiles` 与 `validationCommands`。
 
 ## 上下文策略
 
@@ -92,29 +92,7 @@ python scripts/check_api_xlsx_format.py "path/to/API_DETAIL.xlsx"
 
 ### TSD DOCX
 
-内建检查器会验证可从 WordprocessingML 稳定读取的部分：
-
-- 档名格式：`TSD.<module>.<number>_<Chinese name>_v<major.minor>_<yyyymmdd>.docx`。
-- 封面文字：依专案规则库 `defaults.tsdCoverLabels` 与 `版本 x.y` 检查；缺少专案规则时只检查版本，不猜测专案名称。
-- TSD 版本号使用小写 `v`；首页版本需与版本修订表最新版本一致。首次交付的 TSD 只保留初版记录，且版本号同样小写。
-- 版本修订表：表头栏位 `版本`、`修改日期`、`修改人`、`PRD版本`、`修改记录`；列日期/版本格式；最新列与封面版本一致；资料列垂直置中、备注对齐与中文范例字型。
-- 版本修订表字号：依 `TSD.E.001_匯率表_v1.7_20260511.docx` 基准，资料列可见文字使用 `12 pt`。不得因后续修复被压成 API 清单的 `10 pt`。
-- 目录：包含范例要求的五个章节，并需在内容变更后更新，保持目录项目与实际章节一致。
-- 必要一级章节，依序为：
-  1. `功能目的(Functional Description)`
-  2. `功能结构图(Functional Structure Diagram)`
-  3. `循序图(Sequence Diagram)`
-  4. `参考讯息来源(Reference)`
-  5. `API清单`
-- 章节内容：功能目的文字、功能结构图图片、循序图表格、参考讯息来源内容、API 清单表格。
-- 表格格式：表头水平与垂直置中；表身垂直置中；一般内容水平居左，日期、版本号、姓名等栏位水平置中；循序图标题置中；API 清单需按 API 类别归类并把相同类别放在一起；同时检查循序图资料列对齐，以及 API 清单表头/资料列对齐、粗斜体漂移、表格内字型与繁体中文。
-- API 清单字号：依 `TSD.E.001_匯率表_v1.7_20260511.docx` 基准，表头与资料列可见文字使用 `10 pt`。
-- API 清单分页：API 清单章节标题与表格不得被拆成上一页少量行、下一页剩余行的跨页画面；修复时应让 `API清单` 标题从新页开始并与表格保持相邻，表格每列设定不允许跨页拆列。若表格长到无法单页容纳，至少需重复表头并避免单列被拆分。
-- 字型规则：中文内容使用 `微软正黑体`，其他英文/数字内容使用 `Times New Roman`。
-- 语言：所有中文内容必须使用繁体中文；简体字属于阻断性合规错误。
-- 术语：可见文字不得使用 `校验`；验证流程、验证结果等语境改为 `验证`，检查项目、检查清单等语境改为 `检核`。
-- 页尾版权：`版权所有：昱胜资讯股份有限公司 All Rights Reserved`。
-- 页面设定：A4 直向页面大小与范例边界。
+内建检查器 `scripts/check_tsd_docx.py` 验证可从 WordprocessingML 稳定读取的 TSD DOCX 结构与格式。**具体基准规则不在此内联**，一律以「规则包启动检查」加载的外置 `delivery-format` 规则包为准——尤其 `sample-derived-standard.md`（TSD DOCX 标准：档名格式、封面文字与 `defaults.tsdCoverLabels`、版本修订表栏位与格式、目录与五个一级章节、章节内容、表格对齐、资料列 `12 pt` 与 API 清单 `10 pt` 字号、`微軟正黑體` / `Times New Roman` 字型、繁体中文、`校驗→驗證/檢核` 术语、页尾版权 `昱勝資訊...All Rights Reserved`、A4 页面与边距、API 清单分页）与 `system-design-v2.5-format-rules.md`。检查前必须据这些文件判定；缺少规则库时只做通用结构检查并标记「缺少专案规则」，不得用技能内旧基准或猜测替代。
 
 ### API XLSX
 

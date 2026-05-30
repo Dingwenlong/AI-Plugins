@@ -1,0 +1,194 @@
+{
+  "schemaVersion": "1.0.0",
+  "sourceName": "<PROJECT> code development guidelines (generic template — replace per project)",
+  "version": "6.2",
+  "sourceStatus": "converted_reference_required",
+  "rules": [
+    {
+      "ruleId": "common-style",
+      "title": "共同落碼風格與可維護性",
+      "category": "common-style",
+      "direction": "production-code",
+      "ruleType": "style_only",
+      "audienceScopes": [
+        "frontstage",
+        "midBackoffice",
+        "shared",
+        "unknown"
+      ],
+      "featureTriggers": [
+        "always"
+      ],
+      "loadPath": "rules/code-guidelines/p240301-v6.2/rules/common-style.md",
+      "loadReason": "Every API implementation needs only the lightweight shared coding conventions.",
+      "action": "load_on_demand"
+    },
+    {
+      "ruleId": "implementation-profile",
+      "title": "Project framework implementation profile (customize per project)",
+      "category": "framework-profile",
+      "direction": "production-code",
+      "ruleType": "blocking_gap",
+      "audienceScopes": [
+        "frontstage",
+        "midBackoffice",
+        "shared",
+        "unknown"
+      ],
+      "featureTriggers": [
+        "always"
+      ],
+      "loadPath": "rules/code-guidelines/p240301-v6.2/rules/implementation-profile.md",
+      "loadReason": "Load to apply this project's framework slots, response contracts, validation commands, code style, and file-lock handling. Populate implementation-profile.md per project (e.g. via project-rule-analyzer).",
+      "action": "select_and_check_gaps"
+    },
+    {
+      "ruleId": "data-access",
+      "title": "DB / SQL / 資料檢索規範",
+      "category": "data-access",
+      "direction": "production-code",
+      "ruleType": "blocking_gap",
+      "audienceScopes": [
+        "frontstage",
+        "midBackoffice",
+        "shared",
+        "unknown"
+      ],
+      "featureTriggers": [
+        "hasSql"
+      ],
+      "loadPath": "rules/code-guidelines/p240301-v6.2/rules/data-access.md",
+      "loadReason": "Load only when the API has queryContracts, SQL dependencies, DB backend APIs, or table evidence.",
+      "action": "select_and_check_gaps"
+    },
+    {
+      "ruleId": "frontstage-session",
+      "title": "前台會員 / JWT / Session / Redis 規範",
+      "category": "identity-session",
+      "direction": "production-code",
+      "ruleType": "blocking_gap",
+      "audienceScopes": [
+        "frontstage"
+      ],
+      "featureTriggers": [
+        "hasIdentity",
+        "hasCache"
+      ],
+      "loadPath": "rules/code-guidelines/p240301-v6.2/rules/frontstage-session.md",
+      "loadReason": "Load only for frontstage member/customer APIs that touch identity, JWT, session, Redis, or personal data.",
+      "action": "select_and_check_gaps"
+    },
+    {
+      "ruleId": "backoffice-authz",
+      "title": "中後台權限 / 角色 / 審計規範",
+      "category": "authorization-audit",
+      "direction": "production-code",
+      "ruleType": "blocking_gap",
+      "audienceScopes": [
+        "midBackoffice"
+      ],
+      "featureTriggers": [
+        "hasAuditOrAuthorization"
+      ],
+      "loadPath": "rules/code-guidelines/p240301-v6.2/rules/backoffice-authz.md",
+      "loadReason": "Load only for mid/backoffice APIs that touch role, permission, menu, operation log, or audit behavior.",
+      "action": "select_and_check_gaps"
+    },
+    {
+      "ruleId": "cache",
+      "title": "快取 / Redis / 事實來源規範",
+      "category": "cache",
+      "direction": "production-code",
+      "ruleType": "blocking_gap",
+      "audienceScopes": [
+        "frontstage",
+        "midBackoffice",
+        "shared",
+        "unknown"
+      ],
+      "featureTriggers": [
+        "hasCache"
+      ],
+      "loadPath": "rules/code-guidelines/p240301-v6.2/rules/cache.md",
+      "loadReason": "Load only when Redis, cache, TTL, session cache, or stale-read risk appears in the handoff.",
+      "action": "select_and_check_gaps"
+    },
+    {
+      "ruleId": "validation",
+      "title": "Request DTO 驗證與錯誤映射規範",
+      "category": "validation",
+      "direction": "production-code",
+      "ruleType": "blocking_gap",
+      "audienceScopes": [
+        "frontstage",
+        "midBackoffice",
+        "shared",
+        "unknown"
+      ],
+      "featureTriggers": [
+        "hasValidation"
+      ],
+      "loadPath": "rules/code-guidelines/p240301-v6.2/rules/validation.md",
+      "loadReason": "Load only when request fields, required fields, custom validation, or validation response mapping is relevant.",
+      "action": "select_and_check_gaps"
+    },
+    {
+      "ruleId": "config",
+      "title": "AppSettings / 外部服務設定規範",
+      "category": "config",
+      "direction": "production-code",
+      "ruleType": "blocking_gap",
+      "audienceScopes": [
+        "frontstage",
+        "midBackoffice",
+        "shared",
+        "unknown"
+      ],
+      "featureTriggers": [
+        "hasConfig"
+      ],
+      "loadPath": "rules/code-guidelines/p240301-v6.2/rules/config.md",
+      "loadReason": "Load only for appsettings, external endpoint, third-party service, or environment config changes.",
+      "action": "select_and_check_gaps"
+    },
+    {
+      "ruleId": "logging-exception",
+      "title": "Log / Exception / 失敗處理規範",
+      "category": "logging-exception",
+      "direction": "production-code",
+      "ruleType": "style_only",
+      "audienceScopes": [
+        "frontstage",
+        "midBackoffice",
+        "shared",
+        "unknown"
+      ],
+      "featureTriggers": [
+        "hasLoggingOrException"
+      ],
+      "loadPath": "rules/code-guidelines/p240301-v6.2/rules/logging-exception.md",
+      "loadReason": "Load only when the API touches exception handling, logging, or failure disposition.",
+      "action": "load_on_demand"
+    },
+    {
+      "ruleId": "test-handoff",
+      "title": "第 05 步測試交接規範",
+      "category": "test-handoff",
+      "direction": "handoff-only",
+      "ruleType": "handoff_only",
+      "audienceScopes": [
+        "frontstage",
+        "midBackoffice",
+        "shared",
+        "unknown"
+      ],
+      "featureTriggers": [
+        "hasTestHandoff",
+        "hasSql"
+      ],
+      "loadPath": "rules/code-guidelines/p240301-v6.2/rules/test-handoff.md",
+      "loadReason": "Load only to describe step-05 UnitTest / IntegrationTest / runtime validation handoff; step 04 must not write test source.",
+      "action": "handoff_only"
+    }
+  ]
+}

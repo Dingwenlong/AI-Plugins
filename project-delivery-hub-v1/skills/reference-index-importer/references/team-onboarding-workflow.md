@@ -20,8 +20,8 @@
 
 建议至少安装这些技能：
 
-- `专案需求接口设计梳理`
-- `01 Reference Index Importer`
+- `01 专案需求接口设计梳理`
+- `可选『参考资料索引导入器』（资料准备旁路）`
 - `02 API Spec Writer`
 - `03 Optional SQL Fixture Preparer`
 - `04 API Code Writer`
@@ -50,7 +50,7 @@
 - `<pluginRoot>\skills\docx-unittest-report\SKILL.md`
 - `<pluginRoot>\skills\project-rule-analyzer\SKILL.md`
 
-推荐顺序是：`专案需求接口设计梳理 -> 可选 01 -> 02 -> 03 Optional -> 专案规则分析器(code-guidelines) -> 04 -> 05 Optional`
+推荐顺序：先 01 设计梳理 → 02 → 03 Optional → 专案规则分析器(code-guidelines) → 04 → 05 Optional；『参考资料索引导入』为可选资料准备，按需在 02/03 前补做
 
 ## 2. 在项目里建立 `.agent`
 
@@ -134,7 +134,7 @@ workspace-key: <WORKSPACE_KEY>
 - `.agent\functions\<FUNCTION_CODE>\inputs\`
 - `.agent\functions\<FUNCTION_CODE>\handoff\development-handoff.json`
 
-## 7. 可选第 01 步：用 `$reference-index-importer` 建外部参考索引
+## 7. 可选『参考资料索引导入器』（资料准备旁路）：用 `$reference-index-importer` 建外部参考索引
 
 这一步的职责是：
 
@@ -166,7 +166,7 @@ db-schema-dir: <DB_SCHEMA_DIR>
 原因：
 
 - 没有 handoff 时，02 不应该直接回退到旧 `.agent\TSD`
-- 如果缺外部 API / DB Schema 索引，才补跑可选第 01 步
+- 如果缺外部 API / DB Schema 索引，才补跑可选『参考资料索引导入器』（资料准备旁路）
 
 对话模板：
 

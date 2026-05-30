@@ -82,15 +82,17 @@ python "<pluginRoot>\references\resolve_project_rule_pack.py" `
 
 ## 输出契约
 
-默认输出目录：
+默认输出目录（集中 `.agent`，与 `delivery-packager` 要求的正式来源一致）：
 
 ```text
-output/sequence_diagram/{functionCode}/
+<agentRoot>/functions/<functionCode>/analysis/sequence-diagrams/
   {functionCode}_native_visio_spec.json
   {functionCode}_sequence.puml
   {functionCode}_plantuml_落版說明.md
   vsdx/{functionCode}_01.vsdx
 ```
+
+> 正式产物必须落在 `<agentRoot>/functions/<functionCode>/analysis/sequence-diagrams/`——这也是 `delivery-packager` **唯一接受**的正式时序图来源（它会拒收 `output/sequence_diagram`）。未配置集中 `.agent` 时回退到 `<project-root>/.agent/functions/<functionCode>/analysis/sequence-diagrams/`。旧 `output/sequence_diagram/{functionCode}/` 仅作历史兼容，不得作为正式交付来源。
 
 正式 VSDX 契约：
 
@@ -116,52 +118,18 @@ output/sequence_diagram/{functionCode}/
 11. 执行文本验证与 native VSDX 验证。
 12. 更新落版说明，列出规则包路径、实际输出、冻结来源、验证结果；若 VSDX 阻塞，写清具体原因。
 
-## 图面硬规则
+## 图面与原生 VSDX 规范（以外置规则包为准）
 
-- 默认参与者顺序：`User -> APP -> Enterprise -> IRIS -> DB -> Redis`。
-- `User`、`APP`、`Enterprise` 保持在左侧；`DB`、`Redis` 不得出现在 `Enterprise` 左侧。
-- 只有主流程直接调用 DB/Redis 时才画它们；CommonFunc 内部使用 DB/Redis 不代表主图要画。
-- 若专案规则未另行指定，DB/Redis 必须是普通 boxed participant，不使用 cylinder/storage 图标。
-- `CommonFunc` 必须用 `ref over Ent` / native ref fragment 表达；不要画成 Enterprise 普通 self-call，也不要画成 participant。
-- `CommonUtil` 只有在 APP 实际通过 Enterprise 调用该 API 时，才按外部 API 调用表达。
-- 可见图面中的内部共用方法使用 `CommonFunc.MethodName` 点号写法，例如 `CommonFunc.GenFntTranSeq`；外部共用接口维持 `CommonUtil/MethodName` 斜线写法，例如 `CommonUtil/GetCENCurr`。
-- 图面文字使用台湾繁体中文；用户给的简中内容要转换后再上图。
-- API、字段与 source 名称使用冻结版 API Detail / 字段知识库的 canonical 名称。
-- 不保留旧字段或旧方法名来说明“已删除”。
-- `group` 表示业务阶段，`alt` 表示互斥分支，`opt` 表示单一可选分支，`ref over` 表示可复用 common 引用。
-- `alt` 至少两个 branch；只有一个条件分支时使用 `opt`。
-- 每个同步 request 都要有 response。
-- `User` 只作为触发来源；不要画 `APP -> User` 或 response 到 `User`，页面显示、弹窗、刷新用 APP self-call。
-- request/response 箭头要有业务可读标签，不把完整 request/response 字段清单塞进箭头或 self-call。
-- APP self-call 用业务动作、显示状态或提示语表达，不堆 raw field list、公式、长斜线字段串。
-- PRD/API Detail 要求会员类型、会员身份、网银资格等验证时，在入口附近用 `alt` gate 表达；没有来源依据时不要加泛化验证。
+本技能不再内联具体的图面与 native VSDX 硬规则；它们的权威来源是「规则包启动检查」已 required-load 的外置 `sequence-diagram` 规则包，尤其是 `native-vsdx-deep-rules`（正式 VSDX 的硬约束）、`system-design-v2.5-sequence-rules` 与 `sequence-diagram-handoff-rules`。设计与构建前必须按需加载并遵守这些文件，不得只凭本入口出图。
 
-## 原生 VSDX 硬规则
+需要覆盖的规则维度（细则一律以外置规则为准，本处仅作加载导航）：
 
-- 正式 VSDX 的落版说明必须列出本次加载的 `rulePack.rulesRoot`、required rule files 与 required assets；若未列出，视为规则加载证据不足。
-- 正式 VSDX 必须由 `{functionCode}_native_visio_spec.json` 经 `scripts/build_native_visio_sequence.ps1` 构建。
-- 系统设计规范 v2.5 要求正式交付 Visio source；环境支持时需保存/导出为 Visio 2013-2016 兼容格式，无法验证兼容时列为交付风险。
-- 使用 Visio UML native masters 与专案 theme；template/master 必须包含 `visio/theme/theme1.xml` 与 document theme relationship。
-- 必须使用规则包解析出的专案规则库 asset `nativeVsdxTemplate` / `nativeShapeLibrary` / `sequencePlantUmlStyle`；不可用时必须说明缺少专案模板，不得静默改用旧专案内置样式。
-- native spec 必须声明 `messageStyle.policy`，默认 `e001-reference`；只有明确需要全红才使用 `project-red`。
-- User 参与者在正式 VSDX 中必须是 E.001 风格任务图标 + boxed `User` 标签，不得残留 PlantUML stick actor。
-- DB/Redis 在正式 VSDX 中必须与 APP/Enterprise/IRIS 一样是 boxed participant。
-- self-call、message、return message 使用 Visio UML native shapes；self-call 标签留在同一 shape 上，不拆成独立文本框。
-- 参与者 lifeline 连接点必须使用 Visio UML 原生默认间距铺成完整、均匀的连接点列；不得用固定 inch 值替代，也不得只在箭头附近新增零散连接点。
-- message / return / self-call 箭头头尾必须胶合到既有 lifeline 连接点；不接受仅视觉贴近的端点，找不到可用连接点时构建必须失败。
-- ref fragment 只承载 common 引用说明、紧凑 common self-call 与底部橙色参考文件说明条；CommonFunc/CommonUtil 方法不得出现在 ref 外的普通 self-call/message，主流程 request/response 也不要塞进 ref。只要 ref 内有 CommonFunc/CommonUtil reference self-call，就必须有对应同方法名的橙色参考条。
-- section title、外层 business group、内层判断 `alt` 需要逐层保留至少两段参与者连接点间距；宽幅 child fragment 不可贴齐 parent fragment 的左右或顶部边界。
-- 连续的 sibling `opt` / `alt` / `ref` / `group` 不得互相压线或重叠；至少保留可见垂直间距，只有真正 parent-child 包覆关系才允许图框区域重叠。
-- `alt` 必须保留原生 `Alternative fragment` 与原生 `Interaction operand` list member；落版后 operand 的 `PinY`、`Height`、`LocPinY` 需固化为可编辑常量，不得保留跨 member 的 `Sheet.*!Height` / `Sheet.*!PinY` 垂直公式，以免手工拖曳 member 控制点时方向反直觉。
-- `alt` 的第一条件与所有 `else` 分支条件都必须显示为 `[条件]` 格式；PlantUML 草稿使用 `else [条件]`，native VSDX 的 `Interaction operand` 文字不得裸露为 `条件` 或 `else 条件`。
-- 原生 `Interaction operand` 的 `[条件]` 文字必须贴在 operand 顶部并保留可读间距；延展 `else` 或 `opt` operand 高度时，`TxtPinY` 必须同步到 `Height`，不得让条件说明停在旧高度或落到后续片段附近。
-- `alt` 的 success-like `else` 分支（例如 `[帐号检核通过]`、`[查询成功]`、`[有资料]`）若下方接续 nested `opt` / `ref` / `group` / `alt`，外层 `alt` 与最后一个 `Interaction operand` 必须向下完整包覆这些片段，且这些 child fragment 必须成为外层 `alt` 的成员；不得只让画面看似在框内，却在 Visio 原生结构中成为 sibling。
-- 延展 native `Interaction operand` 高度时，内部 separator geometry 必须同步更新，输出视觉检查不得出现斜向虚线段或被拉斜的 branch 分隔线。
-- 延展 native `alt` / `opt` / `ref` / `group` 外框时，外框 `Geometry` 的最大 X/Y 必须同步到图形实际 `Width` / `Height`；不得只拉大 Shape 尺寸而让可见外框停在旧高度，造成 `else` / child fragment 视觉上顶出外框。
-- 延展 native `alt` / `opt` / `ref` / `group` 外框时，左上角标题子图形也必须同步：`PinY` 贴合父 fragment `Height`，`PinX` / `LocPinX` / `Width` 跟随父 fragment `Width`，不得让 `alt` / `opt` / `ref` title 留在旧高度。
-- 不把新生成功能图同步复制到 `v1.x Reference/`，除非用户针对本次交付明确要求。
-
-复杂布局、operand/list member、连接点、User 头像替换、主题 fallback、section divider、orange pointer、ShapeSheet 控制点等细节，必须以外置规则包中的 `native-vsdx-deep-rules` 为准；不要只靠入口摘要执行。
+- 参与者：默认顺序 `User -> APP -> Enterprise -> IRIS -> DB -> Redis`，`User/APP/Enterprise` 在左；`DB/Redis` 不得在 `Enterprise` 左侧、仅主流程直接调用时才画、且为 boxed participant（非 cylinder/storage）。
+- Common 引用：`CommonFunc` 用 `ref over Ent` / native ref fragment 表达且用点号 `CommonFunc.MethodName`；外部 API/wrapper 用斜线 `CommonUtil/MethodName`，且只出现在真实主流程 request 上。
+- 片段语义与几何：`group`/`alt`/`opt`/`ref over` 的语义、`alt` ≥2 branch、每个同步 request 配对 response、`[条件]` 格式、operand 与外框 `PinY`/`Height`/`Geometry`/标题/分隔线同步、sibling 不压线重叠、success-like `else` 完整包覆 child fragment。
+- 表达规范：图面用台湾繁体中文（简中先转换）、API/字段/source 用 canonical 命名、标签业务可读不堆字段串、`User` 只作触发来源、入口处会员/身份/网银资格用 `alt` gate 表达。
+- 原生交付：由 `{functionCode}_native_visio_spec.json` 经 `scripts/build_native_visio_sequence.ps1` 构建；使用规则包 asset `nativeVsdxTemplate` / `nativeShapeLibrary` / `sequencePlantUmlStyle` 与专案 theme；`messageStyle.policy` 默认 `e001-reference`；`User` 用 E.001 任务图标 + boxed 标签、lifeline 连接点用 UML 原生默认间距铺满并胶合箭头端点；ref 底部橙色参考条用 `循序圖請參考：` + SVG basename + 中文说明。
+- 落版说明必须列出本次 `rulePack.rulesRoot`、required rule files 与 required assets；未列出视为规则加载证据不足。
 
 ## 验证
 
@@ -181,7 +149,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File <pluginRoot>\skills\native-v
 
 验收重点：
 
-- `{functionCode}_native_visio_spec.json` 与 `vsdx/{functionCode}_01.vsdx` 都在 `output/sequence_diagram/{functionCode}/` 下。
+- `{functionCode}_native_visio_spec.json` 与 `vsdx/{functionCode}_01.vsdx` 都在 `<agentRoot>/functions/<functionCode>/analysis/sequence-diagrams/` 下。
 - 一个 function 只有一个正式 VSDX，page tabs 按 coherent user flow 拆分。
 - VSDX 不是单一 SVG import group；没有 `ForeignData`、`visio/media`、`visio/embeddings`。
 - VSDX 与 template/master 含专案 project theme。
